@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="e-imza KIBRIS online başvuru sayfası. Elektronik sertifika paketinizi seçin, ek hizmetlerinizi belirleyin ve başvurunuzu birkaç adımda tamamlayın." />
+  <title>Online Başvuru | e-imza KIBRIS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body class="application-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr" class="active">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item">
+                <i class="fa-solid fa-pen-nib"></i>
+                <div>
+                  <strong>Elektronik İmza</strong>
+                  <small>Nitelikli e-imza sertifikası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-file-signature"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Hızlı ve güvenli başvuru</small>
+                </div>
+              </a>
+              <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-rotate"></i>
+                <div>
+                  <strong>Yenileme</strong>
+                  <small>Mevcut sertifikanızı yenileyin</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../index.html#what-is" class="dropdown__item">
+                <i class="fa-solid fa-circle-question"></i>
+                <div>
+                  <strong>e-imza Nedir?</strong>
+                  <small>Elektronik imza hakkında</small>
+                </div>
+              </a>
+              <a href="../index.html#use-cases" class="dropdown__item">
+                <i class="fa-solid fa-list-check"></i>
+                <div>
+                  <strong>Nerelerde Kullanılır?</strong>
+                  <small>Kullanım alanları</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Başvurunuzu oluşturun</small>
+                </div>
+              </a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-file-pdf"></i>
+                <div>
+                  <strong>93/2007 Sayılı Yasa</strong>
+                  <small>Elektronik İmza Yasası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item">
+                <i class="fa-solid fa-building"></i>
+                <div>
+                  <strong>Şirket Hakkında</strong>
+                  <small>Denizler Bilişim Hizmetleri</small>
+                </div>
+              </a>
+              <a href="../about/news.html" class="dropdown__item">
+                <i class="fa-solid fa-newspaper"></i>
+                <div>
+                  <strong>Haberler</strong>
+                  <small>Son gelişmeler</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="../contact/index.html" class="nav-link">İLETİŞİM</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
+        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav__list">
+      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
+      <li><a href="onlineapplication.html">DESTEK</a></li>
+      <li><a href="../about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="../contact/index.html">İLETİŞİM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
+        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="page-hero page-hero--application">
+      <div class="container page-hero__inner">
+        <div class="page-hero__content" data-animate="fade-up">
+          <div class="section-tag">Online Başvuru</div>
+          <h1 class="page-hero__title">e-İmza Paketinizi Oluşturun</h1>
+          <p class="page-hero__desc">
+            Sertifika sürenizi seçin, isteğe bağlı hizmetleri ekleyin ve başvurunuzu birkaç adımda tamamlayın.
+            Toplam tutarınız anında güncellenir, ardından bilgilerinizle başvuru özetinizi gönderebilirsiniz.
+          </p>
+          <div class="page-hero__actions">
+            <a href="#builder" class="btn btn--primary btn--lg">Paketi Oluştur</a>
+            <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank" class="btn btn--outline btn--lg">Yenileme Formu</a>
+          </div>
+          <div class="page-hero__facts">
+            <div><i class="fa-solid fa-scale-balanced"></i> Yasal Geçerlilik</div>
+            <div><i class="fa-solid fa-shield-halved"></i> Güvenli Altyapı</div>
+            <div><i class="fa-solid fa-bolt"></i> Hızlı Başvuru</div>
+          </div>
+        </div>
+        <div class="page-hero__media" data-animate="fade-left">
+          <div class="token-showcase">
+            <div class="token-showcase__badge">Akıllı Çubuk</div>
+            <img src="../assets/img/token.jpg" alt="e-imza token" class="token-showcase__img" />
+            <div class="token-showcase__note">
+              <i class="fa-solid fa-circle-info"></i>
+              Sertifikanız güvenli donanım üzerinde saklanır.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="application-steps">
+      <div class="container">
+        <div class="application-stepper" data-animate="fade-up">
+          <div class="application-step is-active" data-step-indicator="1">
+            <span>1</span>
+            <div>
+              <strong>Paket Seçimi</strong>
+              <small>Süre ve ek hizmetler</small>
+            </div>
+          </div>
+          <div class="application-step" data-step-indicator="2">
+            <span>2</span>
+            <div>
+              <strong>Başvuru Bilgileri</strong>
+              <small>İletişim ve notlar</small>
+            </div>
+          </div>
+          <div class="application-step" data-step-indicator="3">
+            <span>3</span>
+            <div>
+              <strong>Gönderim</strong>
+              <small>Özet ve e-posta</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="application-builder section" id="builder">
+      <div class="container application-builder__grid">
+        <div class="application-builder__main">
+          <div class="builder-card" data-animate="fade-up">
+            <div class="builder-card__head">
+              <div>
+                <div class="section-tag">Adım 1</div>
+                <h2 class="section-title">Sertifika Süresini Seçin</h2>
+              </div>
+              <p class="builder-card__head-text">Nitelikli Elektronik Sertifika için size uygun süreyi seçin.</p>
+            </div>
+
+            <form id="application-builder-form" class="builder-form">
+              <div class="plan-grid">
+                <label class="plan-card">
+                  <input type="radio" name="certificatePlan" value="2100" data-plan-label="1 Yıllık Sertifika" checked />
+                  <span class="plan-card__body">
+                    <span class="plan-card__tag">1 Yıllık</span>
+                    <strong>2.100,00 ₺</strong>
+                    <small>Başlangıç paketi</small>
+                  </span>
+                </label>
+                <label class="plan-card plan-card--featured">
+                  <input type="radio" name="certificatePlan" value="3750" data-plan-label="2 Yıllık Sertifika" />
+                  <span class="plan-card__body">
+                    <span class="plan-card__tag">2 Yıllık</span>
+                    <strong>3.750,00 ₺</strong>
+                    <small>En popüler seçenek</small>
+                  </span>
+                </label>
+                <label class="plan-card">
+                  <input type="radio" name="certificatePlan" value="5375" data-plan-label="3 Yıllık Sertifika" />
+                  <span class="plan-card__body">
+                    <span class="plan-card__tag">3 Yıllık</span>
+                    <strong>5.375,00 ₺</strong>
+                    <small>Uzun vadeli avantaj</small>
+                  </span>
+                </label>
+              </div>
+
+              <div class="builder-card__divider"></div>
+
+              <div class="builder-card__head compact">
+                <div>
+                  <div class="section-tag">Ek Hizmetler</div>
+                  <h3 class="builder-subtitle">Opsiyonel Seçimler</h3>
+                </div>
+              </div>
+
+              <div class="addon-grid">
+                <label class="addon-card">
+                  <input type="checkbox" name="tokenAddon" value="1500" data-addon-label="Akıllı Çubuk" />
+                  <span class="addon-card__icon"><img src="../assets/img/token.jpg" alt="Akıllı Çubuk" /></span>
+                  <span class="addon-card__content">
+                    <strong>Akıllı Çubuk</strong>
+                    <small>Sertifikanızı güvenli token üzerinde kullanın.</small>
+                  </span>
+                  <span class="addon-card__price">1.500,00 ₺</span>
+                </label>
+
+                <label class="addon-card">
+                  <input type="checkbox" name="remoteSetup" value="1500" data-addon-label="Uzak Bağlantılı Kurulum" />
+                  <span class="addon-card__icon addon-card__icon--alt"><i class="fa-solid fa-laptop-medical"></i></span>
+                  <span class="addon-card__content">
+                    <strong>Uzak Bağlantılı Kurulum</strong>
+                    <small>Uzak masaüstü ile kurulum desteği sağlanır.</small>
+                  </span>
+                  <span class="addon-card__price">1.500,00 ₺</span>
+                </label>
+              </div>
+
+              <div class="builder-actions">
+                <button type="button" class="btn btn--primary btn--lg" id="go-to-details">İleri</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="builder-card application-details" id="application-details" data-animate="fade-up">
+            <div class="builder-card__head">
+              <div>
+                <div class="section-tag">Adım 2</div>
+                <h2 class="section-title">Başvuru Bilgileri</h2>
+              </div>
+              <p class="builder-card__head-text">İletişim bilgilerinizi ekleyin, özetiniz hazır olsun.</p>
+            </div>
+
+            <form id="application-details-form" class="details-form">
+              <div class="field-grid">
+                <label class="field">
+                  <span>Ad Soyad</span>
+                  <input type="text" name="fullName" placeholder="Ad Soyad" required />
+                </label>
+                <label class="field">
+                  <span>E-posta</span>
+                  <input type="email" name="email" placeholder="ornek@eposta.com" required />
+                </label>
+                <label class="field">
+                  <span>Telefon</span>
+                  <input type="tel" name="phone" placeholder="+90 5xx xxx xx xx" required />
+                </label>
+                <label class="field">
+                  <span>Kimlik / Pasaport No</span>
+                  <input type="text" name="identityNumber" placeholder="Kimlik veya pasaport numarası" required />
+                </label>
+                <label class="field field--full">
+                  <span>Şirket / Kurum</span>
+                  <input type="text" name="company" placeholder="Varsa şirket veya kurum adı" />
+                </label>
+                <label class="field field--full">
+                  <span>Notlar</span>
+                  <textarea name="notes" rows="5" placeholder="Başvurunuzla ilgili ek notlarınızı yazabilirsiniz."></textarea>
+                </label>
+              </div>
+
+              <div class="builder-actions builder-actions--between">
+                <button type="button" class="btn btn--outline" id="back-to-builder">Geri</button>
+                <button type="submit" class="btn btn--primary btn--lg">Başvuru Özetini Gönder</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="builder-card application-submit" id="application-submit" data-animate="fade-up">
+            <div class="builder-card__head">
+              <div>
+                <div class="section-tag">Adım 3</div>
+                <h2 class="section-title">Gönderim</h2>
+              </div>
+            </div>
+            <p class="application-submit__text">
+              “Başvuru Özetini Gönder” butonu varsayılan e-posta uygulamanızı açar ve seçtiğiniz paket ile iletişim bilgilerinizi
+              <strong>info@e-imzakibris.com</strong> adresine gönderim için hazırlar.
+            </p>
+            <div class="application-submit__box" id="application-submit-message">
+              Başvuru özetiniz gönderime hazır.
+            </div>
+          </div>
+        </div>
+
+        <aside class="application-builder__sidebar" data-animate="fade-left">
+          <div class="summary-card">
+            <div class="summary-card__head">
+              <div>
+                <div class="section-tag">Sepetim</div>
+                <h3>Başvuru Özeti</h3>
+              </div>
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+
+            <div class="summary-lines">
+              <div class="summary-line">
+                <span>Elektronik Sertifika</span>
+                <strong id="summary-certificate-price">2.100,00 ₺</strong>
+              </div>
+              <div class="summary-line">
+                <span>Akıllı Çubuk</span>
+                <strong id="summary-token-price">0,00 ₺</strong>
+              </div>
+              <div class="summary-line">
+                <span>Uzak Kurulum</span>
+                <strong id="summary-setup-price">0,00 ₺</strong>
+              </div>
+            </div>
+
+            <div class="summary-total">
+              <span>KDV Dahil Toplam</span>
+              <strong id="summary-total-price">2.100,00 ₺</strong>
+            </div>
+
+            <ul class="summary-highlights">
+              <li><i class="fa-solid fa-check"></i> X.509 standart sertifika</li>
+              <li><i class="fa-solid fa-check"></i> Hukuken geçerli e-imza</li>
+              <li><i class="fa-solid fa-check"></i> Hızlı başvuru akışı</li>
+            </ul>
+          </div>
+
+          <div class="contact-mini-card">
+            <h4>Yardıma mı ihtiyacınız var?</h4>
+            <p>Başvuru öncesi sorularınız için ekibimize ulaşabilirsiniz.</p>
+            <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+            <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo">
+          <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" />
+        </a>
+        <p>
+          Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza
+          hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
+        </p>
+        <div class="footer__cert">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>ISO/IEC 27001:2017 Sertifikalı</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Ürünler &amp; Hizmetler</h4>
+        <ul>
+          <li><a href="../products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank">Yenileme Başvurusu</a></li>
+          <li><a href="../index.html#pricing">Fiyatlandırma</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Bilgi Bankası</h4>
+        <ul>
+          <li><a href="../index.html#what-is">e-imza Nedir?</a></li>
+          <li><a href="../index.html#use-cases">Nerelerde Kullanılır?</a></li>
+          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank">93/2007 Sayılı Yasa</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal/Lefkoşa/Kuzey Kıbrıs</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:+903922280960">+90 (392) 228 09 60</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-mobile-screen"></i>
+            <a href="tel:+905488662279">+90 (548) 866 22 79</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="https://www.e-imzakibris.com/privacypolicy/">Gizlilik Politikası</a>
+          <a href="../contact/index.html">İletişim</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Yukarı git">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

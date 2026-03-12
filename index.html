@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="e-imza KIBRIS – K.K.T.C.'nin güvenilir elektronik imza hizmet sağlayıcısı. Güvenli, hızlı ve yasal geçerliliğe sahip elektronik imza çözümleri." />
+  <title>e-imza KIBRIS | Elektronik İmza Hizmetleri</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Site Icon -->
+  <link rel="icon" type="image/png" href="assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="assets/img/icon.png" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== TOP BAR ===================== -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr" class="active">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+
+      <!-- Logo — replace logo.svg with your own file -->
+      <a href="index.html" class="navbar__logo">
+        <img src="assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="products/esignature.html" class="dropdown__item">
+                <i class="fa-solid fa-pen-nib"></i>
+                <div>
+                  <strong>Elektronik İmza</strong>
+                  <small>Nitelikli e-imza sertifikası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="support/onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-file-signature"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Hızlı ve güvenli başvuru</small>
+                </div>
+              </a>
+              <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-rotate"></i>
+                <div>
+                  <strong>Yenileme</strong>
+                  <small>Mevcut sertifikanızı yenileyin</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="#what-is" class="dropdown__item">
+                <i class="fa-solid fa-circle-question"></i>
+                <div>
+                  <strong>e-imza Nedir?</strong>
+                  <small>Elektronik imza hakkında</small>
+                </div>
+              </a>
+              <a href="#use-cases" class="dropdown__item">
+                <i class="fa-solid fa-list-check"></i>
+                <div>
+                  <strong>Nerelerde Kullanılır?</strong>
+                  <small>Kullanım alanları</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="support/onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Başvurunuzu oluşturun</small>
+                </div>
+              </a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-file-pdf"></i>
+                <div>
+                  <strong>93/2007 Sayılı Yasa</strong>
+                  <small>Elektronik İmza Yasası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="about/index.html" class="dropdown__item">
+                <i class="fa-solid fa-building"></i>
+                <div>
+                  <strong>Şirket Hakkında</strong>
+                  <small>Denizler Bilişim Hizmetleri</small>
+                </div>
+              </a>
+              <a href="about/news.html" class="dropdown__item">
+                <i class="fa-solid fa-newspaper"></i>
+                <div>
+                  <strong>Haberler</strong>
+                  <small>Son gelişmeler</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="contact/index.html" class="nav-link">İLETİŞİM</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- CTA Buttons -->
+      <div class="navbar__cta">
+        <a href="support/onlineapplication.html" class="btn btn--primary">
+          <i class="fa-solid fa-pen-to-square"></i> BAŞVURU
+        </a>
+        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">
+          <i class="fa-solid fa-rotate"></i> YENİLEME
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav__list">
+      <li><a href="products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="support/onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="#use-cases">BİLGİ BANKASI</a></li>
+      <li><a href="support/onlineapplication.html">DESTEK</a></li>
+      <li><a href="about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="contact/index.html">İLETİŞİM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="support/onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
+        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="home">
+      <div class="hero__bg-shapes">
+        <div class="shape shape--1"></div>
+        <div class="shape shape--2"></div>
+        <div class="shape shape--3"></div>
+      </div>
+      <div class="container hero__inner">
+        <div class="hero__content" data-animate="fade-up">
+          <div class="hero__badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            ISO 27001 Sertifikalı Güvenlik
+          </div>
+          <h1 class="hero__title">
+            K.K.T.C.'nin<br />
+            <span class="gradient-text">Elektronik İmza</span><br />
+            Hizmet Sağlayıcısı
+          </h1>
+          <p class="hero__desc">
+            Islak imzanızın elektronik ortamdaki karşılığı olan e-imza ile tüm resmi işlemlerinizi
+            güvenle, hızla ve kolayca tamamlayın. <strong>93/2007 Sayılı Elektronik İmza Yasası</strong>
+            çerçevesinde yasal geçerlilikte hizmet veriyoruz.
+          </p>
+          <div class="hero__actions">
+            <a href="support/onlineapplication.html" class="btn btn--primary btn--lg">
+              <i class="fa-solid fa-pen-to-square"></i> Hemen Başvur
+            </a>
+            <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline btn--lg" target="_blank">
+              <i class="fa-solid fa-rotate"></i> Yenileme Başvurusu
+            </a>
+            <a href="#what-is" class="btn btn--ghost btn--lg">
+              Detaylı Bilgi <i class="fa-solid fa-arrow-down"></i>
+            </a>
+          </div>
+        </div>
+        <div class="hero__visual" data-animate="fade-left">
+          <div class="hero__card-mockup">
+            <div class="mockup__header">
+              <div class="mockup__dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="mockup__title">e-imza Sertifikası</span>
+            </div>
+            <div class="mockup__body">
+              <div class="mockup__row">
+                <i class="fa-solid fa-user-shield"></i>
+                <div>
+                  <small>Sertifika Sahibi</small>
+                  <strong>AD SOYAD</strong>
+                </div>
+              </div>
+              <div class="mockup__row">
+                <i class="fa-solid fa-calendar-check"></i>
+                <div>
+                  <small>Geçerlilik</small>
+                  <strong>1 / 2 / 3 Yıl</strong>
+                </div>
+              </div>
+              <div class="mockup__row">
+                <i class="fa-solid fa-certificate"></i>
+                <div>
+                  <small>Standart</small>
+                  <strong>X.509 Uyumlu</strong>
+                </div>
+              </div>
+              <div class="mockup__row">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                  <small>Şifreleme</small>
+                  <strong>2048-bit RSA</strong>
+                </div>
+              </div>
+              <div class="mockup__footer">
+                <span class="badge--verified"><i class="fa-solid fa-circle-check"></i> KIBRİS'ta Hukuken Geçerli</span>
+              </div>
+            </div>
+          </div>
+          <!-- Floating badges -->
+          <div class="float-badge float-badge--1">
+            <i class="fa-solid fa-shield-halved"></i> ISO 27001
+          </div>
+          <div class="float-badge float-badge--2">
+            <i class="fa-solid fa-bolt"></i> Hızlı Başvuru
+          </div>
+        </div>
+      </div>
+      <!-- Scroll hint -->
+      <a href="#features" class="hero__scroll-hint" aria-label="Aşağı kaydır">
+        <i class="fa-solid fa-chevron-down"></i>
+      </a>
+    </section>
+
+    <!-- ===================== TRUST BAR ===================== -->
+    <section class="trust-bar">
+      <div class="container trust-bar__inner">
+        <div class="trust-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>ISO 27001 Sertifikalı</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Hukuken Geçerli</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-headset"></i>
+          <span>Teknik Destek</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Hızlı Teslimat</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-rotate"></i>
+          <span>Kolay Yenileme</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WHAT IS E-IMZA ===================== -->
+    <section class="section what-is" id="what-is">
+      <div class="container">
+        <div class="what-is__inner">
+          <div class="what-is__text" data-animate="fade-right">
+            <div class="section-tag">e-imza Nedir?</div>
+            <h2 class="section-title">Elektronik İmza Hakkında<br />Her Şey</h2>
+            <p class="section-desc">
+              <strong>93/2007 Sayılı Elektronik İmza Yasası'na</strong> göre e-imza; günlük hayatımızda
+              kullandığımız ıslak imzanın elektronik ortamdaki karşılığıdır ve ıslak imza ile
+              <strong>aynı hukuki geçerliliğe</strong> sahiptir.
+            </p>
+            <p class="section-desc">
+              Elektronik sertifikalar X.509 standardına uygun olarak üretilir. Güvenli elektronik imza,
+              nitelikli elektronik sertifika kullanılarak oluşturulur.
+            </p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                <div>
+                  <strong>Kimlik Doğrulama</strong>
+                  <p>Algoritmalar aracılığı ile imza sahibini doğrulama imkânı verir.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-file-shield"></i></div>
+                <div>
+                  <strong>Bütünlük</strong>
+                  <p>İmzalanan belgenin herhangi bir öğesinde değişiklik yapılmadığını kanıtlar.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-gavel"></i></div>
+                <div>
+                  <strong>İnkar Edilmezlik</strong>
+                  <p>Islak imza ile aynı hukuki geçerliliğe sahiptir.</p>
+                </div>
+              </div>
+            </div>
+            <a href="products/esignature.html" class="btn btn--primary">
+              Daha Fazla Bilgi <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="what-is__visual" data-animate="fade-left">
+            <div class="mobile-fade-showcase">
+              <img src="assets/img/mobile_el.jpg" alt="e-imza mobil uygulama" class="mobile-fade-img" />
+              <div class="mobile-fade-overlay"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== USE CASES (TABS) ===================== -->
+    <section class="section use-cases" id="use-cases">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Kullanım Alanları</div>
+          <h2 class="section-title">e-imza ile Neler Yapabilirsiniz?</h2>
+          <p class="section-subtitle">Elektronik imzanızı yüzlerce alanda kullanabilirsiniz.</p>
+        </div>
+
+        <div class="tabs" data-animate="fade-up">
+          <div class="tabs__header">
+            <button class="tab-btn active" data-tab="where">
+              <i class="fa-solid fa-map-location-dot"></i> Nerelerde Kullanabilirim?
+            </button>
+            <button class="tab-btn" data-tab="who">
+              <i class="fa-solid fa-users"></i> Kimler İçin?
+            </button>
+            <button class="tab-btn" data-tab="quick">
+              <i class="fa-solid fa-bolt"></i> Hızlı Erişim
+            </button>
+          </div>
+
+          <div class="tab-content active" id="tab-where">
+            <div class="use-cases-grid">
+              <div class="use-case-card">
+                <i class="fa-solid fa-building-columns"></i>
+                <h4>Devlet Kurumları</h4>
+                <p>Resmi belge ve başvurularınızı elektronik ortamda imzalayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h4>E-Devlet İşlemleri</h4>
+                <p>Çevrimiçi devlet hizmetlerine güvenli erişim sağlayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-briefcase"></i>
+                <h4>İş Dünyası</h4>
+                <p>Sözleşme ve ticari belgelerinizi dijital ortamda imzalayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-person-shelter"></i>
+                <h4>Mimarlar Odası</h4>
+                <p>Mimari projelerin elektronik ortamda vizesi için kullanın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-stethoscope"></i>
+                <h4>Sağlık Sektörü</h4>
+                <p>Sağlık belgelerini ve raporlarını elektronik imzayla onaylayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h4>Eğitim Kurumları</h4>
+                <p>Diploma, sertifika ve akademik belgelerinizi imzalayın.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-who">
+            <div class="use-cases-grid">
+              <div class="use-case-card">
+                <i class="fa-solid fa-user-tie"></i>
+                <h4>Bireysel Kullanıcılar</h4>
+                <p>Kişisel işlemlerinizi hızlı ve güvenli şekilde tamamlayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-building"></i>
+                <h4>Şirket Sahipleri</h4>
+                <p>Kurumsal belgelerinizi dijital imzayla onaylayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <h4>Avukatlar</h4>
+                <p>Hukuki belgelerinizi elektronik ortamda imzalayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-compass-drafting"></i>
+                <h4>Mimarlar &amp; Mühendisler</h4>
+                <p>Teknik projeleri ve çizimi elektronik imzayla onaylayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-user-doctor"></i>
+                <h4>Sağlık Uzmanları</h4>
+                <p>Hasta belgelerini güvenli dijital imzayla onaylayın.</p>
+              </div>
+              <div class="use-case-card">
+                <i class="fa-solid fa-landmark"></i>
+                <h4>Kamu Görevlileri</h4>
+                <p>Resmi yazışmaları elektronik imzayla hızlandırın.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-quick">
+            <div class="quick-links-grid">
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank" class="quick-link-card">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>93/2007 Sayılı Elektronik İmza Yasası</span>
+                <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i>
+              </a>
+              <a href="support/onlineapplication.html" class="quick-link-card">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Online Başvuru Formu</span>
+                <i class="fa-solid fa-arrow-right fa-xs"></i>
+              </a>
+              <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank" class="quick-link-card">
+                <i class="fa-solid fa-rotate"></i>
+                <span>e-imza Yenileme Başvurusu</span>
+                <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i>
+              </a>
+              <a href="#" class="quick-link-card">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Ödeme ve Teslimat</span>
+                <i class="fa-solid fa-arrow-right fa-xs"></i>
+              </a>
+              <a href="#" class="quick-link-card">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Garanti ve İade</span>
+                <i class="fa-solid fa-arrow-right fa-xs"></i>
+              </a>
+              <a href="#" class="quick-link-card">
+                <i class="fa-solid fa-file-contract"></i>
+                <span>Mesafeli Satış Sözleşmesi</span>
+                <i class="fa-solid fa-arrow-right fa-xs"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PRICING ===================== -->
+    <section class="section pricing" id="pricing">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Fiyatlandırma</div>
+          <h2 class="section-title">Paketlerimizi İnceleyin</h2>
+          <p class="section-subtitle">
+            Nitelikli Elektronik Sertifika paketinizi seçin, isteğe bağlı olarak
+            Akıllı Çubuk ve Kurulum hizmeti ekleyin.
+          </p>
+        </div>
+
+        <div class="pricing-grid" data-animate="fade-up">
+          <!-- 1 Year -->
+          <div class="pricing-card">
+            <div class="pricing-card__header">
+              <div class="pricing-card__icon"><img src="assets/img/token.jpg" alt="e-imza token" /></div>
+              <h3>1 Yıllık</h3>
+              <div class="pricing-card__price">
+                <span class="price-amount">2.100,00</span>
+                <span class="price-currency">₺</span>
+              </div>
+              <p class="price-label">Nitelikli Elektronik Sertifika</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li><i class="fa-solid fa-check"></i> 1 Yıl Geçerlilik Süresi</li>
+              <li><i class="fa-solid fa-check"></i> X.509 Standart Sertifika</li>
+              <li><i class="fa-solid fa-check"></i> Hukuken Geçerli</li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Akıllı Çubuk: <strong>1.500,00 ₺</strong></li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Uzak Kurulum: <strong>1.500,00 ₺</strong></li>
+            </ul>
+            <a href="support/onlineapplication.html?plan=1y" class="btn btn--outline btn--block">Hemen Satın Al</a>
+          </div>
+
+          <!-- 2 Year - Popular -->
+          <div class="pricing-card pricing-card--featured">
+            <div class="pricing-card__badge">En Popüler</div>
+            <div class="pricing-card__header">
+              <div class="pricing-card__icon"><img src="assets/img/token.jpg" alt="e-imza token" /></div>
+              <h3>2 Yıllık</h3>
+              <div class="pricing-card__price">
+                <span class="price-amount">3.750,00</span>
+                <span class="price-currency">₺</span>
+              </div>
+              <p class="price-label">Nitelikli Elektronik Sertifika</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li><i class="fa-solid fa-check"></i> 2 Yıl Geçerlilik Süresi</li>
+              <li><i class="fa-solid fa-check"></i> X.509 Standart Sertifika</li>
+              <li><i class="fa-solid fa-check"></i> Hukuken Geçerli</li>
+              <li><i class="fa-solid fa-check"></i> Uzun Vadeli Tasarruf</li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Akıllı Çubuk: <strong>1.500,00 ₺</strong></li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Uzak Kurulum: <strong>1.500,00 ₺</strong></li>
+            </ul>
+            <a href="support/onlineapplication.html?plan=2y" class="btn btn--primary btn--block">Hemen Satın Al</a>
+          </div>
+
+          <!-- 3 Year -->
+          <div class="pricing-card">
+            <div class="pricing-card__header">
+              <div class="pricing-card__icon"><img src="assets/img/token.jpg" alt="e-imza token" /></div>
+              <h3>3 Yıllık</h3>
+              <div class="pricing-card__price">
+                <span class="price-amount">5.375,00</span>
+                <span class="price-currency">₺</span>
+              </div>
+              <p class="price-label">Nitelikli Elektronik Sertifika</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li><i class="fa-solid fa-check"></i> 3 Yıl Geçerlilik Süresi</li>
+              <li><i class="fa-solid fa-check"></i> X.509 Standart Sertifika</li>
+              <li><i class="fa-solid fa-check"></i> Hukuken Geçerli</li>
+              <li><i class="fa-solid fa-check"></i> En İyi Uzun Vadeli Fiyat</li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Akıllı Çubuk: <strong>1.500,00 ₺</strong></li>
+              <li class="optional"><i class="fa-solid fa-plus"></i> Uzak Kurulum: <strong>1.500,00 ₺</strong></li>
+            </ul>
+            <a href="support/onlineapplication.html?plan=3y" class="btn btn--outline btn--block">Hemen Satın Al</a>
+          </div>
+        </div>
+
+        <p class="pricing-note">
+          <i class="fa-solid fa-circle-info"></i>
+          Tüm fiyatlar KDV dahildir. Akıllı Çubuk ve Uzak Bağlantılı Kurulum isteğe bağlı ek hizmetlerdir.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== NEWS ===================== -->
+    <section class="section news" id="news">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Haberler</div>
+          <h2 class="section-title">Son Gelişmeler</h2>
+          <p class="section-subtitle">e-imza dünyasındaki son haberler ve duyurular.</p>
+        </div>
+
+        <div class="news-grid" data-animate="fade-up">
+          <article class="news-card">
+            <div class="news-card__meta">
+              <span class="news-badge"><i class="fa-solid fa-certificate"></i> Sertifika</span>
+              <time>03.05.2021</time>
+            </div>
+            <h3 class="news-card__title">
+              <a href="about/news.html">ISO 27001 Sertifikası Yenilendi</a>
+            </h3>
+            <p class="news-card__excerpt">
+              Denizler Bilişim Hizmetleri Limited, ISO/IEC 27001:2017 Bilgi Güvenliği Sertifikasını
+              yeniledi. Proks Firması tarafından yapılan denetimlerden sonra belgeyi almaya hak kazandı.
+            </p>
+            <a href="about/news.html" class="news-card__link">
+              Daha Fazlası <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </article>
+
+          <article class="news-card">
+            <div class="news-card__meta">
+              <span class="news-badge news-badge--green"><i class="fa-solid fa-pen-ruler"></i> Haber</span>
+              <time>02.08.2021</time>
+            </div>
+            <h3 class="news-card__title">
+              <a href="about/news.html">Mimarlar Odası, Mimari Projeleri e-Vize'ye Geçti</a>
+            </h3>
+            <p class="news-card__excerpt">
+              Mimarlar Odası, üyelerinin mimari projelerini elektronik ortamda vizeleme işlemine başladı.
+              Denizler Bilişim ve CBKSoft ile enVision elektronik Belge, Form ve Süreç Yönetim Sistemi devreye girdi.
+            </p>
+            <a href="about/news.html" class="news-card__link">
+              Daha Fazlası <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </article>
+
+          <!-- CTA Card -->
+          <div class="news-card news-card--cta">
+            <i class="fa-solid fa-bell fa-2x"></i>
+            <h3>Tüm Haberleri Takip Edin</h3>
+            <p>e-imza sektöründeki son gelişmeler ve duyurular için haberler sayfamızı ziyaret edin.</p>
+            <a href="about/news.html" class="btn btn--primary">
+              Tüm Haberler <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA BANNER ===================== -->
+    <section class="cta-banner">
+      <div class="container cta-banner__inner">
+        <div class="cta-banner__text">
+          <h2>Hemen e-imza Başvurusu Yapın</h2>
+          <p>Online başvuru formunu doldurarak birkaç adımda e-imzanızı edinin.</p>
+        </div>
+        <div class="cta-banner__actions">
+          <a href="support/onlineapplication.html" class="btn btn--white btn--lg">
+            <i class="fa-solid fa-pen-to-square"></i> Online Başvuru
+          </a>
+          <a href="contact/index.html" class="btn btn--outline-white btn--lg">
+            <i class="fa-solid fa-phone"></i> Bize Ulaşın
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <!-- Footer logo — replace logo-white.svg with your own white/light version -->
+        <a href="index.html" class="footer__logo">
+          <img src="assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" />
+        </a>
+        <p>
+          Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza
+          hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
+        </p>
+        <div class="footer__cert">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>ISO/IEC 27001:2017 Sertifikalı</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Ürünler &amp; Hizmetler</h4>
+        <ul>
+          <li><a href="products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="support/onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank">Yenileme Başvurusu</a></li>
+          <li><a href="#pricing">Fiyatlandırma</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Bilgi Bankası</h4>
+        <ul>
+          <li><a href="#what-is">e-imza Nedir?</a></li>
+          <li><a href="#use-cases">Nerelerde Kullanılır?</a></li>
+          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank">93/2007 Sayılı Yasa</a></li>
+          <li><a href="#">Garanti ve İade</a></li>
+          <li><a href="#">Ödeme ve Teslimat</a></li>
+          <li><a href="#">Mesafeli Satış Sözleşmesi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal/Lefkoşa/Kuzey Kıbrıs</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:+903922280960">+90 (392) 228 09 60</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-mobile-screen"></i>
+            <a href="tel:+905488662279">+90 (548) 866 22 79</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-fax"></i>
+            <span>+90 (392) 228 32 76</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="https://www.e-imzakibris.com/privacypolicy/">Gizlilik Politikası</a>
+          <a href="#">Kullanım Koşulları</a>
+          <a href="contact/index.html">İletişim</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Yukarı git">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
