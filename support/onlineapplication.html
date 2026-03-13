@@ -235,26 +235,26 @@
             <form id="application-builder-form" class="builder-form">
               <div class="plan-grid">
                 <label class="plan-card">
-                  <input type="radio" name="certificatePlan" value="2100" data-plan-label="1 Yıllık Sertifika" checked />
+                  <input type="radio" name="certificatePlan" value="2100" data-price-input="1y" data-plan-label="1 Yıllık Sertifika" checked />
                   <span class="plan-card__body">
                     <span class="plan-card__tag">1 Yıllık</span>
-                    <strong>2.100,00 ₺</strong>
+                    <strong data-price-display="1y">2.100,00 ₺</strong>
                     <small>Başlangıç paketi</small>
                   </span>
                 </label>
                 <label class="plan-card plan-card--featured">
-                  <input type="radio" name="certificatePlan" value="3750" data-plan-label="2 Yıllık Sertifika" />
+                  <input type="radio" name="certificatePlan" value="3750" data-price-input="2y" data-plan-label="2 Yıllık Sertifika" />
                   <span class="plan-card__body">
                     <span class="plan-card__tag">2 Yıllık</span>
-                    <strong>3.750,00 ₺</strong>
+                    <strong data-price-display="2y">3.750,00 ₺</strong>
                     <small>En popüler seçenek</small>
                   </span>
                 </label>
                 <label class="plan-card">
-                  <input type="radio" name="certificatePlan" value="5375" data-plan-label="3 Yıllık Sertifika" />
+                  <input type="radio" name="certificatePlan" value="5375" data-price-input="3y" data-plan-label="3 Yıllık Sertifika" />
                   <span class="plan-card__body">
                     <span class="plan-card__tag">3 Yıllık</span>
-                    <strong>5.375,00 ₺</strong>
+                    <strong data-price-display="3y">5.375,00 ₺</strong>
                     <small>Uzun vadeli avantaj</small>
                   </span>
                 </label>
@@ -271,23 +271,23 @@
 
               <div class="addon-grid">
                 <label class="addon-card">
-                  <input type="checkbox" name="tokenAddon" value="1500" data-addon-label="Akıllı Çubuk" />
+                  <input type="checkbox" name="tokenAddon" value="1500" data-price-input="stick" data-addon-label="Akıllı Çubuk" />
                   <span class="addon-card__icon"><img src="../assets/img/token.jpg" alt="Akıllı Çubuk" /></span>
                   <span class="addon-card__content">
                     <strong>Akıllı Çubuk</strong>
                     <small>Sertifikanızı güvenli token üzerinde kullanın.</small>
                   </span>
-                  <span class="addon-card__price">1.500,00 ₺</span>
+                  <span class="addon-card__price" data-price-display="stick">1.500,00 ₺</span>
                 </label>
 
                 <label class="addon-card">
-                  <input type="checkbox" name="remoteSetup" value="1500" data-addon-label="Uzak Bağlantılı Kurulum" />
+                  <input type="checkbox" name="remoteSetup" value="1500" data-price-input="install" data-addon-label="Uzak Bağlantılı Kurulum" />
                   <span class="addon-card__icon addon-card__icon--alt"><i class="fa-solid fa-laptop-medical"></i></span>
                   <span class="addon-card__content">
                     <strong>Uzak Bağlantılı Kurulum</strong>
                     <small>Uzak masaüstü ile kurulum desteği sağlanır.</small>
                   </span>
-                  <span class="addon-card__price">1.500,00 ₺</span>
+                  <span class="addon-card__price" data-price-display="install">1.500,00 ₺</span>
                 </label>
               </div>
 

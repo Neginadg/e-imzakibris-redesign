@@ -6,6 +6,35 @@
 (function () {
   'use strict';
 
+  /* ---- Load prices from admin panel (localStorage) ---- */
+  (function loadPrices() {
+    const raw = localStorage.getItem('eimza_prices');
+    if (!raw) return;
+    let prices;
+    try { prices = JSON.parse(raw); } catch (e) { return; }
+    if (!prices || typeof prices !== 'object') return;
+
+    const fmt = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Main price amounts (no currency symbol)
+    document.querySelectorAll('[data-price-amount]').forEach(function (el) {
+      const key = el.dataset.priceAmount;
+      if (key && prices[key] != null) el.textContent = fmt.format(prices[key]);
+    });
+
+    // Display elements that include the ₺ symbol
+    document.querySelectorAll('[data-price-display]').forEach(function (el) {
+      const key = el.dataset.priceDisplay;
+      if (key && prices[key] != null) el.textContent = fmt.format(prices[key]) + ' ₺';
+    });
+
+    // Input value attributes used for price calculations
+    document.querySelectorAll('[data-price-input]').forEach(function (el) {
+      const key = el.dataset.priceInput;
+      if (key && prices[key] != null) el.value = String(prices[key]);
+    });
+  })();
+
   // Preview mode: use ?hero=red to compare a red hero background variant.
   const params = new URLSearchParams(window.location.search);
   if (params.get('hero') === 'red') {
@@ -222,16 +251,10 @@
 
     const applyPlanFromQuery = () => {
       const planFromQuery = params.get('plan');
-      const planMap = {
-        '1y': 2100,
-        '2y': 3750,
-        '3y': 5375,
-      };
+      if (!planFromQuery) return;
 
-      if (!planFromQuery || !planMap[planFromQuery]) return;
-
-      const targetValue = String(planMap[planFromQuery]);
-      const matchedPlan = planInputs.find((input) => input.value === targetValue);
+      // Match by data-price-input key so it works even after prices are updated
+      const matchedPlan = planInputs.find((input) => input.dataset.priceInput === planFromQuery);
       if (matchedPlan) {
         matchedPlan.checked = true;
       }
