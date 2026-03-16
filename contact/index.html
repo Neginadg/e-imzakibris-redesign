@@ -13,6 +13,53 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .contact-map__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
+    }
+
+    .contact-map__icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(180, 30, 30, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-map__icon img {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .contact-map__text {
+      display: grid;
+      gap: 3px;
+    }
+
+    .contact-map__text strong {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+      color: #101010;
+    }
+
+    .contact-map__text small {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(17, 17, 17, 0.62);
+    }
+  </style>
 </head>
 <body class="inner-page">
   <div class="topbar">
@@ -72,35 +119,24 @@
 
   <main>
     <section class="page-hero page-hero--contact">
-      <div class="container page-hero__inner">
-        <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">İletişim</div>
-          <h1 class="page-hero__title">Sorularınız İçin Buradayız</h1>
-          <p class="page-hero__desc">
-            Başvuru süreçleri, sertifika paketleri ve teknik destek konularında bizimle doğrudan
-            iletişime geçebilirsiniz. Ekibimiz en kısa sürede size geri dönüş yapar.
-          </p>
-          <div class="page-hero__facts">
-            <div><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</div>
-            <div><i class="fa-solid fa-mobile-screen"></i> +90 (548) 866 22 79</div>
-            <div><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</div>
+      <div class="container">
+        <div class="contact-hero-box">
+          <div class="contact-hero-box__content" data-animate="fade-up">
+            <div class="section-tag">İletişim</div>
+            <h1 class="page-hero__title">Sorularınız İçin Buradayız</h1>
+            <p class="page-hero__desc">
+              Başvuru süreçleri, sertifika paketleri ve teknik destek konularında bizimle doğrudan
+              iletişime geçebilirsiniz. Ekibimiz en kısa sürede size geri dönüş yapar.
+            </p>
+            <div class="page-hero__facts">
+              <div><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</div>
+              <div><i class="fa-solid fa-mobile-screen"></i> +90 (548) 866 22 79</div>
+              <div><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</div>
+            </div>
           </div>
-        </div>
-
-        <div class="page-hero__media" data-animate="fade-left">
-          <div class="hero-stat-panel">
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Adres</span>
-              <strong class="hero-stat-panel__value" style="font-size:18px;line-height:1.4;text-align:right;">Kumsal / Lefkoşa</strong>
-            </div>
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Fax</span>
-              <strong class="hero-stat-panel__value">+90 392 228 32 76</strong>
-            </div>
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Çalışma Modeli</span>
-              <strong class="hero-stat-panel__value">Destek Odaklı</strong>
-            </div>
+          <div class="contact-hero-box__photo" data-animate="fade-left">
+            <img src="../assets/img/contact.jpg" alt="İletişim" loading="lazy" />
+            <div class="contact-hero-box__fade"></div>
           </div>
         </div>
       </div>
@@ -110,20 +146,29 @@
       <div class="container contact-layout">
         <div class="contact-card-grid" data-animate="fade-up">
           <article class="contact-card">
-            <i class="fa-solid fa-location-dot"></i>
+            <span class="contact-card__icon"><img src="../assets/img/location.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
             <h4>Adres</h4>
             <p>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</p>
           </article>
           <article class="contact-card">
-            <i class="fa-solid fa-phone"></i>
+            <span class="contact-card__icon"><img src="../assets/img/phone.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
             <h4>Telefon</h4>
             <p><a href="tel:+903922280960">+90 (392) 228 09 60</a></p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/mobile.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Cep Telefonu</h4>
             <p><a href="tel:+905488662279">+90 (548) 866 22 79</a></p>
           </article>
           <article class="contact-card">
-            <i class="fa-solid fa-envelope"></i>
+            <span class="contact-card__icon"><img src="../assets/img/mail.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
             <h4>E-posta</h4>
             <p><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/fax.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Fax</h4>
+            <p>+90 392 228 32 76</p>
           </article>
         </div>
 
@@ -168,6 +213,20 @@
           <p style="font-size:12px;color:var(--color-text-muted);margin-top:14px;">
             Not: Statik site yapısı nedeniyle form, varsayılan e-posta uygulamanızı açar.
           </p>
+        </div>
+
+        <div class="contact-map" data-animate="fade-up">
+          <div class="contact-map__header">
+            <span class="contact-map__icon"><img src="../assets/img/location.svg" alt="Konum" /></span>
+            <div class="contact-map__text">
+              <strong>Bizi Burada Bulabilirsiniz</strong>
+              <small>Ofis konumumuzu harita uzerinden inceleyin.</small>
+            </div>
+          </div>
+          <iframe
+            src="https://maps.google.com/maps?q=Denizler+Bilisim+Hizmetleri+Lefkosa+North+Cyprus&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            width="100%" height="100%" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Denizler Bilişim Harita">
+          </iframe>
         </div>
       </div>
     </section>

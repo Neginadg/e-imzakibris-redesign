@@ -1,5 +1,5 @@
-/* ============================================================
-   e-imza KIBRIS – Main Stylesheet
+﻿/* ============================================================
+   e-imza KIBRIS â€“ Main Stylesheet
    Modern Redesign | 2026
    ============================================================ */
 
@@ -2059,7 +2059,7 @@ time {
 }
 
 /* ============================================================
-   RESPONSIVE — TABLET (max 1024px)
+   RESPONSIVE â€” TABLET (max 1024px)
    ============================================================ */
 @media (max-width: 1024px) {
   .hero__inner          { grid-template-columns: 1fr; gap: 48px; }
@@ -2101,7 +2101,7 @@ time {
 }
 
 /* ============================================================
-   RESPONSIVE — MOBILE (max 640px)
+   RESPONSIVE â€” MOBILE (max 640px)
    ============================================================ */
 @media (max-width: 640px) {
   :root {
@@ -2508,12 +2508,12 @@ time {
 }
 
 /* ============================================================
-   ABOUT PAGE — Dark Editorial / Museum
+   ABOUT PAGE â€” Dark Editorial / Museum
    Theme: near-black hero, crimson #C41E3A, warm-grey body
    ============================================================ */
 body.page-about { background: #f1f0ee; }
 
-/* ── About Hero (dark, full-bleed) ── */
+/* â”€â”€ About Hero (dark, full-bleed) â”€â”€ */
 .about-hero {
   background: #0d0d0d;
   color: #fff;
@@ -2608,7 +2608,7 @@ body.page-about { background: #f1f0ee; }
   border-right: 1px solid rgba(255,255,255,.3);
 }
 
-/* ── Mission / Values (grey bg) ── */
+/* â”€â”€ Mission / Values (grey bg) â”€â”€ */
 .about-body { background: #f1f0ee; padding: 80px 0; }
 .about-mission-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -2640,7 +2640,7 @@ body.page-about { background: #f1f0ee; }
 .about-mission-card li { display: flex; gap: 9px; font-size: 14px; color: #444; align-items: flex-start; }
 .about-mission-card li i { color: #C41E3A; font-size: 11px; margin-top: 5px; flex-shrink: 0; }
 
-/* ── Dark company strip ── */
+/* â”€â”€ Dark company strip â”€â”€ */
 .about-dark-strip {
   background: #111; color: #fff;
   padding: 80px 0; position: relative; overflow: hidden;
@@ -2694,7 +2694,7 @@ body.page-about { background: #f1f0ee; }
 .about-timeline__title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px; }
 .about-timeline__desc  { font-size: 14px; color: rgba(255,255,255,.48); line-height: 1.6; }
 
-/* ── Values 3-col (grey bg) ── */
+/* â”€â”€ Values 3-col (grey bg) â”€â”€ */
 .about-values { background: #f1f0ee; padding: 80px 0; }
 .about-values-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -2714,12 +2714,12 @@ body.page-about { background: #f1f0ee; }
 .about-value-card p      { font-size: 14px; line-height: 1.75; opacity: .72; }
 
 /* ============================================================
-   PRODUCTS PAGE — Diagonal Split / High-Contrast Tech
+   PRODUCTS PAGE â€” Diagonal Split / High-Contrast Tech
    Theme: pure white bg, #101010 panel, vivid #E52323 accent
    ============================================================ */
 body.page-product { background: #fff; }
 
-/* ── Split hero ── */
+/* â”€â”€ Split hero â”€â”€ */
 .product-hero {
   position: relative; overflow: hidden;
   min-height: 90vh; display: flex; align-items: center;
@@ -2877,12 +2877,12 @@ body.page-product { background: #fff; }
 .product-step p  { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.6; }
 
 /* ============================================================
-   CONTACT PAGE — Warm Architectural / Dramatic Header
+   CONTACT PAGE â€” Warm Architectural / Dramatic Header
    Theme: warm #FAF9F7 body, very-dark #1a0a0a hero, burgundy #6B1E1E
    ============================================================ */
 body.page-contact { background: #faf9f7; }
 
-/* ── Full-bleed dark hero ── */
+/* â”€â”€ Full-bleed dark hero â”€â”€ */
 .contact-masthead {
   background: #1a0a0a; color: #fff;
   padding: 0; position: relative; overflow: hidden;
@@ -2916,7 +2916,7 @@ body.page-contact { background: #faf9f7; }
 .contact-pill a     { color: inherit; }
 .contact-pill i     { color: #e55; font-size: 14px; }
 
-/* ── Contact body layout ── */
+/* â”€â”€ Contact body layout â”€â”€ */
 .contact-page-body { padding: 60px 0 80px; }
 .contact-page-grid {
   display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start;
@@ -3000,12 +3000,12 @@ body.page-contact { background: #faf9f7; }
 }
 
 /* ============================================================
-   NEWS PAGE — Bold Editorial / Newspaper
+   NEWS PAGE â€” Bold Editorial / Newspaper
    Theme: off-white #FAFAF8, slate #2a2a2a, rust #B7300A
    ============================================================ */
 body.page-news { background: #fafaf8; }
 
-/* ── Newspaper masthead ── */
+/* â”€â”€ Newspaper masthead â”€â”€ */
 .news-masthead {
   background: #fafaf8; border-bottom: 3px solid #111; padding: 52px 0 30px;
 }
@@ -3028,7 +3028,7 @@ body.page-news { background: #fafaf8; }
 }
 .news-masthead__tagline svg { vertical-align: middle; margin-right: 6px; }
 
-/* ── Featured article ── */
+/* â”€â”€ Featured article â”€â”€ */
 .news-featured { padding: 52px 0 0; }
 .news-featured__grid {
   display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start;
@@ -3059,7 +3059,7 @@ body.page-news { background: #fafaf8; }
 .news-sidebar__title { font-size: 14px; font-weight: 700; color: #111; line-height: 1.4; }
 .news-sidebar__date  { font-size: 12px; color: #bbb; margin-top: 4px; }
 
-/* ── All news grid ── */
+/* â”€â”€ All news grid â”€â”€ */
 .news-all-section { padding: 52px 0 80px; }
 .news-all-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -3092,7 +3092,7 @@ body.page-news { background: #fafaf8; }
 }
 
 /* ============================================================
-   RESPONSIVE — inner page themes
+   RESPONSIVE â€” inner page themes
    ============================================================ */
 @media (max-width: 1024px) {
   .about-hero__inner      { grid-template-columns: 1fr; }
@@ -3219,3 +3219,135 @@ body.page-news { background: #fafaf8; }
 .customers-strip__logo:hover img {
   transform: scale(1.07);
 }
+
+/* ============================================================
+   CONTACT PAGE  hero box & SVG card icons
+   ============================================================ */
+
+/* Single unified hero card */
+.contact-hero-box {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 28px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.08);
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.contact-hero-box__content {
+  padding: 40px;
+}
+
+.contact-hero-box__photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+}
+
+.contact-hero-box__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contact-hero-box__fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, rgba(255,255,255,0) 20%, rgba(255,255,255,.7) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .contact-hero-box { grid-template-columns: 1fr; }
+  .contact-hero-box__photo { min-height: 220px; }
+}
+
+/* Contact card SVG icons */
+.contact-card__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(180,30,30,.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.contact-map {
+  margin-top: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.07);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.contact-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-map {
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.07);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-map iframe {
+  flex: 1;
+  width: 100%;
+  min-height: 260px;
+  display: block;
+  border: 0;
+}
+
+/* Map spans full contact-layout width */
+.contact-layout .contact-map {
+  grid-column: 1 / -1;
+  height: 450px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-layout .contact-map iframe {
+  flex: 1;
+  width: 100%;
+  display: block;
+  border: 0;
+}
+
+.contact-map__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: .2px;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  background: #fff;
+}
+
+.contact-map__header i {
+  color: var(--color-accent);
+  font-size: 15px;
+}
+
+
