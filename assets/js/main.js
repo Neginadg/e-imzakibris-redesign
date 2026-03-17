@@ -342,4 +342,171 @@
     }
   }
 
+  /* ---- Renewal form page ---- */
+  const tsBuilderForm = document.getElementById('ts-builder-form');
+  if (tsBuilderForm) {
+    const currencyFormatter = new Intl.NumberFormat('tr-TR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    const tsPlanInputs = Array.from(document.querySelectorAll('input[name="timestampPlan"]'));
+    const tsGoToDetailsBtn = document.getElementById('ts-go-to-details');
+    const tsBackToBuilderBtn = document.getElementById('ts-back-to-builder');
+    const tsDetailsSection = document.getElementById('ts-details');
+    const tsSubmitSection = document.getElementById('ts-submit');
+    const tsDetailsForm = document.getElementById('ts-details-form');
+    const tsSubmitMessage = document.getElementById('ts-submit-message');
+    const tsStepIndicators = Array.from(document.querySelectorAll('[data-ts-step-indicator]'));
+
+    const tsSummaryPackagePrice = document.getElementById('ts-summary-package-price');
+    const tsSummaryTotalPrice = document.getElementById('ts-summary-total-price');
+
+    const formatPrice = (value) => `${currencyFormatter.format(value)} ₺`;
+
+    const setActiveTsStep = (step) => {
+      tsStepIndicators.forEach((indicator) => {
+        indicator.classList.toggle('is-active', Number(indicator.dataset.tsStepIndicator) === step);
+      });
+    };
+
+    const selectedTsPlan = () => tsPlanInputs.find((input) => input.checked) || tsPlanInputs[0];
+
+    const updateTsSummary = () => {
+      const plan = selectedTsPlan();
+      const packagePrice = Number(plan.value);
+
+      tsSummaryPackagePrice.textContent = formatPrice(packagePrice);
+      tsSummaryTotalPrice.textContent = formatPrice(packagePrice);
+
+      return {
+        planLabel: plan.dataset.tsPlanLabel || 'Zaman Damgasi Paketi',
+        packagePrice,
+      };
+    };
+
+    const scrollToSection = (element) => {
+      if (!element) return;
+      const offset = (navbar ? navbar.offsetHeight : 0) + 20;
+      const top = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    };
+
+    updateTsSummary();
+    setActiveTsStep(1);
+
+    tsPlanInputs.forEach((input) => {
+      input.addEventListener('change', updateTsSummary);
+    });
+
+    if (tsGoToDetailsBtn && tsDetailsSection) {
+      tsGoToDetailsBtn.addEventListener('click', () => {
+        updateTsSummary();
+        tsDetailsSection.classList.add('is-visible');
+        tsSubmitSection?.classList.remove('is-visible');
+        setActiveTsStep(2);
+        scrollToSection(tsDetailsSection);
+      });
+    }
+
+    if (tsBackToBuilderBtn) {
+      tsBackToBuilderBtn.addEventListener('click', () => {
+        setActiveTsStep(1);
+        scrollToSection(tsBuilderForm);
+      });
+    }
+
+    if (tsDetailsForm) {
+      tsDetailsForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        if (!tsDetailsForm.reportValidity()) return;
+
+        const pricing = updateTsSummary();
+        const formData = new FormData(tsDetailsForm);
+        const fullName = String(formData.get('fullName') || '');
+        const email = String(formData.get('email') || '');
+        const phone = String(formData.get('phone') || '');
+        const company = String(formData.get('company') || '-');
+        const notes = String(formData.get('notes') || '-');
+
+        const mailSubject = `Zaman Damgasi Online Basvuru - ${pricing.planLabel}`;
+        const mailBody = [
+          'Merhaba,',
+          '',
+          'Asagidaki zaman damgasi basvuru ozeti iletmek istiyorum:',
+          '',
+          `Paket: ${pricing.planLabel}`,
+          `Paket Tutari: ${formatPrice(pricing.packagePrice)}`,
+          `KDV Dahil Toplam: ${formatPrice(pricing.packagePrice)}`,
+          '',
+          'Basvuru Bilgileri',
+          `Ad Soyad: ${fullName}`,
+          `E-posta: ${email}`,
+          `Telefon: ${phone}`,
+          `Sirket/Kurum: ${company}`,
+          `Notlar: ${notes}`,
+        ].join('\n');
+
+        if (tsSubmitMessage) {
+          tsSubmitMessage.textContent = 'Varsayilan e-posta uygulamaniz aciliyor. Gondermeden once bilgileri kontrol edebilirsiniz.';
+        }
+
+        if (tsSubmitSection) {
+          tsSubmitSection.classList.add('is-visible');
+        }
+
+        setActiveTsStep(3);
+        scrollToSection(tsSubmitSection || tsDetailsForm);
+
+        window.location.href = `mailto:info@e-imzakibris.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+      });
+    }
+  }
+
+  /* ---- Renewal form page ---- */
+  const renewalForm = document.getElementById('renewal-form');
+  if (renewalForm) {
+    const renewalMessage = document.getElementById('renewal-submit-message');
+
+    renewalForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (!renewalForm.reportValidity()) return;
+
+      const formData = new FormData(renewalForm);
+      const fullName = String(formData.get('fullName') || '');
+      const email = String(formData.get('email') || '');
+      const phone = String(formData.get('phone') || '');
+      const identityNumber = String(formData.get('identityNumber') || '');
+      const certificateSerial = String(formData.get('certificateSerial') || '-');
+      const expiryDate = String(formData.get('expiryDate') || '-');
+      const company = String(formData.get('company') || '-');
+      const notes = String(formData.get('notes') || '-');
+
+      const mailSubject = `Yenileme Basvurusu - ${fullName}`;
+      const mailBody = [
+        'Merhaba,',
+        '',
+        'Asagidaki bilgilerle e-imza yenileme talebimi iletmek istiyorum:',
+        '',
+        `Ad Soyad: ${fullName}`,
+        `E-posta: ${email}`,
+        `Telefon: ${phone}`,
+        `Kimlik/Pasaport No: ${identityNumber}`,
+        `Sertifika Seri No: ${certificateSerial}`,
+        `Sertifika Bitis Tarihi: ${expiryDate}`,
+        `Sirket/Kurum: ${company}`,
+        `Notlar: ${notes}`,
+      ].join('\n');
+
+      if (renewalMessage) {
+        renewalMessage.textContent = 'Varsayilan e-posta uygulamaniz aciliyor. Gondermeden once bilgileri kontrol edebilirsiniz.';
+        renewalMessage.style.display = 'block';
+      }
+
+      window.location.href = `mailto:info@e-imzakibris.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    });
+  }
+
 })();

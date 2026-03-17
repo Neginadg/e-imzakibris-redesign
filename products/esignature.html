@@ -39,8 +39,24 @@
 
       <nav class="navbar__nav" id="navbar-nav">
         <ul class="nav-list">
-          <li class="nav-item active">
-            <a href="esignature.html" class="nav-link">ÜRÜNLERİMİZ</a>
+          <li class="nav-item has-dropdown active">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="esignature.html" class="dropdown__item">
+                <i class="fa-solid fa-pen-nib"></i>
+                <div>
+                  <strong>Elektronik İmza</strong>
+                  <small>Nitelikli e-imza sertifikası</small>
+                </div>
+              </a>
+              <a href="timestamp.html" class="dropdown__item">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                  <strong>Zaman Damgası</strong>
+                  <small>Elektronik veriye zaman kanıtı</small>
+                </div>
+              </a>
+            </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
@@ -52,7 +68,7 @@
                   <small>Hızlı ve güvenli başvuru</small>
                 </div>
               </a>
-              <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="dropdown__item" target="_blank">
+              <a href="../support/renewal.html" class="dropdown__item">
                 <i class="fa-solid fa-rotate"></i>
                 <div>
                   <strong>Yenileme</strong>
@@ -61,8 +77,62 @@
               </a>
             </div>
           </li>
-          <li class="nav-item">
-            <a href="../about/index.html" class="nav-link">HAKKIMIZDA</a>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../index.html#what-is" class="dropdown__item">
+                <i class="fa-solid fa-circle-question"></i>
+                <div>
+                  <strong>e-imza Nedir?</strong>
+                  <small>Elektronik imza hakkında</small>
+                </div>
+              </a>
+              <a href="../index.html#use-cases" class="dropdown__item">
+                <i class="fa-solid fa-list-check"></i>
+                <div>
+                  <strong>Nerelerde Kullanılır?</strong>
+                  <small>Kullanım alanları</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Başvurunuzu oluşturun</small>
+                </div>
+              </a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-file-pdf"></i>
+                <div>
+                  <strong>93/2007 Sayılı Yasa</strong>
+                  <small>Elektronik İmza Yasası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item">
+                <i class="fa-solid fa-building"></i>
+                <div>
+                  <strong>Şirket Hakkında</strong>
+                  <small>Denizler Bilişim Hizmetleri</small>
+                </div>
+              </a>
+              <a href="../about/news.html" class="dropdown__item">
+                <i class="fa-solid fa-newspaper"></i>
+                <div>
+                  <strong>Haberler</strong>
+                  <small>Son gelişmeler</small>
+                </div>
+              </a>
+            </div>
           </li>
           <li class="nav-item">
             <a href="../contact/index.html" class="nav-link">İLETİŞİM</a>
@@ -72,7 +142,7 @@
 
       <div class="navbar__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
-        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+        <a href="../support/renewal.html" class="btn btn--outline">YENİLEME</a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
@@ -91,7 +161,7 @@
       <li><a href="../contact/index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
-        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+        <a href="../support/renewal.html" class="btn btn--outline">YENİLEME</a>
       </li>
     </ul>
   </nav>
@@ -123,15 +193,15 @@
             <p>Akıllı Çubuk ve kurulum hizmetleri isteğe bağlı olarak eklenebilir.</p>
             <div class="price-pill-list">
               <div class="price-pill">
-                <strong data-price-display="1y">2.100,00 ₺</strong>
+                <strong data-price-display="1y">2.650,00 ₺</strong>
                 <span>1 Yıllık</span>
               </div>
               <div class="price-pill">
-                <strong data-price-display="2y">3.750,00 ₺</strong>
+                <strong data-price-display="2y">4.690,00 ₺</strong>
                 <span>2 Yıllık</span>
               </div>
               <div class="price-pill">
-                <strong data-price-display="3y">5.375,00 ₺</strong>
+                <strong data-price-display="3y">6.950,00 ₺</strong>
                 <span>3 Yıllık</span>
               </div>
             </div>
@@ -224,6 +294,22 @@
       </div>
     </section>
 
+    <section class="section" id="zaman-damgasi" style="padding-top:0;">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Diğer Ürün</div>
+          <h2 class="section-title">Zaman Damgası Ürün Sayfasına Geçin</h2>
+          <p class="section-subtitle">
+            Zaman damgası paketleri, kullanım alanları ve başvuru adımları için ayrı ürün sayfasını inceleyin.
+          </p>
+          <div class="page-hero__actions" style="justify-content:center;margin-bottom:0;">
+            <a href="timestamp.html" class="btn btn--primary btn--lg">Zaman Damgası Sayfası</a>
+            <a href="../support/tsonlineapplication.html" class="btn btn--outline btn--lg">Online Başvuru</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta-banner">
       <div class="container cta-banner__inner">
         <div class="cta-banner__text">
@@ -258,8 +344,9 @@
         <h4>Ürünler &amp; Hizmetler</h4>
         <ul>
           <li><a href="esignature.html">Elektronik İmza</a></li>
+          <li><a href="timestamp.html">Zaman Damgası</a></li>
           <li><a href="../support/onlineapplication.html">Online Başvuru</a></li>
-          <li><a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank">Yenileme Başvurusu</a></li>
+          <li><a href="../support/renewal.html">Yenileme Başvurusu</a></li>
         </ul>
       </div>
 
@@ -289,6 +376,7 @@
         <div class="footer__bottom-links">
           <a href="https://www.e-imzakibris.com/privacypolicy/">Gizlilik Politikası</a>
           <a href="../contact/index.html">İletişim</a>
+          <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
         </div>
       </div>
     </div>

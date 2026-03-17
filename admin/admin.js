@@ -10,7 +10,7 @@
   const KEY_SESSION  = 'eimza_admin_session';
 
   // Default prices (raw numbers)
-  const DEFAULTS = { '1y': 2100, '2y': 3750, '3y': 5375, stick: 1500, install: 1500 };
+  const DEFAULTS = { '1y': 2650, '2y': 4690, '3y': 6950, stick: 1875, install: 1875, renewal: 2650 };
 
   // Default password – change via the panel's "Change Password" section.
   // The actual check is done by comparing SHA-256 hashes.
@@ -52,7 +52,16 @@
   }
 
   // ── DOM helpers ───────────────────────────────────────────
-  function show(el) { if (el) el.style.display = ''; }
+  function show(el) {
+    if (!el) return;
+    // #admin-panel is hidden by a CSS fallback rule before JS initializes.
+    // Explicitly restore flex layout after successful login.
+    if (el.id === 'admin-panel') {
+      el.style.display = 'flex';
+      return;
+    }
+    el.style.display = '';
+  }
   function hide(el) { if (el) el.style.display = 'none'; }
 
   function setAlert(el, type, msg) {
@@ -126,7 +135,7 @@
     const prices = loadPrices();
 
     // Populate price fields
-    ['1y', '2y', '3y', 'stick', 'install'].forEach(key => {
+    ['1y', '2y', '3y', 'stick', 'install', 'renewal'].forEach(key => {
       const input = document.getElementById('field-' + key);
       if (input) input.value = prices[key];
     });
@@ -145,7 +154,7 @@
         const updated = {};
         let valid = true;
 
-        ['1y', '2y', '3y', 'stick', 'install'].forEach(key => {
+        ['1y', '2y', '3y', 'stick', 'install', 'renewal'].forEach(key => {
           const input = document.getElementById('field-' + key);
           if (!input) return;
           const val = parseFloat(input.value.replace(',', '.'));

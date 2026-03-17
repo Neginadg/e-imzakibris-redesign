@@ -86,16 +86,110 @@
 
       <nav class="navbar__nav" id="navbar-nav">
         <ul class="nav-list">
-          <li class="nav-item"><a href="../products/esignature.html" class="nav-link">ÜRÜNLERİMİZ</a></li>
-          <li class="nav-item"><a href="../support/onlineapplication.html" class="nav-link">HİZMETLERİMİZ</a></li>
-          <li class="nav-item"><a href="../about/index.html" class="nav-link">HAKKIMIZDA</a></li>
-          <li class="nav-item active"><a href="index.html" class="nav-link">İLETİŞİM</a></li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item">
+                <i class="fa-solid fa-pen-nib"></i>
+                <div>
+                  <strong>Elektronik İmza</strong>
+                  <small>Nitelikli e-imza sertifikası</small>
+                </div>
+              </a>
+              <a href="../products/timestamp.html" class="dropdown__item">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                  <strong>Zaman Damgası</strong>
+                  <small>Elektronik veriye zaman kanıtı</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-file-signature"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Hızlı ve güvenli başvuru</small>
+                </div>
+              </a>
+              <a href="../support/renewal.html" class="dropdown__item">
+                <i class="fa-solid fa-rotate"></i>
+                <div>
+                  <strong>Yenileme</strong>
+                  <small>Mevcut sertifikanızı yenileyin</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../index.html#what-is" class="dropdown__item">
+                <i class="fa-solid fa-circle-question"></i>
+                <div>
+                  <strong>e-imza Nedir?</strong>
+                  <small>Elektronik imza hakkında</small>
+                </div>
+              </a>
+              <a href="../index.html#use-cases" class="dropdown__item">
+                <i class="fa-solid fa-list-check"></i>
+                <div>
+                  <strong>Nerelerde Kullanılır?</strong>
+                  <small>Kullanım alanları</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Başvurunuzu oluşturun</small>
+                </div>
+              </a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank">
+                <i class="fa-solid fa-file-pdf"></i>
+                <div>
+                  <strong>93/2007 Sayılı Yasa</strong>
+                  <small>Elektronik İmza Yasası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item">
+                <i class="fa-solid fa-building"></i>
+                <div>
+                  <strong>Şirket Hakkında</strong>
+                  <small>Denizler Bilişim Hizmetleri</small>
+                </div>
+              </a>
+              <a href="../about/news.html" class="dropdown__item">
+                <i class="fa-solid fa-newspaper"></i>
+                <div>
+                  <strong>Haberler</strong>
+                  <small>Son gelişmeler</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item active">
+            <a href="index.html" class="nav-link">İLETİŞİM</a>
+          </li>
         </ul>
       </nav>
 
       <div class="navbar__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
-        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+        <a href="../support/renewal.html" class="btn btn--outline">YENİLEME</a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
@@ -108,11 +202,13 @@
     <ul class="mobile-nav__list">
       <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
       <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
+      <li><a href="../support/onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
       <li><a href="index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
-        <a href="https://forms.gle/pQSVjCVDyQPiDrQR8" class="btn btn--outline" target="_blank">YENİLEME</a>
+        <a href="../support/renewal.html" class="btn btn--outline">YENİLEME</a>
       </li>
     </ul>
   </nav>
@@ -266,7 +362,7 @@
         <ul>
           <li><a href="../products/esignature.html">Elektronik İmza</a></li>
           <li><a href="../support/onlineapplication.html">Online Başvuru</a></li>
-          <li><a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank">Yenileme Başvurusu</a></li>
+          <li><a href="../support/renewal.html">Yenileme Başvurusu</a></li>
         </ul>
       </div>
 
@@ -296,6 +392,7 @@
         <div class="footer__bottom-links">
           <a href="https://www.e-imzakibris.com/privacypolicy/">Gizlilik Politikası</a>
           <a href="index.html">İletişim</a>
+          <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
         </div>
       </div>
     </div>
