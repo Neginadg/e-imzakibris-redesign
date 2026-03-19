@@ -73,6 +73,38 @@
     });
   }
 
+  /* ---- Desktop dropdown click support ---- */
+  (function setupDesktopDropdowns() {
+    const dropdownItems = Array.from(document.querySelectorAll('.nav-item.has-dropdown'));
+    if (!dropdownItems.length) return;
+
+    const closeAll = () => {
+      dropdownItems.forEach((item) => item.classList.remove('open'));
+    };
+
+    dropdownItems.forEach((item) => {
+      const trigger = item.querySelector('.nav-link');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        const isOpen = item.classList.contains('open');
+        closeAll();
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!target.closest('.nav-item.has-dropdown')) closeAll();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeAll();
+    });
+  })();
+
   function closeMobileNav() {
     if (!hamburger || !mobileNav) return;
     hamburger.classList.remove('open');

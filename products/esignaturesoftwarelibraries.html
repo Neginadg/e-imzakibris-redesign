@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS iletişim sayfası: adres, telefon, e-posta bilgileri ve hızlı iletişim formu." />
-  <title>İletişim | e-imza KIBRIS</title>
+  <meta name="description" content="Güvenli Elektronik İmza Yazılım Kütüphaneleri: API tabanlı entegrasyon, CadES/XadES/PadES desteği, LTV imzalama ve standart uyumluluk." />
+  <title>Güvenli Elektronik İmza Yazılım Kütüphaneleri | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,53 +13,6 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260318-2" />
-  <style>
-    .contact-map__header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 22px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
-    }
-
-    .contact-map__icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: rgba(180, 30, 30, 0.1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .contact-map__icon img {
-      width: 18px;
-      height: 18px;
-      display: block;
-    }
-
-    .contact-map__text {
-      display: grid;
-      gap: 3px;
-    }
-
-    .contact-map__text strong {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.2;
-      letter-spacing: -0.2px;
-      color: #101010;
-    }
-
-    .contact-map__text small {
-      margin: 0;
-      font-size: 12px;
-      line-height: 1.45;
-      color: rgba(17, 17, 17, 0.62);
-    }
-  </style>
 </head>
 <body class="inner-page">
   <div class="topbar">
@@ -86,25 +39,25 @@
 
       <nav class="navbar__nav" id="navbar-nav">
         <ul class="nav-list">
-          <li class="nav-item has-dropdown">
+          <li class="nav-item has-dropdown active">
             <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../products/esignature.html" class="dropdown__item">
+              <a href="esignature.html" class="dropdown__item">
                 <div>
                   <strong>Elektronik İmza</strong>
                   <small>Nitelikli e-imza sertifikası</small>
                 </div>
               </a>
-              <a href="../products/timestamp.html" class="dropdown__item">
+              <a href="timestamp.html" class="dropdown__item">
                 <div>
                   <strong>Zaman Damgası</strong>
                   <small>Elektronik veriye zaman kanıtı</small>
                 </div>
               </a>
-              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item">
+              <a href="esignaturesoftwarelibraries.html" class="dropdown__item">
                 <div>
-                  <strong>Yaz&#305;l&#305;m K&uuml;t&uuml;phaneleri</strong>
-                  <small>G&uuml;venli e-imza API &ccedil;&ouml;z&uuml;mleri</small>
+                  <strong>Yazılım Kütüphaneleri</strong>
+                  <small>Güvenli e-imza API çözümleri</small>
                 </div>
               </a>
             </div>
@@ -177,8 +130,8 @@
               </a>
             </div>
           </li>
-          <li class="nav-item active">
-            <a href="index.html" class="nav-link">İLETİŞİM</a>
+          <li class="nav-item">
+            <a href="../contact/index.html" class="nav-link">İLETİŞİM</a>
           </li>
         </ul>
       </nav>
@@ -196,13 +149,14 @@
 
   <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
     <ul class="mobile-nav__list">
-      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
-      <li><a href="../products/esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
+      <li><a href="esignature.html">Elektronik İmza</a></li>
+      <li><a href="timestamp.html">Zaman Damgası</a></li>
+      <li><a href="esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
       <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
       <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
       <li><a href="../support/onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
-      <li><a href="index.html">İLETİŞİM</a></li>
+      <li><a href="../contact/index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
         <a href="../support/renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
@@ -211,128 +165,166 @@
   </nav>
 
   <main>
-    <section class="page-hero page-hero--contact">
-      <div class="container">
-        <div class="contact-hero-box">
-          <div class="contact-hero-box__content" data-animate="fade-up">
-            <div class="section-tag">İletişim</div>
-            <h1 class="page-hero__title">Sorularınız İçin Buradayız</h1>
-            <p class="page-hero__desc">
-              Başvuru süreçleri, sertifika paketleri ve teknik destek konularında bizimle doğrudan
-              iletişime geçebilirsiniz. Ekibimiz en kısa sürede size geri dönüş yapar.
-            </p>
-            <div class="page-hero__facts">
-              <div><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</div>
-              <div><i class="fa-solid fa-mobile-screen"></i> +90 (548) 866 22 79</div>
-              <div><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</div>
-            </div>
+    <section class="page-hero page-hero--product">
+      <div class="container page-hero__inner">
+        <div class="page-hero__content" data-animate="fade-up">
+          <div class="section-tag">Yazılım Çözümleri</div>
+          <h1 class="page-hero__title">Güvenli Elektronik İmza Yazılım Kütüphaneleri</h1>
+          <p class="page-hero__desc">
+            e-imza KIBRIS, kurumların kendi elektronik imza uygulamalarını geliştirebilmesine
+            imkan veren yazılım kütüphaneleri (API) sunar. Çözüm, farklı ölçeklerdeki
+            kuruluşların ihtiyaçlarına göre esnek entegrasyon olanağı sağlar.
+          </p>
+          <div class="page-hero__actions">
+            <a href="../contact/index.html" class="btn btn--primary btn--lg">Teklif ve Bilgi Al</a>
+            <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank" class="btn btn--outline btn--lg">Yasayı İncele</a>
           </div>
-          <div class="contact-hero-box__photo" data-animate="fade-left">
-            <img src="../assets/img/contact.jpg" alt="İletişim" loading="lazy" />
-            <div class="contact-hero-box__fade"></div>
+          <div class="page-hero__facts">
+            <div><i class="fa-solid fa-code"></i> API Tabanlı Entegrasyon</div>
+            <div><i class="fa-solid fa-shield-halved"></i> Standartlara Uyumlu</div>
+            <div><i class="fa-solid fa-file-circle-check"></i> Çoklu İmza Formatı</div>
+          </div>
+        </div>
+
+        <div class="page-hero__media" data-animate="fade-left">
+          <div class="product-banner">
+            <h3 style="font-size:30px;line-height:1.1;">Kütüphane Yetenekleri</h3>
+            <p>Kurumsal uygulamalar için güvenli imzalama ve doğrulama akışları geliştirin.</p>
+            <div class="price-pill-list">
+              <div class="price-pill">
+                <strong>CadES</strong>
+                <span>İmza Oluşturma</span>
+              </div>
+              <div class="price-pill">
+                <strong>XadES</strong>
+                <span>İmza Doğrulama</span>
+              </div>
+              <div class="price-pill">
+                <strong>PadES</strong>
+                <span>LTV Desteği</span>
+              </div>
+            </div>
+            <a href="mailto:info@e-imzakibris.com" class="btn btn--white" style="width:fit-content;">Entegrasyon Talep Et</a>
           </div>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container contact-layout">
-        <div class="contact-card-grid" data-animate="fade-up">
-          <article class="contact-card">
-            <span class="contact-card__icon"><img src="../assets/img/location.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
-            <h4>Adres</h4>
-            <p>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</p>
-          </article>
-          <article class="contact-card">
-            <span class="contact-card__icon"><img src="../assets/img/phone.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
-            <h4>Telefon</h4>
-            <p><a href="tel:+903922280960">+90 (392) 228 09 60</a></p>
-          </article>
-          <article class="contact-card">
-            <span class="contact-card__icon"><img src="../assets/img/mobile.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
-            <h4>Cep Telefonu</h4>
-            <p><a href="tel:+905488662279">+90 (548) 866 22 79</a></p>
-          </article>
-          <article class="contact-card">
-            <span class="contact-card__icon"><img src="../assets/img/mail.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
-            <h4>E-posta</h4>
-            <p><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></p>
-          </article>
-          <article class="contact-card">
-            <span class="contact-card__icon"><img src="../assets/img/fax.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
-            <h4>Fax</h4>
-            <p>+90 392 228 32 76</p>
-          </article>
-        </div>
-
-        <div class="contact-form-surface" data-animate="fade-up">
-          <div class="section-tag">İletişim Formu</div>
-          <h2 class="section-title" style="text-align:left;margin-bottom:8px;">Mesaj Gönderin</h2>
-          <p class="section-subtitle" style="text-align:left;margin-bottom:20px;">Formu doldurun, size en kısa sürede geri dönüş yapalım.</p>
-
-          <form class="contact-form-grid" action="mailto:info@e-imzakibris.com" method="post" enctype="text/plain">
-            <label class="field">
-              <span>İsim & Soyisim *</span>
-              <input type="text" name="isim_soyisim" required />
-            </label>
-
-            <label class="field">
-              <span>Telefon Numarası</span>
-              <input type="tel" name="telefon" />
-            </label>
-
-            <label class="field field--full">
-              <span>E-posta *</span>
-              <input type="email" name="eposta" required />
-            </label>
-
-            <label class="field field--full">
-              <span>Konu</span>
-              <input type="text" name="konu" />
-            </label>
-
-            <label class="field field--full">
-              <span>Mesaj *</span>
-              <textarea name="mesaj" rows="6" required></textarea>
-            </label>
-
-            <div class="field field--full" style="margin-top:4px;">
-              <button type="submit" class="btn btn--primary btn--lg" style="width:100%;justify-content:center;">
-                <i class="fa-solid fa-paper-plane"></i> GÖNDER
-              </button>
-            </div>
-          </form>
-
-          <p style="font-size:12px;color:var(--color-text-muted);margin-top:14px;">
-            Not: Statik site yapısı nedeniyle form, varsayılan e-posta uygulamanızı açar.
+      <div class="container split-grid">
+        <article class="info-surface" data-animate="fade-right">
+          <h3>Nedir?</h3>
+          <p>
+            Yazılım kütüphaneleri, elektronik imza işlevlerini mevcut sistemlerinize entegre etmenize
+            yardımcı olur. Bu sayede belge imzalama, doğrulama ve doğrulama kayıtlarının yönetimi
+            tek bir güvenli altyapı üzerinden yönetilebilir.
           </p>
+          <ul class="feature-bullets">
+            <li><i class="fa-solid fa-check"></i> Kurum içi uygulamalara kolay entegrasyon</li>
+            <li><i class="fa-solid fa-check"></i> Farklı sistem mimarileriyle uyumlu kullanım</li>
+            <li><i class="fa-solid fa-check"></i> Ölçeklenebilir API altyapısı</li>
+          </ul>
+        </article>
+
+        <article class="info-surface" data-animate="fade-left">
+          <h3>Standart ve Mevzuat Uyumu</h3>
+          <p>
+            Çözüm; 93/2007 Sayılı Elektronik İmza Yasası ve ilgili mevzuat uyarınca,
+            ETSI TS 101 456, ETSI TS 102 023, CWA 14167-1 ve IETF RFC 3647 standartlarıyla
+            uyumlu olacak şekilde geliştirilmiştir.
+          </p>
+          <ul class="feature-bullets">
+            <li><i class="fa-solid fa-scale-balanced"></i> Yasal gereksinimlerle uyum</li>
+            <li><i class="fa-solid fa-certificate"></i> Güvenli sertifika altyapısı</li>
+            <li><i class="fa-solid fa-building-shield"></i> Kurumsal denetim süreçlerine uygunluk</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Özellikler</div>
+          <h2 class="section-title">Elektronik İmza Yazılım Kütüphanelerinin Bazı Özellikleri</h2>
+          <p class="section-subtitle">Farklı imza senaryolarına uygun gelişmiş teknik yetenekler.</p>
         </div>
 
-        <div class="contact-map" data-animate="fade-up">
-          <div class="contact-map__header">
-            <span class="contact-map__icon"><img src="../assets/img/location.svg" alt="Konum" /></span>
-            <div class="contact-map__text">
-              <strong>Bizi Burada Bulabilirsiniz</strong>
-              <small>Ofis konumumuzu harita uzerinden inceleyin.</small>
-            </div>
-          </div>
-          <iframe
-            src="https://maps.google.com/maps?q=Denizler+Bilisim+Hizmetleri+Lefkosa+North+Cyprus&t=&z=16&ie=UTF8&iwloc=&output=embed"
-            width="100%" height="100%" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Denizler Bilişim Harita">
-          </iframe>
+        <div class="product-highlights" style="grid-template-columns:repeat(3,minmax(0,1fr));" data-animate="fade-up">
+          <article class="highlight-card">
+            <i class="fa-solid fa-file-signature"></i>
+            <h4>Çoklu İmza Formatı</h4>
+            <p>CadES, XadES, PadES ve alt türevleri formatında imza oluşturma ve doğrulama desteği.</p>
+          </article>
+          <article class="highlight-card">
+            <i class="fa-solid fa-infinity"></i>
+            <h4>LTV İmzalama</h4>
+            <p>Uzun dönem doğrulama ile sertifika süresi dolsa bile imzalı doküman doğrulanabilir.</p>
+          </article>
+          <article class="highlight-card">
+            <i class="fa-solid fa-clock"></i>
+            <h4>Zaman Damgası İşlemleri</h4>
+            <p>Zaman damgası alabilir, doğrulayabilir ve belgelerde güvenilir zaman kanıtı sağlayabilir.</p>
+          </article>
+          <article class="highlight-card">
+            <i class="fa-solid fa-microchip"></i>
+            <h4>Donanım Uyumluluğu</h4>
+            <p>Tüm akıllı çubuk/kart ve HSM modelleri ile çalışabilecek şekilde uyumludur.</p>
+          </article>
+          <article class="highlight-card">
+            <i class="fa-solid fa-landmark"></i>
+            <h4>Kamu Uygulamaları</h4>
+            <p>Kamu uygulamalarında ihtiyaç duyulan imza formatları ile tam uyumluluk sunar.</p>
+          </article>
+          <article class="highlight-card">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <h4>Entegrasyon Esnekliği</h4>
+            <p>Diğer yazılım çözümleri ve süreç yönetimi sistemleri ile birlikte kullanılabilir.</p>
+          </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container split-grid">
+        <article class="info-surface" data-animate="fade-up">
+          <h3>Kimler İçin Uygun?</h3>
+          <ul class="feature-bullets" style="margin-top:0;">
+            <li><i class="fa-solid fa-check"></i> Kendi e-imza uygulamasını geliştiren kurumlar</li>
+            <li><i class="fa-solid fa-check"></i> Belge yönetim sistemlerine güvenli imza eklemek isteyen ekipler</li>
+            <li><i class="fa-solid fa-check"></i> Kamu ve regülasyon uyumu gerektiren teknoloji projeleri</li>
+            <li><i class="fa-solid fa-check"></i> Zaman damgası ve uzun dönem doğrulama ihtiyacı olan süreçler</li>
+          </ul>
+        </article>
+
+        <article class="info-surface" data-animate="fade-up">
+          <h3>İletişim ve Teknik Bilgi</h3>
+          <p>
+            Elektronik İmza Yazılım Kütüphaneleri, entegrasyon hizmetleri ve diğer yazılım
+            çözümleri hakkında detaylı bilgi için bizimle iletişime geçebilirsiniz.
+          </p>
+          <ul class="feature-bullets">
+            <li><i class="fa-solid fa-globe"></i> <a href="https://www.e-imzakibris.com/" target="_blank">www.e-imzakibris.com</a></li>
+            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
+            <li><i class="fa-solid fa-phone"></i> <a href="tel:+903922280960">+90 (392) 228 09 60</a></li>
+          </ul>
+          <div class="page-hero__actions" style="margin-top:14px;margin-bottom:0;">
+            <a href="../contact/index.html" class="btn btn--primary">İletişime Geç</a>
+            <a href="../support/onlineapplication.html" class="btn btn--outline">Online Başvuru</a>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="cta-banner">
       <div class="container cta-banner__inner">
         <div class="cta-banner__text">
-          <h2>Hızlı Başvuru İçin Online Formu Kullanın</h2>
-          <p>Paketinizi seçin, başvurunuzu tamamlayın ve süreç hakkında destek alın.</p>
+          <h2>Kurumsal Sistemlerinize Güvenli e-İmza Yeteneği Ekleyin</h2>
+          <p>API entegrasyonu, teknik yönlendirme ve teklif süreçleri için ekibimizle iletişime geçin.</p>
         </div>
         <div class="cta-banner__actions">
-          <a href="../support/onlineapplication.html" class="btn btn--white btn--lg">Online Başvuru</a>
-          <a href="../products/esignature.html" class="btn btn--outline-white btn--lg">Ürünü İncele</a>
+          <a href="mailto:info@e-imzakibris.com" class="btn btn--white btn--lg">E-Posta Gönder</a>
+          <a href="../contact/index.html" class="btn btn--outline-white btn--lg">Destek Al</a>
         </div>
       </div>
     </section>
@@ -357,7 +349,9 @@
       <div class="footer__col">
         <h4>Ürünler &amp; Hizmetler</h4>
         <ul>
-          <li><a href="../products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="esignature.html">Elektronik İmza</a></li>
+          <li><a href="timestamp.html">Zaman Damgası</a></li>
+          <li><a href="esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
           <li><a href="../support/onlineapplication.html">Online Başvuru</a></li>
           <li><a href="../support/renewal.html">Yenileme Başvurusu</a></li>
         </ul>
@@ -388,14 +382,12 @@
         <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
         <div class="footer__bottom-links">
           <a href="../privacypolicy.html">Gizlilik Politikası</a>
-          <a href="index.html">İletişim</a>
+          <a href="../contact/index.html">İletişim</a>
           <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
         </div>
       </div>
     </div>
   </footer>
-
-  
 
   <script src="../assets/js/main.js"></script>
 </body>
