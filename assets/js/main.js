@@ -6,6 +6,8 @@
 (function () {
   'use strict';
 
+  const KDV_RATE = 0.16;
+
   /* ---- Load prices from admin panel (localStorage) ---- */
   (function loadPrices() {
     const raw = localStorage.getItem('eimza_prices');
@@ -254,9 +256,11 @@
     const updateSummary = () => {
       const plan = selectedPlan();
       const certificatePrice = Number(plan.value);
-      const tokenPrice = tokenInput && tokenInput.checked ? Number(tokenInput.value) : 0;
+      const tokenPrice = tokenInput ? Number(tokenInput.value) : 0;
       const setupPrice = setupInput && setupInput.checked ? Number(setupInput.value) : 0;
-      const total = certificatePrice + tokenPrice + setupPrice;
+      const subtotal = certificatePrice + tokenPrice + setupPrice;
+      const kdvAmount = subtotal * KDV_RATE;
+      const total = subtotal + kdvAmount;
 
       summaryCertificatePrice.textContent = formatPrice(certificatePrice);
       summaryTokenPrice.textContent = formatPrice(tokenPrice);
@@ -270,6 +274,8 @@
         certificatePrice,
         tokenPrice,
         setupPrice,
+        subtotal,
+        kdvAmount,
         total,
       };
     };
@@ -292,7 +298,14 @@
       }
     };
 
+    const enforceMandatoryToken = () => {
+      if (!tokenInput) return;
+      tokenInput.checked = true;
+      tokenInput.disabled = true;
+    };
+
     applyPlanFromQuery();
+    enforceMandatoryToken();
     updateSummary();
     setActiveStep(1);
 
@@ -300,7 +313,7 @@
       input.addEventListener('change', updateSummary);
     });
 
-    [tokenInput, setupInput].forEach((input) => {
+    [setupInput].forEach((input) => {
       if (!input) return;
       input.addEventListener('change', updateSummary);
     });
@@ -331,11 +344,30 @@
         const pricing = updateSummary();
         const formData = new FormData(detailsForm);
         const fullName = String(formData.get('fullName') || '');
-        const email = String(formData.get('email') || '');
-        const phone = String(formData.get('phone') || '');
+        const nationality = String(formData.get('nationality') || '');
         const identityNumber = String(formData.get('identityNumber') || '');
+        const birthDate = String(formData.get('birthDate') || '');
+        const birthPlace = String(formData.get('birthPlace') || '');
+        const professionalRegistryNo = String(formData.get('professionalRegistryNo') || '-');
+        const publicDirectoryConsent = formData.get('publicDirectoryConsent') ? 'Evet' : 'Hayir';
         const company = String(formData.get('company') || '-');
+        const jobTitle = String(formData.get('jobTitle') || '-');
+        const email = String(formData.get('email') || '');
+        const showEmailOnCertificate = formData.get('showEmailOnCertificate') ? 'Evet' : 'Hayir';
+        const address = String(formData.get('address') || '-');
+        const region = String(formData.get('region') || '');
+        const phone = String(formData.get('phone') || '-');
+        const mobileCode = String(formData.get('mobileCode') || '');
+        const mobilePhone = String(formData.get('mobilePhone') || '');
+        const invoiceSameAsContact = formData.get('invoiceSameAsContact') ? 'Evet' : 'Hayir';
+        const invoiceCompany = String(formData.get('invoiceCompany') || '-');
+        const invoiceAddress = String(formData.get('invoiceAddress') || '-');
+        const invoiceRegion = String(formData.get('invoiceRegion') || '-');
+        const taxNumber = String(formData.get('taxNumber') || '-');
+        const taxOffice = String(formData.get('taxOffice') || '-');
+        const invoiceType = String(formData.get('invoiceType') || 'Dijital Fatura');
         const notes = String(formData.get('notes') || '-');
+        const privacyConsent = formData.get('privacyConsent') ? 'Evet' : 'Hayir';
 
         const mailSubject = `Online Basvuru - ${pricing.planLabel}`;
         const mailBody = [
@@ -347,14 +379,40 @@
           `Elektronik Sertifika: ${formatPrice(pricing.certificatePrice)}`,
           `Akilli Cubuk: ${formatPrice(pricing.tokenPrice)}`,
           `Uzak Kurulum: ${formatPrice(pricing.setupPrice)}`,
-          `Toplam: ${formatPrice(pricing.total)}`,
+          `Ara Toplam: ${formatPrice(pricing.subtotal)}`,
+          `KDV (%16): ${formatPrice(pricing.kdvAmount)}`,
+          `KDV Dahil Toplam: ${formatPrice(pricing.total)}`,
           '',
           'Basvuru Bilgileri',
+          '',
+          'Kimlik Bilgileri',
           `Ad Soyad: ${fullName}`,
+          `Uyruk: ${nationality}`,
+          `Kimlik No: ${identityNumber}`,
+          `Dogum Tarihi: ${birthDate}`,
+          `Dogum Yeri: ${birthPlace}`,
+          `Mesleki Sicil No: ${professionalRegistryNo}`,
+          `Kamu Acik Dizin Izni: ${publicDirectoryConsent}`,
+          '',
+          'Iletisim ve Teslimat Bilgileri',
+          `Sirket: ${company}`,
+          `Gorevi: ${jobTitle}`,
           `E-posta: ${email}`,
-          `Telefon: ${phone}`,
-          `Kimlik/Pasaport No: ${identityNumber}`,
-          `Sirket/Kurum: ${company}`,
+          `E-posta Sertifikada Gorunsun: ${showEmailOnCertificate}`,
+          `Adres: ${address}`,
+          `Bolge: ${region}`,
+          `Telefon Numarasi: ${phone}`,
+          `Cep Telefonu: ${mobileCode} ${mobilePhone}`,
+          '',
+          'Fatura Bilgilerim',
+          `Fatura ve Iletisim Adresi Ayni: ${invoiceSameAsContact}`,
+          `Calistigi Kurum: ${invoiceCompany}`,
+          `Fatura Adresi: ${invoiceAddress}`,
+          `Fatura Bolgesi: ${invoiceRegion}`,
+          `Vergi No: ${taxNumber}`,
+          `Vergi Dairesi: ${taxOffice}`,
+          `Fatura Turu: ${invoiceType}`,
+          `KVKK/Iletisim Onayi: ${privacyConsent}`,
           `Notlar: ${notes}`,
         ].join('\n');
 
@@ -407,13 +465,17 @@
     const updateTsSummary = () => {
       const plan = selectedTsPlan();
       const packagePrice = Number(plan.value);
+      const kdvAmount = packagePrice * KDV_RATE;
+      const total = packagePrice + kdvAmount;
 
       tsSummaryPackagePrice.textContent = formatPrice(packagePrice);
-      tsSummaryTotalPrice.textContent = formatPrice(packagePrice);
+      tsSummaryTotalPrice.textContent = formatPrice(total);
 
       return {
         planLabel: plan.dataset.tsPlanLabel || 'Zaman Damgasi Paketi',
         packagePrice,
+        kdvAmount,
+        total,
       };
     };
 
@@ -470,7 +532,8 @@
           '',
           `Paket: ${pricing.planLabel}`,
           `Paket Tutari: ${formatPrice(pricing.packagePrice)}`,
-          `KDV Dahil Toplam: ${formatPrice(pricing.packagePrice)}`,
+          `KDV (%16): ${formatPrice(pricing.kdvAmount)}`,
+          `KDV Dahil Toplam: ${formatPrice(pricing.total)}`,
           '',
           'Basvuru Bilgileri',
           `Ad Soyad: ${fullName}`,

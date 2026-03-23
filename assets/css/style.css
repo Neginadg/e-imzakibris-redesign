@@ -1,5 +1,5 @@
-﻿/* ============================================================
-   e-imza KIBRIS â€“ Main Stylesheet
+/* ============================================================
+   e-imza KIBRIS – Main Stylesheet
    Modern Redesign | 2026
    ============================================================ */
 
@@ -1918,13 +1918,33 @@ time {
 .field--full {
   grid-column: 1 / -1;
 }
-
-.field span {
-  font-size: 13px;
-  font-weight: 700;
+.field--checkbox-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  grid-column: auto;
 }
 
-.field input,
+.field--checkbox-row input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: auto !important;
+}
+
+.field--checkbox-row span {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+  flex: 0 1 auto;
+}
+
+.field input:not([type="checkbox"]):not([type="radio"]),
+.field select,
 .field textarea {
   width: 100%;
   padding: 14px 16px;
@@ -1934,6 +1954,32 @@ time {
   font: inherit;
   transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
 }
+
+.field input:not([type="checkbox"]):not([type="radio"]):focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(180, 30, 30, .4);
+  box-shadow: 0 0 0 4px rgba(180, 30, 30, .08);
+  background: #fff;
+}
+
+.field input[type="checkbox"],
+.field input[type="radio"] {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.field span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
 
 .field input:focus,
 .field textarea:focus {
@@ -2059,7 +2105,7 @@ time {
 }
 
 /* ============================================================
-   RESPONSIVE â€” TABLET (max 1024px)
+   RESPONSIVE — TABLET (max 1024px)
    ============================================================ */
 @media (max-width: 1024px) {
   .hero__inner          { grid-template-columns: 1fr; gap: 48px; }
@@ -2101,7 +2147,7 @@ time {
 }
 
 /* ============================================================
-   RESPONSIVE â€” MOBILE (max 640px)
+   RESPONSIVE — MOBILE (max 640px)
    ============================================================ */
 @media (max-width: 640px) {
   :root {
@@ -2508,12 +2554,12 @@ time {
 }
 
 /* ============================================================
-   ABOUT PAGE â€” Dark Editorial / Museum
+   ABOUT PAGE — Dark Editorial / Museum
    Theme: near-black hero, crimson #C41E3A, warm-grey body
    ============================================================ */
 body.page-about { background: #f1f0ee; }
 
-/* â”€â”€ About Hero (dark, full-bleed) â”€â”€ */
+/* ── About Hero (dark, full-bleed) ── */
 .about-hero {
   background: #0d0d0d;
   color: #fff;
@@ -2608,7 +2654,7 @@ body.page-about { background: #f1f0ee; }
   border-right: 1px solid rgba(255,255,255,.3);
 }
 
-/* â”€â”€ Mission / Values (grey bg) â”€â”€ */
+/* ── Mission / Values (grey bg) ── */
 .about-body { background: #f1f0ee; padding: 80px 0; }
 .about-mission-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -2640,7 +2686,7 @@ body.page-about { background: #f1f0ee; }
 .about-mission-card li { display: flex; gap: 9px; font-size: 14px; color: #444; align-items: flex-start; }
 .about-mission-card li i { color: #C41E3A; font-size: 11px; margin-top: 5px; flex-shrink: 0; }
 
-/* â”€â”€ Dark company strip â”€â”€ */
+/* ── Dark company strip ── */
 .about-dark-strip {
   background: #111; color: #fff;
   padding: 80px 0; position: relative; overflow: hidden;
@@ -2694,7 +2740,7 @@ body.page-about { background: #f1f0ee; }
 .about-timeline__title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px; }
 .about-timeline__desc  { font-size: 14px; color: rgba(255,255,255,.48); line-height: 1.6; }
 
-/* â”€â”€ Values 3-col (grey bg) â”€â”€ */
+/* ── Values 3-col (grey bg) ── */
 .about-values { background: #f1f0ee; padding: 80px 0; }
 .about-values-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -2714,12 +2760,12 @@ body.page-about { background: #f1f0ee; }
 .about-value-card p      { font-size: 14px; line-height: 1.75; opacity: .72; }
 
 /* ============================================================
-   PRODUCTS PAGE â€” Diagonal Split / High-Contrast Tech
+   PRODUCTS PAGE — Diagonal Split / High-Contrast Tech
    Theme: pure white bg, #101010 panel, vivid #E52323 accent
    ============================================================ */
 body.page-product { background: #fff; }
 
-/* â”€â”€ Split hero â”€â”€ */
+/* ── Split hero ── */
 .product-hero {
   position: relative; overflow: hidden;
   min-height: 90vh; display: flex; align-items: center;
@@ -2877,12 +2923,12 @@ body.page-product { background: #fff; }
 .product-step p  { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.6; }
 
 /* ============================================================
-   CONTACT PAGE â€” Warm Architectural / Dramatic Header
+   CONTACT PAGE — Warm Architectural / Dramatic Header
    Theme: warm #FAF9F7 body, very-dark #1a0a0a hero, burgundy #6B1E1E
    ============================================================ */
 body.page-contact { background: #faf9f7; }
 
-/* â”€â”€ Full-bleed dark hero â”€â”€ */
+/* ── Full-bleed dark hero ── */
 .contact-masthead {
   background: #1a0a0a; color: #fff;
   padding: 0; position: relative; overflow: hidden;
@@ -2916,7 +2962,7 @@ body.page-contact { background: #faf9f7; }
 .contact-pill a     { color: inherit; }
 .contact-pill i     { color: #e55; font-size: 14px; }
 
-/* â”€â”€ Contact body layout â”€â”€ */
+/* ── Contact body layout ── */
 .contact-page-body { padding: 60px 0 80px; }
 .contact-page-grid {
   display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start;
@@ -3000,12 +3046,12 @@ body.page-contact { background: #faf9f7; }
 }
 
 /* ============================================================
-   NEWS PAGE â€” Bold Editorial / Newspaper
+   NEWS PAGE — Bold Editorial / Newspaper
    Theme: off-white #FAFAF8, slate #2a2a2a, rust #B7300A
    ============================================================ */
 body.page-news { background: #fafaf8; }
 
-/* â”€â”€ Newspaper masthead â”€â”€ */
+/* ── Newspaper masthead ── */
 .news-masthead {
   background: #fafaf8; border-bottom: 3px solid #111; padding: 52px 0 30px;
 }
@@ -3028,7 +3074,7 @@ body.page-news { background: #fafaf8; }
 }
 .news-masthead__tagline svg { vertical-align: middle; margin-right: 6px; }
 
-/* â”€â”€ Featured article â”€â”€ */
+/* ── Featured article ── */
 .news-featured { padding: 52px 0 0; }
 .news-featured__grid {
   display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start;
@@ -3059,7 +3105,7 @@ body.page-news { background: #fafaf8; }
 .news-sidebar__title { font-size: 14px; font-weight: 700; color: #111; line-height: 1.4; }
 .news-sidebar__date  { font-size: 12px; color: #bbb; margin-top: 4px; }
 
-/* â”€â”€ All news grid â”€â”€ */
+/* ── All news grid ── */
 .news-all-section { padding: 52px 0 80px; }
 .news-all-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -3092,7 +3138,7 @@ body.page-news { background: #fafaf8; }
 }
 
 /* ============================================================
-   RESPONSIVE â€” inner page themes
+   RESPONSIVE — inner page themes
    ============================================================ */
 @media (max-width: 1024px) {
   .about-hero__inner      { grid-template-columns: 1fr; }
@@ -3349,5 +3395,8 @@ body.page-news { background: #fafaf8; }
   color: var(--color-accent);
   font-size: 15px;
 }
+
+
+
 
 

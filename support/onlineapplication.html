@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260318-2" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260323-1" />
 </head>
 <body class="application-page">
   <div class="topbar">
@@ -170,7 +170,7 @@
           <div class="section-tag">Online Başvuru</div>
           <h1 class="page-hero__title">e-İmza Paketinizi Oluşturun</h1>
           <p class="page-hero__desc">
-            Sertifika sürenizi seçin, isteğe bağlı hizmetleri ekleyin ve başvurunuzu birkaç adımda tamamlayın.
+            Sertifika sürenizi seçin, ilk başvuru için zorunlu akıllı çubuğunuzu ve ek hizmetlerinizi belirleyin.
             Toplam tutarınız anında güncellenir, ardından bilgilerinizle başvuru özetinizi gönderebilirsiniz.
           </p>
           <div class="page-hero__actions">
@@ -268,18 +268,18 @@
 
               <div class="builder-card__head compact">
                 <div>
-                  <div class="section-tag">Ek Hizmetler</div>
-                  <h3 class="builder-subtitle">Opsiyonel Seçimler</h3>
+                  <div class="section-tag">Donanım ve Ek Hizmetler</div>
+                  <h3 class="builder-subtitle">Token zorunlu, kurulum opsiyonel</h3>
                 </div>
               </div>
 
               <div class="addon-grid">
                 <label class="addon-card">
-                  <input type="checkbox" name="tokenAddon" value="1875" data-price-input="stick" data-addon-label="Akıllı Çubuk" />
+                  <input type="checkbox" name="tokenAddon" value="1875" data-price-input="stick" data-addon-label="Akıllı Çubuk" checked disabled aria-label="Akıllı Çubuk (İlk başvuru için zorunlu)" />
                   <span class="addon-card__icon"><img src="../assets/img/token.jpg" alt="Akıllı Çubuk" /></span>
                   <span class="addon-card__content">
-                    <strong>Akıllı Çubuk</strong>
-                    <small>Sertifikanızı güvenli token üzerinde kullanın.</small>
+                    <strong>Akıllı Çubuk (Zorunlu)</strong>
+                    <small>İlk başvuruda sertifikanız güvenli token üzerinde teslim edilir.</small>
                   </span>
                   <span class="addon-card__price" data-price-display="stick">1.875,00 ₺</span>
                 </label>
@@ -312,29 +312,160 @@
 
             <form id="application-details-form" class="details-form">
               <div class="field-grid">
+                <div class="details-section-title field--full">
+                  <i class="fa-solid fa-user"></i>
+                  <span>Kimlik Bilgileri</span>
+                </div>
+
                 <label class="field">
-                  <span>Ad Soyad</span>
+                  <span>Ad / Soyad *</span>
                   <input type="text" name="fullName" placeholder="Ad Soyad" required />
                 </label>
                 <label class="field">
-                  <span>E-posta</span>
-                  <input type="email" name="email" placeholder="ornek@eposta.com" required />
+                  <span>Uyruk *</span>
+                  <select name="nationality" required>
+                    <option value="">Lütfen Uyruk Seçiniz</option>
+                    <option value="TC">TC</option>
+                    <option value="KKTC">KKTC</option>
+                    <option value="Diğer">Diğer</option>
+                  </select>
                 </label>
                 <label class="field">
-                  <span>Telefon</span>
-                  <input type="tel" name="phone" placeholder="+90 5xx xxx xx xx" required />
+                  <span>Kimlik No *</span>
+                  <input type="text" name="identityNumber" placeholder="Kimlik numarası" required />
                 </label>
                 <label class="field">
-                  <span>Kimlik / Pasaport No</span>
-                  <input type="text" name="identityNumber" placeholder="Kimlik veya pasaport numarası" required />
+                  <span>Doğum Tarihi *</span>
+                  <input type="date" name="birthDate" required />
+                </label>
+                <label class="field">
+                  <span>Doğum Yeri *</span>
+                  <input type="text" name="birthPlace" placeholder="Doğum yeri" required />
+                </label>
+                <label class="field">
+                  <span>Mesleki Sicil No</span>
+                  <input type="text" name="professionalRegistryNo" placeholder="Mesleki sicil numarası" />
+                </label>
+
+                <label class="field field--checkbox-row">
+                  <input type="checkbox" name="publicDirectoryConsent" style="position:relative;top:4px;" />
+                  <span>Sahip olduğum nitelikli elektronik sertifikama e imza KIBRIS'ın yayınladığı kamuya açık bir dizinden üçüncü kişilerin erişimine açık olmasına izin veriyorum</span>
+                </label>
+
+                <div class="details-section-title field--full">
+                  <i class="fa-solid fa-envelope"></i>
+                  <span>İletişim ve Teslimat Bilgileri</span>
+                </div>
+
+                <label class="field">
+                  <span>Şirket</span>
+                  <input type="text" name="company" placeholder="Şirket" />
+                </label>
+                <label class="field">
+                  <span>Görevi</span>
+                  <input type="text" name="jobTitle" placeholder="Görev" />
                 </label>
                 <label class="field field--full">
-                  <span>Şirket / Kurum</span>
-                  <input type="text" name="company" placeholder="Varsa şirket veya kurum adı" />
+                  <span>E posta Adresi *</span>
+                  <input type="email" name="email" placeholder="ornek@eposta.com" required />
                 </label>
+
+                <label class="field field--checkbox-row">
+                  <input type="checkbox" name="showEmailOnCertificate" style="position:relative;top:4px;" />
+                  <span>E posta adresimin sertifika içerisinde görülmesini istiyorum</span>
+                </label>
+
+                <div class="details-subtitle field--full">İletişim ve Teslimat / Kurulum Adresi</div>
+
+                <label class="field field--full">
+                  <span>Adres *</span>
+                  <textarea name="address" rows="4" placeholder="Açık adres" required></textarea>
+                </label>
+                <label class="field field--full">
+                  <span>Bölge *</span>
+                  <select name="region" required>
+                    <option value="">Lütfen Bölge Seçiniz</option>
+                    <option value="Lefkoşa">Lefkoşa</option>
+                    <option value="Girne">Girne</option>
+                    <option value="Gazimağusa">Gazimağusa</option>
+                    <option value="Güzelyurt">Güzelyurt</option>
+                    <option value="İskele">İskele</option>
+                    <option value="Lefke">Lefke</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Telefon Numarası</span>
+                  <input type="tel" name="phone" placeholder="+90 392 xxx xx xx" />
+                </label>
+                <div class="field field-mobile-wrap">
+                  <span>Cep Telefon Numarası *</span>
+                  <div class="field-mobile-inline">
+                    <select name="mobileCode" class="field-mobile-code" required>
+                      <option value="+90">+90</option>
+                    </select>
+                    <input type="tel" name="mobilePhone" class="field-mobile-number" placeholder="5xx xxx xx xx" required />
+                  </div>
+                </div>
+
+                <div class="details-section-title field--full">
+                  <i class="fa-regular fa-file-lines"></i>
+                  <span>Fatura Bilgilerim</span>
+                </div>
+
+                <label class="field field--checkbox-row">
+                  <input type="checkbox" name="invoiceSameAsContact" style="position:relative;top:4px;" />
+                  <span>Fatura ve İletişim Adresim Aynı</span>
+                </label>
+
+                <label class="field field--full">
+                  <span>Çalıştığı Kurum</span>
+                  <input type="text" name="invoiceCompany" placeholder="Çalıştığı kurum" />
+                </label>
+
+                <label class="field field--full">
+                  <span>Adres</span>
+                  <textarea name="invoiceAddress" rows="4" placeholder="Fatura adresi"></textarea>
+                </label>
+
+                <label class="field field--full">
+                  <span>Bölge</span>
+                  <select name="invoiceRegion">
+                    <option value="">Lütfen Bölge Seçiniz</option>
+                    <option value="Lefkoşa">Lefkoşa</option>
+                    <option value="Girne">Girne</option>
+                    <option value="Gazimağusa">Gazimağusa</option>
+                    <option value="Güzelyurt">Güzelyurt</option>
+                    <option value="İskele">İskele</option>
+                    <option value="Lefke">Lefke</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Vergi Numarası</span>
+                  <input type="text" name="taxNumber" placeholder="Vergi numarası" />
+                </label>
+                <label class="field">
+                  <span>Vergi Dairesi</span>
+                  <input type="text" name="taxOffice" placeholder="Vergi dairesi" />
+                </label>
+
+                <div class="field field--full field-invoice-type-wrap">
+                  <span>Fatura Türü</span>
+                  <div class="field-invoice-type-inline">
+                    <label><input type="radio" name="invoiceType" value="Dijital Fatura" checked /> Dijital Fatura</label>
+                    <label><input type="radio" name="invoiceType" value="Kağıt Fatura" /> Kağıt Fatura</label>
+                  </div>
+                </div>
+
                 <label class="field field--full">
                   <span>Notlar</span>
                   <textarea name="notes" rows="5" placeholder="Başvurunuzla ilgili ek notlarınızı yazabilirsiniz."></textarea>
+                </label>
+
+                <label class="field field--checkbox-row">
+                  <input type="checkbox" name="privacyConsent" required style="position:relative;top:4px;" />
+                  <span>Kişisel verilerimin başvuru işlemleri için işlenmesini ve benimle iletişime geçilmesini kabul ediyorum.</span>
                 </label>
               </div>
 
@@ -379,7 +510,7 @@
               </div>
               <div class="summary-line">
                 <span>Akıllı Çubuk</span>
-                <strong id="summary-token-price">0,00 ₺</strong>
+                <strong id="summary-token-price">1.875,00 ₺</strong>
               </div>
               <div class="summary-line">
                 <span>Uzak Kurulum</span>
@@ -389,7 +520,7 @@
 
             <div class="summary-total">
               <span>KDV Dahil Toplam</span>
-              <strong id="summary-total-price">2.650,00 ₺</strong>
+              <strong id="summary-total-price">5.249,00 ₺</strong>
             </div>
 
             <ul class="summary-highlights">
