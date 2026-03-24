@@ -228,6 +228,7 @@
     const detailsSection = document.getElementById('application-details');
     const submitSection = document.getElementById('application-submit');
     const detailsForm = document.getElementById('application-details-form');
+    const birthDateInput = detailsForm ? detailsForm.querySelector('input[name="birthDate"]') : null;
     const submitMessage = document.getElementById('application-submit-message');
     const stepIndicators = Array.from(document.querySelectorAll('[data-step-indicator]'));
 
@@ -237,6 +238,51 @@
     const summaryTotalPrice = document.getElementById('summary-total-price');
 
     const formatPrice = (value) => `${currencyFormatter.format(value)} ₺`;
+
+    const toInputDateString = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const minBirthDate = new Date(today);
+    minBirthDate.setFullYear(minBirthDate.getFullYear() - 110);
+    const maxBirthDate = new Date(today);
+    maxBirthDate.setFullYear(maxBirthDate.getFullYear() - 18);
+
+    const validateBirthDate = () => {
+      if (!birthDateInput) return true;
+
+      birthDateInput.setCustomValidity('');
+
+      if (!birthDateInput.value) {
+        return true;
+      }
+
+      const selectedDate = new Date(`${birthDateInput.value}T00:00:00`);
+      if (Number.isNaN(selectedDate.getTime())) {
+        birthDateInput.setCustomValidity('Lutfen gecerli bir dogum tarihi giriniz.');
+        return false;
+      }
+
+      if (selectedDate < minBirthDate || selectedDate > maxBirthDate) {
+        birthDateInput.setCustomValidity('Yas 18 ile 110 arasinda olmalidir.');
+        return false;
+      }
+
+      return true;
+    };
+
+    const setupBirthDateValidation = () => {
+      if (!birthDateInput) return;
+      birthDateInput.min = toInputDateString(minBirthDate);
+      birthDateInput.max = toInputDateString(maxBirthDate);
+      birthDateInput.addEventListener('input', validateBirthDate);
+      birthDateInput.addEventListener('change', validateBirthDate);
+    };
 
     const setActiveStep = (step) => {
       stepIndicators.forEach((indicator) => {
@@ -304,6 +350,7 @@
       tokenInput.disabled = true;
     };
 
+    setupBirthDateValidation();
     applyPlanFromQuery();
     enforceMandatoryToken();
     updateSummary();
@@ -339,7 +386,7 @@
       detailsForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        if (!detailsForm.reportValidity()) return;
+        if (!validateBirthDate() || !detailsForm.reportValidity()) return;
 
         const pricing = updateSummary();
         const formData = new FormData(detailsForm);
