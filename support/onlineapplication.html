@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260324-4" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
 </head>
 <body class="application-page">
   <div class="topbar">
@@ -137,8 +137,8 @@
       </nav>
 
       <div class="navbar__cta">
-        <a href="onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
-        <a href="renewal.html" class="btn btn--outline">YENİLEME</a>
+        <a href="onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
@@ -276,7 +276,7 @@
               <div class="addon-grid">
                 <label class="addon-card">
                   <input type="checkbox" name="tokenAddon" value="1875" data-price-input="stick" data-addon-label="Akıllı Çubuk" checked disabled aria-label="Akıllı Çubuk (İlk başvuru için zorunlu)" />
-                  <span class="addon-card__icon"><img src="../assets/img/token.jpg" alt="Akıllı Çubuk" /></span>
+                  <span class="addon-card__icon"><img src="../assets/img/token2.jpeg" alt="Akıllı Çubuk" /></span>
                   <span class="addon-card__content">
                     <strong>Akıllı Çubuk (Zorunlu)</strong>
                     <small>İlk başvuruda sertifikanız güvenli token üzerinde teslim edilir.</small>
@@ -286,7 +286,7 @@
 
                 <label class="addon-card">
                   <input type="checkbox" name="remoteSetup" value="1875" data-price-input="install" data-addon-label="Uzak Bağlantılı Kurulum" />
-                  <span class="addon-card__icon addon-card__icon--alt"><i class="fa-solid fa-laptop-medical"></i></span>
+                  <span class="addon-card__icon"><img src="../assets/img/bilgisayar.jpg" alt="Uzak Bağlantılı Kurulum" /></span>
                   <span class="addon-card__content">
                     <strong>Uzak Bağlantılı Kurulum</strong>
                     <small>Uzak masaüstü ile kurulum desteği sağlanır.</small>
@@ -354,7 +354,7 @@
 
                 <div class="details-section-title field--full">
                   <i class="fa-solid fa-envelope"></i>
-                  <span>İletişim ve Teslimat Bilgileri</span>
+                  <span>İletişim Bilgileri</span>
                 </div>
 
                 <label class="field">
@@ -375,7 +375,7 @@
                   <span>E posta adresimin sertifika içerisinde görülmesini istiyorum</span>
                 </label>
 
-                <div class="details-subtitle field--full">İletişim ve Teslimat / Kurulum Adresi</div>
+                <div class="details-subtitle field--full">İletişim Adresi</div>
 
                 <label class="field field--full">
                   <span>Adres *</span>
@@ -401,10 +401,8 @@
                 <div class="field field-mobile-wrap">
                   <span>Cep Telefon Numarası *</span>
                   <div class="field-mobile-inline">
-                    <select name="mobileCode" class="field-mobile-code" required>
-                      <option value="+90">+90</option>
-                    </select>
-                    <input type="tel" name="mobilePhone" class="field-mobile-number" placeholder="5xx xxx xx xx" required />
+                   
+                    <input type="tel" name="mobilePhone" class="field-mobile-number" placeholder="+90 5xx xxx xx xx " required />
                   </div>
                 </div>
 
