@@ -610,6 +610,63 @@
   const renewalForm = document.getElementById('renewal-form');
   if (renewalForm) {
     const renewalMessage = document.getElementById('renewal-submit-message');
+    const summaryTerm = document.getElementById('renewal-summary-term');
+    const summaryTermPrice = document.getElementById('renewal-summary-term-price');
+    const summaryLicense = document.getElementById('renewal-summary-license');
+    const summaryLicensePrice = document.getElementById('renewal-summary-license-price');
+    const summaryTotalPrice = document.getElementById('renewal-summary-total-price');
+
+    const renewalTermInputs = renewalForm.querySelectorAll('input[name="renewalTerm"]');
+    const molohiyaLicenseInputs = renewalForm.querySelectorAll('input[name="molohiyaLicense"]');
+
+    const extractFinalPrice = (rawValue) => {
+      const text = String(rawValue || '');
+      const match =
+        text.match(/=\s*([0-9][0-9.,]*)\s*\.?\s*TL/i) ||
+        text.match(/([0-9][0-9.,]*)\s*\.?\s*TL/i);
+
+      if (!match) return null;
+
+      const normalized = match[1]
+        .replace(/\.(?=\d{3}(\D|$))/g, '')
+        .replace(',', '.');
+
+      const price = Number.parseFloat(normalized);
+      return Number.isFinite(price) ? price : null;
+    };
+
+    const formatPrice = (value) => {
+      if (!Number.isFinite(value)) return '-';
+      return `${value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺`;
+    };
+
+    const getOptionTitle = (input) => {
+      const titleNode = input?.closest('.renewal-package-option')?.querySelector('.renewal-package-option__meta strong');
+      return titleNode ? titleNode.textContent.trim() : 'Seçim yapılmadı';
+    };
+
+    const updateRenewalSummary = () => {
+      const selectedTerm = renewalForm.querySelector('input[name="renewalTerm"]:checked');
+      const selectedLicense = renewalForm.querySelector('input[name="molohiyaLicense"]:checked');
+
+      const termTitle = selectedTerm ? getOptionTitle(selectedTerm) : 'Seçim yapılmadı';
+      const licenseTitle = selectedLicense ? getOptionTitle(selectedLicense) : 'Seçilmedi';
+
+      const termPrice = selectedTerm ? extractFinalPrice(selectedTerm.value) : null;
+      const licensePrice = selectedLicense ? extractFinalPrice(selectedLicense.value) : null;
+      const hasTermPrice = Number.isFinite(termPrice);
+      const total = hasTermPrice ? termPrice + (licensePrice || 0) : null;
+
+      if (summaryTerm) summaryTerm.textContent = termTitle;
+      if (summaryLicense) summaryLicense.textContent = licenseTitle;
+      if (summaryTermPrice) summaryTermPrice.textContent = formatPrice(termPrice);
+      if (summaryLicensePrice) summaryLicensePrice.textContent = selectedLicense ? formatPrice(licensePrice) : '-';
+      if (summaryTotalPrice) summaryTotalPrice.textContent = selectedTerm && hasTermPrice ? formatPrice(total) : '-';
+    };
+
+    renewalTermInputs.forEach((input) => input.addEventListener('change', updateRenewalSummary));
+    molohiyaLicenseInputs.forEach((input) => input.addEventListener('change', updateRenewalSummary));
+    updateRenewalSummary();
 
     renewalForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -621,10 +678,8 @@
       const email = String(formData.get('email') || '');
       const phone = String(formData.get('phone') || '');
       const identityNumber = String(formData.get('identityNumber') || '');
-      const certificateSerial = String(formData.get('certificateSerial') || '-');
-      const expiryDate = String(formData.get('expiryDate') || '-');
-      const company = String(formData.get('company') || '-');
-      const notes = String(formData.get('notes') || '-');
+      const renewalTerm = String(formData.get('renewalTerm') || '');
+      const molohiyaLicense = String(formData.get('molohiyaLicense') || '-');
 
       const mailSubject = `Yenileme Basvurusu - ${fullName}`;
       const mailBody = [
@@ -636,10 +691,8 @@
         `E-posta: ${email}`,
         `Telefon: ${phone}`,
         `Kimlik/Pasaport No: ${identityNumber}`,
-        `Sertifika Seri No: ${certificateSerial}`,
-        `Sertifika Bitis Tarihi: ${expiryDate}`,
-        `Sirket/Kurum: ${company}`,
-        `Notlar: ${notes}`,
+        `Elektronik Imzanizi Yenilemek Istediginiz Sure: ${renewalTerm}`,
+        `MOlOhiya e-imza Imzalama ve Dogrulama Yazilim Lisansi: ${molohiyaLicense}`,
       ].join('\n');
 
       if (renewalMessage) {

@@ -186,7 +186,7 @@
         <div class="page-hero__media" data-animate="fade-left">
           <div class="token-showcase">
             <div class="token-showcase__badge">Yenileme</div>
-            <img src="../assets/img/token2.jpeg" alt="e-imza token" class="token-showcase__img" />
+            <img src="../assets/img/eSig (1).jpg" alt="e-imza token" class="token-showcase__img" />
             <div class="token-showcase__note">
               <i class="fa-solid fa-circle-info"></i>
               Sertifika süresi bitmeden yenileme önerilir.
@@ -211,37 +211,73 @@
             <form id="renewal-form" class="details-form">
               <div class="field-grid">
                 <label class="field">
-                  <span>Ad Soyad</span>
-                  <input type="text" name="fullName" placeholder="Ad Soyad" required />
+                  <span>Adı Soyadı *</span>
+                  <input type="text" name="fullName" placeholder="Adı Soyadı" required />
                 </label>
                 <label class="field">
-                  <span>E-posta</span>
+                  <span>e-posta adresi *</span>
                   <input type="email" name="email" placeholder="ornek@eposta.com" required />
                 </label>
                 <label class="field">
-                  <span>Telefon</span>
+                  <span>Cep Telefonu Numaranız *</span>
                   <input type="tel" name="phone" placeholder="+90 5xx xxx xx xx" required />
                 </label>
                 <label class="field">
-                  <span>Kimlik / Pasaport No</span>
+                  <span>Kimlik No veya Pasaport No *</span>
                   <input type="text" name="identityNumber" placeholder="Kimlik veya pasaport numarası" required />
                 </label>
-                <label class="field">
-                  <span>Sertifika Seri No</span>
-                  <input type="text" name="certificateSerial" placeholder="Varsa mevcut sertifika seri numarası" />
-                </label>
-                <label class="field">
-                  <span>Sertifika Bitiş Tarihi</span>
-                  <input type="date" name="expiryDate" />
-                </label>
-                <label class="field field--full">
-                  <span>Şirket / Kurum</span>
-                  <input type="text" name="company" placeholder="Varsa şirket veya kurum adı" />
-                </label>
-                <label class="field field--full">
-                  <span>Notlar</span>
-                  <textarea name="notes" rows="5" placeholder="Yenileme talebinizle ilgili ek notlarınızı yazabilirsiniz."></textarea>
-                </label>
+                <div class="field field--full">
+                  <span>Elektronik İmzanızı Yenilemek İstediğiniz Süre *</span>
+                  <div class="renewal-package-list">
+                    <label class="renewal-package-option">
+                      <input type="radio" name="renewalTerm" value="1 Yıllık Yenileme 2650.TL + KDV     = 3049.TL" required />
+                      <span class="renewal-package-option__meta">
+                        <strong>1 Yıllık Yenileme</strong>
+                        <small>2650.TL + KDV = 3049.TL</small>
+                      </span>
+                    </label>
+                    <label class="renewal-package-option">
+                      <input type="radio" name="renewalTerm" value="2 Yıllık Yenileme 4690.TL + KDV    =  5437.TL" />
+                      <span class="renewal-package-option__meta">
+                        <strong>2 Yıllık Yenileme</strong>
+                        <small>4690.TL + KDV = 5437.TL</small>
+                      </span>
+                    </label>
+                    <label class="renewal-package-option">
+                      <input type="radio" name="renewalTerm" value="3 Yıllık Yenileme 6950.TL + KDV    = 8062.TL" />
+                      <span class="renewal-package-option__meta">
+                        <strong>3 Yıllık Yenileme</strong>
+                        <small>6950.TL + KDV = 8062.TL</small>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div class="field field--full">
+                  <span>MOlOhiya e-imza İmzalama ve Doğrulama Yazılım Lisansı</span>
+                  <div class="renewal-package-list">
+                    <label class="renewal-package-option">
+                      <input type="radio" name="molohiyaLicense" value="1 Yıllık Bireysel Yenileme Lisansı : 2650.TL+KDV = 3049.TL" />
+                      <span class="renewal-package-option__meta">
+                        <strong>1 Yıllık Bireysel Yenileme Lisansı</strong>
+                        <small>2650.TL + KDV = 3049.TL</small>
+                      </span>
+                    </label>
+                    <label class="renewal-package-option">
+                      <input type="radio" name="molohiyaLicense" value="2 Yıllık Bireysel Yenileme Lisansı : 4690.TL +KDV = 5437.TL" />
+                      <span class="renewal-package-option__meta">
+                        <strong>2 Yıllık Bireysel Yenileme Lisansı</strong>
+                        <small>4690.TL + KDV = 5437.TL</small>
+                      </span>
+                    </label>
+                    <label class="renewal-package-option">
+                      <input type="radio" name="molohiyaLicense" value="3 Yıllık Bireysel Yenileme Lisansı: 6950.TL+KDV = 8062.TL" />
+                      <span class="renewal-package-option__meta">
+                        <strong>3 Yıllık Bireysel Yenileme Lisansı</strong>
+                        <small>6950.TL + KDV = 8062.TL</small>
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <div class="builder-actions">
@@ -259,21 +295,37 @@
           <div class="summary-card">
             <div class="summary-card__head">
               <div>
-                <div class="section-tag">Yenileme Ücreti</div>
-                <h3>Güncel Fiyat</h3>
+                <div class="section-tag">Yenileme Özeti</div>
+                <h3>Seçiminiz</h3>
               </div>
               <i class="fa-solid fa-receipt"></i>
             </div>
 
-            <div class="summary-total" style="margin-top: 8px;">
-              <span>Yenileme Başvuru Ücreti</span>
-              <strong data-price-display="renewal">2.650,00 ₺</strong>
+            <div class="summary-lines" style="margin-top: 8px;">
+              <div class="summary-line">
+                <span>Yenileme Paketi</span>
+                <strong id="renewal-summary-term">Seçim yapılmadı</strong>
+              </div>
+              <div class="summary-line">
+                <span>Yenileme Tutarı</span>
+                <strong id="renewal-summary-term-price">-</strong>
+              </div>
+              <div class="summary-line">
+                <span>MOlOhiya Lisansı</span>
+                <strong id="renewal-summary-license">Seçilmedi</strong>
+              </div>
+              <div class="summary-line">
+                <span>Lisans Tutarı</span>
+                <strong id="renewal-summary-license-price">-</strong>
+              </div>
             </div>
 
-            <ul class="summary-highlights" style="margin-top: 14px;">
-              <li><i class="fa-solid fa-check"></i> Admin panelinden güncellenebilir</li>
-              <li><i class="fa-solid fa-check"></i> Sitede anında görünür</li>
-            </ul>
+            <div class="summary-total" style="margin-top: 6px;">
+              <span>Toplam</span>
+              <strong id="renewal-summary-total-price">-</strong>
+            </div>
+
+  
           </div>
 
           <div class="summary-card">
