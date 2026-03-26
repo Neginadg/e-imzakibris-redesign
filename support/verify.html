@@ -215,6 +215,78 @@
       border-radius: 6px;
       background: #fff;
     }
+
+    .verify-hero-box {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #111;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .verify-hero-box--full {
+      width: min(100%, 1100px);
+      min-height: clamp(260px, 46vh, 520px);
+      border-radius: 28px;
+      margin-inline: auto;
+      aspect-ratio: 16 / 7;
+    }
+
+    .verify-hero-box__image {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    @media (max-width: 900px) {
+      .verify-hero-box {
+        min-height: 220px;
+        background: linear-gradient(180deg, #3f3f3f 0%, #2c2c2c 52%, #1b1b1b 100%);
+      }
+
+      .verify-hero-box::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at center, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.34) 100%),
+          linear-gradient(180deg, rgba(20, 20, 20, 0.08) 0%, rgba(20, 20, 20, 0.46) 100%);
+      }
+
+      .verify-hero-box--full {
+        width: 100%;
+        min-height: clamp(220px, 34vh, 320px);
+        aspect-ratio: 16 / 9;
+        border-radius: 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .verify-hero-box {
+        min-height: 180px;
+        background: linear-gradient(180deg, #474747 0%, #313131 52%, #1f1f1f 100%);
+      }
+
+      .verify-hero-box::after {
+        background:
+          radial-gradient(circle at center, rgba(0, 0, 0, 0) 36%, rgba(0, 0, 0, 0.42) 100%),
+          linear-gradient(180deg, rgba(18, 18, 18, 0.16) 0%, rgba(18, 18, 18, 0.54) 100%);
+      }
+
+      .verify-hero-box--full {
+        min-height: 180px;
+        aspect-ratio: 4 / 3;
+        border-radius: 16px;
+      }
+    }
   </style>
 </head>
 <body class="application-page">
@@ -375,33 +447,12 @@
 
   <main>
     <section class="page-hero page-hero--application">
-      <div class="container page-hero__inner">
-        <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">İmza Doğrulama</div>
-          <h1 class="page-hero__title">elektronik İmzaları Doğrulayın</h1>
-          <p class="page-hero__desc">
-            Elektronik imzalarınızı AdES, AdES/QC veya QES standartlarına göre doğrulayın.
-            İmzalı dosyanızı yükleyerek imzaların geçerliliğini anında kontrol edin.
-          </p>
-          <div class="page-hero__actions">
-            <a href="#verify-form-card" class="btn btn--primary btn--lg">Doğrulama Formunu Aç</a>
-            <a href="../contact/index.html" class="btn btn--outline btn--lg">Destek Al</a>
-          </div>
-          <div class="page-hero__facts">
-            <div><i class="fa-solid fa-check-double"></i> Hızlı Doğrulama</div>
-            <div><i class="fa-solid fa-shield-halved"></i> Güvenli İşleme</div>
-            <div><i class="fa-solid fa-certificate"></i> AdES Standartları</div>
-          </div>
-        </div>
-        <div class="page-hero__media" data-animate="fade-left">
-          <div class="token-showcase">
-            <div class="token-showcase__badge">Doğrulama</div>
-            <img src="../assets/img/eSig (1).jpg" alt="e-imza token" class="token-showcase__img" />
-            <div class="token-showcase__note">
-              <i class="fa-solid fa-circle-info"></i>
-              İmza doğrulaması tamamı güvenli sunucularda işlenir.
-            </div>
-          </div>
+      <div class="container" data-animate="fade-up">
+        <div class="verify-hero-box verify-hero-box--full">
+          <picture>
+            <source media="(max-width: 900px)" srcset="../assets/img/resverify.png" />
+            <img src="../assets/img/verify.png" alt="İmza doğrulama görseli" class="verify-hero-box__image" />
+          </picture>
         </div>
       </div>
     </section>
