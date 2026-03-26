@@ -245,13 +245,18 @@
     }
 
     @media (max-width: 900px) {
+      .page-hero {
+        overflow-x: hidden;
+      }
+
       .verify-hero-box {
         min-height: 220px;
         background: #2c2c2c;
+        max-width: 100vw;
       }
 
       .verify-hero-box--full {
-        width: 100%;
+        width: calc(100vw - 32px);
         min-height: clamp(220px, 34vh, 320px);
         aspect-ratio: 16 / 9;
         border-radius: 22px;
@@ -259,12 +264,18 @@
     }
 
     @media (max-width: 640px) {
+      .page-hero {
+        overflow-x: hidden;
+      }
+
       .verify-hero-box {
         min-height: 180px;
         background: #262626;
+        max-width: 100vw;
       }
 
       .verify-hero-box--full {
+        width: calc(100vw - 24px);
         min-height: 180px;
         aspect-ratio: 4 / 3;
         border-radius: 16px;
@@ -433,7 +444,8 @@
       <div class="container" data-animate="fade-up">
         <div class="verify-hero-box verify-hero-box--full">
           <picture>
-            <source media="(max-width: 900px)" srcset="../assets/img/resverify.png" />
+            <source media="(max-width: 900px) and (min-width: 641px)" srcset="../assets/img/tabletverify.png" />
+            <source media="(max-width: 640px)" srcset="../assets/img/resverify.png" />
             <img src="../assets/img/verify.png" alt="İmza doğrulama görseli" class="verify-hero-box__image" />
           </picture>
         </div>
