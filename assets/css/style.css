@@ -2696,6 +2696,54 @@ time {
   box-shadow: 0 16px 40px rgba(0, 0, 0, .22);
 }
 
+.page-hero__media--image {
+  overflow: hidden;
+}
+
+.page-hero--product .page-hero__inner {
+  align-items: stretch;
+}
+
+.page-hero--product .page-hero__media--image {
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.product-hero-image {
+  width: 100%;
+  min-height: 340px;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+}
+
+.page-hero--product .product-hero-image {
+  width: 500px;
+  height: auto;
+  max-width: 100%;
+  min-height: 0;
+  max-height: 800px;
+  object-fit: contain;
+  border-radius: 20px;
+  border: none;
+}
+
+.product-banner-section {
+  padding-top: 0;
+}
+
+.product-banner--horizontal {
+  width: 100%;
+}
+
+.product-banner--horizontal .price-pill-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .product-banner p {
   color: rgba(255, 255, 255, .75);
 }
@@ -3998,6 +4046,11 @@ body.page-news { background: #fafaf8; }
   .contact-form-2col      { grid-template-columns: 1fr; }
   .news-masthead__title   { font-size: 46px; letter-spacing: -1.5px; }
   .news-cards-grid        { grid-template-columns: 1fr; }
+
+  .product-banner--horizontal .price-pill-list { grid-template-columns: 1fr; }
+  .page-hero--product .page-hero__media--image {
+    padding: 14px;
+  }
 }
 
 /* ============================================================
