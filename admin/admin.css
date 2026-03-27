@@ -46,7 +46,12 @@
   --transition: 0.25s ease;
 }
 
-html { height: 100%; }
+html {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
@@ -54,10 +59,34 @@ body {
   line-height: 1.6;
   font-size: 15px;
   color: var(--color-text);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   background:
     radial-gradient(circle at top left, rgba(180, 30, 30, 0.1), transparent 32%),
     radial-gradient(circle at right 18%, rgba(245, 166, 35, 0.08), transparent 24%),
     linear-gradient(180deg, #fff 0%, #fcfcfc 48%, #f7f7f7 100%);
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+table {
+  max-width: 100%;
+  display: block;
+  overflow-x: auto;
 }
 
 a { color: inherit; text-decoration: none; }

@@ -37,6 +37,23 @@
       color: var(--color-danger, #e74c3c);
     }
 
+    .verify-form__human-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .verify-form__human-check input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
     .verify-form__file-input {
       display: flex;
       align-items: center;
@@ -546,11 +563,13 @@
 
 
               <div class="verify-form__input-group required">
-                <label class="field field--checkbox-row">
-                  <input type="checkbox" name="humanCheck" required style="position:relative;top:4px;" />
+                <label class="verify-form__human-check">
+                  <input type="checkbox" name="humanCheck" required />
                   <span>Ben robot değilim</span>
                 </label>
               </div>
+
+              <div class="builder-actions">
                 <button type="submit" class="btn btn--primary btn--lg">
                   <i class="fa-solid fa-check"></i> Doğrulama Yap
                 </button>
