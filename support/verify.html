@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
@@ -74,8 +73,10 @@
 
     .verify-form__file-name {
       flex: 1;
+      min-width: 0;
       font-size: 0.9rem;
       color: var(--color-text-secondary);
+      overflow-wrap: anywhere;
     }
 
     .verify-form__file-name.selected {
@@ -162,6 +163,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      min-width: 0;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--color-border);
     }
@@ -174,11 +177,15 @@
     .verify-results__detail-label {
       font-weight: 500;
       color: var(--color-text-secondary);
+      flex-shrink: 0;
     }
 
     .verify-results__detail-value {
       color: var(--color-text-primary);
       font-weight: 500;
+      min-width: 0;
+      text-align: right;
+      overflow-wrap: anywhere;
     }
 
     .verify-results__placeholder {
@@ -208,13 +215,7 @@
       color: var(--color-text-secondary);
     }
 
-    .verify-recaptcha-wrap {
-      display: inline-flex;
-      padding: 10px;
-      border: 1px solid var(--color-border);
-      border-radius: 6px;
-      background: #fff;
-    }
+
 
     .verify-hero-box {
       position: relative;
@@ -250,6 +251,7 @@
       height: 100%;
     }
 
+    html,
     body.application-page {
       overflow-x: hidden;
     }
@@ -292,6 +294,19 @@
         aspect-ratio: 4 / 3;
         border-radius: 16px;
       }
+
+
+    }
+
+    .application-page main,
+    .application-page .container,
+    .application-builder__grid,
+    .application-builder__main,
+    .builder-card,
+    .verify-results,
+    .verify-results__details,
+    .verify-form__file-label {
+      min-width: 0;
     }
   </style>
 </head>
@@ -528,14 +543,14 @@
                 </div>
               </div>
 
-              <div class="verify-form__input-group required">
-                <label>Güvenlik Doğrulaması</label>
-                <div class="verify-recaptcha-wrap">
-                  <div class="g-recaptcha" data-sitekey="6LcshqYqAAAAAAo3RxWx83rQ9CyoHqhIPYZsXnRc" data-action="LOGIN"></div>
-                </div>
-              </div>
 
-              <div class="builder-actions">
+
+              <div class="verify-form__input-group required">
+                <label class="field field--checkbox-row">
+                  <input type="checkbox" name="humanCheck" required style="position:relative;top:4px;" />
+                  <span>Ben robot değilim</span>
+                </label>
+              </div>
                 <button type="submit" class="btn btn--primary btn--lg">
                   <i class="fa-solid fa-check"></i> Doğrulama Yap
                 </button>
@@ -722,12 +737,9 @@
     verifyForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const recaptchaResponse = (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse)
-        ? grecaptcha.getResponse()
-        : '';
-
-      if (!recaptchaResponse) {
-        alert('Lütfen reCAPTCHA doğrulamasını tamamlayın.');
+      const humanCheck = document.querySelector('input[name="humanCheck"]');
+      if (!humanCheck || !humanCheck.checked) {
+        alert('Lütfen insan olduğunuzu doğrulayın.');
         return;
       }
 
@@ -759,10 +771,6 @@
       document.getElementById('verify-result-cert').textContent = 'Geçerli';
 
       document.getElementById('verify-results').scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      if (typeof grecaptcha !== 'undefined' && grecaptcha.reset) {
-        grecaptcha.reset();
-      }
     });
   </script>
 
