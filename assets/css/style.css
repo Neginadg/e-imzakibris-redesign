@@ -2467,6 +2467,22 @@ time {
   .section-title { font-size: 26px; }
 
   .mobile-nav__cta { flex-direction: column; }
+
+  .about-hero__inner { grid-template-columns: 1fr; gap: 28px; }
+  .about-hero__inner > * { min-width: 0; }
+  .about-stat-box { display: none; }
+
+  .product-hero__inner { grid-template-columns: 1fr; }
+  .product-hero__dark { padding-right: 0; }
+  .product-hero__light { padding-left: 0; }
+
+  .page-hero__inner { grid-template-columns: 1fr; }
+  .page-hero__inner > * { min-width: 0; }
+
+  .product-feature-row > * { min-width: 0; }
+  .about-mission-grid > * { min-width: 0; }
+  .about-dark-grid > * { min-width: 0; }
+  .about-values-grid > * { min-width: 0; }
 }
 
 @media (max-width: 1024px) and (min-width: 641px) {
