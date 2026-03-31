@@ -2748,6 +2748,15 @@ time {
   color: rgba(255, 255, 255, .75);
 }
 
+.product-banner--molohiya {
+  background-image:
+    linear-gradient(120deg, rgba(10, 10, 10, .78), rgba(10, 10, 10, .56)),
+    url("../img/molohiya2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .price-pill-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
