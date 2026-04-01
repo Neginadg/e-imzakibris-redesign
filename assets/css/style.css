@@ -2757,6 +2757,16 @@ time {
   background-repeat: no-repeat;
 }
 
+.product-banner--esignature {
+  height: 380px;
+  background-image:
+    linear-gradient(120deg, rgba(10, 10, 10, .78), rgba(10, 10, 10, .56)),
+    url("../img/e.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .price-pill-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -2780,6 +2790,21 @@ time {
   min-height: 0;
   object-fit: contain;
   border-radius: 20px;
+}
+
+.page-hero--contact.page-hero--timestamp .page-hero__inner {
+  align-items: stretch;
+}
+
+.page-hero--contact.page-hero--timestamp .page-hero__media {
+  display: flex;
+  align-items: stretch;
+}
+
+.page-hero--contact.page-hero--timestamp .timestamp-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .timestamp-banner-section {
@@ -4043,6 +4068,8 @@ body.page-news { background: #fafaf8; }
   .news-masthead__title   { font-size: 64px; letter-spacing: -2.5px; }
   .news-featured__grid    { grid-template-columns: 1fr; }
   .news-cards-grid        { grid-template-columns: 1fr 1fr; }
+
+  .product-banner--esignature { height: 320px; }
 }
 
 @media (max-width: 640px) {
@@ -4060,6 +4087,10 @@ body.page-news { background: #fafaf8; }
   .news-cards-grid        { grid-template-columns: 1fr; }
 
   .product-banner--horizontal .price-pill-list { grid-template-columns: 1fr; }
+  .product-banner--esignature {
+    height: auto;
+    min-height: 280px;
+  }
   .page-hero--product .page-hero__media--image {
     padding: 14px;
   }
