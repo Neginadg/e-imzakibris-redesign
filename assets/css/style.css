@@ -2636,8 +2636,7 @@ time {
 }
 
 .value-card i,
-.contact-card i,
-.highlight-card i {
+.contact-card i {
   width: 42px;
   height: 42px;
   border-radius: 12px;
@@ -2687,7 +2686,8 @@ time {
 }
 
 .product-banner {
-  background: #101010;
+  background: #9b2c2a;
+  background: linear-gradient(2deg, rgba(89, 20, 19, 1) 0%, rgba(15, 15, 15, 1) 67%);
   color: #fff;
   border-radius: 24px;
   padding: 30px;
