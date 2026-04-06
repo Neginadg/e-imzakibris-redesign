@@ -1,0 +1,551 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>İmzayı Doğrula - Otomatik Giriş (Görünmez)</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+  <!-- Bootstrap 3 (Sekmeleri korumak için) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
+  <!-- Font Awesome (opsiyonel) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+   <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0; /* Removed default padding */
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+	h2 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    label {
+      font-weight: bold;
+	
+    }
+	
+    input[type="file"], select, button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eef;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .error {
+      color: red;
+    }
+    .success {
+      color: green;
+    }
+
+    /* General Header Styles */
+    .header_top {
+      background-color: #fff; /* White background */
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      width: 100%; /* Full width */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    .header_inner {
+      max-width: 1200px; /* Adjusted width for larger screens */
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo Styles */
+    .logo img {
+      height: 50px; /* Adjust logo size */
+	  display:flex;
+    }
+
+    /* Navigation Styles */
+    nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      position: relative;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333; /* Dark text color */
+      font-weight: bold;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    nav ul li a:hover {
+      color: #e60000; /* Highlight color on hover */
+    }
+
+    /* Dropdown Styles */
+    nav ul li ul {
+      display: none; /* Hide dropdown by default */
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    nav ul li:hover ul {
+      display: block; /* Show dropdown on hover */
+    }
+
+    nav ul li ul li {
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li ul li a {
+      display: block;
+      padding: 8px 20px;
+      color: #333;
+    }
+
+    nav ul li ul li a:hover {
+      background: #f8f8f8;
+      color: #e60000; /* Highlight dropdown links */
+    }
+
+    /* Clearfix */
+    .cl {
+      clear: both;
+    }
+
+/* Ana container */
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 24px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+    }
+    .form-horizontal {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label.control-label {
+      font-weight: bold;
+      color: #333;
+    }
+    input[type="file"], select, input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      margin-right: 5px;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    .btn {
+      background-color: #6c757d;
+      color: white;
+      margin-right: 5px;
+    }
+    .btn:hover {
+      background-color: #5a6268;
+    }
+
+    /* Result Area - Sekmelerin basılacağı yer */
+    #resultArea {
+      margin-top: 20px;
+      min-height: 300px;
+      background: #f1f1f1;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .error {
+      color: red;
+    }
+    /* Footer */
+    footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #ddd;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    footer .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    footer .footer-inner a {
+      color: #666; 
+      text-decoration: none;
+    }
+/* Gizlediğimiz login form (arkada) */
+    #hiddenLoginForm {
+      display: none; 
+      /* Gerekirse debug için block yapabilirsiniz */
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- ÜST KISIM / HEADER -->
+  <div class="header_top">
+	  <div class="header_inner">
+		<!-- Logo -->
+		<a class="logo" href="https://e-imzakibris.com">
+		  <img src="https://e-imzakibris.com/images/logo.png" alt="e-imza Kıbrıs">
+		</a>
+    
+		<!-- Top Menu -->
+		<nav>
+		  <ul id="navigation">
+			<li class="drop">
+			  <a href="https://e-imzakibris.com"><span><i class="fa fa-home" style="font-size: 23px;"></i></span></a>
+			</li>
+			<li class="drop" id="1095">
+			  <a href="javascript:void(0)"><span>ÜRÜNLERİMİZ</span></a>
+			  <ul>
+				<li id="1289"><a href="https://e-imzakibris.com/products/esignature/?lang=tr"><span>Elektronik İmza</span></a></li>
+				<li id="1103"><a href="https://e-imzakibris.com/products/esignaturesoftwarelibraries/?lang=tr"><span>Güvenli Elektronik İmza Yazılım Kütüphaneleri</span></a></li>
+				<li id="1121"><a href="https://e-imzakibris.com/products/molohiya/?lang=tr"><span>MOlOhiya</span></a></li>
+				<li id="1614"><a href="https://e-imzakibris.com/products/timestamp/?lang=tr"><span>Zaman Damgası</span></a></li>
+				<li id="1128"><a href="https://e-imzakibris.com/products/einvoiceintegrationsolution/?lang=tr"><span>E-fatura e-imza Entegrasyonu</span></a></li>
+			  </ul>
+			</li>
+			<li class="drop" id="1142">
+			  <a href="javascript:void(0)"><span>HİZMETLERİMİZ</span></a>
+			  <ul>
+				<li id="1143"><a href="https://e-imzakibris.com/services/identitycontrolinstallation/?lang=tr"><span>Adreste Kimlik Kontrolü</span></a></li>
+				<li id="1144"><a href="https://e-imzakibris.com/services/education/?lang=tr"><span>Eğitim Hizmetlerimiz</span></a></li>
+				<li id="1145"><a href="https://e-imzakibris.com/services/consultancy/?lang=tr"><span>Danışmanlık Hizmetlerimiz</span></a></li>
+			  </ul>
+			</li>
+			<li class="drop" id="1156">
+			  <a href="javascript:void(0)"><span>BİLGİ BANKASI</span></a>
+			  <ul>
+				<li id="1197"><a href="https://e-imzakibris.com/databank/certificates/?lang=tr"><span>Kök Sertifikalar</span></a></li>
+				<li id="1689"><a href="https://e-imzakibris.com/databank/canceledcertificates/?lang=tr"><span>Sertifika İptal Listeleri</span></a></li>
+				<li id="1375"><a href="https://e-imzakibris.com/databank/contracts/?lang=tr"><span>Sözleşmeler</span></a></li>
+				<li id="1302"><a href="https://e-imzakibris.com/databank/legislations/?lang=tr"><span>Mevzuat</span></a></li>
+			  </ul>
+			</li>
+			<li class="drop" id="1148">
+			  <a href="javascript:void(0)"><span>DESTEK</span></a>
+			  <ul>
+				<li id="1590"><a href="https://e-imzakibris.com/support/helpdesk/?lang=tr"><span>Yardım Masası</span></a></li>
+				<li id="1203"><a href="https://e-imzakibris.com/support/faq/?lang=tr"><span>Sıkça Sorulan Sorular</span></a></li>
+			  </ul>
+			</li>
+			<li class="drop" id="1063">
+			  <a href="javascript:void(0)"><span>HAKKIMIZDA</span></a>
+			  <ul>
+				<li id="1066"><a href="https://e-imzakibris.com/aboutus/abouteimza/?lang=tr"><span>e-imza KIBRIS Hakkında</span></a></li>
+				<li id="1079"><a href="https://e-imzakibris.com/aboutus/visionmission/?lang=tr"><span>Vizyon ve Misyonumuz</span></a></li>
+			  </ul>
+			</li>
+			<li class="drop" id="1334">
+			  <a href="https://e-imzakibris.com/contact/?lang=tr"><span>İLETİŞİM</span></a>
+			</li>
+		  </ul>
+		</nav>
+		<div class="cl"></div>
+	  </div>
+	</div>
+  <!-- /HEADER -->
+
+  <div class="container">
+    <h2>İmza doğrulama</h2>
+
+    <!-- GİZLİ LOGIN FORM (arka planda) -->
+    <form id="hiddenLoginForm" class="form-horizontal">
+      <input type="text" id="username" value="ananomous" />
+      <input type="password" id="password" value="An17!adv" />
+    </form>
+
+    <!-- VALIDATION FORM (dosya yükleme + sekmeler) -->
+    <form id="validationForm" class="form-horizontal" action="/validation" method="post" enctype="multipart/form-data" style="display:none;">
+      <div class="form-group">
+        <label for="signedFile" class="control-label">İmzalı dosya : *</label>
+        <input id="signedFile" name="signedFile" type="file" value="false">
+      </div>
+
+      <div class="form-group">
+        <label for="originalFile" class="control-label">Orijinal dosya :</label>
+        <input id="originalFile" name="originalFile" type="file" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="validationLevel" class="control-label">Doğrulama düzeyi : *</label>
+        <select id="validationLevel" name="validationLevel" class="form-control input-sm">
+          <option value="BASIC_SIGNATURES">Temel İmzalar için doğrulama süreci</option>
+          <option value="LONG_TERM_DATA">Uzun Vadeli Doğrulama Verilerine Sahip İmzalar</option>
+          <option value="ARCHIVAL_DATA" selected="selected">Arşiv Verili İmzalar (önerilir)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input id="defaultPolicy1" name="defaultPolicy" type="radio" value="true" checked>
+        <label for="defaultPolicy1">İmzaları ve bunların AdES, AdES/QC veya QES olup olmadığını doğrulayın.</label>
+      </div>
+
+      <div class="form-group">
+        <input id="defaultPolicy2" name="defaultPolicy" type="radio" value="false">
+        <label for="defaultPolicy2">Özel doğrulama kısıtlamaları dosyası:</label>
+        <input id="policyFile" name="policyFile" type="file" disabled="disabled" value="">
+      </div>
+
+	  <!-- Add reCAPTCHA -->
+      <div class="form-group">
+        <div class="g-recaptcha" data-sitekey="6LcshqYqAAAAAAo3RxWx83rQ9CyoHqhIPYZsXnRc" data-action="LOGIN"></div>
+      </div>
+	  
+      <div class="form-group">
+        <button id="submitBtn" type="submit" class="btn btn-primary">Doğrula</button>
+        <button type="reset" class="btn">Yeni</button>
+      </div>
+    </form>
+
+    <div id="resultArea">
+      <p>Sonuçlar burada gösterilecek...</p>
+    </div>
+  </div>
+
+  <!-- ALT KISIM / FOOTER -->
+	<footer style="background-color: #f8f9fa; border-top: 1px solid #ddd; padding: 10px 20px; text-align: center; font-size: 14px; color: #666;">
+	  <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+		<div style="display: flex; align-items: center;">
+		  <i class="fas fa-lock" style="margin-right: 5px;"></i>
+		  <a href="https://e-imzakibris.com/privacypolicy" style="color: #666; text-decoration: none;">Gizlilik Politikası</a>
+		</div>
+		<div>
+		  &copy; 2023 Denizler Bilişim Hizmetleri Ltd.
+		</div>
+	  </div>
+	</footer>
+  <!-- /FOOTER -->
+
+  <!-- jQuery (Bootstrap 3 ile çalışır) -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <!-- Bootstrap 3 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+  
+   <!-- JavaScript (Login and Validation logic) -->
+  <script>
+    document.getElementById('validationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (!recaptchaResponse) {
+        alert("Lütfen reCAPTCHA doğrulamasını tamamlayın!");
+        return;
+      }
+
+      const formData = new FormData(this);
+      formData.append('g-recaptcha-response', recaptchaResponse);
+
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+      }).then(response => response.text())
+        .then(data => {
+          document.getElementById('resultArea').innerHTML = data;
+        }).catch(error => console.error('Error:', error));
+    });
+  </script>
+  
+  
+  <script>
+    // DOM yüklendiğinde otomatik login dene:
+    document.addEventListener('DOMContentLoaded', async function() {
+      await autoLogin();
+    });
+
+    // ARKA PLANDA LOGIN
+    async function autoLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const loginResponse = await fetch('/login', {
+          method: 'POST',
+          credentials: 'include',  // session cookie sakla
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            username: username,
+            password: password
+          })
+        });
+
+        if (loginResponse.ok) {
+          console.log('Arka planda giriş başarılı!');
+          // validation formu göster:
+          document.getElementById('validationForm').style.display = 'block';
+          // Giriş başarılı olduktan sonra bir mesaj göstermek isterseniz:
+          // alert('Otomatik giriş yapıldı, form şimdi kullanılabilir');
+        } else {
+          alert('Otomatik giriş başarısız! (Status: ' + loginResponse.status + ')');
+        }
+
+      } catch (err) {
+        console.error(err);
+        alert('Login sırasında hata: ' + err.message);
+      }
+    }
+
+    // Radio butonuna göre policyFile input'unu enable/disable edelim:
+    document.querySelectorAll('input[name="defaultPolicy"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const policyFile = document.getElementById('policyFile');
+        policyFile.disabled = (this.value === 'true');
+      });
+    });
+
+    // VALIDATION FORM SUBMIT
+    document.getElementById('validationForm').addEventListener('submit', async function(e) {
+      e.preventDefault(); 
+      const resultDiv = document.getElementById('resultArea');
+      resultDiv.innerHTML = '<p>İşleniyor...</p>';
+
+      try {
+        const formData = new FormData(this);
+
+        // /validation endpointine session cookie ile (credentials: 'include')
+        const response = await fetch(this.action, {
+          method: 'POST',
+          credentials: 'include',
+          body: formData
+        });
+        const htmlText = await response.text();
+
+        // Gelen HTML'yi parse et
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        // sol menü, navbar vb. silelim
+        const leftMenu = doc.querySelector('.col-md-3');
+        if (leftMenu) leftMenu.remove();
+
+        const navBar = doc.querySelector('nav.navbar');
+        if (navBar) navBar.remove();
+
+        // asıl rapor: .col-md-9
+        const mainContent = doc.querySelector('.col-md-9');
+        if (!mainContent) {
+          resultDiv.innerHTML = 'Aradığımız içerik bulunamadı.<br><br>' + htmlText;
+          return;
+        }
+
+        const tabsMenu = mainContent.querySelector('#tabsResult');
+        const tabsContent = mainContent.querySelector('.tab-content');
+
+        resultDiv.innerHTML = '';
+        
+        if (tabsMenu && tabsContent) {
+          resultDiv.appendChild(tabsMenu);
+          resultDiv.appendChild(tabsContent);
+          initializeTabs();
+        } else {
+          resultDiv.innerHTML = mainContent.innerHTML;
+        }
+
+      } catch (error) {
+        console.error(error);
+        resultDiv.innerHTML = '<p class="error">Hata: ' + error.message + '</p>';
+      }
+    });
+
+    function initializeTabs() {
+      // Bootstrap 3 sekme init
+      $('#tabsResult a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+      });
+      $('.collapse').collapse();
+    }
+  </script>
+</body>
+</html>
+

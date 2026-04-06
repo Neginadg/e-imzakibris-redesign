@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="e-imza KIBRIS iletişim sayfası: adres, telefon, e-posta bilgileri ve hızlı iletişim formu." />
+  <title>İletişim | e-imza KIBRIS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .contact-map__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
+    }
+
+    .contact-map__icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(180, 30, 30, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-map__icon img {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .contact-map__text {
+      display: grid;
+      gap: 3px;
+    }
+
+    .contact-map__text strong {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+      color: #101010;
+    }
+
+    .contact-map__text small {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(17, 17, 17, 0.62);
+    }
+
+    .contact-map {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      grid-column: 1 / -1;
+    }
+
+    .contact-map iframe {
+      border: 0;
+      display: block;
+    }
+
+    .contact-map__frame {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 500px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .contact-map__frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    @media (max-width: 900px) {
+      .contact-map {
+        min-height: 460px;
+      }
+
+      .contact-map iframe {
+        min-height: 400px;
+      }
+
+      .contact-map__frame {
+        min-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body class="inner-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr" class="active">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item">
+                <div>
+                  <strong>Elektronik İmza</strong>
+                  <small>Nitelikli e-imza sertifikası</small>
+                </div>
+              </a>
+              <a href="../products/timestamp.html" class="dropdown__item">
+                <div>
+                  <strong>Zaman Damgası</strong>
+                  <small>Elektronik veriye zaman kanıtı</small>
+                </div>
+              </a>
+              <a href="../products/molohiya.html" class="dropdown__item">
+                <div>
+                  <strong>MOlOhiya</strong>
+                  <small>İmzalama ve doğrulama masaüstü yazılımı</small>
+                </div>
+              </a>
+              <a href="../products/einvoiceintegrationsolution.html" class="dropdown__item">
+                <div>
+                  <strong>E-fatura E-imza Entegrasyonu</strong>
+                  <small>E-fatura webservis entegrasyon çözümü</small>
+                </div>
+              </a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item">
+                <div>
+                  <strong>Yaz&#305;l&#305;m K&uuml;t&uuml;phaneleri</strong>
+                  <small>G&uuml;venli e-imza API &ccedil;&ouml;z&uuml;mleri</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Hızlı ve güvenli başvuru</small>
+                </div>
+              </a>
+              <a href="../support/renewal.html" class="dropdown__item">
+                <div>
+                  <strong>Yenileme</strong>
+                  <small>Mevcut sertifikanızı yenileyin</small>
+                </div>
+              </a>
+              <a href="../support/verify.html" class="dropdown__item">
+                <div>
+                  <strong>İmza Doğrulama</strong>
+                  <small>Elektronik imzaları doğrulayın</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../index.html#what-is" class="dropdown__item">
+                <div>
+                  <strong>e-imza Nedir?</strong>
+                  <small>Elektronik imza hakkında</small>
+                </div>
+              </a>
+              <a href="../index.html#use-cases" class="dropdown__item">
+                <div>
+                  <strong>Nerelerde Kullanılır?</strong>
+                  <small>Kullanım alanları</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
+                <div>
+                  <strong>Online Başvuru</strong>
+                  <small>Başvurunuzu oluşturun</small>
+                </div>
+              </a>
+              <a href="../assets/docs/93eiy2007.pdf" class="dropdown__item" target="_blank">
+                <div>
+                  <strong>93/2007 Sayılı Yasa</strong>
+                  <small>Elektronik İmza Yasası</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item">
+                <div>
+                  <strong>Şirket Hakkında</strong>
+                  <small>Denizler Bilişim Hizmetleri</small>
+                </div>
+              </a>
+              <a href="../about/news.html" class="dropdown__item">
+                <div>
+                  <strong>Haberler</strong>
+                  <small>Son gelişmeler</small>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item active">
+            <a href="index.html" class="nav-link">İLETİŞİM</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav__list">
+      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="../products/esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
+      <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="../support/verify.html">İmza Doğrulama</a></li>
+      <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
+      <li><a href="../support/onlineapplication.html">DESTEK</a></li>
+      <li><a href="../about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="index.html">İLETİŞİM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="page-hero page-hero--contact page-hero--timestamp">
+      <div class="container page-hero__inner">
+        <div class="page-hero__content" data-animate="fade-up">
+          <div class="section-tag">İletişim</div>
+          <h1 class="page-hero__title">Sorularınız İçin Buradayız</h1>
+          <p class="page-hero__desc">
+            Başvuru süreçleri, sertifika paketleri ve teknik destek konularında bizimle doğrudan
+            iletişime geçebilirsiniz. Ekibimiz en kısa sürede size geri dönüş yapar.
+          </p>
+          <div class="page-hero__actions">
+            <a href="tel:+903922280960" class="btn btn--primary btn--lg">Hemen Ara</a>
+            <a href="mailto:info@e-imzakibris.com" class="btn btn--outline btn--lg">E-Posta Gönder</a>
+          </div>
+          <div class="page-hero__facts">
+            <div><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</div>
+            <div><i class="fa-solid fa-mobile-screen"></i> +90 (548) 866 22 79</div>
+            <div><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</div>
+          </div>
+        </div>
+
+        <div class="page-hero__media timestamp-hero-media" data-animate="fade-left">
+          <img src="../assets/img/contact.png" alt="Iletisim gorseli" class="timestamp-hero-image" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container contact-layout">
+        <div class="contact-card-grid" data-animate="fade-up">
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/location.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Adres</h4>
+            <p>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/phone.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Telefon</h4>
+            <p><a href="tel:+903922280960">+90 (392) 228 09 60</a></p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/mobile.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Cep Telefonu</h4>
+            <p><a href="tel:+905488662279">+90 (548) 866 22 79</a></p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/mail.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>E-posta</h4>
+            <p><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></p>
+          </article>
+          <article class="contact-card">
+            <span class="contact-card__icon"><img src="../assets/img/fax.svg" alt="" style="width:22px;height:22px;min-width:22px;max-width:22px;display:block;" /></span>
+            <h4>Fax</h4>
+            <p>+90 392 228 32 76</p>
+          </article>
+        </div>
+
+        <div class="contact-form-surface" data-animate="fade-up">
+          <div class="section-tag">İletişim Formu</div>
+          <h2 class="section-title" style="text-align:left;margin-bottom:8px;">Mesaj Gönderin</h2>
+          <p class="section-subtitle" style="text-align:left;margin-bottom:20px;">Formu doldurun, size en kısa sürede geri dönüş yapalım.</p>
+
+          <form class="contact-form-grid" action="mailto:info@e-imzakibris.com" method="post" enctype="text/plain">
+            <label class="field">
+              <span>İsim & Soyisim *</span>
+              <input type="text" name="isim_soyisim" required />
+            </label>
+
+            <label class="field">
+              <span>Telefon Numarası</span>
+              <input type="tel" name="telefon" />
+            </label>
+
+            <label class="field field--full">
+              <span>E-posta *</span>
+              <input type="email" name="eposta" required />
+            </label>
+
+            <label class="field field--full">
+              <span>Konu</span>
+              <input type="text" name="konu" />
+            </label>
+
+            <label class="field field--full">
+              <span>Mesaj *</span>
+              <textarea name="mesaj" rows="6" required></textarea>
+            </label>
+
+            <div class="field field--full" style="margin-top:4px;">
+              <button type="submit" class="btn btn--primary btn--lg" style="width:100%;justify-content:center;">
+                <i class="fa-solid fa-paper-plane"></i> GÖNDER
+              </button>
+            </div>
+          </form>
+
+          <p style="font-size:12px;color:var(--color-text-muted);margin-top:14px;">
+            Not: Statik site yapısı nedeniyle form, varsayılan e-posta uygulamanızı açar.
+          </p>
+        </div>
+
+        <div class="contact-map" data-animate="fade-up">
+          <div class="contact-map__header">
+            <span class="contact-map__icon"><img src="../assets/img/location.svg" alt="Konum" /></span>
+            <div class="contact-map__text">
+              <strong>Bizi Burada Bulabilirsiniz</strong>
+              <small>Ofis konumumuzu harita uzerinden inceleyin.</small>
+            </div>
+          </div>
+          <div class="contact-map__frame">
+            <iframe
+              src="https://maps.google.com/maps?q=Denizler+Bilisim+Hizmetleri+Lefkosa+North+Cyprus&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Denizler Bilişim Harita">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-banner__inner">
+        <div class="cta-banner__text">
+          <h2>Hızlı Başvuru İçin Online Formu Kullanın</h2>
+          <p>Paketinizi seçin, başvurunuzu tamamlayın ve süreç hakkında destek alın.</p>
+        </div>
+        <div class="cta-banner__actions">
+          <a href="../support/onlineapplication.html" class="btn btn--white btn--lg">Online Başvuru</a>
+          <a href="../products/esignature.html" class="btn btn--outline-white btn--lg">Ürünü İncele</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo">
+          <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" />
+        </a>
+        <p>
+          Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza
+          hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
+        </p>
+        <div class="footer__cert">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>ISO/IEC 27001:2017 Sertifikalı</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Ürünler &amp; Hizmetler</h4>
+        <ul>
+          <li><a href="../products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="../support/onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="../support/renewal.html">Yenileme Başvurusu</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Bilgi Bankası</h4>
+        <ul>
+          <li><a href="../index.html#what-is">e-imza Nedir?</a></li>
+          <li><a href="../index.html#use-cases">Nerelerde Kullanılır?</a></li>
+          <li><a href="../assets/docs/93eiy2007.pdf" target="_blank">93/2007 Sayılı Yasa</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li><i class="fa-solid fa-location-dot"></i><span>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal/Lefkoşa/Kuzey Kıbrıs</span></li>
+          <li><i class="fa-solid fa-phone"></i><a href="tel:+903922280960">+90 (392) 228 09 60</a></li>
+          <li><i class="fa-solid fa-mobile-screen"></i><a href="tel:+905488662279">+90 (548) 866 22 79</a></li>
+          <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="../privacypolicy.html">Gizlilik Politikası</a>
+          <a href="index.html">İletişim</a>
+          <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,919 @@
+﻿ <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="cmsmasters responsive html5 website template" />
+	<meta name="keywords" content="html5, css3, template, responsive, adaptive" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/esign.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/styles/fonts.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:regular,italic,bold,bolditalic" type="text/css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic"  type="text/css" />
+	<link rel="stylesheet" href="/css/styles/jquery.prettyPhoto.css" type="text/css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="/css/styles/jquery.cmsmsRevolutionSlider.css" media="screen" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+	<script src="/scripts/modernizr.custom.all.js" type="text/javascript"></script>
+	<script src="/scripts/respond.js" type="text/javascript"></script>
+	<script src="/scripts/jquery.min.js" type="text/javascript"></script>
+	<script src="/scripts/jquery.easing.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/scripts/jquery.cmsmsRevolutionSlider.plugin.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.cmsmsRevolutionSlider.min.js"></script>		
+
+	<!--
+	[if lt IE 9]>
+		<link rel="stylesheet" href="/css/styles/ie.css" type="text/css" />
+		<link rel="stylesheet" href="/css/styles/ie_css3.css" type="text/css" media="screen" />
+	<![endif]-->
+
+	<!-- Script For Menu Hint -->
+	<link type="text/css" href="/css/atooltip.css" rel="stylesheet"  media="screen" />
+	<script type="text/javascript" src="/scripts/jquery.atooltip.js"></script>
+	<script type="text/javascript">
+		$(function(){ 
+			$('a.normalTip').aToolTip();			
+			$('a.fixedTip').aToolTip({
+				fixed: true
+			});
+			
+			$('a.clickTip').aToolTip({
+				clickIt: true,
+				tipContent: 'Hello I am aToolTip with content from the "tipContent" param'
+			});		
+			
+			$('a.callBackTip').aToolTip({
+				clickIt: true,
+				onShow: function(){alert('I fired OnShow')},
+				onHide: function(){alert('I fired OnHide')}
+			});
+		}); 
+	</script>
+	<!-- ==================== -->
+	
+	<title>
+		KKTC - Elektronik İmza
+	</title>
+</head>
+<body>
+
+<section id="page">
+	<a href="#" id="slide_top"></a>
+	<!--
+	<div class="social_block">
+		<!-- ******* Social Media ******* -->
+		<!--<ul><li><a href="https://www.facebook.com/" target="_blank"><img alt="Facebook" src="/media/1001/facebook.png" /><span>Facebook</span></a></li><li><a href="https://www.instagram.com/" target="_blank"><img alt="Instagram" src="/media/1007/instagram.png" /><span>Instagram</span></a></li><li><a href="https://twitter.com/" target="_blank"><img alt="Twitter" src="/media/1008/twitter.png" /><span>Twitter</span></a></li></ul>
+		<a class="social_toggle" href="#">
+			<span></span>
+		</a>
+	</div>
+	-->
+	<header id="header">
+		<div class="header_top">
+			<div class="header_inner">
+				<!-- ******* Logo ******* -->
+				<a class="logo" href="/?lang=tr"><img src="/images/logo.png" alt=""></a>
+				<a class="resp_navigation" href="javascript:void(0);">
+					<span></span>
+				</a>				
+				<!-- ******* Top Menu ******* -->
+				<nav><ul id="navigation">
+    <li class="drop"><a href="/"><span><i class="fa fa-home" style="font-size: 23px;"></i></span></a></li>
+    <li class="drop" id="1095"><a href="javascript:void(0)"><span>ÜRÜNLERİMİZ</span></a><ul>
+        <li id="1289"><a href="/products/esignature/?lang=tr"><span>Elektronik İmza</span></a></li>
+        <li id="1103"><a href="/products/esignaturesoftwarelibraries/?lang=tr"><span>Güvenli Elektronik İmza Yazılım Kütüphaneleri</span></a></li>
+        <li id="1121"><a href="/products/molohiya/?lang=tr"><span>MOlOhiya</span></a></li>
+        <li id="1614"><a href="/products/timestamp/?lang=tr"><span>Zaman Damgası</span></a></li>
+        <li id="1128"><a href="/products/einvoiceintegrationsolution/?lang=tr"><span>E-fatura E-imza Entegrasyonu</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1142"><a href="javascript:void(0)"><span>HİZMETLERİMİZ</span></a><ul>
+        <li id="1970"><a href="/services/sigdocverification/?lang=tr"><span>İmza / Belge Doğrulama</span></a></li>
+        <li id="1143"><a href="/services/identitycontrolinstallation/?lang=tr"><span>Adreste Kimlik Kontrolü</span></a></li>
+        <li id="1144"><a href="/services/education/?lang=tr"><span>Eğitim Hizmetlerimiz</span></a></li>
+        <li id="1145"><a href="/services/consultancy/?lang=tr"><span>Danışmanlık Hizmetlerimiz</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1156"><a href="javascript:void(0)"><span>BİLGİ BANKASI</span></a><ul>
+        <li id="1197"><a href="/databank/certificates/?lang=tr"><span>Kök Sertifikalar</span></a></li>
+        <li id="1689"><a href="/databank/canceledcertificates/?lang=tr"><span>Sertifika İptal Listeleri</span></a></li>
+        <li id="1375"><a href="/databank/contracts/?lang=tr"><span>Sözleşmeler</span></a></li>
+        <li id="1302"><a href="/databank/legislations/?lang=tr"><span>Mevzuat</span></a></li>
+        <li id="1340"><a href="/databank/relatedinstitutionlinks/?lang=tr"><span>İlgili Kurum Linkleri</span></a></li>
+        <li id="1345"><a href="/databank/softwares/?lang=tr"><span>Yazılım İndir</span></a></li>
+        <li id="1175"><a href="/databank/principles/?lang=tr"><span>İlkeler</span></a></li>
+        <li id="1327"><a href="/databank/applicationguidelines/?lang=tr"><span>Uygulama Esasları</span></a></li>
+        <li id="1710"><a href="/databank/governmentforms/?lang=tr"><span>Devlet Formları</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1148"><a href="javascript:void(0)"><span>DESTEK</span></a><ul>
+        <li id="1590"><a href="/support/helpdesk/?lang=tr"><span>Yardım Masası</span></a></li>
+        <li id="1203"><a href="/support/faq/?lang=tr"><span>Sıkça Sorulan Sorular</span></a></li>
+        <li id="1380"><a href="/support/onlineapplication/?lang=tr"><span>e-imza - Online Başvuru</span></a></li>
+        <li id="1704"><a href="/support/tsonlineapplication/?lang=tr"><span>Zaman Damgası - Online Başvuru</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1063"><a href="javascript:void(0)"><span>HAKKIMIZDA</span></a><ul>
+        <li id="1066"><a href="/aboutus/abouteimza/?lang=tr"><span>e-imza KIBRIS Hakkında</span></a></li>
+        <li id="1079"><a href="/aboutus/visionmission/?lang=tr"><span>Vizyon ve Misyonumuz</span></a></li>
+        <li id="1080"><a href="/aboutus/humanresources/?lang=tr"><span>İnsan Kaynakları</span></a></li>
+        <li id="1357"><a href="/aboutus/qualitypolicy/?lang=tr"><span>Kalite Politikası</span></a></li>
+        <li id="1358"><a href="/aboutus/knowledgepolicy/?lang=tr"><span>Bilgi Güvenliği Politikası</span></a></li>
+        <li id="1554"><a href="/aboutus/certdocuments/?lang=tr"><span>Belgelerimiz</span></a></li>
+        <li id="1082"><a href="javascript:void(0)"><span>Medya</span></a><ul>
+            <li id="1365"><a href="/aboutus/media/news/?lang=tr"><span>Haberler</span></a></li>
+            <li id="1383"><a href="/aboutus/media/announcements/?lang=tr"><span>Duyurular</span></a></li>
+            <li id="1568"><a href="/aboutus/media/pressreleases/?lang=tr"><span>Basın Bültenleri</span></a></li>
+            <li id="1561"><a href="/aboutus/media/esignpress/?lang=tr"><span>Basında e-imza KIBRIS</span></a></li>
+            <li id="1413"><a href="/aboutus/media/videos/?lang=tr"><span>Videolar</span></a></li>
+          </ul>
+        </li>
+        <li id="1087"><a href="javascript:void(0)"><span>Referanslar</span></a><ul>
+            <li id="1392"><a href="/aboutus/references/sectoralreferences/?lang=tr"><span>Sektörel Referanslar</span></a></li>
+            <li id="1458"><a href="/aboutus/references/ourpartners/?lang=tr"><span>İş Ortaklarımız</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="drop" id="1334"><a href="/contact/?lang=tr"><span>İLETİŞİM</span></a></li>
+  </ul></nav>				
+				<div class="cl"></div>
+			</div>
+		</div>		
+		<div class="header_bottom">
+			<div class="custom_head">
+				<a href="/support/onlineapplication/" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 9px;" class="button fl">
+					<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+						<i class="fa fa-pencil-square-o" style="font-size: 12px; margin-right: 4px;"></i>
+						BAŞVURU
+					</span>
+				</a>
+				<a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 9px; margin-left: 5px;" class="button fl">
+					<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+						<i class="fa fa-pencil-square-o" style="font-size: 12px; margin-right: 4px;"></i>
+						YENİLEME						
+					</span>
+				</a>
+				
+				<!-- ******* Language Flags ******* -->
+				<span style="margin-top: 6px;" class="fr"><a href="/support/onlineapplication/?lang=tr" style="font-size: 16px;">
+			TR
+		</a><span style="font-size: 15px; margin-bottom: 5px;">|</span><a href="/support/onlineapplication/?lang=en" style="font-size: 16px;">
+			EN
+		</a><span style="font-size: 15px;">|</span><a href="/support/onlineapplication/?lang=ru" style="font-size: 16px;">
+			RU
+		</a></span>
+			</div>			
+		</div>
+	</header>	
+	<div class="container">			
+		<!-- ******* Start Page Content (All Page) ******* -->
+  		
+	<link rel="stylesheet" href="/css/all.css" type="text/css" media="screen" />
+	
+	<script type="text/javascript">
+		function isNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				return false;
+			}
+			return true;
+		}
+		
+		function isPhoneNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 43) {
+				return false;
+			}
+			return true;
+		}
+	</script>
+	
+	<div class="container">
+		<section id="middle">
+			<div class="middle_inner">
+				<div class="headline">			
+					<h3>
+						<i class="fa fa-pencil-square-o" style="margin-right: 5px; color: #ffcb1f"></i>
+						e-imza - Online Başvuru
+					</h3>
+				</div>
+				<form method="post" action="/support/onlineapplication/?lang=tr" id="ctl03">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['ctl03'];
+if (!theForm) {
+    theForm = document.ctl03;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZE2ZqrY_y8YJEZfvuiwjtPDrcmaw0M7C357xiKLqzORgs_mpFTCdd5SQYmbk631lMA2&amp;t=638901289900000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=uHIkleVeDJf4xS50Krz-yLjsveiFyJaoNtfX3rzyvE9MKVr-wn3xvMgdJnun9iNczI7uhGKTMwupEGzO8oT4wJd2y0QvOe6Oc9eKq4vTN_CFwNJmyShy1zAay95Z1K-Pq8l4qTgXMmFv5oB57r4qrKdPFIztamZyVIgR1wpMwbs1&amp;t=5c0e0825" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Jw6tUGWnA15YEa3ai3FadPB8uvUaqfDMvH6x0ylj-K0pZu4vbuJq21fnW0FHi8bZ3D4r7OFaY7bJiTXsrtU-Na8wy7guwru4_ZLqrK2XKTCs1lGwYcsEx1JExn6uHg1SyFUsuZoNA4cM1ilRRp9L_qx-bQZSaQmTTGhSaH4Ii3w1&amp;t=5c0e0825" type="text/javascript"></script>
+					<div id="CpAll_OnlineApplication_8_OnlineApplicationUpdatePanel">
+	
+		<div id="CpAll_OnlineApplication_8_updateProgress" style="display:none;">
+		
+				<div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.5;">
+					<img id="CpAll_OnlineApplication_8_imgUpdateProgress" title="Loading ..." src="../../images/loading.gif" alt="Loading ..." style="width:125px;padding: 10px;position:fixed;top:45%;left:46%;" />
+				</div>
+			
+	</div>
+		<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$CpAll$OnlineApplication_8$ScriptManager1', 'ctl03', ['tctl00$ctl00$CpAll$OnlineApplication_8$OnlineApplicationUpdatePanel','CpAll_OnlineApplication_8_OnlineApplicationUpdatePanel'], [], [], 90, 'ctl00$ctl00');
+	//]]>
+</script>
+	
+						
+		<section style="margin-top: 30px; margin-bottom: 40px;">
+			<div class="one_third" style="padding-bottom: 15px;">
+				<table class="table" style="width: 100%;">
+					<tr style="border-bottom: 2px solid #F7C20F;">
+						<td colspan="3" style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 13px 0 12px 0px; background-color: #ffcb1f;">
+							<i class="fa fa-shopping-cart" style="font-size: 19px; margin-right: 5px;"></i>
+							SEPETİM
+						</td>								
+					</tr>							
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							1.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Elektronik Sertifika
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblElectronicCertificate">2,650.00</span> ₺
+						</td>								
+					</tr>
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							2.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Akıllı Çubuk
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblEtoken">1,875.00</span> ₺
+						</td>								
+					</tr>
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							3.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Uzak Bağlantılı Kurulum
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblInstallation">0.00</span> ₺
+						</td>								
+					</tr>					
+					<tr>
+						<td width="63%" colspan="2" style="font-size: 14px; color: #610B0B; font-weight: bold; background-color: #F2F2F2; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 10px 0 9px 20px;">
+							KDV DAHİL TOPLAM TUTAR
+						</td>
+						<td width="37%" style="color: #610B0B; font-weight: bold; background-color: #F2F2F2; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblTotalAmountWithVAT">5,249.00</span> ₺
+						</td>								
+					</tr>
+				</table>												
+			</div>
+
+            <div class="two_third last">
+				
+				<div id="CpAll_OnlineApplication_8_pnlStep2">
+							
+					<table class="table" style="width: 100%;">
+						<tr style="border-bottom: 2px solid #F7C20F;">
+							<td style="background-color: #F2F2F2; font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 13px 0px 12px 0px;">
+								<i class="fa fa-user" style="font-size: 19px; margin-right: 5px;"></i>
+								Kimlik Bilgileri
+							</td>								
+						</tr>								
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 20px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Adı / Soyadı *</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtFullName" type="text" maxlength="70" id="CpAll_OnlineApplication_8_txtFullName" tabindex="1" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Uyruk *</label>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlNationality" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$ddlNationality\&#39;,\&#39;\&#39;)&#39;, 0)" id="CpAll_OnlineApplication_8_ddlNationality" tabindex="2" style="font-size: 15px; width: 100%;">
+			<option selected="selected" value="-1">- L&#252;tfen Uyruk Se&#231;iniz -</option>
+			<option value="KKTC">KKTC</option>
+			<option value="Diğer">Diğer</option>
+
+		</select>
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<span id="CpAll_OnlineApplication_8_lblIDPassport">Kimlik No *</span>
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtIDCardNo" type="text" maxlength="10" id="CpAll_OnlineApplication_8_txtIDCardNo" tabindex="3" style="font-size: 15px; width: 100%;" />
+									
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Doğum Tarihi *</label>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlBirthDateDay" id="CpAll_OnlineApplication_8_ddlBirthDateDay" tabindex="4" style="font-size: 15px; width: 70px; height: 38px; margin-right: 3px;">
+			<option selected="selected" value="-1">- G&#252;n -</option>
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			<option value="05">05</option>
+			<option value="06">06</option>
+			<option value="07">07</option>
+			<option value="08">08</option>
+			<option value="09">09</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+			<option value="13">13</option>
+			<option value="14">14</option>
+			<option value="15">15</option>
+			<option value="16">16</option>
+			<option value="17">17</option>
+			<option value="18">18</option>
+			<option value="19">19</option>
+			<option value="20">20</option>
+			<option value="21">21</option>
+			<option value="22">22</option>
+			<option value="23">23</option>
+			<option value="24">24</option>
+			<option value="25">25</option>
+			<option value="26">26</option>
+			<option value="27">27</option>
+			<option value="28">28</option>
+			<option value="29">29</option>
+			<option value="30">30</option>
+			<option value="31">31</option>
+
+		</select>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlBirthDateMonth" id="CpAll_OnlineApplication_8_ddlBirthDateMonth" tabindex="5" style="font-size: 15px; width: 90px; height: 38px; margin-right: 3px;">
+			<option selected="selected" value="-1">- Ay -</option>
+			<option value="01">Ocak</option>
+			<option value="02">Şubat</option>
+			<option value="03">Mart</option>
+			<option value="04">Nisan</option>
+			<option value="05">Mayıs</option>
+			<option value="06">Haziran</option>
+			<option value="07">Temmuz</option>
+			<option value="08">Ağustos</option>
+			<option value="09">Eyl&#252;l</option>
+			<option value="10">Ekim</option>
+			<option value="11">Kasım</option>
+			<option value="12">Aralık</option>
+
+		</select>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlBirthDateYear" id="CpAll_OnlineApplication_8_ddlBirthDateYear" tabindex="6" style="font-size: 15px; width: 90px; height: 38px;">
+			<option selected="selected" value="-1">- Yıl -</option>
+			<option value="2009">2009</option>
+			<option value="2008">2008</option>
+			<option value="2007">2007</option>
+			<option value="2006">2006</option>
+			<option value="2005">2005</option>
+			<option value="2004">2004</option>
+			<option value="2003">2003</option>
+			<option value="2002">2002</option>
+			<option value="2001">2001</option>
+			<option value="2000">2000</option>
+			<option value="1999">1999</option>
+			<option value="1998">1998</option>
+			<option value="1997">1997</option>
+			<option value="1996">1996</option>
+			<option value="1995">1995</option>
+			<option value="1994">1994</option>
+			<option value="1993">1993</option>
+			<option value="1992">1992</option>
+			<option value="1991">1991</option>
+			<option value="1990">1990</option>
+			<option value="1989">1989</option>
+			<option value="1988">1988</option>
+			<option value="1987">1987</option>
+			<option value="1986">1986</option>
+			<option value="1985">1985</option>
+			<option value="1984">1984</option>
+			<option value="1983">1983</option>
+			<option value="1982">1982</option>
+			<option value="1981">1981</option>
+			<option value="1980">1980</option>
+			<option value="1979">1979</option>
+			<option value="1978">1978</option>
+			<option value="1977">1977</option>
+			<option value="1976">1976</option>
+			<option value="1975">1975</option>
+			<option value="1974">1974</option>
+			<option value="1973">1973</option>
+			<option value="1972">1972</option>
+			<option value="1971">1971</option>
+			<option value="1970">1970</option>
+			<option value="1969">1969</option>
+			<option value="1968">1968</option>
+			<option value="1967">1967</option>
+			<option value="1966">1966</option>
+			<option value="1965">1965</option>
+			<option value="1964">1964</option>
+			<option value="1963">1963</option>
+			<option value="1962">1962</option>
+			<option value="1961">1961</option>
+			<option value="1960">1960</option>
+			<option value="1959">1959</option>
+			<option value="1958">1958</option>
+			<option value="1957">1957</option>
+			<option value="1956">1956</option>
+			<option value="1955">1955</option>
+			<option value="1954">1954</option>
+			<option value="1953">1953</option>
+			<option value="1952">1952</option>
+			<option value="1951">1951</option>
+			<option value="1950">1950</option>
+			<option value="1949">1949</option>
+			<option value="1948">1948</option>
+			<option value="1947">1947</option>
+			<option value="1946">1946</option>
+			<option value="1945">1945</option>
+			<option value="1944">1944</option>
+			<option value="1943">1943</option>
+			<option value="1942">1942</option>
+			<option value="1941">1941</option>
+			<option value="1940">1940</option>
+			<option value="1939">1939</option>
+			<option value="1938">1938</option>
+			<option value="1937">1937</option>
+			<option value="1936">1936</option>
+			<option value="1935">1935</option>
+			<option value="1934">1934</option>
+			<option value="1933">1933</option>
+			<option value="1932">1932</option>
+			<option value="1931">1931</option>
+			<option value="1930">1930</option>
+			<option value="1929">1929</option>
+			<option value="1928">1928</option>
+			<option value="1927">1927</option>
+			<option value="1926">1926</option>
+			<option value="1925">1925</option>
+			<option value="1924">1924</option>
+			<option value="1923">1923</option>
+			<option value="1922">1922</option>
+			<option value="1921">1921</option>
+			<option value="1920">1920</option>
+			<option value="1919">1919</option>
+			<option value="1918">1918</option>
+			<option value="1917">1917</option>
+			<option value="1916">1916</option>
+			<option value="1915">1915</option>
+			<option value="1914">1914</option>
+			<option value="1913">1913</option>
+			<option value="1912">1912</option>
+			<option value="1911">1911</option>
+			<option value="1910">1910</option>
+			<option value="1909">1909</option>
+			<option value="1908">1908</option>
+			<option value="1907">1907</option>
+			<option value="1906">1906</option>
+			<option value="1905">1905</option>
+			<option value="1904">1904</option>
+			<option value="1903">1903</option>
+			<option value="1902">1902</option>
+			<option value="1901">1901</option>
+			<option value="1900">1900</option>
+
+		</select>
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 12px 12px 12px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Doğum Yeri *</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtBirthPlace" type="text" maxlength="50" id="CpAll_OnlineApplication_8_txtBirthPlace" tabindex="7" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 12px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Mesleki Sicil No</label>
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtProfRegNumber" type="text" maxlength="25" id="CpAll_OnlineApplication_8_txtProfRegNumber" tabindex="17" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+                        <tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: left; padding: 11px 12px 18px 12px;">
+								<span class="check_parent">
+									<input id="CpAll_OnlineApplication_8_ckbLdap" type="checkbox" name="ctl00$ctl00$CpAll$OnlineApplication_8$ckbLdap" tabindex="12" /> <span style="margin-left: 7px; margin-top: -2px;">Sahip olduğum nitelikli elektronik sertifikamı e-imza KIBRIS'IN yayınladığı kamuya açık bir dizinden üçüncü kişilerin erişimine açık olmasına izin veriyorum</span>
+								</span>
+							</td>
+						</tr>						
+					</table>
+					<br/>
+					<table class="table" style="width: 100%;">
+						<tr style="border-bottom: 2px solid #F7C20F;">
+							<td style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 11px 0px 12px 0px;">
+								<i class="fa fa-envelope" style="font-size: 19px; margin-right: 5px;"></i>
+								İletişim ve Teslimat Bilgileri
+							</td>								
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 20px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Şirketi</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtCompany" type="text" maxlength="50" id="CpAll_OnlineApplication_8_txtCompany" tabindex="9" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Görevi</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtPosition" type="text" maxlength="50" id="CpAll_OnlineApplication_8_txtPosition" tabindex="10" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 12px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">E-posta Adresi *</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtEmail" type="text" maxlength="70" id="CpAll_OnlineApplication_8_txtEmail" tabindex="11" style="font-size: 15px; width: 100%;" />									
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: left; padding: 11px 12px 18px 12px;">
+								<span class="check_parent">
+									<input id="CpAll_OnlineApplication_8_ckbAddEmailToCertificate" type="checkbox" name="ctl00$ctl00$CpAll$OnlineApplication_8$ckbAddEmailToCertificate" tabindex="12" /> <span style="margin-left: 7px; margin-top: -2px;">E-posta adresimin sertifika içerisinde görülmesini istiyorum</span>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="100%" style="font-size: 16px; background-color: #F2F2F2; text-align: center; font-weight: bold; color: #585858; padding: 8px 12px 8px 12px;">								
+								İletişim ve Teslimat / Kurulum Adresi
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Adres *</label>									
+									<textarea name="ctl00$ctl00$CpAll$OnlineApplication_8$txtAddress" rows="5" cols="20" id="CpAll_OnlineApplication_8_txtAddress" tabindex="13" style="height: 100px; font-size: 15px; width: 100%;">
+</textarea>								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Bölge *</label>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlRegion" id="CpAll_OnlineApplication_8_ddlRegion" tabindex="14" style="font-size: 15px; width: 100%;">
+			<option selected="selected" value="-1">- L&#252;tfen B&#246;lge Se&#231;iniz -</option>
+			<option value="Lefkoşa">Lefkoşa</option>
+			<option value="Mağusa">Mağusa</option>
+			<option value="Girne">Girne</option>
+			<option value="İskele">İskele</option>
+			<option value="Güzelyurt">G&#252;zelyurt</option>
+			<option value="YURTDIŞI">YURTDIŞI</option>
+
+		</select>
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Telefon Numarası</label>
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtPhoneNumber" type="text" maxlength="15" id="CpAll_OnlineApplication_8_txtPhoneNumber" tabindex="15" onkeypress="return isPhoneNumber(event)" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 23px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Cep Telefon Numarası *</label>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlMobilePhoneCode" id="CpAll_OnlineApplication_8_ddlMobilePhoneCode" tabindex="16" style="font-size: 15px; width: 80px; height: 38px; margin-right: 3px;">
+			<option selected="selected" value="-1">- Kod -</option>
+			<option value="533">0533</option>
+			<option value="539">0539</option>
+			<option value="542">0542</option>
+			<option value="548">0548</option>
+			<option value="546">0546</option>
+
+		</select>
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtMobilePhoneNumber" type="text" maxlength="7" id="CpAll_OnlineApplication_8_txtMobilePhoneNumber" tabindex="16" onkeypress="return isNumber(event)" style="font-size: 15px; width: 200px;" />								
+								</div>
+							</td>									
+						</tr>						
+					</table>
+					<br/>					
+					<table class="table" style="width: 100%;">
+						<tr style="border-bottom: 2px solid #F7C20F;">
+							<td style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 11px 0px 12px 0px;">
+								<i class="fa fa-file-text-o" style="font-size: 19px; margin-right: 5px;"></i>
+								Fatura Bilgilerim
+							</td>								
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: left; padding: 20px 12px 18px 12px;">
+								<span class="check_parent">
+									<input id="CpAll_OnlineApplication_8_ckbInvoiceAddressSame" type="checkbox" name="ctl00$ctl00$CpAll$OnlineApplication_8$ckbInvoiceAddressSame" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$ckbInvoiceAddressSame\&#39;,\&#39;\&#39;)&#39;, 0)" tabindex="18" /> <span style="margin-left: 7px; margin-top: -2px;">Fatura ve İletişim Adresim Aynı</span>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Çalıştığı Kurum</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtCompanyTitle" type="text" maxlength="50" id="CpAll_OnlineApplication_8_txtCompanyTitle" tabindex="19" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>						
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Adres</label>									
+									<textarea name="ctl00$ctl00$CpAll$OnlineApplication_8$txtInvoiceAddress" rows="5" cols="20" id="CpAll_OnlineApplication_8_txtInvoiceAddress" tabindex="20" style="height: 100px; font-size: 15px; width: 100%;">
+</textarea>								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Bölge</label>
+									<select name="ctl00$ctl00$CpAll$OnlineApplication_8$ddlInvoiceRegion" id="CpAll_OnlineApplication_8_ddlInvoiceRegion" tabindex="21" style="font-size: 15px; width: 100%;">
+			<option selected="selected" value="-1">- L&#252;tfen B&#246;lge Se&#231;iniz -</option>
+			<option value="Lefkoşa">Lefkoşa</option>
+			<option value="Mağusa">Mağusa</option>
+			<option value="Girne">Girne</option>
+			<option value="İskele">İskele</option>
+			<option value="Güzelyurt">G&#252;zelyurt</option>
+			<option value="YURTDIŞI">YURTDIŞI</option>
+
+		</select>
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Vergi Numarası</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtTaxNumber" type="text" maxlength="15" id="CpAll_OnlineApplication_8_txtTaxNumber" tabindex="22" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 0px 12px;">
+								<div class="form_info cmsms_input">
+									<label for="contact_name">Vergi Dairesi</label>									
+									<input name="ctl00$ctl00$CpAll$OnlineApplication_8$txtTaxAdministration" type="text" maxlength="50" id="CpAll_OnlineApplication_8_txtTaxAdministration" tabindex="23" style="font-size: 15px; width: 100%;" />								
+								</div>
+							</td>									
+						</tr>
+						<tr>
+							<td width="100%" style="background-color: #F2F2F2; text-align: center; padding: 11px 12px 21px 12px;">
+								<div class="form_info cmsms_input">
+									<input id="CpAll_OnlineApplication_8_rdbDigitalInvoice" type="radio" name="ctl00$ctl00$CpAll$OnlineApplication_8$invoice" value="rdbDigitalInvoice" checked="checked" tabindex="24" /> <span style="margin-left: 7px; margin-top: -2px;">Dijital Fatura</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<input id="CpAll_OnlineApplication_8_rdbPaperInvoice" type="radio" name="ctl00$ctl00$CpAll$OnlineApplication_8$invoice" value="rdbPaperInvoice" tabindex="25" /> <span style="margin-left: 7px; margin-top: -2px;">Kağıt Fatura</span>
+								</div>
+							</td>									
+						</tr>
+					</table>										
+					<span style="color: red; font-weight: bold; font-style: italic;">(*) işaretli alanlar zorunludur!</span>
+					<br/>
+				
+	</div>
+
+                
+
+				<div id="CpAll_OnlineApplication_8_pnlButtons">
+		
+					<div style="float: left; margin-bottom: 15px; margin-top: 15px;">				
+						<a id="CpAll_OnlineApplication_8_btnPrev" class="button" href="javascript:__doPostBack(&#39;ctl00$ctl00$CpAll$OnlineApplication_8$btnPrev&#39;,&#39;&#39;)" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 5px; margin-top: 3px;">
+							<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+								&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-left"></i>&nbsp;&nbsp;GERİ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;							
+							</span>
+						</a>				
+					</div>			
+					<div style="float: right; margin-bottom: 15px; margin-top: 15px;">
+						
+						<a id="CpAll_OnlineApplication_8_btnNext" class="button" href="javascript:__doPostBack(&#39;ctl00$ctl00$CpAll$OnlineApplication_8$btnNext&#39;,&#39;&#39;)" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 5px; margin-top: 3px;">
+							<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">							
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;İLERİ&nbsp;&nbsp;<i class="fa fa-chevron-right"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</a>
+						
+						
+					</div>
+				
+	</div>
+
+                				
+				
+				<span id="CpAll_OnlineApplication_8_lblTemp"></span>
+			</div>
+
+		</section>
+	
+</div>
+				
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":null,"displayAfter":500,"dynamicLayout":true}, null, null, $get("CpAll_OnlineApplication_8_updateProgress"));
+});
+//]]>
+</script>
+</form>
+			</div>			
+		</section>
+	</div>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-85049855-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	
+	<!-- Start of HubSpot Embed Code -->
+	<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/6288508.js"></script>
+	<!-- End of HubSpot Embed Code -->
+		
+		<section id="bottom">
+			<div class="bottom_inner">
+				<!-- ******* Footer News ******* -->
+				<div class="one_fourth" style="margin-bottom: -54px;"><aside class="widget widget_custom_portfolio_entries"><div class="widget_custom_portfolio_entries_container"><a href="/aboutus/media/news/iso27001-belges%C4%B0/?lang=tr"><h3 style="margin-bottom: 2px; font-size: 18px;">ISO 27001 Sertifikası y ...</h3></a><span style="font-size: 12px;"><i class="fa fa-calendar" aria-hidden="true"></i>
+							 
+							<span style="font-size: 12px;">03.05.2021</span></span><p style="margin-top: 7px; text-align: justify;">Denizler Bilişim Hizmetleri Limited,  ISO/IEC 27001:2017 Bilgi Güvenliği Sertifikasını yeniledi,
+Proks Firması tarafından yapılan denetimlerden sonra belgeyi alamya hak kazandı. </p>
+      <div><a href="/aboutus/media/news/iso27001-belges%C4%B0/?lang=tr" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 25px;" class="button fr"><span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+											DAHA FAZLASI
+										<i class="fa fa-chevron-right" style="font-size: 12px; margin-left: 5px;"></i></span></a></div>
+    </div></aside></div>
+<div class="one_fourth" style="margin-bottom: -54px;"><aside class="widget widget_custom_portfolio_entries"><div class="widget_custom_portfolio_entries_container"><a href="/aboutus/media/news/mimarlar-odas%C4%B1-e-vize/?lang=tr"><h3 style="margin-bottom: 2px; font-size: 18px;">Mimarlar Odası,  Mimari ...</h3></a><span style="font-size: 12px;"><i class="fa fa-calendar" aria-hidden="true"></i>
+							 
+							<span style="font-size: 12px;">02.08.2021</span></span><p style="margin-top: 7px; text-align: justify;">Mimarlar Odası, Üyelerinin Mimari Projelerini elektronik Ortamda Vizeleme işlemine başladı. Denizler Bilişim ve CBKSoft ile enVision elektronik Belge, Form ve süreç Yönetim sis ...</p>
+      <div><a href="/aboutus/media/news/mimarlar-odas%C4%B1-e-vize/?lang=tr" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 25px;" class="button fr"><span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+											DAHA FAZLASI
+										<i class="fa fa-chevron-right" style="font-size: 12px; margin-left: 5px;"></i></span></a></div>
+    </div></aside></div>
+				<div class="one_fourth" style="margin-bottom: -40px;">
+					<aside class="widget widget_custom_portfolio_entries">
+						<div class="widget_custom_portfolio_entries_container" style="margin-top: 5px;">
+							<!-- ******* Footer Online Application Link ******* -->
+							<a href="/support/onlineapplication/?lang=tr"><img src="/media/16447/online_application.jpg" alt="" class="fullwidth"></a>
+						</div>
+					</aside>
+				</div>
+				<div class="one_fourth" style="margin-bottom: -40px;">
+					<aside class="widget widget_custom_portfolio_entries">
+						<div class="widget_custom_portfolio_entries_container" style="margin-top: 5px;">
+							<!-- ******* Footer Contact ******* -->
+							<table width="100%">
+  <tr>
+    <td colspan="2" width="100%" style="font-size: 16px; font-weight: bold; color: white; margin-bottom: 10px;">Denizler Bilişim Hizmetleri Ltd.</td>
+  </tr>
+  <tr>
+    <td colspan="2" width="100%" style="font-size: 16px; font-weight: bold; color: white; margin-bottom: 10px;">e-imza KIBRIS</td>
+  </tr>
+  <tr>
+    <td colspan="2" height="8px"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-map-marker" aria-hidden="true" style="font-size: 22px;"></i></td>
+    <td width="90%">Mehmet Ertuğruloğlu Sokak, NO: 10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</td>
+  </tr>
+  <tr>
+    <td height="6px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-phone" aria-hidden="true" style="font-size: 19px;"></i></td>
+    <td width="90%"><a href="tel:+90 (392) 228 09 60">+90 (392) 228 09 60</a></td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-mobile" aria-hidden="true" style="margin-left: 2px; font-size: 25px;"></i></td>
+    <td width="90%"><a href="tel:+90 (548) 866 22 79">+90 (548) 866 22 79</a></td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-fax" aria-hidden="true" style="font-size: 15px;"></i></td>
+    <td width="90%">+90 (392) 228 32 76</td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-envelope" aria-hidden="true" style="font-size: 15px;"></i></td>
+    <td width="90%"><a href="mailto:info@e-imzakibris.com" style="color: #C6C6C6; font-weight: normal;">info@e-imzakibris.com</a></td>
+  </tr>
+</table>
+						</div>
+					</aside>
+				</div>
+			</div>
+		</section>	
+	</div>
+</section>	
+<div style="margin-bottom: 15px; margin-top: -10px;">
+	<div class="custom_head" style="text-align: left;">
+		<span style="margin-top: -8px; margin-bottom: 14px;" class="fl">
+			<a href="/privacypolicy/">
+				<i class="fa fa-lock" aria-hidden="true"></i> Gizlilik Politikası
+			</a> 		
+		</span>
+		<span style="margin-top: -8px;" class="fr">			
+			© 2025 Denizler Bilişim Hizmetleri Ltd.
+			<!--
+			<a href="http://www.linoltd.com/" target="_blank">
+				<img src="/images/Lino_Logo.png" width="75px" />
+			</a>
+			-->
+		</span>
+		<br/>
+		<!--
+		<hr/>
+		<span class="fl" style="vertical-align: middle;">			
+			<a href="javascript:void(0)" class="normalTip exampleTip" title="100% SECURE TRANSACTION">
+				<!--<img src="/images/ssl.png" width="70px" height="27px" border="0" alt="" />-->
+				<!--<span id="siteseal">
+					<script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=tc6gO934M1UmvCo3PnqWqOUqS8u0z3o1nFLt1K9qPvFYhbcZsUFJVjtAN3dt"></script>				</span>
+			</a>			
+			<img src="/images/Credit_Cards.gif" width="235px" border="0" alt="" style="margin-left: 4px;" />
+		</span>
+		<span class="fr">
+			<img src="/images/ESHS.jpg" width="60px" border="0" alt="" />
+			<img src="/images/9001.jpg" width="60px" border="0" alt="" />
+			<img src="/images/27001.jpg" width="60px" border="0" alt="" />
+		</span>-->
+	</div>
+</div>	
+
+<script src="/scripts/jquery.prettyPhoto.js" type="text/javascript"></script>
+<script src="/scripts/jquery.script.js" type="text/javascript"></script>
+<script src="/scripts/jquery.validationEngine.js" type="text/javascript"></script>
+<script src="/scripts/jquery.validationEngine-lang.js" type="text/javascript"></script>
+<script src="/scripts/jquery.jtweetsanywhere.js" type="text/javascript"></script>
+<script type="text/javascript">jQuery(document).ready(function (){
+  if (jQuery.fn.cssOriginal != undefined){
+    jQuery.fn.css = jQuery.fn.cssOriginal;
+  }
+  jQuery('.fullwidthbanner').revolution({
+    delay : 7000, startwidth : 1240, startheight : 545, onHoverStop : 'on', hideThumbs : 0
+    , navigationType : 'bullet', navigationArrows : 'nexttobullets', navigationStyle : 
+    'round', touchenabled : 'on', navOffsetHorizontal : 0, navOffsetVertical : 20, 
+    fullWidth : 'on', shadow : 0
+  }
+  );
+}
+);
+</script>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,592 @@
+﻿ <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="cmsmasters responsive html5 website template" />
+	<meta name="keywords" content="html5, css3, template, responsive, adaptive" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/esign.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/styles/fonts.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:regular,italic,bold,bolditalic" type="text/css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic"  type="text/css" />
+	<link rel="stylesheet" href="/css/styles/jquery.prettyPhoto.css" type="text/css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="/css/styles/jquery.cmsmsRevolutionSlider.css" media="screen" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+	<script src="/scripts/modernizr.custom.all.js" type="text/javascript"></script>
+	<script src="/scripts/respond.js" type="text/javascript"></script>
+	<script src="/scripts/jquery.min.js" type="text/javascript"></script>
+	<script src="/scripts/jquery.easing.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/scripts/jquery.cmsmsRevolutionSlider.plugin.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.cmsmsRevolutionSlider.min.js"></script>		
+
+	<!--
+	[if lt IE 9]>
+		<link rel="stylesheet" href="/css/styles/ie.css" type="text/css" />
+		<link rel="stylesheet" href="/css/styles/ie_css3.css" type="text/css" media="screen" />
+	<![endif]-->
+
+	<!-- Script For Menu Hint -->
+	<link type="text/css" href="/css/atooltip.css" rel="stylesheet"  media="screen" />
+	<script type="text/javascript" src="/scripts/jquery.atooltip.js"></script>
+	<script type="text/javascript">
+		$(function(){ 
+			$('a.normalTip').aToolTip();			
+			$('a.fixedTip').aToolTip({
+				fixed: true
+			});
+			
+			$('a.clickTip').aToolTip({
+				clickIt: true,
+				tipContent: 'Hello I am aToolTip with content from the "tipContent" param'
+			});		
+			
+			$('a.callBackTip').aToolTip({
+				clickIt: true,
+				onShow: function(){alert('I fired OnShow')},
+				onHide: function(){alert('I fired OnHide')}
+			});
+		}); 
+	</script>
+	<!-- ==================== -->
+	
+	<title>
+		KKTC - Elektronik İmza
+	</title>
+</head>
+<body>
+
+<section id="page">
+	<a href="#" id="slide_top"></a>
+	<!--
+	<div class="social_block">
+		<!-- ******* Social Media ******* -->
+		<!--<ul><li><a href="https://www.facebook.com/" target="_blank"><img alt="Facebook" src="/media/1001/facebook.png" /><span>Facebook</span></a></li><li><a href="https://www.instagram.com/" target="_blank"><img alt="Instagram" src="/media/1007/instagram.png" /><span>Instagram</span></a></li><li><a href="https://twitter.com/" target="_blank"><img alt="Twitter" src="/media/1008/twitter.png" /><span>Twitter</span></a></li></ul>
+		<a class="social_toggle" href="#">
+			<span></span>
+		</a>
+	</div>
+	-->
+	<header id="header">
+		<div class="header_top">
+			<div class="header_inner">
+				<!-- ******* Logo ******* -->
+				<a class="logo" href="/?lang=tr"><img src="/images/logo.png" alt=""></a>
+				<a class="resp_navigation" href="javascript:void(0);">
+					<span></span>
+				</a>				
+				<!-- ******* Top Menu ******* -->
+				<nav><ul id="navigation">
+    <li class="drop"><a href="/"><span><i class="fa fa-home" style="font-size: 23px;"></i></span></a></li>
+    <li class="drop" id="1095"><a href="javascript:void(0)"><span>ÜRÜNLERİMİZ</span></a><ul>
+        <li id="1289"><a href="/products/esignature/?lang=tr"><span>Elektronik İmza</span></a></li>
+        <li id="1103"><a href="/products/esignaturesoftwarelibraries/?lang=tr"><span>Güvenli Elektronik İmza Yazılım Kütüphaneleri</span></a></li>
+        <li id="1121"><a href="/products/molohiya/?lang=tr"><span>MOlOhiya</span></a></li>
+        <li id="1614"><a href="/products/timestamp/?lang=tr"><span>Zaman Damgası</span></a></li>
+        <li id="1128"><a href="/products/einvoiceintegrationsolution/?lang=tr"><span>E-fatura E-imza Entegrasyonu</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1142"><a href="javascript:void(0)"><span>HİZMETLERİMİZ</span></a><ul>
+        <li id="1970"><a href="/services/sigdocverification/?lang=tr"><span>İmza / Belge Doğrulama</span></a></li>
+        <li id="1143"><a href="/services/identitycontrolinstallation/?lang=tr"><span>Adreste Kimlik Kontrolü</span></a></li>
+        <li id="1144"><a href="/services/education/?lang=tr"><span>Eğitim Hizmetlerimiz</span></a></li>
+        <li id="1145"><a href="/services/consultancy/?lang=tr"><span>Danışmanlık Hizmetlerimiz</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1156"><a href="javascript:void(0)"><span>BİLGİ BANKASI</span></a><ul>
+        <li id="1197"><a href="/databank/certificates/?lang=tr"><span>Kök Sertifikalar</span></a></li>
+        <li id="1689"><a href="/databank/canceledcertificates/?lang=tr"><span>Sertifika İptal Listeleri</span></a></li>
+        <li id="1375"><a href="/databank/contracts/?lang=tr"><span>Sözleşmeler</span></a></li>
+        <li id="1302"><a href="/databank/legislations/?lang=tr"><span>Mevzuat</span></a></li>
+        <li id="1340"><a href="/databank/relatedinstitutionlinks/?lang=tr"><span>İlgili Kurum Linkleri</span></a></li>
+        <li id="1345"><a href="/databank/softwares/?lang=tr"><span>Yazılım İndir</span></a></li>
+        <li id="1175"><a href="/databank/principles/?lang=tr"><span>İlkeler</span></a></li>
+        <li id="1327"><a href="/databank/applicationguidelines/?lang=tr"><span>Uygulama Esasları</span></a></li>
+        <li id="1710"><a href="/databank/governmentforms/?lang=tr"><span>Devlet Formları</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1148"><a href="javascript:void(0)"><span>DESTEK</span></a><ul>
+        <li id="1590"><a href="/support/helpdesk/?lang=tr"><span>Yardım Masası</span></a></li>
+        <li id="1203"><a href="/support/faq/?lang=tr"><span>Sıkça Sorulan Sorular</span></a></li>
+        <li id="1380"><a href="/support/onlineapplication/?lang=tr"><span>e-imza - Online Başvuru</span></a></li>
+        <li id="1704"><a href="/support/tsonlineapplication/?lang=tr"><span>Zaman Damgası - Online Başvuru</span></a></li>
+      </ul>
+    </li>
+    <li class="drop" id="1063"><a href="javascript:void(0)"><span>HAKKIMIZDA</span></a><ul>
+        <li id="1066"><a href="/aboutus/abouteimza/?lang=tr"><span>e-imza KIBRIS Hakkında</span></a></li>
+        <li id="1079"><a href="/aboutus/visionmission/?lang=tr"><span>Vizyon ve Misyonumuz</span></a></li>
+        <li id="1080"><a href="/aboutus/humanresources/?lang=tr"><span>İnsan Kaynakları</span></a></li>
+        <li id="1357"><a href="/aboutus/qualitypolicy/?lang=tr"><span>Kalite Politikası</span></a></li>
+        <li id="1358"><a href="/aboutus/knowledgepolicy/?lang=tr"><span>Bilgi Güvenliği Politikası</span></a></li>
+        <li id="1554"><a href="/aboutus/certdocuments/?lang=tr"><span>Belgelerimiz</span></a></li>
+        <li id="1082"><a href="javascript:void(0)"><span>Medya</span></a><ul>
+            <li id="1365"><a href="/aboutus/media/news/?lang=tr"><span>Haberler</span></a></li>
+            <li id="1383"><a href="/aboutus/media/announcements/?lang=tr"><span>Duyurular</span></a></li>
+            <li id="1568"><a href="/aboutus/media/pressreleases/?lang=tr"><span>Basın Bültenleri</span></a></li>
+            <li id="1561"><a href="/aboutus/media/esignpress/?lang=tr"><span>Basında e-imza KIBRIS</span></a></li>
+            <li id="1413"><a href="/aboutus/media/videos/?lang=tr"><span>Videolar</span></a></li>
+          </ul>
+        </li>
+        <li id="1087"><a href="javascript:void(0)"><span>Referanslar</span></a><ul>
+            <li id="1392"><a href="/aboutus/references/sectoralreferences/?lang=tr"><span>Sektörel Referanslar</span></a></li>
+            <li id="1458"><a href="/aboutus/references/ourpartners/?lang=tr"><span>İş Ortaklarımız</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="drop" id="1334"><a href="/contact/?lang=tr"><span>İLETİŞİM</span></a></li>
+  </ul></nav>				
+				<div class="cl"></div>
+			</div>
+		</div>		
+		<div class="header_bottom">
+			<div class="custom_head">
+				<a href="/support/onlineapplication/" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 9px;" class="button fl">
+					<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+						<i class="fa fa-pencil-square-o" style="font-size: 12px; margin-right: 4px;"></i>
+						BAŞVURU
+					</span>
+				</a>
+				<a href="https://forms.gle/pQSVjCVDyQPiDrQR8" target="_blank" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 9px; margin-left: 5px;" class="button fl">
+					<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+						<i class="fa fa-pencil-square-o" style="font-size: 12px; margin-right: 4px;"></i>
+						YENİLEME						
+					</span>
+				</a>
+				
+				<!-- ******* Language Flags ******* -->
+				<span style="margin-top: 6px;" class="fr"><a href="/support/onlineapplication/?lang=tr" style="font-size: 16px;">
+			TR
+		</a><span style="font-size: 15px; margin-bottom: 5px;">|</span><a href="/support/onlineapplication/?lang=en" style="font-size: 16px;">
+			EN
+		</a><span style="font-size: 15px;">|</span><a href="/support/onlineapplication/?lang=ru" style="font-size: 16px;">
+			RU
+		</a></span>
+			</div>			
+		</div>
+	</header>	
+	<div class="container">			
+		<!-- ******* Start Page Content (All Page) ******* -->
+  		
+	<link rel="stylesheet" href="/css/all.css" type="text/css" media="screen" />
+	
+	<script type="text/javascript">
+		function isNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				return false;
+			}
+			return true;
+		}
+		
+		function isPhoneNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 43) {
+				return false;
+			}
+			return true;
+		}
+	</script>
+	
+	<div class="container">
+		<section id="middle">
+			<div class="middle_inner">
+				<div class="headline">			
+					<h3>
+						<i class="fa fa-pencil-square-o" style="margin-right: 5px; color: #ffcb1f"></i>
+						e-imza - Online Başvuru
+					</h3>
+				</div>
+				<form method="post" action="/support/onlineapplication/?lang=tr" id="ctl03">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['ctl03'];
+if (!theForm) {
+    theForm = document.ctl03;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZE2ZqrY_y8YJEZfvuiwjtPDrcmaw0M7C357xiKLqzORgs_mpFTCdd5SQYmbk631lMA2&amp;t=638901289900000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=uHIkleVeDJf4xS50Krz-yLjsveiFyJaoNtfX3rzyvE9MKVr-wn3xvMgdJnun9iNczI7uhGKTMwupEGzO8oT4wJd2y0QvOe6Oc9eKq4vTN_CFwNJmyShy1zAay95Z1K-Pq8l4qTgXMmFv5oB57r4qrKdPFIztamZyVIgR1wpMwbs1&amp;t=5c0e0825" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Jw6tUGWnA15YEa3ai3FadPB8uvUaqfDMvH6x0ylj-K0pZu4vbuJq21fnW0FHi8bZ3D4r7OFaY7bJiTXsrtU-Na8wy7guwru4_ZLqrK2XKTCs1lGwYcsEx1JExn6uHg1SyFUsuZoNA4cM1ilRRp9L_qx-bQZSaQmTTGhSaH4Ii3w1&amp;t=5c0e0825" type="text/javascript"></script>
+					<div id="CpAll_OnlineApplication_8_OnlineApplicationUpdatePanel">
+	
+		<div id="CpAll_OnlineApplication_8_updateProgress" style="display:none;">
+		
+				<div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.5;">
+					<img id="CpAll_OnlineApplication_8_imgUpdateProgress" title="Loading ..." src="../../images/loading.gif" alt="Loading ..." style="width:125px;padding: 10px;position:fixed;top:45%;left:46%;" />
+				</div>
+			
+	</div>
+		<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$CpAll$OnlineApplication_8$ScriptManager1', 'ctl03', ['tctl00$ctl00$CpAll$OnlineApplication_8$OnlineApplicationUpdatePanel','CpAll_OnlineApplication_8_OnlineApplicationUpdatePanel'], [], [], 90, 'ctl00$ctl00');
+	//]]>
+</script>
+	
+						
+		<section style="margin-top: 30px; margin-bottom: 40px;">
+			<div class="one_third" style="padding-bottom: 15px;">
+				<table class="table" style="width: 100%;">
+					<tr style="border-bottom: 2px solid #F7C20F;">
+						<td colspan="3" style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 13px 0 12px 0px; background-color: #ffcb1f;">
+							<i class="fa fa-shopping-cart" style="font-size: 19px; margin-right: 5px;"></i>
+							SEPETİM
+						</td>								
+					</tr>							
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							1.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Elektronik Sertifika
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblElectronicCertificate">0.00</span> ₺
+						</td>								
+					</tr>
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							2.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Akıllı Çubuk
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblEtoken">0.00</span> ₺
+						</td>								
+					</tr>
+					<tr>
+						<td width="3%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 18px;">
+							3.
+						</td>
+						<td width="60%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 8px 0 7px 10px;">
+							Uzak Bağlantılı Kurulum
+						</td>
+						<td width="37%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblInstallation">0.00</span> ₺
+						</td>								
+					</tr>					
+					<tr>
+						<td width="63%" colspan="2" style="font-size: 14px; color: #610B0B; font-weight: bold; background-color: #F2F2F2; border-bottom: 1px solid #D8D8D8; text-align: left; padding: 10px 0 9px 20px;">
+							KDV DAHİL TOPLAM TUTAR
+						</td>
+						<td width="37%" style="color: #610B0B; font-weight: bold; background-color: #F2F2F2; border-bottom: 1px solid #D8D8D8; text-align: right; padding: 8px 18px 7px 20px;">
+							<span id="CpAll_OnlineApplication_8_lblTotalAmountWithVAT">0.00</span> ₺
+						</td>								
+					</tr>
+				</table>												
+			</div>
+
+            <div class="two_third last">
+				<div id="CpAll_OnlineApplication_8_pnlStep1">
+		
+					<table class="table" style="width: 100%;">
+						<tr style="border-bottom: 2px solid #F7C20F;">
+							<td colspan="4" style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 13px 0px 12px 0px;">
+								<i class="fa fa-bars" style="font-size: 19px; margin-right: 5px;"></i>
+								E-İmza Paketinizi Oluşturun
+							</td>								
+						</tr>							
+						<tr>
+							<td width="25%" style="background-color: #FAFAFA; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 18px; font-weight: bold;">
+								Ürün
+							</td>
+							<td width="25%" style="background-color: #FAFAFA; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px; font-weight: bold;">
+								1 Yıllık
+							</td>
+							<td width="25%" style="background-color: #FAFAFA; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px; font-weight: bold;">
+								2 Yıllık
+							</td>
+							<td width="25%" style="background-color: #FAFAFA; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 20px; font-weight: bold;">
+								3 Yıllık
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 18px;">
+								<img src="/images/NiElSertifika1.jpg" width="70px;" style="margin-top: 6px; margin-bottom: 2px; box-shadow: 0 0 10px rgba(0,0,0,0.6); -moz-box-shadow: 0 0 10px rgba(0,0,0,0.6); -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.6); -o-box-shadow: 0 0 10px rgba(0,0,0,0.6);" />
+								<br/>
+								Nitelikli Elektronik Sertifika
+							</td>
+							<td style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px;">
+								<span class="check_parent">								
+									<input id="CpAll_OnlineApplication_8_rdb1Year" type="radio" name="ctl00$ctl00$CpAll$OnlineApplication_8$esignPackage" value="rdb1Year" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$rdb1Year\&#39;,\&#39;\&#39;)&#39;, 0)" />
+									<label for="radio_3">2.650,00 ₺</label>
+								</span>									
+							</td>
+							<td style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px;">											
+								<span class="check_parent">
+									<input id="CpAll_OnlineApplication_8_rdb2Year" type="radio" name="ctl00$ctl00$CpAll$OnlineApplication_8$esignPackage" value="rdb2Year" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$rdb2Year\&#39;,\&#39;\&#39;)&#39;, 0)" />
+									<label for="radio_3">4.690,00 ₺</label>
+								</span>
+							</td>
+							<td style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 20px;">
+								<span class="check_parent">
+									<input id="CpAll_OnlineApplication_8_rdb3Year" type="radio" name="ctl00$ctl00$CpAll$OnlineApplication_8$esignPackage" value="rdb3Year" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$rdb3Year\&#39;,\&#39;\&#39;)&#39;, 0)" />
+									<label for="radio_3">6.950,00 ₺</label>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 18px;">
+								<img src="/images/EguvenToken.png" width="70px;" style="margin-top: 6px; margin-bottom: 2px;" />
+								<br/>
+								Akıllı Çubuk
+							</td>
+							<td colspan="3" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px;">
+								<span class="check_parent">
+									<span class="aspNetDisabled"><input id="CpAll_OnlineApplication_8_ckbEtoken" type="checkbox" name="ctl00$ctl00$CpAll$OnlineApplication_8$ckbEtoken" disabled="disabled" /></span>								
+									<label for="checkbox_1">1.875,00 ₺</label>
+								</span>
+							</td>
+						</tr>
+					</table>
+					<br/>							
+					<table class="table" style="width: 100%;">
+						<tr style="border-bottom: 2px solid #F7C20F;">
+							<td colspan="3" style="font-size: 18px; text-align: center; font-weight: bold; color: #585858; padding: 13px 0px 12px 0px;">
+								<i class="fa fa-bars" style="font-size: 19px; margin-right: 5px;"></i>
+								Uzak Bağlantılı Kurulum (Opsiyonel)
+							</td>								
+						</tr>								
+						<tr>
+							<td width="25%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 18px;">
+								<img src="/images/installation.png" width="100%" style="margin-top: 6px; margin-bottom: 2px;" />
+							</td>
+							<td width="50%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: justify; padding: 8px 0 7px 18px;">
+								Uzak Bağlantılı Kurulum (Opsiyonel): Uzak Masaüstü bağlantısı vermeniz halinde, bilgisayarınıza bağlanarak kurulum yapılıyor.
+							</td>
+							<td width="25%" style="background-color: #fff; border-bottom: 1px solid #D8D8D8; text-align: center; padding: 8px 0 7px 10px;">
+								<span class="check_parent">
+									<span class="aspNetDisabled"><input id="CpAll_OnlineApplication_8_ckbInstallation" type="checkbox" name="ctl00$ctl00$CpAll$OnlineApplication_8$ckbInstallation" disabled="disabled" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ctl00$CpAll$OnlineApplication_8$ckbInstallation\&#39;,\&#39;\&#39;)&#39;, 0)" /></span>								
+									<label for="checkbox_1">1.875,00 ₺</label>
+								</span>
+							</td>
+						</tr>									
+					</table>
+				
+	</div>
+				
+
+                
+
+				<div id="CpAll_OnlineApplication_8_pnlButtons">
+		
+					<div style="float: left; margin-bottom: 15px; margin-top: 15px;">				
+										
+					</div>			
+					<div style="float: right; margin-bottom: 15px; margin-top: 15px;">
+						<a id="CpAll_OnlineApplication_8_btnNextDisabled" class="button" href="javascript:__doPostBack(&#39;ctl00$ctl00$CpAll$OnlineApplication_8$btnNextDisabled&#39;,&#39;&#39;)" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 5px; margin-top: 3px; background-color: #E6E6E6;">
+							<span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">							
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;İLERİ&nbsp;&nbsp;<i class="fa fa-chevron-right"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</a>
+						
+						
+						
+					</div>
+				
+	</div>
+
+                				
+				
+				<span id="CpAll_OnlineApplication_8_lblTemp"></span>
+			</div>
+
+		</section>
+	
+</div>
+				
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":null,"displayAfter":500,"dynamicLayout":true}, null, null, $get("CpAll_OnlineApplication_8_updateProgress"));
+});
+//]]>
+</script>
+</form>
+			</div>			
+		</section>
+	</div>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-85049855-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	
+	<!-- Start of HubSpot Embed Code -->
+	<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/6288508.js"></script>
+	<!-- End of HubSpot Embed Code -->
+		
+		<section id="bottom">
+			<div class="bottom_inner">
+				<!-- ******* Footer News ******* -->
+				<div class="one_fourth" style="margin-bottom: -54px;"><aside class="widget widget_custom_portfolio_entries"><div class="widget_custom_portfolio_entries_container"><a href="/aboutus/media/news/iso27001-belges%C4%B0/?lang=tr"><h3 style="margin-bottom: 2px; font-size: 18px;">ISO 27001 Sertifikası y ...</h3></a><span style="font-size: 12px;"><i class="fa fa-calendar" aria-hidden="true"></i>
+							 
+							<span style="font-size: 12px;">03.05.2021</span></span><p style="margin-top: 7px; text-align: justify;">Denizler Bilişim Hizmetleri Limited,  ISO/IEC 27001:2017 Bilgi Güvenliği Sertifikasını yeniledi,
+Proks Firması tarafından yapılan denetimlerden sonra belgeyi alamya hak kazandı. </p>
+      <div><a href="/aboutus/media/news/iso27001-belges%C4%B0/?lang=tr" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 25px;" class="button fr"><span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+											DAHA FAZLASI
+										<i class="fa fa-chevron-right" style="font-size: 12px; margin-left: 5px;"></i></span></a></div>
+    </div></aside></div>
+<div class="one_fourth" style="margin-bottom: -54px;"><aside class="widget widget_custom_portfolio_entries"><div class="widget_custom_portfolio_entries_container"><a href="/aboutus/media/news/mimarlar-odas%C4%B1-e-vize/?lang=tr"><h3 style="margin-bottom: 2px; font-size: 18px;">Mimarlar Odası,  Mimari ...</h3></a><span style="font-size: 12px;"><i class="fa fa-calendar" aria-hidden="true"></i>
+							 
+							<span style="font-size: 12px;">02.08.2021</span></span><p style="margin-top: 7px; text-align: justify;">Mimarlar Odası, Üyelerinin Mimari Projelerini elektronik Ortamda Vizeleme işlemine başladı. Denizler Bilişim ve CBKSoft ile enVision elektronik Belge, Form ve süreç Yönetim sis ...</p>
+      <div><a href="/aboutus/media/news/mimarlar-odas%C4%B1-e-vize/?lang=tr" style="margin:0px 0px 5px; min-width: 40px; border-radius: 5px; margin-bottom: 25px;" class="button fr"><span style="-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+											DAHA FAZLASI
+										<i class="fa fa-chevron-right" style="font-size: 12px; margin-left: 5px;"></i></span></a></div>
+    </div></aside></div>
+				<div class="one_fourth" style="margin-bottom: -40px;">
+					<aside class="widget widget_custom_portfolio_entries">
+						<div class="widget_custom_portfolio_entries_container" style="margin-top: 5px;">
+							<!-- ******* Footer Online Application Link ******* -->
+							<a href="/support/onlineapplication/?lang=tr"><img src="/media/16447/online_application.jpg" alt="" class="fullwidth"></a>
+						</div>
+					</aside>
+				</div>
+				<div class="one_fourth" style="margin-bottom: -40px;">
+					<aside class="widget widget_custom_portfolio_entries">
+						<div class="widget_custom_portfolio_entries_container" style="margin-top: 5px;">
+							<!-- ******* Footer Contact ******* -->
+							<table width="100%">
+  <tr>
+    <td colspan="2" width="100%" style="font-size: 16px; font-weight: bold; color: white; margin-bottom: 10px;">Denizler Bilişim Hizmetleri Ltd.</td>
+  </tr>
+  <tr>
+    <td colspan="2" width="100%" style="font-size: 16px; font-weight: bold; color: white; margin-bottom: 10px;">e-imza KIBRIS</td>
+  </tr>
+  <tr>
+    <td colspan="2" height="8px"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-map-marker" aria-hidden="true" style="font-size: 22px;"></i></td>
+    <td width="90%">Mehmet Ertuğruloğlu Sokak, NO: 10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</td>
+  </tr>
+  <tr>
+    <td height="6px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-phone" aria-hidden="true" style="font-size: 19px;"></i></td>
+    <td width="90%"><a href="tel:+90 (392) 228 09 60">+90 (392) 228 09 60</a></td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-mobile" aria-hidden="true" style="margin-left: 2px; font-size: 25px;"></i></td>
+    <td width="90%"><a href="tel:+90 (548) 866 22 79">+90 (548) 866 22 79</a></td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-fax" aria-hidden="true" style="font-size: 15px;"></i></td>
+    <td width="90%">+90 (392) 228 32 76</td>
+  </tr>
+  <tr>
+    <td height="7px;"></td>
+  </tr>
+  <tr>
+    <td width="10%"><i class="fa fa-envelope" aria-hidden="true" style="font-size: 15px;"></i></td>
+    <td width="90%"><a href="mailto:info@e-imzakibris.com" style="color: #C6C6C6; font-weight: normal;">info@e-imzakibris.com</a></td>
+  </tr>
+</table>
+						</div>
+					</aside>
+				</div>
+			</div>
+		</section>	
+	</div>
+</section>	
+<div style="margin-bottom: 15px; margin-top: -10px;">
+	<div class="custom_head" style="text-align: left;">
+		<span style="margin-top: -8px; margin-bottom: 14px;" class="fl">
+			<a href="/privacypolicy/">
+				<i class="fa fa-lock" aria-hidden="true"></i> Gizlilik Politikası
+			</a> 		
+		</span>
+		<span style="margin-top: -8px;" class="fr">			
+			© 2025 Denizler Bilişim Hizmetleri Ltd.
+			<!--
+			<a href="http://www.linoltd.com/" target="_blank">
+				<img src="/images/Lino_Logo.png" width="75px" />
+			</a>
+			-->
+		</span>
+		<br/>
+		<!--
+		<hr/>
+		<span class="fl" style="vertical-align: middle;">			
+			<a href="javascript:void(0)" class="normalTip exampleTip" title="100% SECURE TRANSACTION">
+				<!--<img src="/images/ssl.png" width="70px" height="27px" border="0" alt="" />-->
+				<!--<span id="siteseal">
+					<script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=tc6gO934M1UmvCo3PnqWqOUqS8u0z3o1nFLt1K9qPvFYhbcZsUFJVjtAN3dt"></script>				</span>
+			</a>			
+			<img src="/images/Credit_Cards.gif" width="235px" border="0" alt="" style="margin-left: 4px;" />
+		</span>
+		<span class="fr">
+			<img src="/images/ESHS.jpg" width="60px" border="0" alt="" />
+			<img src="/images/9001.jpg" width="60px" border="0" alt="" />
+			<img src="/images/27001.jpg" width="60px" border="0" alt="" />
+		</span>-->
+	</div>
+</div>	
+
+<script src="/scripts/jquery.prettyPhoto.js" type="text/javascript"></script>
+<script src="/scripts/jquery.script.js" type="text/javascript"></script>
+<script src="/scripts/jquery.validationEngine.js" type="text/javascript"></script>
+<script src="/scripts/jquery.validationEngine-lang.js" type="text/javascript"></script>
+<script src="/scripts/jquery.jtweetsanywhere.js" type="text/javascript"></script>
+<script type="text/javascript">jQuery(document).ready(function (){
+  if (jQuery.fn.cssOriginal != undefined){
+    jQuery.fn.css = jQuery.fn.cssOriginal;
+  }
+  jQuery('.fullwidthbanner').revolution({
+    delay : 7000, startwidth : 1240, startheight : 545, onHoverStop : 'on', hideThumbs : 0
+    , navigationType : 'bullet', navigationArrows : 'nexttobullets', navigationStyle : 
+    'round', touchenabled : 'on', navOffsetHorizontal : 0, navOffsetVertical : 20, 
+    fullWidth : 'on', shadow : 0
+  }
+  );
+}
+);
+</script>
+
+</body>
+</html>
+
+
+
