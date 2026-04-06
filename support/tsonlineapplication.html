@@ -304,25 +304,118 @@
 
             <form id="ts-details-form" class="details-form">
               <div class="field-grid">
+                <div class="details-section-title field--full">
+                  <i class="fa-solid fa-user"></i>
+                  <span>Başvuru Türü</span>
+                </div>
+
+                <div class="field field--full field-invoice-type-wrap">
+                  <span>Başvuru Tipi *</span>
+                  <div class="field-invoice-type-inline">
+                    <label><input type="radio" name="applicationType" value="Bireysel Başvuru" /> Bireysel Başvuru</label>
+                    <label><input type="radio" name="applicationType" value="Kurumsal Başvuru" /> Kurumsal Başvuru</label>
+                  </div>
+                </div>
+
+                <div id="ts-personal-info" class="ts-form-section" style="display: none;">
+                  <div class="details-section-title field--full">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>Kişi Bilgileri</span>
+                  </div>
+
+                  <label class="field">
+                    <span>Adı-Soyadı *</span>
+                    <input type="text" name="fullName" placeholder="Ad Soyad" />
+                  </label>
+                  <label class="field">
+                    <span>Uyruk *</span>
+                    <select name="nationality">
+                      <option value="">- Lütfen Uyruk Seçiniz -</option>
+                      <option value="TC">TC</option>
+                      <option value="KKTC">KKTC</option>
+                      <option value="Diğer">Diğer</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Kimlik No *</span>
+                    <input type="text" name="identityNumber" placeholder="Kimlik numarası" />
+                  </label>
+                  <label class="field">
+                    <span>Doğum Yeri *</span>
+                    <input type="text" name="birthPlace" placeholder="Doğum yeri" />
+                  </label>
+
+                  <div class="field field--full">
+                    <span>Doğum Tarihi *</span>
+                    <div class="field-mobile-inline">
+                      <select name="birthDay">
+                        <option value="">- Gün -</option>
+                      </select>
+                      <select name="birthMonth">
+                        <option value="">- Ay -</option>
+                      </select>
+                      <select name="birthYear">
+                        <option value="">- Yıl -</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="ts-corporate-info" class="ts-form-section" style="display: none;">
+                  <div class="details-section-title field--full">
+                    <i class="fa-solid fa-building"></i>
+                    <span>Şirket Bilgileri</span>
+                  </div>
+
+                  <label class="field field--full">
+                    <span>Firma Adı *</span>
+                    <input type="text" name="companyName" placeholder="Firma adı" />
+                  </label>
+                  <label class="field">
+                    <span>Vergi Numarası *</span>
+                    <input type="text" name="taxNumber" placeholder="Vergi numarası" />
+                  </label>
+                  <label class="field">
+                    <span>Vergi Dairesi *</span>
+                    <input type="text" name="taxOffice" placeholder="Vergi dairesi" />
+                  </label>
+                </div>
+
+                <div class="details-section-title field--full">
+                  <i class="fa-solid fa-phone"></i>
+                  <span>İletişim Bilgileri</span>
+                </div>
+
+                <div class="field">
+                  <span>Cep Telefon Numarası *</span>
+                  <div class="field-mobile-inline">
+                    <input type="tel" name="mobilePhone" class="field-mobile-number" placeholder="05xx xxx xx xx" required />
+                  </div>
+                </div>
+
                 <label class="field">
-                  <span>Ad Soyad</span>
-                  <input type="text" name="fullName" placeholder="Ad Soyad" required />
-                </label>
-                <label class="field">
-                  <span>E-posta</span>
+                  <span>E-posta Adresi *</span>
                   <input type="email" name="email" placeholder="ornek@eposta.com" required />
                 </label>
-                <label class="field">
-                  <span>Telefon</span>
-                  <input type="tel" name="phone" placeholder="+90 5xx xxx xx xx" required />
-                </label>
-                <label class="field">
-                  <span>Şirket / Kurum</span>
-                  <input type="text" name="company" placeholder="Varsa şirket veya kurum adı" />
-                </label>
+
                 <label class="field field--full">
-                  <span>Notlar</span>
-                  <textarea name="notes" rows="5" placeholder="Başvurunuzla ilgili ek notlarınızı yazabilirsiniz."></textarea>
+                  <span>IP Adresi *</span>
+                  <input type="text" name="ipAddress" placeholder="örn: 192.168.1.10" required />
+                </label>
+
+                <div class="details-section-title field--full">
+                  <i class="fa-regular fa-file-lines"></i>
+                  <span>Fatura Bilgileri</span>
+                </div>
+
+                <label class="field field--full">
+                  <span>Adı-Soyadı *</span>
+                  <input type="text" name="invoiceFullName" placeholder="Fatura adı soyadı" required />
+                </label>
+
+                <label class="field field--full">
+                  <span>Fatura Adresi *</span>
+                  <textarea name="invoiceAddress" rows="4" placeholder="Fatura adresi" required></textarea>
                 </label>
               </div>
 
