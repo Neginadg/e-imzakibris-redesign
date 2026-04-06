@@ -509,6 +509,19 @@
 
     const selectedTsPlan = () => tsPlanInputs.find((input) => input.checked) || tsPlanInputs[0];
 
+    const pad2 = (value) => String(value).padStart(2, '0');
+
+    const populateSelectRange = (selectElement, start, end, valueFormatter = (value) => String(value)) => {
+      if (!selectElement) return;
+
+      for (let value = start; value <= end; value += 1) {
+        const option = document.createElement('option');
+        option.value = String(value);
+        option.textContent = valueFormatter(value);
+        selectElement.appendChild(option);
+      }
+    };
+
     const updateTsSummary = () => {
       const plan = selectedTsPlan();
       const packagePrice = Number(plan.value);
@@ -536,6 +549,54 @@
     updateTsSummary();
     setActiveTsStep(1);
 
+    const tsBirthDaySelect = tsDetailsForm?.querySelector('select[name="birthDay"]');
+    const tsBirthMonthSelect = tsDetailsForm?.querySelector('select[name="birthMonth"]');
+    const tsBirthYearSelect = tsDetailsForm?.querySelector('select[name="birthYear"]');
+    const tsApplicationTypeInputs = Array.from(tsDetailsForm?.querySelectorAll('input[name="applicationType"]') || []);
+    const tsPersonalInfo = tsDetailsForm?.querySelector('#ts-personal-info');
+    const tsCorporateInfo = tsDetailsForm?.querySelector('#ts-corporate-info');
+
+    populateSelectRange(tsBirthDaySelect, 1, 31, (value) => pad2(value));
+    populateSelectRange(tsBirthMonthSelect, 1, 12, (value) => pad2(value));
+    populateSelectRange(tsBirthYearSelect, new Date().getFullYear() - 90, new Date().getFullYear(), (value) => String(value));
+
+    const hasTsApplicationType = () => tsApplicationTypeInputs.some((input) => input.checked);
+    const getTsApplicationType = () => tsApplicationTypeInputs.find((input) => input.checked)?.value || '';
+
+    const updateTsFormSections = () => {
+      const appType = getTsApplicationType();
+      const isPersonal = appType === 'Bireysel Başvuru';
+      const isCorporate = appType === 'Kurumsal Başvuru';
+
+      if (tsPersonalInfo) {
+        tsPersonalInfo.style.display = isPersonal ? 'block' : 'none';
+        const personalFields = tsPersonalInfo.querySelectorAll('input, select');
+        personalFields.forEach((field) => {
+          field.required = isPersonal;
+        });
+      }
+
+      if (tsCorporateInfo) {
+        tsCorporateInfo.style.display = isCorporate ? 'block' : 'none';
+        const corporateFields = tsCorporateInfo.querySelectorAll('input, select');
+        corporateFields.forEach((field) => {
+          field.required = isCorporate;
+        });
+      }
+    };
+
+    const updateTsApplicationTypeValidity = () => {
+      const validityMessage = hasTsApplicationType() ? '' : 'Lutfen basvuru tipini seciniz.';
+      tsApplicationTypeInputs.forEach((input) => {
+        input.setCustomValidity(validityMessage);
+      });
+      updateTsFormSections();
+    };
+
+    tsApplicationTypeInputs.forEach((input) => {
+      input.addEventListener('change', updateTsApplicationTypeValidity);
+    });
+
     tsPlanInputs.forEach((input) => {
       input.addEventListener('change', updateTsSummary);
     });
@@ -561,15 +622,54 @@
       tsDetailsForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
+        updateTsApplicationTypeValidity();
+        if (!hasTsApplicationType()) {
+          tsApplicationTypeInputs[0]?.reportValidity();
+          return;
+        }
+
         if (!tsDetailsForm.reportValidity()) return;
 
         const pricing = updateTsSummary();
         const formData = new FormData(tsDetailsForm);
-        const fullName = String(formData.get('fullName') || '');
+        const applicationType = getTsApplicationType();
+        const isPersonal = applicationType === 'Bireysel Başvuru';
+        
+        const mobilePhone = String(formData.get('mobilePhone') || '');
         const email = String(formData.get('email') || '');
-        const phone = String(formData.get('phone') || '');
-        const company = String(formData.get('company') || '-');
-        const notes = String(formData.get('notes') || '-');
+        const ipAddress = String(formData.get('ipAddress') || '');
+        const invoiceFullName = String(formData.get('invoiceFullName') || '');
+        const invoiceAddress = String(formData.get('invoiceAddress') || '');
+
+        let applicantSection = '';
+        if (isPersonal) {
+          const fullName = String(formData.get('fullName') || '');
+          const nationality = String(formData.get('nationality') || '');
+          const identityNumber = String(formData.get('identityNumber') || '');
+          const birthDay = pad2(formData.get('birthDay') || '');
+          const birthMonth = pad2(formData.get('birthMonth') || '');
+          const birthYear = String(formData.get('birthYear') || '');
+          const birthDate = `${birthDay}.${birthMonth}.${birthYear}`;
+          const birthPlace = String(formData.get('birthPlace') || '');
+
+          applicantSection = [
+            `Ad Soyad: ${fullName}`,
+            `Uyruk: ${nationality}`,
+            `Kimlik No: ${identityNumber}`,
+            `Dogum Tarihi: ${birthDate}`,
+            `Dogum Yeri: ${birthPlace}`,
+          ].join('\n          ');
+        } else {
+          const companyName = String(formData.get('companyName') || '');
+          const taxNumber = String(formData.get('taxNumber') || '');
+          const taxOffice = String(formData.get('taxOffice') || '');
+
+          applicantSection = [
+            `Firma Adi: ${companyName}`,
+            `Vergi Numarasi: ${taxNumber}`,
+            `Vergi Dairesi: ${taxOffice}`,
+          ].join('\n          ');
+        }
 
         const mailSubject = `Zaman Damgasi Online Basvuru - ${pricing.planLabel}`;
         const mailBody = [
@@ -583,11 +683,13 @@
           `KDV Dahil Toplam: ${formatPrice(pricing.total)}`,
           '',
           'Basvuru Bilgileri',
-          `Ad Soyad: ${fullName}`,
+          `Basvuru Tipi: ${applicationType}`,
+          applicantSection,
+          `Cep Telefon Numarasi: ${mobilePhone}`,
           `E-posta: ${email}`,
-          `Telefon: ${phone}`,
-          `Sirket/Kurum: ${company}`,
-          `Notlar: ${notes}`,
+          `IP Adresi: ${ipAddress}`,
+          `Fatura Ad Soyad: ${invoiceFullName}`,
+          `Fatura Adresi: ${invoiceAddress}`,
         ].join('\n');
 
         if (tsSubmitMessage) {
