@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS danışmanlık hizmetleri. Elektronik dönüşüm, e-imza entegrasyonu ve bilgi güvenliği süreçleri için kurumsal danışmanlık." />
-  <title>Danışmanlık Hizmetleri | e-imza KIBRIS</title>
+  <meta name="description" content="e-imza KIBRIS kök sertifikalar bilgi sayfası. Nitelikli elektronik sertifika ve zaman damgası kök sertifika bilgileri." />
+  <title>Kök Sertifikalar | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,6 +14,104 @@
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
+    .cert-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .cert-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .cert-table th,
+    .cert-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.94rem;
+    }
+
+    .cert-table th {
+      background: var(--color-bg-soft);
+      color: var(--color-text-primary);
+      font-weight: 600;
+      white-space: normal;
+    }
+
+    .cert-table th:nth-child(1),
+    .cert-table td:nth-child(1) {
+      width: 7%;
+    }
+
+    .cert-table th:nth-child(2),
+    .cert-table td:nth-child(2) {
+      width: 40%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .cert-table th:nth-child(3),
+    .cert-table td:nth-child(3),
+    .cert-table th:nth-child(4),
+    .cert-table td:nth-child(4) {
+      width: 16%;
+    }
+
+    .cert-table th:nth-child(5),
+    .cert-table td:nth-child(5) {
+      width: 21%;
+      text-align: center;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .cert-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cert-group {
+      margin-top: 26px;
+    }
+
+    .cert-group__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .cert-download-link {
+      color: var(--color-accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .cert-download-link:hover {
+      text-decoration: underline;
+    }
+
+    .crt-download-btn {
+      display: inline-block;
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .crt-download-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.85;
+    }
+
+    .crt-download-btn__icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
     html,
     body.application-page {
       overflow-x: hidden;
@@ -25,31 +123,11 @@
       }
     }
 
-    @media (max-width: 640px) {
-      .page-hero {
-        overflow-x: hidden;
-      }
-    }
-
     .application-page main,
     .application-page .container,
-    .builder-card {
+    .builder-card,
+    .cert-table-wrap {
       min-width: 0;
-    }
-
-    .page-hero--application.page-hero--consultancy .page-hero__inner {
-      align-items: stretch;
-    }
-
-    .page-hero--application.page-hero--consultancy .page-hero__media {
-      display: flex;
-      align-items: stretch;
-    }
-
-    .page-hero--application.page-hero--consultancy .consultancy-hero-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
   </style>
 </head>
@@ -113,22 +191,22 @@
               </a>
             </div>
           </li>
-          <li class="nav-item has-dropdown active">
+          <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="education.html" class="dropdown__item">
+              <a href="../support/education.html" class="dropdown__item">
                 <div>
                   <strong>Eğitim Hizmetleri</strong>
                   <small>Elektronik imza eğitimleri</small>
                 </div>
               </a>
-              <a href="consultancy.html" class="dropdown__item">
+              <a href="../support/consultancy.html" class="dropdown__item">
                 <div>
                   <strong>Danışmanlık Hizmetleri</strong>
                   <small>Elektronik dönüşüm danışmanlığı</small>
                 </div>
               </a>
-              <a href="verify.html" class="dropdown__item">
+              <a href="../support/verify.html" class="dropdown__item">
                 <div>
                   <strong>İmza Doğrulama</strong>
                   <small>Elektronik imzaları doğrulayın</small>
@@ -136,10 +214,10 @@
               </a>
             </div>
           </li>
-          <li class="nav-item has-dropdown">
+          <li class="nav-item has-dropdown active">
             <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../databank/certificates.html" class="dropdown__item">
+              <a href="certificates.html" class="dropdown__item">
                 <div>
                   <strong>Kök Sertifikalar</strong>
                   <small>Sertifika zinciri ve geçerlilik bilgileri</small>
@@ -162,7 +240,7 @@
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="onlineapplication.html" class="dropdown__item">
+              <a href="../support/onlineapplication.html" class="dropdown__item">
                 <div>
                   <strong>Online Başvuru</strong>
                   <small>Başvurunuzu oluşturun</small>
@@ -200,8 +278,8 @@
       </nav>
 
       <div class="navbar__cta">
-        <a href="onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
-        <a href="renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
@@ -213,105 +291,123 @@
   <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
     <ul class="mobile-nav__list">
       <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
-      <li><a href="../products/esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
-      <li><a href="consultancy.html">HİZMETLERİMİZ</a></li>
-      <li><a href="education.html">Eğitim Hizmetleri</a></li>
-      <li><a href="consultancy.html">Danışmanlık Hizmetleri</a></li>
-      <li><a href="verify.html">İmza Doğrulama</a></li>
+      <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="certificates.html">Kök Sertifikalar</a></li>
       <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
-      <li><a href="onlineapplication.html">DESTEK</a></li>
+      <li><a href="../support/onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
       <li><a href="../contact/index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
-        <a href="onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
-        <a href="renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
+        <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
       </li>
     </ul>
   </nav>
 
   <main>
-    <section class="page-hero page-hero--application page-hero--consultancy">
+    <section class="page-hero page-hero--application">
       <div class="container page-hero__inner">
         <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">Danışmanlık Hizmetleri</div>
-          <h1 class="page-hero__title">Elektronik Dönüşümde Kurumsal Danışmanlık</h1>
+          <div class="section-tag">Bilgi Bankası</div>
+          <h1 class="page-hero__title">Kök Sertifikalar</h1>
           <p class="page-hero__desc">
-            Elektronik dönüşümde belgesiz ortama geçiş, e-imza entegrasyonu ve bilgi güvenliği
-            başlıklarında kurumunuza özel danışmanlık hizmetleri sunuyoruz.
+            e-imza KIBRIS kök ve alt kök sertifikaları, elektronik imza oluşturma ve doğrulama
+            işlemlerinin güvenilir şekilde yapılabilmesi için sertifika zincirinin temelini oluşturur.
           </p>
-          <div class="page-hero__actions">
-            <a href="#consultancy-details" class="btn btn--primary btn--lg">Danışmanlık Başlıkları</a>
-            <a href="tel:+903922280960" class="btn btn--outline btn--lg">Destek Al</a>
-          </div>
           <div class="page-hero__facts">
-            <div><i class="fa-solid fa-diagram-project"></i> Entegrasyon Yol Haritası</div>
-            <div><i class="fa-solid fa-building-shield"></i> Süreç ve Uyum Danışmanlığı</div>
-            <div><i class="fa-solid fa-shield-halved"></i> Bilgi Güvenliği Odaklı</div>
+            <div><i class="fa-solid fa-certificate"></i> Nitelikli Elektronik Sertifika</div>
+            <div><i class="fa-solid fa-clock"></i> Zaman Damgası Sertifikası</div>
+            <div><i class="fa-solid fa-shield-halved"></i> Hiyerarşik Sertifika Modeli</div>
           </div>
         </div>
 
         <div class="page-hero__media" data-animate="fade-left">
-          <img src="../assets/img/consultancy.jpeg" alt="Danışmanlık hizmeti" class="consultancy-hero-image" style="border-radius: 12px; display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
+          <img src="../assets/img/kok.jpeg" alt="Kök sertifika" style="width: 100%; border-radius: 12px; display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
         </div>
       </div>
     </section>
 
-    <section class="application-builder section" id="consultancy-details">
+    <section class="application-builder section" id="certificates-list">
       <div class="container application-builder__grid">
         <div class="application-builder__main">
           <div class="builder-card" data-animate="fade-up">
             <div class="builder-card__head">
               <div>
-                <div class="section-tag">Danışmanlık Yaklaşımı</div>
-                <h2 class="section-title">Neden e-imza KIBRIS Proje Ofisi?</h2>
+                <div class="section-tag">Sertifika Zinciri</div>
+                <h2 class="section-title">Nitelikli Elektronik Sertifikalar</h2>
               </div>
               <p class="builder-card__head-text">
-                Elektronik imza konuları ülkemiz yasalarına göre yeni olmakla birlikte,
-                teknik ve yasal açıdan önemli açılımlar gerektirir. Doğru planlama için
-                proje ofisimiz kurumunuza özel danışmanlık sağlar.
+                e-imza KIBRIS, ESHS işleyişinde hiyerarşik modele uygun sertifika otoritesi
+                yapılanması benimser. Kök sertifikalar çevrimdışı yapıda en üst katmanda bulunur.
               </p>
             </div>
 
-            <div style="padding: 20px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-soft); margin-top: 16px;">
-              <p style="font-size: 0.96rem; color: var(--color-text-secondary); line-height: 1.7; margin: 0;">
-                Elektronik imzanın kurumunuzda nerelerde ve nasıl kullanılabileceği,
-                hangi uygulamalara entegre olabileceği ve bu uygulamaların kurumunuza
-                maliyet/süreç iyileştirmeleri açısından nasıl katkı sağlayacağı konusunda
-                danışmanlık veriyoruz.
-              </p>
+            <div class="cert-table-wrap cert-group">
+              <table class="cert-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Kök Sertifika Adı</th>
+                    <th>Başlangıç Tarihi</th>
+                    <th>Bitiş Tarihi</th>
+                    <th>CRT (Kök)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>e-imza KIBRIS Kök Elektronik Sertifika Hizmet Sağlayıcısı S1</td>
+                    <td>03.06.2016</td>
+                    <td>03.06.2026</td>
+                    <td><a class="crt-download-btn" href="/assets/docs/certificates/e-imza-kibris-kok-eshs-s1.crt" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>e-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı</td>
+                    <td>03.06.2016</td>
+                    <td>02.06.2026</td>
+                    <td><a class="crt-download-btn" href="/assets/docs/certificates/e-imza-kibris-nitelikli-eshs-s1.crt" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>e-imza KIBRIS Kök Elektronik Sertifika Hizmet Sağlayıcısı S2</td>
+                    <td>22.05.2024</td>
+                    <td>20.05.2034</td>
+                    <td><a class="crt-download-btn" href="/assets/docs/certificates/e-imza-kibris-kok-eshs-s2.crt" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>e-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı S2</td>
+                    <td>22.05.2024</td>
+                    <td>15.04.2034</td>
+                    <td><a class="crt-download-btn" href="/assets/docs/certificates/e-imza-kibris-nitelikli-eshs-s2.crt" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
 
-          <div class="builder-card" data-animate="fade-up" style="margin-top: 30px;">
-            <div class="builder-card__head">
-              <div>
-                <div class="section-tag">Hizmet Kapsamı</div>
-                <h2 class="section-title">Danışmanlık Verdiğimiz Konular</h2>
-              </div>
-              <p class="builder-card__head-text">e-imza KIBRIS Proje Ofisi aşağıdaki başlıklarda danışmanlık hizmeti vermektedir.</p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px;">
-              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
-                <strong style="display: block; margin-bottom: 6px;">E-imza Entegrasyonları</strong>
-                <small style="color: var(--color-text-secondary);">Mevcut sistemlere e-imza entegrasyonu ve mimari planlama.</small>
-              </div>
-              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
-                <strong style="display: block; margin-bottom: 6px;">E-imzalı Bankacılık Süreçleri</strong>
-                <small style="color: var(--color-text-secondary);">Bankacılık iş akışlarında güvenli elektronik imza kullanımı.</small>
-              </div>
-              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
-                <strong style="display: block; margin-bottom: 6px;">E-imzalı İK Süreçleri</strong>
-                <small style="color: var(--color-text-secondary);">İnsan kaynakları onay süreçlerinde dijital dönüşüm desteği.</small>
-              </div>
-              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
-                <strong style="display: block; margin-bottom: 6px;">Bayi İletişimi ve Sipariş Süreçleri</strong>
-                <small style="color: var(--color-text-secondary);">Bayi/kanal süreçlerinin e-imza ile hızlandırılması ve güvenliği.</small>
-              </div>
-              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
-                <strong style="display: block; margin-bottom: 6px;">Bilgi Güvenliği</strong>
-                <small style="color: var(--color-text-secondary);">Bilgi güvenliği gereksinimleriyle uyumlu süreç tasarımı.</small>
-              </div>
+            <h3 class="cert-group__title">Zaman Damgası</h3>
+            <div class="cert-table-wrap">
+              <table class="cert-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Sertifika Adı</th>
+                    <th>Başlangıç Tarihi</th>
+                    <th>Bitiş Tarihi</th>
+                    <th>CRT (Kök)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>5</td>
+                    <td>e-imza KIBRIS Elektronik Sertifika Hizmet Sağlayıcısı Zaman Damgası Sertifikası</td>
+                    <td>25.07.2016</td>
+                    <td>02.06.2026</td>
+                    <td><a class="crt-download-btn" href="/assets/docs/certificates/e-imza-kibris-zaman-damgasi.crt" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -320,33 +416,23 @@
           <div class="summary-card">
             <div class="summary-card__head">
               <div>
-                <div class="section-tag">İletişim</div>
-                <h3>Detaylı Bilgi</h3>
+                <div class="section-tag">Bilgi Notu</div>
+                <h3>Ne İşe Yarar?</h3>
               </div>
-              <i class="fa-solid fa-phone"></i>
+              <i class="fa-solid fa-circle-info"></i>
             </div>
-
-            <div class="summary-highlights">
-              <div style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
-                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">Web Sitesi</strong>
-                <a href="https://www.e-imzakibris.com" style="color: var(--color-accent); text-decoration: none;">www.e-imzakibris.com</a>
-              </div>
-              <div style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
-                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">E-posta</strong>
-                <a href="mailto:info@e-imzakibris.com" style="color: var(--color-accent); text-decoration: none;">info@e-imzakibris.com</a>
-              </div>
-              <div style="padding: 12px 0; font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
-                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">Çağrı Merkezi</strong>
-                <a href="tel:+903922280960" style="color: var(--color-accent); text-decoration: none;">+90 (392) 228 09 60</a>
-              </div>
-            </div>
+            <ul class="summary-highlights" style="font-size: 0.92rem;">
+              <li><strong>Doğrulama:</strong> İmza doğrulama zincirinin güvenilirliğini sağlar.</li>
+              <li><strong>Güven:</strong> Kurumsal sistemlerde sertifika hiyerarşisi oluşturur.</li>
+              <li><strong>Uyumluluk:</strong> Elektronik imza süreçlerinin teknik altyapısını destekler.</li>
+            </ul>
           </div>
 
           <div class="contact-mini-card">
-            <h4>Proje Ofisi Desteği</h4>
-            <p>E-ticaret, e-ofis ve e-iş uygulamalarına bir adım önde başlamak için bizimle iletişime geçin.</p>
-            <a href="tel:+903922280960" style="display: block; margin-bottom: 8px;"><i class="fa-solid fa-phone"></i> Hemen Ara</a>
-            <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> E-posta Gönder</a>
+            <h4>Detaylı Bilgi</h4>
+            <p>Kök sertifikalar hakkında daha fazla bilgi için ekibimize ulaşabilirsiniz.</p>
+            <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+            <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
           </div>
         </aside>
       </div>
@@ -373,20 +459,19 @@
         <h4>Ürünler &amp; Hizmetler</h4>
         <ul>
           <li><a href="../products/esignature.html">Elektronik İmza</a></li>
-          <li><a href="onlineapplication.html">Online Başvuru</a></li>
-          <li><a href="renewal.html">Yenileme Başvurusu</a></li>
-          <li><a href="education.html">Eğitim Hizmetleri</a></li>
-          <li><a href="consultancy.html">Danışmanlık Hizmetleri</a></li>
-          <li><a href="verify.html">İmza Doğrulama</a></li>
+          <li><a href="../support/education.html">Eğitim Hizmetleri</a></li>
+          <li><a href="../support/consultancy.html">Danışmanlık Hizmetleri</a></li>
+          <li><a href="../support/verify.html">İmza Doğrulama</a></li>
+          <li><a href="certificates.html">Kök Sertifikalar</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4>Bilgi Bankası</h4>
         <ul>
+          <li><a href="certificates.html">Kök Sertifikalar</a></li>
           <li><a href="../index.html#what-is">e-imza Nedir?</a></li>
           <li><a href="../index.html#use-cases">Nerelerde Kullanılır?</a></li>
-          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank">93/2007 Sayılı Yasa</a></li>
         </ul>
       </div>
 
