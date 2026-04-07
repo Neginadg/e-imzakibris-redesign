@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS sözleşmeler bilgi sayfası. Bireysel, kurumsal ve kayıt makamı sözleşmelerine erişin." />
-  <title>Sözleşmeler | e-imza KIBRIS</title>
+  <meta name="description" content="e-imza KIBRIS mevzuat bilgi sayfası. Yasa, tüzük, yönetmelik ve düzenleme belgelerine erişin." />
+  <title>Mevzuat | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,16 +14,15 @@
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
-    .contracts-table-wrap {
-      overflow-x: auto;
+    .leg-table-wrap {
+      overflow: hidden;
       border: 1px solid rgba(180, 30, 30, 0.14);
       border-radius: 18px;
       background: #fff;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-      overflow: hidden;
     }
 
-    .contracts-table {
+    .leg-table {
       display: table;
       width: 100%;
       border-collapse: collapse;
@@ -32,8 +31,8 @@
       overflow: visible;
     }
 
-    .contracts-table th,
-    .contracts-table td {
+    .leg-table th,
+    .leg-table td {
       padding: 14px 16px;
       border-bottom: 1px solid var(--color-border);
       text-align: left;
@@ -41,7 +40,7 @@
       font-size: 0.93rem;
     }
 
-    .contracts-table th {
+    .leg-table th {
       background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
       color: var(--color-text-primary);
       font-weight: 600;
@@ -51,36 +50,34 @@
       white-space: nowrap;
     }
 
-    .contracts-table th:nth-child(1),
-    .contracts-table td:nth-child(1) {
-      width: 92px;
+    .leg-table th:nth-child(1),
+    .leg-table td:nth-child(1) {
+      width: 110px;
       text-align: center;
       font-weight: 700;
     }
 
-    .contracts-table th:nth-child(2),
-    .contracts-table td:nth-child(2) {
+    .leg-table th:nth-child(2),
+    .leg-table td:nth-child(2) {
       width: auto;
     }
 
-    .contracts-table th:nth-child(3),
-    .contracts-table td:nth-child(3) {
-      width: 110px;
-      text-align: center;
-      white-space: nowrap;
+    .leg-table th:nth-child(3),
+    .leg-table td:nth-child(3) {
+      width: 280px;
     }
 
-    .contracts-table th:nth-child(4),
-    .contracts-table td:nth-child(4) {
+    .leg-table th:nth-child(4),
+    .leg-table td:nth-child(4) {
       width: 100px;
       text-align: center;
     }
 
-    .contracts-table tr:last-child td {
+    .leg-table tr:last-child td {
       border-bottom: none;
     }
 
-    .contracts-table__section {
+    .leg-table__section {
       background: linear-gradient(90deg, rgba(180, 30, 30, 0.08), rgba(180, 30, 30, 0.02));
       color: var(--color-text-primary);
       font-weight: 700;
@@ -89,17 +86,27 @@
       text-transform: uppercase;
     }
 
-    .contracts-table__section td {
+    .leg-table__section td {
       padding-top: 12px;
       padding-bottom: 12px;
       border-bottom-color: rgba(180, 30, 30, 0.12);
     }
 
-    .contracts-table tbody tr:not(.contracts-table__section):hover td {
+    .leg-table tbody tr:not(.leg-table__section):hover td {
       background: #fffaf9;
     }
 
-    .contracts-download-link {
+    .leg-file {
+      display: grid;
+      gap: 2px;
+    }
+
+    .leg-file small {
+      color: var(--color-text-muted);
+      word-break: break-word;
+    }
+
+    .leg-download-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -112,13 +119,13 @@
       transition: all var(--transition);
     }
 
-    .contracts-download-link:hover {
+    .leg-download-link:hover {
       transform: translateY(-1px) scale(1.02);
       background: rgba(180, 30, 30, 0.12);
       box-shadow: 0 8px 20px rgba(180, 30, 30, 0.14);
     }
 
-    .contracts-download-link img {
+    .leg-download-link img {
       width: 20px;
       height: 20px;
       display: block;
@@ -137,7 +144,7 @@
 
     .application-page main,
     .application-page .container,
-    .contracts-table-wrap {
+    .leg-table-wrap {
       min-width: 0;
     }
   </style>
@@ -242,98 +249,95 @@
   </nav>
 
   <main>
-    <section class="page-hero page-hero--application">
-      <div class="container page-hero__inner">
-        <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">Bilgi Bankası</div>
-          <h1 class="page-hero__title">Sözleşmeler</h1>
-          <p class="page-hero__desc">
-            Nitelikli Elektronik Sertifika başvurularında bireysel, kurumsal ve kayıt makamı
-            süreçleri için ilgili sözleşmeler kullanılmalıdır. Mesafeli satış sözleşmesi,
-            yalnızca KKTC dışından yapılacak başvurularda geçerlidir.
-          </p>
-          <div class="page-hero__facts">
-            <div><i class="fa-solid fa-file-signature"></i> Bireysel Sözleşmeler</div>
-            <div><i class="fa-solid fa-building"></i> Kurumsal Sözleşmeler</div>
-            <div><i class="fa-solid fa-user-check"></i> Kayıt Makamı Sözleşmeleri</div>
-          </div>
+    <section class="section" id="legislations-list">
+      <div class="container">
+        <div class="leg-table-wrap">
+          <table class="leg-table">
+            <thead>
+              <tr>
+                <th>Kod</th>
+                <th>Belge Adı</th>
+                <th>Dosya</th>
+                <th>İndir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="leg-table__section"><td colspan="4">Yasalar</td></tr>
+              <tr>
+                <td>93/2007</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Elektronik İmza Yasası</strong>
+                    <small>93eiy2007.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/93eiy2007.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+
+              <tr class="leg-table__section"><td colspan="4">Tüzükler</td></tr>
+              <tr>
+                <td>760/2008</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Elektronik İmza Tüzüğü</strong>
+                    <small>760eiyt2008.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/760eiyt2008.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>2016</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Sertifika Mali Sorumluluk Sigortası Tüzüğü</strong>
+                    <small>sertifika-mali-sorumluluk-sigortasi-tuzugu-resmi-gazete.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/sertifika-mali-sorumluluk-sigortasi-tuzugu-resmi-gazete.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+
+              <tr class="leg-table__section"><td colspan="4">Yönetmelikler</td></tr>
+              <tr>
+                <td>943/2008</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Elektronik İmza Yönetmeliği</strong>
+                    <small>943eiyy2008.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/943eiyy2008.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>258/2014</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Elektronik İmza Yönetmeliği</strong>
+                    <small>258eiyy2014.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/258eiyy2014.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+
+              <tr class="leg-table__section"><td colspan="4">Düzenlemeler</td></tr>
+              <tr>
+                <td>OSCP</td>
+                <td>
+                  <div class="leg-file">
+                    <strong>Sertifika Durum Protokolü</strong>
+                    <small>6-sertifika-durum-protokolu-oscp-istekcevap-profilleri-dokumani.pdf</small>
+                  </div>
+                </td>
+                <td>PDF</td>
+                <td><a class="leg-download-link" href="../assets/docs/legislations/6-sertifika-durum-protokolu-oscp-istekcevap-profilleri-dokumani.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <div class="page-hero__media" data-animate="fade-left">
-          <img src="../assets/img/contract.jpeg" alt="Sözleşmeler" style="width: 100%; border-radius: 12px; display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
-        </div>
-      </div>
-    </section>
-
-    <section class="application-builder section" id="contracts-list">
-      <div class="container application-builder__grid">
-        <div class="application-builder__main">
-          <div class="builder-card" data-animate="fade-up">
-            <div class="builder-card__head">
-              <div>
-                <div class="section-tag">Referans Listesi</div>
-                <h2 class="section-title">Sözleşme Dokümanları</h2>
-              </div>
-              <p class="builder-card__head-text">
-                Aşağıdaki tabloda sözleşmelerin referans numarası, adı, versiyonu ve indirme alanı yer almaktadır.
-              </p>
-            </div>
-
-            <div class="contracts-table-wrap" style="margin-top: 18px;">
-              <table class="contracts-table">
-                <thead>
-                  <tr>
-                    <th>Referans Numarası</th>
-                    <th>Sözleşme Adı</th>
-                    <th>Versiyon</th>
-                    <th>İndir</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="contracts-table__section"><td colspan="4">Bireysel Sözleşmeler</td></tr>
-                  <tr>
-                    <td>B1</td>
-                    <td>e-imza KIBRIS Son Kullanıcı Sözleşmesi</td>
-                    <td>v03</td>
-                    <td><a class="contracts-download-link" href="../assets/docs/contracts/_media_36283_eimzakibrissonkullanicisozlesmesi_v03.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-                  </tr>
-                  <tr class="contracts-table__section"><td colspan="4">Kurumsal Sözleşmeler</td></tr>
-                  <tr>
-                    <td>K1</td>
-                    <td>e-imza KIBRIS Kurumsal Başvuru Sözleşmesi</td>
-                    <td>v03</td>
-                    <td><a class="contracts-download-link" href="../assets/docs/contracts/_media_36284_eimzakibriskurumsalbasvurusozlesmesi_v03.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-                  </tr>
-                  <tr class="contracts-table__section"><td colspan="4">Kayıt Makamı Sözleşmeleri</td></tr>
-                  <tr>
-                    <td>KM1</td>
-                    <td>e-imza KIBRIS Kayıt Makamı Sözleşmesi</td>
-                    <td>v03</td>
-                    <td><a class="contracts-download-link" href="../assets/docs/contracts/_media_36285_eimzakibriskayitmakamisozlesmesi_v03.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <aside class="application-builder__sidebar" data-animate="fade-left">
-          <div class="summary-card">
-            <div class="summary-card__head">
-              <div>
-                <div class="section-tag">Kullanım Notu</div>
-                <h3>Hangi Sözleşme?</h3>
-              </div>
-              <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <ul class="summary-highlights" style="font-size: 0.92rem;">
-              <li><strong>Gerçek Kişi:</strong> Bireysel sözleşme kullanılmalıdır.</li>
-              <li><strong>Kurum/Kuruluş:</strong> Kurumsal başvuru sözleşmesi kullanılmalıdır.</li>
-              <li><strong>Yetkili Aracı:</strong> Kayıt makamı sözleşmesi gereklidir.</li>
-              <li><strong>KKTC Dışı:</strong> Mesafeli satış sözleşmesi koşulları geçerlidir.</li>
-            </ul>
-          </div>
-        </aside>
       </div>
     </section>
   </main>
