@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS yenileme başvuru formu. Sertifika yenileme talebinizi hızlıca iletin." />
-  <title>Yenileme Formu | e-imza KIBRIS</title>
+  <meta name="description" content="e-imza KIBRIS danışmanlık hizmetleri. Elektronik dönüşüm, e-imza entegrasyonu ve bilgi güvenliği süreçleri için kurumsal danışmanlık." />
+  <title>Danışmanlık Hizmetleri | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,6 +13,45 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    html,
+    body.application-page {
+      overflow-x: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero {
+        overflow-x: hidden;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-hero {
+        overflow-x: hidden;
+      }
+    }
+
+    .application-page main,
+    .application-page .container,
+    .builder-card {
+      min-width: 0;
+    }
+
+    .page-hero--application.page-hero--consultancy .page-hero__inner {
+      align-items: stretch;
+    }
+
+    .page-hero--application.page-hero--consultancy .page-hero__media {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .page-hero--application.page-hero--consultancy .consultancy-hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body class="application-page">
   <div class="topbar">
@@ -68,13 +107,13 @@
               </a>
               <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item">
                 <div>
-                  <strong>Yaz&#305;l&#305;m K&uuml;t&uuml;phaneleri</strong>
-                  <small>G&uuml;venli e-imza API &ccedil;&ouml;z&uuml;mleri</small>
+                  <strong>Yazılım Kütüphaneleri</strong>
+                  <small>Güvenli e-imza API çözümleri</small>
                 </div>
               </a>
             </div>
           </li>
-          <li class="nav-item has-dropdown">
+          <li class="nav-item has-dropdown active">
             <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
               <a href="education.html" class="dropdown__item">
@@ -169,7 +208,10 @@
     <ul class="mobile-nav__list">
       <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
       <li><a href="../products/esignaturesoftwarelibraries.html">Yazılım Kütüphaneleri</a></li>
-      <li><a href="onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="consultancy.html">HİZMETLERİMİZ</a></li>
+      <li><a href="education.html">Eğitim Hizmetleri</a></li>
+      <li><a href="consultancy.html">Danışmanlık Hizmetleri</a></li>
+      <li><a href="verify.html">İmza Doğrulama</a></li>
       <li><a href="../index.html#use-cases">BİLGİ BANKASI</a></li>
       <li><a href="onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
@@ -182,129 +224,88 @@
   </nav>
 
   <main>
-    <section class="page-hero page-hero--application">
+    <section class="page-hero page-hero--application page-hero--consultancy">
       <div class="container page-hero__inner">
         <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">Yenileme Başvurusu</div>
-          <h1 class="page-hero__title">Sertifikanızı Kolayca Yenileyin</h1>
+          <div class="section-tag">Danışmanlık Hizmetleri</div>
+          <h1 class="page-hero__title">Elektronik Dönüşümde Kurumsal Danışmanlık</h1>
           <p class="page-hero__desc">
-            Mevcut e-imza sertifikanız için yenileme talebinizi birkaç adımda iletin.
-            Form bilgilerinizi tamamladıktan sonra özetiniz e-posta gönderimine hazır hale gelir.
+            Elektronik dönüşümde belgesiz ortama geçiş, e-imza entegrasyonu ve bilgi güvenliği
+            başlıklarında kurumunuza özel danışmanlık hizmetleri sunuyoruz.
           </p>
           <div class="page-hero__actions">
-            <a href="#renewal-form-card" class="btn btn--primary btn--lg">Yenileme Formunu Doldur</a>
-            <a href="../contact/index.html" class="btn btn--outline btn--lg">Destek Al</a>
+            <a href="#consultancy-details" class="btn btn--primary btn--lg">Danışmanlık Başlıkları</a>
+            <a href="tel:+903922280960" class="btn btn--outline btn--lg">Destek Al</a>
           </div>
           <div class="page-hero__facts">
-            <div><i class="fa-solid fa-arrows-rotate"></i> Hızlı Yenileme Akışı</div>
-            <div><i class="fa-solid fa-shield-halved"></i> Güvenli Bilgi İşleme</div>
-            <div><i class="fa-solid fa-envelope"></i> E-posta ile Talep Gönderimi</div>
+            <div><i class="fa-solid fa-diagram-project"></i> Entegrasyon Yol Haritası</div>
+            <div><i class="fa-solid fa-building-shield"></i> Süreç ve Uyum Danışmanlığı</div>
+            <div><i class="fa-solid fa-shield-halved"></i> Bilgi Güvenliği Odaklı</div>
           </div>
         </div>
+
         <div class="page-hero__media" data-animate="fade-left">
-          <div class="token-showcase">
-            <div class="token-showcase__badge">Yenileme</div>
-            <img src="../assets/img/eSig (1).jpg" alt="e-imza token" class="token-showcase__img" />
-            <div class="token-showcase__note">
-              <i class="fa-solid fa-circle-info"></i>
-              Sertifika süresi bitmeden yenileme önerilir.
-            </div>
-          </div>
+          <img src="../assets/img/consultancy.jpeg" alt="Danışmanlık hizmeti" class="consultancy-hero-image" style="border-radius: 12px; display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
         </div>
       </div>
     </section>
 
-    <section class="application-builder section" id="renewal-form-card">
+    <section class="application-builder section" id="consultancy-details">
       <div class="container application-builder__grid">
         <div class="application-builder__main">
           <div class="builder-card" data-animate="fade-up">
             <div class="builder-card__head">
               <div>
-                <div class="section-tag">Yenileme Formu</div>
-                <h2 class="section-title">Talep Bilgileri</h2>
+                <div class="section-tag">Danışmanlık Yaklaşımı</div>
+                <h2 class="section-title">Neden e-imza KIBRIS Proje Ofisi?</h2>
               </div>
-              <p class="builder-card__head-text">Bilgilerinizi eksiksiz girin, ekibimiz sizinle hızlıca iletişime geçsin.</p>
+              <p class="builder-card__head-text">
+                Elektronik imza konuları ülkemiz yasalarına göre yeni olmakla birlikte,
+                teknik ve yasal açıdan önemli açılımlar gerektirir. Doğru planlama için
+                proje ofisimiz kurumunuza özel danışmanlık sağlar.
+              </p>
             </div>
 
-            <form id="renewal-form" class="details-form">
-              <div class="field-grid">
-                <label class="field">
-                  <span>Adı Soyadı *</span>
-                  <input type="text" name="fullName" placeholder="Adı Soyadı" required />
-                </label>
-                <label class="field">
-                  <span>e-posta adresi *</span>
-                  <input type="email" name="email" placeholder="ornek@eposta.com" required />
-                </label>
-                <label class="field">
-                  <span>Cep Telefonu Numaranız *</span>
-                  <input type="tel" name="phone" placeholder="+90 5xx xxx xx xx" required />
-                </label>
-                <label class="field">
-                  <span>Kimlik No veya Pasaport No *</span>
-                  <input type="text" name="identityNumber" placeholder="Kimlik veya pasaport numarası" required />
-                </label>
-                <div class="field field--full">
-                  <span>Elektronik İmzanızı Yenilemek İstediğiniz Süre *</span>
-                  <div class="renewal-package-list">
-                    <label class="renewal-package-option">
-                      <input type="radio" name="renewalTerm" value="1 Yıllık Yenileme 2650.TL + KDV     = 3049.TL" required />
-                      <span class="renewal-package-option__meta">
-                        <strong>1 Yıllık Yenileme</strong>
-                        <small>2650.TL + KDV = 3049.TL</small>
-                      </span>
-                    </label>
-                    <label class="renewal-package-option">
-                      <input type="radio" name="renewalTerm" value="2 Yıllık Yenileme 4690.TL + KDV    =  5437.TL" />
-                      <span class="renewal-package-option__meta">
-                        <strong>2 Yıllık Yenileme</strong>
-                        <small>4690.TL + KDV = 5437.TL</small>
-                      </span>
-                    </label>
-                    <label class="renewal-package-option">
-                      <input type="radio" name="renewalTerm" value="3 Yıllık Yenileme 6950.TL + KDV    = 8062.TL" />
-                      <span class="renewal-package-option__meta">
-                        <strong>3 Yıllık Yenileme</strong>
-                        <small>6950.TL + KDV = 8062.TL</small>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-                <div class="field field--full">
-                  <span>MOlOhiya e-imza İmzalama ve Doğrulama Yazılım Lisansı</span>
-                  <div class="renewal-package-list">
-                    <label class="renewal-package-option">
-                      <input type="radio" name="molohiyaLicense" value="1 Yıllık Bireysel Yenileme Lisansı : 2650.TL+KDV = 3049.TL" />
-                      <span class="renewal-package-option__meta">
-                        <strong>1 Yıllık Bireysel Yenileme Lisansı</strong>
-                        <small>2650.TL + KDV = 3049.TL</small>
-                      </span>
-                    </label>
-                    <label class="renewal-package-option">
-                      <input type="radio" name="molohiyaLicense" value="2 Yıllık Bireysel Yenileme Lisansı : 4690.TL +KDV = 5437.TL" />
-                      <span class="renewal-package-option__meta">
-                        <strong>2 Yıllık Bireysel Yenileme Lisansı</strong>
-                        <small>4690.TL + KDV = 5437.TL</small>
-                      </span>
-                    </label>
-                    <label class="renewal-package-option">
-                      <input type="radio" name="molohiyaLicense" value="3 Yıllık Bireysel Yenileme Lisansı: 6950.TL+KDV = 8062.TL" />
-                      <span class="renewal-package-option__meta">
-                        <strong>3 Yıllık Bireysel Yenileme Lisansı</strong>
-                        <small>6950.TL + KDV = 8062.TL</small>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
+            <div style="padding: 20px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-soft); margin-top: 16px;">
+              <p style="font-size: 0.96rem; color: var(--color-text-secondary); line-height: 1.7; margin: 0;">
+                Elektronik imzanın kurumunuzda nerelerde ve nasıl kullanılabileceği,
+                hangi uygulamalara entegre olabileceği ve bu uygulamaların kurumunuza
+                maliyet/süreç iyileştirmeleri açısından nasıl katkı sağlayacağı konusunda
+                danışmanlık veriyoruz.
+              </p>
+            </div>
+          </div>
 
-              <div class="builder-actions">
-                <button type="submit" class="btn btn--primary btn--lg">Yenileme Talebini Gönder</button>
+          <div class="builder-card" data-animate="fade-up" style="margin-top: 30px;">
+            <div class="builder-card__head">
+              <div>
+                <div class="section-tag">Hizmet Kapsamı</div>
+                <h2 class="section-title">Danışmanlık Verdiğimiz Konular</h2>
               </div>
-            </form>
+              <p class="builder-card__head-text">e-imza KIBRIS Proje Ofisi aşağıdaki başlıklarda danışmanlık hizmeti vermektedir.</p>
+            </div>
 
-            <div class="application-submit__box" id="renewal-submit-message" style="display:none; margin-top: 14px;">
-              Yenileme talebiniz gönderime hazır.
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px;">
+              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
+                <strong style="display: block; margin-bottom: 6px;">E-imza Entegrasyonları</strong>
+                <small style="color: var(--color-text-secondary);">Mevcut sistemlere e-imza entegrasyonu ve mimari planlama.</small>
+              </div>
+              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
+                <strong style="display: block; margin-bottom: 6px;">E-imzalı Bankacılık Süreçleri</strong>
+                <small style="color: var(--color-text-secondary);">Bankacılık iş akışlarında güvenli elektronik imza kullanımı.</small>
+              </div>
+              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
+                <strong style="display: block; margin-bottom: 6px;">E-imzalı İK Süreçleri</strong>
+                <small style="color: var(--color-text-secondary);">İnsan kaynakları onay süreçlerinde dijital dönüşüm desteği.</small>
+              </div>
+              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
+                <strong style="display: block; margin-bottom: 6px;">Bayi İletişimi ve Sipariş Süreçleri</strong>
+                <small style="color: var(--color-text-secondary);">Bayi/kanal süreçlerinin e-imza ile hızlandırılması ve güvenliği.</small>
+              </div>
+              <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff;">
+                <strong style="display: block; margin-bottom: 6px;">Bilgi Güvenliği</strong>
+                <small style="color: var(--color-text-secondary);">Bilgi güvenliği gereksinimleriyle uyumlu süreç tasarımı.</small>
+              </div>
             </div>
           </div>
         </div>
@@ -313,61 +314,33 @@
           <div class="summary-card">
             <div class="summary-card__head">
               <div>
-                <div class="section-tag">Yenileme Özeti</div>
-                <h3>Seçiminiz</h3>
+                <div class="section-tag">İletişim</div>
+                <h3>Detaylı Bilgi</h3>
               </div>
-              <i class="fa-solid fa-receipt"></i>
+              <i class="fa-solid fa-phone"></i>
             </div>
 
-            <div class="summary-lines" style="margin-top: 8px;">
-              <div class="summary-line">
-                <span>Yenileme Paketi</span>
-                <strong id="renewal-summary-term">Seçim yapılmadı</strong>
+            <div class="summary-highlights">
+              <div style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
+                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">Web Sitesi</strong>
+                <a href="https://www.e-imzakibris.com" style="color: var(--color-accent); text-decoration: none;">www.e-imzakibris.com</a>
               </div>
-              <div class="summary-line">
-                <span>Yenileme Tutarı</span>
-                <strong id="renewal-summary-term-price">-</strong>
+              <div style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
+                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">E-posta</strong>
+                <a href="mailto:info@e-imzakibris.com" style="color: var(--color-accent); text-decoration: none;">info@e-imzakibris.com</a>
               </div>
-              <div class="summary-line">
-                <span>MOlOhiya Lisansı</span>
-                <strong id="renewal-summary-license">Seçilmedi</strong>
-              </div>
-              <div class="summary-line">
-                <span>Lisans Tutarı</span>
-                <strong id="renewal-summary-license-price">-</strong>
+              <div style="padding: 12px 0; font-size: 0.95rem; color: var(--color-text-secondary); line-height: 1.6;">
+                <strong style="color: var(--color-text-primary); display: block; margin-bottom: 8px;">Çağrı Merkezi</strong>
+                <a href="tel:+903922280960" style="color: var(--color-accent); text-decoration: none;">+90 (392) 228 09 60</a>
               </div>
             </div>
-
-            <div class="summary-total" style="margin-top: 6px;">
-              <span>Toplam</span>
-              <strong id="renewal-summary-total-price">-</strong>
-            </div>
-
-  
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-card__head">
-              <div>
-                <div class="section-tag">Yenileme Süreci</div>
-                <h3>Nasıl İlerler?</h3>
-              </div>
-              <i class="fa-solid fa-rotate"></i>
-            </div>
-
-            <ul class="summary-highlights">
-              <li><i class="fa-solid fa-check"></i> Formu doldurup talebinizi gönderin</li>
-              <li><i class="fa-solid fa-check"></i> Ekibimiz bilgilerinizi doğrulasın</li>
-              <li><i class="fa-solid fa-check"></i> Gerekli yönlendirme ve ödeme adımı paylaşılsın</li>
-              <li><i class="fa-solid fa-check"></i> Sertifikanız yenilenerek kullanıma açılsın</li>
-            </ul>
           </div>
 
           <div class="contact-mini-card">
-            <h4>Yardıma mı ihtiyacınız var?</h4>
-            <p>Yenileme öncesi sorularınız için ekibimize ulaşabilirsiniz.</p>
-            <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
-            <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+            <h4>Proje Ofisi Desteği</h4>
+            <p>E-ticaret, e-ofis ve e-iş uygulamalarına bir adım önde başlamak için bizimle iletişime geçin.</p>
+            <a href="tel:+903922280960" style="display: block; margin-bottom: 8px;"><i class="fa-solid fa-phone"></i> Hemen Ara</a>
+            <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> E-posta Gönder</a>
           </div>
         </aside>
       </div>
@@ -396,7 +369,9 @@
           <li><a href="../products/esignature.html">Elektronik İmza</a></li>
           <li><a href="onlineapplication.html">Online Başvuru</a></li>
           <li><a href="renewal.html">Yenileme Başvurusu</a></li>
-          <li><a href="../index.html#pricing">Fiyatlandırma</a></li>
+          <li><a href="education.html">Eğitim Hizmetleri</a></li>
+          <li><a href="consultancy.html">Danışmanlık Hizmetleri</a></li>
+          <li><a href="verify.html">İmza Doğrulama</a></li>
         </ul>
       </div>
 
@@ -443,8 +418,6 @@
       </div>
     </div>
   </footer>
-
-  
 
   <script src="../assets/js/main.js"></script>
 </body>
