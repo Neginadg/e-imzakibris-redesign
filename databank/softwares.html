@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="e-imza KIBRIS yazılım indirme sayfası. Mac, Linux ve Windows sürücülerini indirilebilir dosyalarla görüntüleyin." />
+  <title>Yazılım İndir | e-imza KIBRIS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .soft-table-wrap {
+      overflow: hidden;
+      border: 1px solid rgba(180, 30, 30, 0.14);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .soft-table {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .soft-table th,
+    .soft-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+      vertical-align: middle;
+      font-size: 0.93rem;
+    }
+
+    .soft-table th {
+      background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+      color: var(--color-text-primary);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .soft-table th:nth-child(1),
+    .soft-table td:nth-child(1) {
+      width: 110px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .soft-table th:nth-child(2),
+    .soft-table td:nth-child(2) {
+      width: auto;
+    }
+
+    .soft-table th:nth-child(3),
+    .soft-table td:nth-child(3) {
+      width: 280px;
+    }
+
+    .soft-table th:nth-child(4),
+    .soft-table td:nth-child(4) {
+      width: 100px;
+      text-align: center;
+    }
+
+    .soft-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .soft-table__section {
+      background: linear-gradient(90deg, rgba(180, 30, 30, 0.08), rgba(180, 30, 30, 0.02));
+      color: var(--color-text-primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .soft-table__section td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border-bottom-color: rgba(180, 30, 30, 0.12);
+    }
+
+    .soft-table tbody tr:not(.soft-table__section):hover td {
+      background: #fffaf9;
+    }
+
+    .soft-file {
+      display: grid;
+      gap: 2px;
+    }
+
+    .soft-file small {
+      color: var(--color-text-muted);
+      word-break: break-word;
+    }
+
+    .soft-download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 9999px;
+      background: rgba(180, 30, 30, 0.08);
+      border: 1px solid rgba(180, 30, 30, 0.12);
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .soft-download-link:hover {
+      transform: translateY(-1px) scale(1.02);
+      background: rgba(180, 30, 30, 0.12);
+      box-shadow: 0 8px 20px rgba(180, 30, 30, 0.14);
+    }
+
+    .soft-download-link img {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    html,
+    body.application-page {
+      overflow-x: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero {
+        overflow-x: hidden;
+      }
+    }
+
+    .application-page main,
+    .application-page .container,
+    .soft-table-wrap {
+      min-width: 0;
+    }
+  </style>
+</head>
+<body class="application-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr" class="active">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik İmza</strong><small>Nitelikli e-imza sertifikası</small></div></a>
+              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgası</strong><small>Elektronik veriye zaman kanıtı</small></div></a>
+              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>İmzalama ve doğrulama masaüstü yazılımı</small></div></a>
+              <a href="../products/einvoiceintegrationsolution.html" class="dropdown__item"><div><strong>E-fatura E-imza Entegrasyonu</strong><small>E-fatura webservis entegrasyon çözümü</small></div></a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik imza eğitimleri</small></div></a>
+              <a href="../support/consultancy.html" class="dropdown__item"><div><strong>Danışmanlık Hizmetleri</strong><small>Elektronik dönüşüm danışmanlığı</small></div></a>
+              <a href="../support/verify.html" class="dropdown__item"><div><strong>İmza Doğrulama</strong><small>Elektronik imzaları doğrulayın</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown active">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
+              <a href="canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
+              <a href="legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
+              <a href="softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
+              <a href="principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası ilkeleri</small></div></a>
+              <a href="relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank"><div><strong>93/2007 Sayılı Yasa</strong><small>Elektronik İmza Yasası</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Şirket Hakkında</strong><small>Denizler Bilişim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelişmeler</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item"><a href="../contact/index.html" class="nav-link">İLETİŞİM</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav__list">
+      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="certificates.html">Kök Sertifikalar</a></li>
+      <li><a href="canceledcertificates.html">Sertifika İptal Listeleri</a></li>
+      <li><a href="contracts.html">Sözleşmeler</a></li>
+      <li><a href="legislations.html">Mevzuat</a></li>
+      <li><a href="softwares.html">Yazılım İndir</a></li>
+      <li><a href="principles.html">İlkeler</a></li>
+      <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
+      <li><a href="../support/onlineapplication.html">DESTEK</a></li>
+      <li><a href="../about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="../contact/index.html">İLETİŞİM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="section" id="softwares-list">
+      <div class="container">
+        <div class="soft-table-wrap">
+          <table class="soft-table">
+            <thead>
+              <tr>
+                <th>Kod</th>
+                <th>Yazılım Adı</th>
+                <th>Dosya</th>
+                <th>İndir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="soft-table__section"><td colspan="4">MAC Drivers</td></tr>
+              <tr>
+                <td>MAC-1</td>
+                <td>
+                  <div class="soft-file">
+                    <strong>MAC Driver 10.1 - 10.2</strong>
+                    <small>_media_17513_safenetauthenticationclient90490.zip</small>
+                  </div>
+                </td>
+                <td>ZIP</td>
+                <td><a class="soft-download-link" href="../assets/docs/softwares/_media_17513_safenetauthenticationclient90490.zip" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>MAC-2</td>
+                <td>
+                  <div class="soft-file">
+                    <strong>MAC Driver 10.10 - 10.11</strong>
+                    <small>_media_36466_safenetauthenticationclient91720dmg.zip</small>
+                  </div>
+                </td>
+                <td>ZIP</td>
+                <td><a class="soft-download-link" href="../assets/docs/softwares/_media_36466_safenetauthenticationclient91720dmg.zip" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+
+              <tr class="soft-table__section"><td colspan="4">Linux Drivers</td></tr>
+              <tr>
+                <td>LNX-1</td>
+                <td>
+                  <div class="soft-file">
+                    <strong>Linux Driver</strong>
+                    <small>_media_54347_sac83_linux.zip</small>
+                  </div>
+                </td>
+                <td>ZIP</td>
+                <td><a class="soft-download-link" href="../assets/docs/softwares/_media_54347_sac83_linux.zip" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+
+              <tr class="soft-table__section"><td colspan="4">Windows Drivers</td></tr>
+              <tr>
+                <td>WIN-1</td>
+                <td>
+                  <div class="soft-file">
+                    <strong>Signtific Client</strong>
+                    <small>_media_60298_signtificclient_1.zip</small>
+                  </div>
+                </td>
+                <td>ZIP</td>
+                <td><a class="soft-download-link" href="../assets/docs/softwares/_media_60298_signtificclient_1.zip" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo"><img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" /></a>
+        <p>Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza hizmet sağlayıcısıdır.</p>
+        <div class="footer__cert"><i class="fa-solid fa-shield-halved"></i><span>ISO/IEC 27001:2017 Sertifikalı</span></div>
+      </div>
+      <div class="footer__col">
+        <h4>Bilgi Bankası</h4>
+        <ul>
+          <li><a href="certificates.html">Kök Sertifikalar</a></li>
+          <li><a href="canceledcertificates.html">Sertifika İptal Listeleri</a></li>
+          <li><a href="contracts.html">Sözleşmeler</a></li>
+          <li><a href="legislations.html">Mevzuat</a></li>
+          <li><a href="softwares.html">Yazılım İndir</a></li>
+          <li><a href="principles.html">İlkeler</a></li>
+          <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
+        </ul>
+      </div>
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li><i class="fa-solid fa-phone"></i> <a href="tel:+903922280960">+90 (392) 228 09 60</a></li>
+          <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="../privacypolicy.html">Gizlilik Politikasi</a>
+          <a href="../contact/index.html">İletişim</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
