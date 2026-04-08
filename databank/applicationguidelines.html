@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS mevzuat bilgi sayfası. Yasa, tüzük, yönetmelik ve düzenleme belgelerine erişin." />
-  <title>Mevzuat | e-imza KIBRIS</title>
+  <meta name="description" content="e-imza KIBRIS uygulama esasları sayfası. NES Uygulama Esasları ve NES Zaman Damgası Esasları dokumanlarına erisin." />
+  <title>Uygulama Esaslari | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
-    .leg-table-wrap {
+    .pri-table-wrap {
       overflow: hidden;
       border: 1px solid rgba(180, 30, 30, 0.14);
       border-radius: 18px;
@@ -22,7 +22,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
     }
 
-    .leg-table {
+    .pri-table {
       display: table;
       width: 100%;
       border-collapse: collapse;
@@ -31,8 +31,8 @@
       overflow: visible;
     }
 
-    .leg-table th,
-    .leg-table td {
+    .pri-table th,
+    .pri-table td {
       padding: 14px 16px;
       border-bottom: 1px solid var(--color-border);
       text-align: left;
@@ -40,7 +40,7 @@
       font-size: 0.93rem;
     }
 
-    .leg-table th {
+    .pri-table th {
       background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
       color: var(--color-text-primary);
       font-weight: 600;
@@ -50,34 +50,35 @@
       white-space: nowrap;
     }
 
-    .leg-table th:nth-child(1),
-    .leg-table td:nth-child(1) {
+    .pri-table th:nth-child(1),
+    .pri-table td:nth-child(1) {
       width: 110px;
       text-align: center;
       font-weight: 700;
     }
 
-    .leg-table th:nth-child(2),
-    .leg-table td:nth-child(2) {
+    .pri-table th:nth-child(2),
+    .pri-table td:nth-child(2) {
       width: auto;
     }
 
-    .leg-table th:nth-child(3),
-    .leg-table td:nth-child(3) {
+    .pri-table th:nth-child(3),
+    .pri-table td:nth-child(3) {
       width: 280px;
+      word-break: break-word;
     }
 
-    .leg-table th:nth-child(4),
-    .leg-table td:nth-child(4) {
+    .pri-table th:nth-child(4),
+    .pri-table td:nth-child(4) {
       width: 100px;
       text-align: center;
     }
 
-    .leg-table tr:last-child td {
+    .pri-table tr:last-child td {
       border-bottom: none;
     }
 
-    .leg-table__section {
+    .pri-table__section {
       background: linear-gradient(90deg, rgba(180, 30, 30, 0.08), rgba(180, 30, 30, 0.02));
       color: var(--color-text-primary);
       font-weight: 700;
@@ -86,27 +87,37 @@
       text-transform: uppercase;
     }
 
-    .leg-table__section td {
+    .pri-table__section td {
       padding-top: 12px;
       padding-bottom: 12px;
       border-bottom-color: rgba(180, 30, 30, 0.12);
     }
 
-    .leg-table tbody tr:not(.leg-table__section):hover td {
+    .pri-table tbody tr:not(.pri-table__section):hover td {
       background: #fffaf9;
     }
 
-    .leg-file {
+    .pri-file {
       display: grid;
       gap: 2px;
     }
 
-    .leg-file small {
+    .pri-file small {
       color: var(--color-text-muted);
       word-break: break-word;
     }
 
-    .leg-download-link {
+    .pri-doc-link {
+      color: var(--color-accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .pri-doc-link:hover {
+      text-decoration: underline;
+    }
+
+    .pri-download-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -119,13 +130,13 @@
       transition: all var(--transition);
     }
 
-    .leg-download-link:hover {
+    .pri-download-link:hover {
       transform: translateY(-1px) scale(1.02);
       background: rgba(180, 30, 30, 0.12);
       box-shadow: 0 8px 20px rgba(180, 30, 30, 0.14);
     }
 
-    .leg-download-link img {
+    .pri-download-link img {
       width: 20px;
       height: 20px;
       display: block;
@@ -144,7 +155,7 @@
 
     .application-page main,
     .application-page .container,
-    .leg-table-wrap {
+    .pri-table-wrap {
       min-width: 0;
     }
   </style>
@@ -224,11 +235,11 @@
       </nav>
 
       <div class="navbar__cta">
-        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
-        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BASVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENILEME</a>
       </div>
 
-      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="hamburger" id="hamburger" aria-label="Menuyu ac" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -257,91 +268,41 @@
   </nav>
 
   <main>
-    <section class="section" id="legislations-list">
+    <section class="section" id="applicationguidelines-list">
       <div class="container">
-        <div class="leg-table-wrap">
-          <table class="leg-table">
+        <div class="pri-table-wrap">
+          <table class="pri-table">
             <thead>
               <tr>
                 <th>Kod</th>
-                <th>Belge Adı</th>
+                <th>Uygulama Esasi</th>
                 <th>Dosya</th>
-                <th>İndir</th>
+                <th>Indir</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="leg-table__section"><td colspan="4">Yasalar</td></tr>
+              <tr class="pri-table__section"><td colspan="4">Uygulama Esaslari</td></tr>
               <tr>
-                <td>93/2007</td>
+                <td>UES-1</td>
                 <td>
-                  <div class="leg-file">
-                    <strong>Elektronik İmza Yasası</strong>
-                    <small>93eiy2007.pdf</small>
+                  <div class="pri-file">
+                    <strong><a class="pri-doc-link" href="https://www.e-imzakibris.com/media/17524/dbh_nesue_10_last_clean.pdf" target="_blank" rel="noopener noreferrer">NES Uygulama Esaslari</a></strong>
+                    <small>dbh_nesue_10_last_clean.pdf</small>
                   </div>
                 </td>
                 <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/93eiy2007.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-              </tr>
-
-              <tr class="leg-table__section"><td colspan="4">Tüzükler</td></tr>
-              <tr>
-                <td>760/2008</td>
-                <td>
-                  <div class="leg-file">
-                    <strong>Elektronik İmza Tüzüğü</strong>
-                    <small>760eiyt2008.pdf</small>
-                  </div>
-                </td>
-                <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/760eiyt2008.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+                <td><a class="pri-download-link" href="https://www.e-imzakibris.com/media/17524/dbh_nesue_10_last_clean.pdf" target="_blank" rel="noopener noreferrer"><img src="../assets/img/download.svg" alt="Indir" /></a></td>
               </tr>
               <tr>
-                <td>2016</td>
+                <td>UES-2</td>
                 <td>
-                  <div class="leg-file">
-                    <strong>Sertifika Mali Sorumluluk Sigortası Tüzüğü</strong>
-                    <small>sertifika-mali-sorumluluk-sigortasi-tuzugu-resmi-gazete.pdf</small>
+                  <div class="pri-file">
+                    <strong><a class="pri-doc-link" href="https://www.e-imzakibris.com/media/17525/dbh_zdue_10_last_clean.pdf" target="_blank" rel="noopener noreferrer">NES Zaman Damgasi Esaslari</a></strong>
+                    <small>dbh_zdue_10_last_clean.pdf</small>
                   </div>
                 </td>
                 <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/sertifika-mali-sorumluluk-sigortasi-tuzugu-resmi-gazete.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-              </tr>
-
-              <tr class="leg-table__section"><td colspan="4">Yönetmelikler</td></tr>
-              <tr>
-                <td>943/2008</td>
-                <td>
-                  <div class="leg-file">
-                    <strong>Elektronik İmza Yönetmeliği</strong>
-                    <small>943eiyy2008.pdf</small>
-                  </div>
-                </td>
-                <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/943eiyy2008.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-              </tr>
-              <tr>
-                <td>258/2014</td>
-                <td>
-                  <div class="leg-file">
-                    <strong>Elektronik İmza Yönetmeliği</strong>
-                    <small>258eiyy2014.pdf</small>
-                  </div>
-                </td>
-                <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/258eiyy2014.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
-              </tr>
-
-              <tr class="leg-table__section"><td colspan="4">Düzenlemeler</td></tr>
-              <tr>
-                <td>OSCP</td>
-                <td>
-                  <div class="leg-file">
-                    <strong>Sertifika Durum Protokolü</strong>
-                    <small>6-sertifika-durum-protokolu-oscp-istekcevap-profilleri-dokumani.pdf</small>
-                  </div>
-                </td>
-                <td>PDF</td>
-                <td><a class="leg-download-link" href="../assets/docs/legislations/6-sertifika-durum-protokolu-oscp-istekcevap-profilleri-dokumani.pdf" download><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+                <td><a class="pri-download-link" href="https://www.e-imzakibris.com/media/17525/dbh_zdue_10_last_clean.pdf" target="_blank" rel="noopener noreferrer"><img src="../assets/img/download.svg" alt="Indir" /></a></td>
               </tr>
             </tbody>
           </table>
@@ -354,24 +315,24 @@
     <div class="container footer__inner">
       <div class="footer__brand">
         <a href="../index.html" class="footer__logo"><img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" /></a>
-        <p>Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza hizmet sağlayıcısıdır.</p>
-        <div class="footer__cert"><i class="fa-solid fa-shield-halved"></i><span>ISO/IEC 27001:2017 Sertifikalı</span></div>
+        <p>Denizler Bilisim Hizmetleri Ltd., K.K.T.C.'nin guvenilir elektronik imza hizmet saglayicisidir.</p>
+        <div class="footer__cert"><i class="fa-solid fa-shield-halved"></i><span>ISO/IEC 27001:2017 Sertifikali</span></div>
       </div>
       <div class="footer__col">
-        <h4>Bilgi Bankası</h4>
+        <h4>Bilgi Bankasi</h4>
         <ul>
-          <li><a href="certificates.html">Kök Sertifikalar</a></li>
-          <li><a href="canceledcertificates.html">Sertifika İptal Listeleri</a></li>
-          <li><a href="contracts.html">Sözleşmeler</a></li>
+          <li><a href="certificates.html">Kok Sertifikalar</a></li>
+          <li><a href="canceledcertificates.html">Sertifika Iptal Listeleri</a></li>
+          <li><a href="contracts.html">Sozlesmeler</a></li>
           <li><a href="legislations.html">Mevzuat</a></li>
-          <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
-          <li><a href="softwares.html">Yazılım İndir</a></li>
-          <li><a href="principles.html">İlkeler</a></li>
-          <li><a href="applicationguidelines.html">Uygulama Esasları</a></li>
+          <li><a href="softwares.html">Yazilim Indir</a></li>
+          <li><a href="principles.html">Ilkeler</a></li>
+          <li><a href="applicationguidelines.html">Uygulama Esaslari</a></li>
+          <li><a href="relatedinstitutionlinks.html">Ilgili Kurum Linkleri</a></li>
         </ul>
       </div>
       <div class="footer__contact">
-        <h4>İletişim</h4>
+        <h4>Iletisim</h4>
         <ul>
           <li><i class="fa-solid fa-phone"></i> <a href="tel:+903922280960">+90 (392) 228 09 60</a></li>
           <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
@@ -380,10 +341,10 @@
     </div>
     <div class="footer__bottom">
       <div class="container footer__bottom-inner">
-        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <p>&copy; 2025 Denizler Bilisim Hizmetleri Ltd. Tum haklari saklidir.</p>
         <div class="footer__bottom-links">
-          <a href="../privacypolicy.html">Gizlilik Politikası</a>
-          <a href="../contact/index.html">İletişim</a>
+          <a href="../privacypolicy.html">Gizlilik Politikasi</a>
+          <a href="../contact/index.html">Iletisim</a>
         </div>
       </div>
     </div>

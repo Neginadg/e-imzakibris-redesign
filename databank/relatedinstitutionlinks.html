@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -14,120 +14,132 @@
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
-    .rel-table-wrap {
-      overflow: hidden;
-      border: 1px solid rgba(180, 30, 30, 0.14);
-      border-radius: 18px;
+    .rel-links-wrap {
+      border: 1px solid rgba(26, 34, 45, 0.12);
+      border-radius: 12px;
       background: #fff;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+      padding: 24px;
     }
 
-    .rel-table {
-      display: table;
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      min-width: 0;
-      overflow: visible;
-    }
-
-    .rel-table th,
-    .rel-table td {
-      padding: 14px 16px;
+    .rel-links-head {
+      margin-bottom: 18px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--color-border);
-      text-align: left;
-      vertical-align: middle;
-      font-size: 0.93rem;
     }
 
-    .rel-table th {
-      background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+    .rel-links-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0;
+      font-size: 1.08rem;
       color: var(--color-text-primary);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      white-space: nowrap;
+      letter-spacing: 0.01em;
     }
 
-    .rel-table th:nth-child(1),
-    .rel-table td:nth-child(1) {
-      width: 110px;
-      text-align: center;
-      font-weight: 700;
+    .rel-links-title i {
+      color: var(--color-accent);
     }
 
-    .rel-table th:nth-child(2),
-    .rel-table td:nth-child(2) {
-      width: auto;
-    }
-
-    .rel-table th:nth-child(3),
-    .rel-table td:nth-child(3) {
-      width: 280px;
-      word-break: break-word;
-    }
-
-    .rel-table th:nth-child(4),
-    .rel-table td:nth-child(4) {
-      width: 100px;
-      text-align: center;
-    }
-
-    .rel-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .rel-table__section {
-      background: linear-gradient(90deg, rgba(180, 30, 30, 0.08), rgba(180, 30, 30, 0.02));
-      color: var(--color-text-primary);
-      font-weight: 700;
-      font-size: 0.88rem;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .rel-table__section td {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      border-bottom-color: rgba(180, 30, 30, 0.12);
-    }
-
-    .rel-table tbody tr:not(.rel-table__section):hover td {
-      background: #fffaf9;
-    }
-
-    .rel-file {
-      display: grid;
-      gap: 2px;
-    }
-
-    .rel-file small {
+    .rel-links-subtitle {
+      margin: 8px 0 0;
       color: var(--color-text-muted);
-      word-break: break-word;
+      font-size: 0.92rem;
+      line-height: 1.5;
     }
 
-    .rel-link {
+    .rel-links-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+
+    .rel-card {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid rgba(26, 34, 45, 0.12);
+      border-radius: 10px;
+      padding: 14px 16px;
+      background: #fff;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .rel-card:hover {
+      border-color: rgba(180, 30, 30, 0.28);
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+    }
+
+    .rel-card__brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .rel-card__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(26, 34, 45, 0.12);
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .rel-card__icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rel-card__text strong {
+      display: block;
+      color: var(--color-text-primary);
+      font-size: 0.97rem;
+      line-height: 1.35;
+    }
+
+    .rel-card__text small {
+      display: block;
+      color: var(--color-text-muted);
+      margin-top: 5px;
+      line-height: 1.35;
+    }
+
+    .rel-site-link {
+      color: var(--color-accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .rel-site-link:hover {
+      text-decoration: underline;
+    }
+
+    .rel-card__action {
+      color: var(--color-text-primary);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-      width: 42px;
-      height: 42px;
-      border-radius: 9999px;
-      background: rgba(180, 30, 30, 0.08);
-      border: 1px solid rgba(180, 30, 30, 0.12);
-      text-decoration: none;
-      transition: all var(--transition);
+      padding-left: 10px;
+      border-left: 1px solid rgba(26, 34, 45, 0.12);
     }
 
-    .rel-link:hover {
-      transform: translateY(-1px) scale(1.02);
-      background: rgba(180, 30, 30, 0.12);
-      box-shadow: 0 8px 20px rgba(180, 30, 30, 0.14);
+    .rel-card__action i {
+      color: var(--color-accent);
+      font-size: 0.8rem;
     }
 
-    .rel-link i {
+    .rel-card__action:hover {
       color: var(--color-accent);
     }
 
@@ -144,8 +156,31 @@
 
     .application-page main,
     .application-page .container,
-    .rel-table-wrap {
+    .rel-links-wrap {
       min-width: 0;
+    }
+
+    @media (max-width: 700px) {
+      .rel-links-wrap {
+        padding: 18px;
+      }
+
+      .rel-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .rel-card__brand {
+        width: 100%;
+      }
+
+      .rel-card__action {
+        border-left: 0;
+        border-top: 1px solid rgba(26, 34, 45, 0.12);
+        padding-left: 0;
+        padding-top: 10px;
+      }
     }
   </style>
 </head>
@@ -194,21 +229,22 @@
           </li>
           <li class="nav-item has-dropdown active">
             <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-            <div class="dropdown">
+            <div class="dropdown dropdown--two-columns">
               <a href="certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
               <a href="canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
               <a href="contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
               <a href="legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
-              <a href="relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
               <a href="softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
               <a href="principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası ilkeleri</small></div></a>
+              <a href="applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esasları</strong><small>NES uygulama ve zaman damgası esasları</small></div></a>
+              <a href="relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
               <a href="../support/onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
-              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank" rel="noopener noreferrer"><div><strong>93/2007 Sayılı Yasa</strong><small>Elektronik İmza Yasası</small></div></a>
+              <a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" class="dropdown__item" target="_blank"><div><strong>93/2007 Sayılı Yasa</strong><small>Elektronik İmza Yasası</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
@@ -241,9 +277,10 @@
       <li><a href="canceledcertificates.html">Sertifika İptal Listeleri</a></li>
       <li><a href="contracts.html">Sözleşmeler</a></li>
       <li><a href="legislations.html">Mevzuat</a></li>
-      <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
       <li><a href="softwares.html">Yazılım İndir</a></li>
       <li><a href="principles.html">İlkeler</a></li>
+      <li><a href="applicationguidelines.html">Uygulama Esasları</a></li>
+      <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
       <li><a href="../support/onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
       <li><a href="../contact/index.html">İLETİŞİM</a></li>
@@ -257,42 +294,39 @@
   <main>
     <section class="section" id="related-links">
       <div class="container">
-        <div class="rel-table-wrap">
-          <table class="rel-table">
-            <thead>
-              <tr>
-                <th>Kod</th>
-                <th>Kurum Adı</th>
-                <th>Web Adresi</th>
-                <th>Git</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="rel-table__section"><td colspan="4">Kurumsal Siteler</td></tr>
-              <tr>
-                <td>K-01</td>
-                <td>
-                  <div class="rel-file">
-                    <strong>Denizler Bilişim Hizmetleri Ltd.</strong>
-                    <small>e-imza KIBRIS altyapısını sağlayan kurumun resmi sitesi.</small>
-                  </div>
-                </td>
-                <td>http://denizlerbilisim.com/</td>
-                <td><a class="rel-link" href="http://denizlerbilisim.com/" target="_blank" rel="noopener noreferrer" aria-label="Denizler Bilişim sitesine git"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-              </tr>
-              <tr>
-                <td>K-02</td>
-                <td>
-                  <div class="rel-file">
-                    <strong>Bilgi Teknolojileri ve Haberleşme Kurumu</strong>
-                    <small>Düzenleyici kurumun resmi internet sitesi.</small>
-                  </div>
-                </td>
-                <td>http://www.bthk.org/</td>
-                <td><a class="rel-link" href="http://www.bthk.org/" target="_blank" rel="noopener noreferrer" aria-label="BTHK sitesine git"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="rel-links-wrap">
+          <div class="rel-links-head">
+            <h2 class="rel-links-title"><i class="fa-solid fa-link"></i> İlgili Kurum Linkleri</h2>
+            <p class="rel-links-subtitle">Elektronik imza süreçlerinde başvurulabilecek resmi ve kurumsal kaynaklara aşağıdan erişebilirsiniz.</p>
+          </div>
+
+          <div class="rel-links-grid">
+            <div class="rel-card">
+              <div class="rel-card__brand">
+                <div class="rel-card__icon">
+                  <img src="../assets/img/denizler.jpeg" alt="Denizler Bilişim" />
+                </div>
+                <div class="rel-card__text">
+                  <strong>Denizler Bilişim Hizmetleri Ltd.</strong>
+                 
+                </div>
+              </div>
+              <a class="rel-card__action" href="http://denizlerbilisim.com/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Siteyi Ziyaret Et</a>
+            </div>
+
+            <div class="rel-card">
+              <div class="rel-card__brand">
+                <div class="rel-card__icon">
+                  <img src="../assets/img/bthk.jpeg" alt="BTHK" />
+                </div>
+                <div class="rel-card__text">
+                  <strong>Bilgi Teknolojileri ve Haberleşme Kurumu</strong>
+                  <small>
+                </div>
+              </div>
+              <a class="rel-card__action" href="http://www.bthk.org/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Siteyi Ziyaret Et</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -324,6 +358,7 @@
           <li><a href="relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
           <li><a href="softwares.html">Yazılım İndir</a></li>
           <li><a href="principles.html">İlkeler</a></li>
+          <li><a href="applicationguidelines.html">Uygulama Esasları</a></li>
         </ul>
       </div>
 
@@ -350,3 +385,5 @@
   <script src="../assets/js/main.js"></script>
 </body>
 </html>
+
+

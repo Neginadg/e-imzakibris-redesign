@@ -375,6 +375,28 @@ section,
   margin-top: 1px;
 }
 
+/* Use for long dropdown menus like Bilgi Bankasi */
+.dropdown--two-columns {
+  width: min(560px, 92vw);
+  min-width: 520px;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px;
+  align-content: start;
+}
+
+.dropdown--two-columns .dropdown__item {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .dropdown--two-columns {
+    min-width: 460px;
+    width: min(500px, 92vw);
+  }
+}
+
 /* Navbar CTA */
 .navbar__cta {
   display: flex;
