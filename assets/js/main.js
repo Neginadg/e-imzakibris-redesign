@@ -7,6 +7,7 @@
   'use strict';
 
   const KDV_RATE = 0.16;
+  const NAV_MOBILE_BREAKPOINT = 1100;
 
   /* ---- Load prices from admin panel (localStorage) ---- */
   (function loadPrices() {
@@ -56,6 +57,8 @@
   const mobileNav  = document.getElementById('mobile-nav');
 
   if (hamburger && mobileNav) {
+    setupMobileNavFromDesktop();
+
     hamburger.addEventListener('click', () => {
       const isOpen = hamburger.classList.toggle('open');
       mobileNav.classList.toggle('open', isOpen);
@@ -64,15 +67,145 @@
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
-    // Close on backdrop click (any link inside mobile nav)
-    mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', closeMobileNav);
+    // Handle section toggles and close only for real navigation links.
+    mobileNav.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const toggleBtn = target.closest('.mobile-nav__group-toggle');
+      if (toggleBtn && mobileNav.contains(toggleBtn)) {
+        event.preventDefault();
+        const group = toggleBtn.closest('.mobile-nav__group');
+        if (!group) return;
+
+        const isOpen = group.classList.toggle('open');
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        return;
+      }
+
+      const link = target.closest('a');
+      if (!link || !mobileNav.contains(link)) return;
+
+      const rawHref = (link.getAttribute('href') || '').trim();
+      const href = rawHref.toLowerCase();
+      if (!href || href === '#' || href.startsWith('javascript:')) return;
+
+      window.setTimeout(closeMobileNav, 0);
     });
 
     // Close on Escape
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeMobileNav();
     });
+
+    // Ensure overlay state is reset when switching from mobile/tablet to desktop.
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > NAV_MOBILE_BREAKPOINT) {
+        closeMobileNav();
+      }
+    }, { passive: true });
+  }
+
+  function setupMobileNavFromDesktop() {
+    const mobileList = mobileNav.querySelector('.mobile-nav__list');
+    if (!mobileList) return;
+
+    const desktopItems = Array.from(document.querySelectorAll('.navbar__nav .nav-list > .nav-item'));
+    if (!desktopItems.length) return;
+
+    const ctaNode = mobileList.querySelector('.mobile-nav__cta');
+    const fragment = document.createDocumentFragment();
+
+    const getLinkLabel = (linkEl) => {
+      const textNodes = Array.from(linkEl.childNodes)
+        .filter((node) => node.nodeType === Node.TEXT_NODE)
+        .map((node) => node.textContent || '')
+        .join(' ')
+        .trim();
+      return textNodes || (linkEl.textContent || '').trim();
+    };
+
+    desktopItems.forEach((item, index) => {
+      const trigger = item.querySelector('.nav-link');
+      if (!trigger) return;
+
+      const sectionTitle = getLinkLabel(trigger);
+      const dropdown = item.querySelector('.dropdown');
+      const dropdownLinks = dropdown ? Array.from(dropdown.querySelectorAll('.dropdown__item')) : [];
+
+      if (dropdownLinks.length) {
+        const group = document.createElement('li');
+        group.className = 'mobile-nav__group';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'mobile-nav__group-toggle';
+        button.setAttribute('aria-expanded', 'false');
+        button.setAttribute('aria-controls', `mobile-submenu-${index}`);
+
+        const label = document.createElement('span');
+        label.textContent = sectionTitle;
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-chevron-down fa-xs';
+        button.appendChild(label);
+        button.appendChild(icon);
+
+        const submenu = document.createElement('ul');
+        submenu.className = 'mobile-nav__submenu';
+        submenu.id = `mobile-submenu-${index}`;
+
+        dropdownLinks.forEach((sourceLink) => {
+          const href = (sourceLink.getAttribute('href') || '').trim();
+          if (!href || href.toLowerCase().startsWith('javascript:')) return;
+
+          const strong = sourceLink.querySelector('strong');
+          const itemLabel = (strong ? strong.textContent : sourceLink.textContent || '').trim();
+          if (!itemLabel) return;
+
+          const submenuItem = document.createElement('li');
+          const submenuLink = document.createElement('a');
+          submenuLink.href = href;
+          submenuLink.textContent = itemLabel;
+
+          const targetAttr = sourceLink.getAttribute('target');
+          if (targetAttr) submenuLink.setAttribute('target', targetAttr);
+          const relAttr = sourceLink.getAttribute('rel');
+          if (relAttr) submenuLink.setAttribute('rel', relAttr);
+
+          submenuItem.appendChild(submenuLink);
+          submenu.appendChild(submenuItem);
+        });
+
+        if (submenu.children.length) {
+          group.appendChild(button);
+          group.appendChild(submenu);
+          if (item.classList.contains('active')) {
+            group.classList.add('open');
+            button.setAttribute('aria-expanded', 'true');
+          }
+          fragment.appendChild(group);
+        }
+        return;
+      }
+
+      const href = (trigger.getAttribute('href') || '').trim();
+      if (!href || href === '#' || href.toLowerCase().startsWith('javascript:')) return;
+
+      const listItem = document.createElement('li');
+      const anchor = document.createElement('a');
+      anchor.href = href;
+      anchor.textContent = sectionTitle;
+      listItem.appendChild(anchor);
+      fragment.appendChild(listItem);
+    });
+
+    if (ctaNode) {
+      fragment.appendChild(ctaNode.cloneNode(true));
+    }
+
+    if (!fragment.childNodes.length) return;
+    mobileList.innerHTML = '';
+    mobileList.appendChild(fragment);
   }
 
   /* ---- Desktop dropdown click support ---- */
