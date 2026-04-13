@@ -15,19 +15,19 @@
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
     .faq-hero {
-      position: relative;
-      overflow: hidden;
       background: #fff;
       color: var(--color-text-primary);
-      padding: 76px 0 68px;
+      padding: 72px 0 56px;
     }
     .faq-hero h1,
-    .faq-hero p { color: var(--color-text-primary); }
+    .faq-hero p {
+      color: var(--color-text-primary);
+    }
     .faq-chip-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 18px;
     }
     .faq-chip {
       display: inline-flex;
@@ -42,7 +42,7 @@
     }
     .faq-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.9fr);
+      grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.9fr);
       gap: 28px;
       align-items: start;
     }
@@ -53,7 +53,9 @@
       box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
       padding: 22px;
     }
-    .faq-card + .faq-card { margin-top: 20px; }
+    .faq-card + .faq-card {
+      margin-top: 20px;
+    }
     .faq-card__head {
       display: flex;
       align-items: flex-start;
@@ -61,7 +63,10 @@
       gap: 18px;
       margin-bottom: 16px;
     }
-    .faq-card__head p { color: var(--color-text-secondary); margin: 0; }
+    .faq-card__head p {
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
     .faq-list {
       display: grid;
       gap: 12px;
@@ -72,6 +77,7 @@
       border-radius: 12px;
       background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
       padding: 14px 16px;
+      scroll-margin-top: 110px;
     }
     .faq-item summary {
       cursor: pointer;
@@ -79,7 +85,9 @@
       color: var(--color-text-primary);
       list-style: none;
     }
-    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
     .faq-item p {
       margin: 10px 0 0;
       color: var(--color-text-secondary);
@@ -95,7 +103,10 @@
       padding: 18px;
       background: #fff;
     }
-    .faq-category h3 { margin: 0 0 10px; color: var(--color-text-primary); }
+    .faq-category h3 {
+      margin: 0 0 10px;
+      color: var(--color-text-primary);
+    }
     .faq-category ul {
       margin: 0;
       padding-left: 18px;
@@ -103,9 +114,24 @@
       display: grid;
       gap: 8px;
     }
+    .faq-category a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .faq-category a:hover {
+      color: var(--color-accent);
+      border-bottom-color: rgba(180, 30, 30, 0.3);
+    }
+    .faq-aside {
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
     .faq-aside .summary-card {
-      position: sticky;
-      top: 96px;
+      position: static;
+      margin-top: 0 !important;
     }
     .faq-contact-item {
       display: grid;
@@ -118,8 +144,12 @@
       padding-bottom: 0;
     }
     @media (max-width: 1024px) {
-      .faq-layout { grid-template-columns: 1fr; }
-      .faq-aside .summary-card { position: static; }
+      .faq-layout {
+        grid-template-columns: 1fr;
+      }
+      .faq-aside .summary-card {
+        position: static;
+      }
     }
   </style>
 </head>
@@ -234,85 +264,58 @@
       <div class="container page-hero__inner">
         <div class="page-hero__content" data-animate="fade-up">
           <div class="section-tag" style="background:#fff;color:var(--color-text-primary);border-color:var(--color-border);">SSS</div>
-          <h1 class="page-hero__title">Merak Edilen Sorulara Hızlı Yanıtlar</h1>
-          <p class="page-hero__desc">Başvuru, yasal geçerlilik, kurulum ve kullanım adımlarıyla ilgili en çok sorulan sorular burada.</p>
+          <h1 class="page-hero__title">Sıkça Sorulan Sorular</h1>
+          <p class="page-hero__desc">Canlı sitedeki içerik başlıklarına göre güncellenmiş en çok sorulan sorular listesi.</p>
           <div class="faq-chip-row">
             <span class="faq-chip"><i class="fa-solid fa-circle-question"></i> Başvuru</span>
             <span class="faq-chip"><i class="fa-solid fa-shield-halved"></i> Yasal Geçerlilik</span>
             <span class="faq-chip"><i class="fa-solid fa-screwdriver-wrench"></i> Kurulum</span>
-            <span class="faq-chip"><i class="fa-solid fa-headset"></i> Teknik Destek</span>
+            <span class="faq-chip"><i class="fa-solid fa-envelope"></i> E-posta İmza</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top:44px;">
+    <section class="section" style="padding-top: 44px;">
       <div class="container faq-layout">
         <div>
           <div class="faq-card" data-animate="fade-up">
             <div class="faq-card__head">
               <div>
                 <div class="section-tag">Sık Sorulanlar</div>
-                <h2 class="section-title">En Çok Sorulan Sorular</h2>
+                <h2 class="section-title">Soru ve Yanıtlar</h2>
               </div>
-              <p>Bağlantıya tıklayarak detayları görüntüleyebilirsiniz.</p>
+              <p>Sorulara tıklayarak yanıtları açabilirsiniz.</p>
             </div>
 
             <div class="faq-list">
-              <details class="faq-item"><summary>Güvenli Elektronik İmza nedir?</summary><p>Güvenli elektronik imza, kimlik doğrulaması yapan ve imzalanan verinin bütünlüğünü koruyan, yasal geçerliliğe sahip dijital imza türüdür.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmzanın yasal geçerliliği var mıdır?</summary><p>Evet. Mevzuata uygun güvenli e-imza, uygun işlemlerde ıslak imza ile aynı hukuki sonucu doğurur.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmzama nasıl sahip olurum?</summary><p>Online başvuru adımlarını tamamlayıp kimlik doğrulama ve ödeme süreçlerini bitirdikten sonra sertifikanız teslim edilir.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmza başvurumun ödemesini nasıl yaparım?</summary><p>Başvuru sırasında paylaşılan ödeme yöntemleriyle işlem tamamlanır. Kurumsal veya bireysel seçenekler için destek ekibine ulaşabilirsiniz.</p></details>
-              <details class="faq-item"><summary>Kimlik kontrolünü hangi yollarla yapabilirim?</summary><p>Kimlik kontrolü yöntemleri başvuru tipine göre değişebilir. Güncel bilgi için çağrı merkezi veya e-posta üzerinden destek alabilirsiniz.</p></details>
-              <details class="faq-item"><summary>Adreste Kimlik Kontrolü ve Kurulum Hizmeti nedir?</summary><p>Talep halinde kimlik doğrulama ve kurulum işlemlerinin belirlenen adreste yapılmasını sağlayan destek hizmetidir.</p></details>
-              <details class="faq-item"><summary>E-imza başvurusunda hangi belgeler istenir?</summary><p>Başvuru tipine göre kimlik belgesi ve ilgili başvuru evrakları talep edilir. En güncel belge listesi için destek hattına ulaşın.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmzam kaç yıl geçerli olur?</summary><p>Geçerlilik süresi seçtiğiniz sertifika paketine göre belirlenir. Süre bitiminde yeni başvuru yapılabilir.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmza paketi nelerden oluşur?</summary><p>Paket içeriği sertifika, gerekli sürücüler/uygulamalar ve kullanım süreçlerine ilişkin destek bileşenlerini kapsar.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmzamı nerelerde kullanabilirim?</summary><p>e-imza; elektronik belge imzalama, e-posta imzalama ve mevzuatın izin verdiği dijital süreçlerde kullanılabilir.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmzamı bilgisayarıma nasıl kurarım?</summary><p>Yardım Masası sayfasındaki kurulum videolarını izleyerek ve uygun sürücüyü indirerek adım adım kurulum yapabilirsiniz.</p></details>
-              <details class="faq-item"><summary>Sertifikayı sildim, ne yapmalıyım?</summary><p>Sertifika geri yükleme/yeniden tanımlama işlemi için teknik destek birimiyle iletişime geçmeniz gerekir.</p></details>
-              <details class="faq-item"><summary>e-token PIN kodunu nasıl değiştiririm?</summary><p>Yardım Masası sayfasındaki PIN değiştirme videosundan adımları izleyebilirsiniz.</p></details>
-              <details class="faq-item"><summary>Kilitli e-token PIN kodunu nasıl açarım?</summary><p>Kilit açma videosunu izleyebilir veya teknik destek ekibinden canlı yardım alabilirsiniz.</p></details>
-              <details class="faq-item"><summary>Güvenli Elektronik İmza Mac işletim sistemlerinde çalışıyor mu?</summary><p>Evet, uyumlu sürücü ve uygulamalarla macOS ortamında kullanılabilir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza nedir?</summary><p>Güvenli elektronik imza, imzalayanın kimliğini doğrulayan ve belgenin bütünlüğünü koruyan yasal geçerli dijital imzadır.</p></details>
+              <details class="faq-item" id="faq-yasal"><summary>Güvenli Elektronik İmzanın yasal geçerliliği var mıdır?</summary><p>Evet. Yasal çerçeveye uygun kullanılan güvenli e-imza, uygun işlemlerde ıslak imza ile eşdeğer kabul edilir.</p></details>
+              <details class="faq-item" id="faq-basvuru"><summary>Güvenli Elektronik İmzama nasıl sahip olurum?</summary><p>Online başvuru, kimlik doğrulama ve ödeme adımları tamamlandıktan sonra sertifika oluşturma ve teslim süreci başlar.</p></details>
+              <details class="faq-item" id="faq-odeme"><summary>Güvenli Elektronik İmza başvuruma ilişkin ödememi nasıl yaparım?</summary><p>Ödemenizi başvuru sırasında belirtilen yöntemlerle (banka/havale veya online ödeme) tamamlayabilirsiniz.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza başvurumun tamamlanması için kimlik kontrolünü hangi yollarla gerçekleştirebilirim?</summary><p>Kimlik kontrolü; ofis, kayıt noktası veya güncel doğrulama yöntemleriyle tamamlanabilir. Güncel bilgi için destek ekibiyle iletişime geçin.</p></details>
+              <details class="faq-item" id="faq-adreste"><summary>Adreste Kimlik Kontrolü ve Kurulum Hizmeti nedir?</summary><p>Talep edilmesi halinde kimlik doğrulama ve kurulum işlemlerinin belirlenen adreste yapılmasını sağlayan hizmettir.</p></details>
+              <details class="faq-item"><summary>E-imza başvurusunda hangi belgeler istenir?</summary><p>Belge listesi başvuru türüne göre değişebilir. Kimlik belgesi ve başvuru evrakları temel gereksinimlerdir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmzam kaç yıl geçerli olacaktır?</summary><p>Geçerlilik süresi seçilen pakete bağlıdır. Süre sonunda yenileme veya yeni başvuru gerekir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza paketi nelerden oluşmaktadır?</summary><p>Paket, nitelikli sertifika ve kullanım için gereken yazılım/sürücü yönlendirmelerini içerir.</p></details>
+              <details class="faq-item" id="faq-fiyat"><summary>Güvenli Elektronik İmza paketi fiyatları nelerdir?</summary><p>Fiyatlar dönemsel olarak güncellenir. En güncel tutarlar için online başvuru ve fiyatlandırma alanını inceleyin.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza özel durum fiyatları hakkında bilgi alabilir miyim?</summary><p>Evet. Kurumsal anlaşmalar ve özel durumlar için destek birimimizden bilgi alabilirsiniz.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmzamı nerelerde kullanabilirim?</summary><p>Elektronik belge imzalama, kurumsal işlemler, e-devlet süreçleri ve uygun e-posta imzalama senaryolarında kullanılabilir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmzamı iade edebilir miyim?</summary><p>İade süreçleri, sözleşme koşulları ve sertifikanın kullanım durumuna göre değerlendirilir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza sahiplerinin yasa ile getirilen hukuki avantaj ve sorumlulukları nelerdir?</summary><p>E-imza hukuki güvence sağlar. Kullanıcı ise kişisel anahtar güvenliği ve yetkisiz kullanımın önlenmesinden sorumludur.</p></details>
+              <details class="faq-item" id="faq-kurulum"><summary>Güvenli Elektronik İmzamı bilgisayarıma nasıl kurarım?</summary><p>Yardım Masası bölümündeki kurulum videoları ve sürücü bağlantılarını izleyerek kurulumu tamamlayabilirsiniz.</p></details>
+              <details class="faq-item" id="faq-sertifika"><summary>Güvenli Elektronik İmzamın içerisindeki sertifikayı sildim, ne yapmam gerekiyor?</summary><p>Sertifika geri yükleme veya yeniden üretim ihtimali için teknik destek ekibimizle iletişime geçmeniz gerekir.</p></details>
+              <details class="faq-item" id="faq-kayip"><summary>Güvenli Elektronik İmzamı kaybettim, ne yapmam gerekiyor?</summary><p>Önce iptal/askı talebi oluşturmalı, ardından yeni sertifika başvuru sürecini başlatmalısınız.</p></details>
+              <details class="faq-item" id="faq-belge"><summary>Güvenli Elektronik İmzam ile text, word, pdf vb. formatta bir dokümanı imzalamak için ayrıca bir programa ihtiyacım var mıdır?</summary><p>Belge türüne bağlı olarak ek imzalama yazılımı gerekebilir. Yardım Masası'ndaki önerilen yazılımları kullanabilirsiniz.</p></details>
+              <details class="faq-item" id="faq-eposta"><summary>Gmail, Yahoo, Mynet vb. uzantılı e-postalarımda Güvenli Elektronik İmzamı kullanabilir miyim?</summary><p>E-posta servisinin istemci ve S/MIME desteğine göre değişir. Gerekli yapılandırma ile kullanılabilir.</p></details>
+              <details class="faq-item"><summary>MS Outlook 2010-2013'te e-imza ayarları nasıldır?</summary><p>Outlook güven merkezi, sertifika seçimi ve S/MIME ayarları yapılarak e-imza aktif edilir.</p></details>
+              <details class="faq-item" id="faq-pin"><summary>e-token PIN kodunu nasıl değiştiririm?</summary><p>Yardım Masası'ndaki PIN değiştirme videosunu adım adım uygulayabilirsiniz.</p></details>
+              <details class="faq-item" id="faq-kilit"><summary>Kilitli e-token PIN kodunu nasıl açarım?</summary><p>Kilit açma videosunu uygulayabilir veya teknik destekten canlı yardım alabilirsiniz.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmzamın seri numarasını nasıl görebilirim?</summary><p>Sertifika ayrıntı ekranında veya sertifika yönetim aracında seri numarası görülebilir.</p></details>
+              <details class="faq-item"><summary>Güvenli Elektronik İmza Mac işletim sistemlerinde çalışıyor mu?</summary><p>Evet. Uyumlu sürücü ve yazılımlarla macOS üzerinde kullanılabilir.</p></details>
             </div>
           </div>
 
-          <div class="faq-card" data-animate="fade-up">
-            <div class="faq-card__head">
-              <div>
-                <div class="section-tag">Konu Başlıkları</div>
-                <h2 class="section-title">Hızlı Kategoriler</h2>
-              </div>
-              <p>Aradığınız konuya göre hızlı ilerleyin.</p>
-            </div>
-
-            <div class="faq-categories">
-              <article class="faq-category">
-                <h3>Başvuru ve Evraklar</h3>
-                <ul>
-                  <li>Başvuru adımları ve kimlik doğrulama</li>
-                  <li>Gerekli belgeler ve ödeme işlemleri</li>
-                  <li>Adreste kimlik kontrolü ve kurulum</li>
-                </ul>
-              </article>
-              <article class="faq-category">
-                <h3>Kurulum ve Teknik Destek</h3>
-                <ul>
-                  <li>e-token kurulum videoları</li>
-                  <li>PIN kodu değiştirme ve kilit açma</li>
-                  <li>Sürücü ve sertifika kurulumu</li>
-                </ul>
-              </article>
-              <article class="faq-category">
-                <h3>Kullanım ve Geçerlilik</h3>
-                <ul>
-                  <li>Yasal geçerlilik ve kullanım alanları</li>
-                  <li>Sertifika süresi ve yenileme zamanı</li>
-                  <li>İmzalı belge doğrulama</li>
-                </ul>
-              </article>
-            </div>
-          </div>
         </div>
 
         <aside class="faq-aside" data-animate="fade-left">
@@ -335,7 +338,7 @@
               </div>
               <div class="faq-contact-item">
                 <strong>Yardım Masası</strong>
-                <span style="color:var(--color-text-secondary);">Kurulum videoları ve sürücü bağlantıları için ilgili sayfayı inceleyin.</span>
+                <span style="color:var(--color-text-secondary);">Kurulum videoları ve sürücü desteği için Yardım Masası sayfasını kullanın.</span>
               </div>
               <div class="faq-contact-item">
                 <strong>Online Başvuru</strong>
@@ -356,7 +359,7 @@
               <li><a href="helpdesk.html">Yardım Masası</a></li>
               <li><a href="onlineapplication.html">Online Başvuru</a></li>
               <li><a href="renewal.html">Yenileme Başvurusu</a></li>
-              <li><a href="../products/molohiya.html">MOlOhiya</a></li>
+              <li><a href="verify.html">İmza Doğrulama</a></li>
             </ul>
           </div>
         </aside>
