@@ -279,7 +279,7 @@
   <div class="topbar">
     <div class="container topbar__inner">
       <div class="topbar__left">
-        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="tel:+905391205115"><i class="fa-solid fa-phone"></i> +90 (539) 120 51 15</a>
         <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
       </div>
       <div class="topbar__right">
@@ -394,7 +394,7 @@
           </p>
           <div class="page-hero__actions">
             <a href="#verify-form-card" class="btn btn--primary btn--lg">Doğrulama Formuna Git</a>
-            <a href="tel:+903922280960" class="btn btn--outline btn--lg">Destek Al</a>
+            <a href="tel:+905391205115" class="btn btn--outline btn--lg">Destek Al</a>
           </div>
           <div class="page-hero__facts">
             <div><i class="fa-solid fa-file-shield"></i> AdES / AdES-QC / QES Kontrolu</div>
@@ -570,7 +570,7 @@
           <div class="contact-mini-card">
             <h4>Yardıma mı ihtiyacınız var?</h4>
             <p>İmza doğrulama hakkında sorularınız için ekibimize ulaşabilirsiniz.</p>
-            <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+            <a href="tel:+905391205115"><i class="fa-solid fa-phone"></i> +90 (539) 120 51 15</a>
             <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
           </div>
         </aside>
@@ -623,7 +623,7 @@
           </li>
           <li>
             <i class="fa-solid fa-phone"></i>
-            <a href="tel:+903922280960">+90 (392) 228 09 60</a>
+            <a href="tel:+905391205115">+90 (539) 120 51 15</a>
           </li>
           <li>
             <i class="fa-solid fa-mobile-screen"></i>
@@ -652,6 +652,63 @@
   <script>
     const verifyForm = document.getElementById('verify-form');
 
+    function decodeFileText(arrayBuffer) {
+      const utf8 = new TextDecoder('utf-8', { fatal: false }).decode(arrayBuffer);
+      const latin1 = new TextDecoder('iso-8859-1', { fatal: false }).decode(arrayBuffer);
+      return `${utf8}\n${latin1}`;
+    }
+
+    function normalizeSignerName(rawName) {
+      if (!rawName) {
+        return '';
+      }
+
+      const cleaned = rawName
+        .replace(/\\u0000/g, '')
+        .replace(/[<>\[\]{}]/g, ' ')
+        .replace(/\b[0-9a-f]{16,}\b/gi, '')
+        .replace(/\b[A-Z0-9]{20,}\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      return cleaned;
+    }
+
+    async function extractSignerFromFile(file) {
+      if (!file) {
+        return '';
+      }
+
+      try {
+        const buffer = await file.arrayBuffer();
+        const text = decodeFileText(buffer);
+
+        const patterns = [
+          /(?:CN|CommonName)\s*=\s*([^,\n\r\/]+)/i,
+          /(?:Signer|Signed\s*By|Imzalayan)\s*[:=]\s*([^\n\r,;]+)/i,
+          /<X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
+          /<ds:X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
+          /<SignerName>\s*([^<]+?)\s*<\/SignerName>/i,
+          /\/Name\s*\(([^)]+)\)/i,
+          /signerName\s*["'=:\s]+([^"'\n\r,;<>]+)/i
+        ];
+
+        for (const pattern of patterns) {
+          const match = text.match(pattern);
+          if (match && match[1]) {
+            const normalized = normalizeSignerName(match[1]);
+            if (normalized) {
+              return normalized;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Signer extraction failed:', err);
+      }
+
+      return '';
+    }
+
     // File input handling
     document.querySelectorAll('.verify-form__file-input input[type="file"]').forEach(input => {
       input.addEventListener('change', function() {
@@ -666,7 +723,7 @@
     });
 
     // Form submission
-    verifyForm.addEventListener('submit', function(e) {
+    verifyForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       const humanCheck = document.querySelector('input[name="humanCheck"]');
@@ -691,14 +748,17 @@
 
       const resultStatus = document.getElementById('verify-result-status');
       const resultNote = document.getElementById('verify-result-note');
+      const signerName = await extractSignerFromFile(signedFile);
       resultStatus.className = 'verify-results__status valid';
       resultStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> GEÇERLİ İMZA';
-      resultNote.textContent = 'Doğrulama tamamlandı. Detaylar aşağıda gösteriliyor.';
+      resultNote.textContent = signerName
+        ? 'Doğrulama tamamlandı. İmzalayan bilgisi dosya içeriğinden tespit edildi.'
+        : 'Doğrulama tamamlandı. İmzalayan bilgisi dosyada bulunamadı.';
 
       document.getElementById('verify-result-file').textContent = signedFile.name;
       document.getElementById('verify-result-count').textContent = '1';
       document.getElementById('verify-result-level').textContent = levelMap[selectedLevel] || 'AdES/QC Uyumluluğu';
-      document.getElementById('verify-result-signer').textContent = 'Örnek Kişi';
+      document.getElementById('verify-result-signer').textContent = signerName || 'Tespit edilemedi';
       document.getElementById('verify-result-date').textContent = new Date().toLocaleDateString('tr-TR');
       document.getElementById('verify-result-cert').textContent = 'Geçerli';
 
@@ -709,6 +769,7 @@
   <script src="../assets/js/main.js"></script>
 </body>
 </html>
+
 
 
 

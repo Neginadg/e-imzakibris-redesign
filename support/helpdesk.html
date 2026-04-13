@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="e-imza KIBRIS YardÄ±m MasasÄ±. E-token kurulum videolarÄ±, sÃ¼rÃ¼cÃ¼ baÄŸlantÄ±larÄ± ve teknik destek iletiÅŸim bilgileri." />
-  <title>YardÄ±m MasasÄ± | e-imza KIBRIS</title>
+  <meta name="description" content="e-imza KIBRIS Yardım Masası. E-token kurulum videoları, sürücü bağlantıları ve teknik destek iletişim bilgileri." />
+  <title>Yardım Masası | e-imza KIBRIS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,12 +13,128 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .helpdesk-hero {
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+      color: var(--color-text-primary);
+      padding: 76px 0 68px;
+    }
+    .helpdesk-hero h1,
+    .helpdesk-hero p {
+      color: var(--color-text-primary);
+    }
+    .helpdesk-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .helpdesk-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid var(--color-border);
+      background: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .helpdesk-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(300px, 0.9fr);
+      gap: 28px;
+      align-items: start;
+    }
+    .helpdesk-card {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+      padding: 22px;
+    }
+    .helpdesk-card + .helpdesk-card {
+      margin-top: 20px;
+    }
+    .helpdesk-card__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+    .helpdesk-card__head p {
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+    .helpdesk-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .helpdesk-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 18px;
+      background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .helpdesk-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+      border-color: rgba(180, 30, 30, 0.22);
+    }
+    .helpdesk-link h3,
+    .helpdesk-link h4 {
+      margin: 0 0 8px;
+      color: var(--color-text-primary);
+    }
+    .helpdesk-link p {
+      margin: 0;
+      color: var(--color-text-secondary);
+    }
+    .helpdesk-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--color-text-secondary);
+      display: grid;
+      gap: 10px;
+    }
+    .helpdesk-aside .summary-card {
+      position: sticky;
+      top: 96px;
+    }
+    .summary-contact-item {
+      display: grid;
+      gap: 6px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .summary-contact-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+    @media (max-width: 1024px) {
+      .helpdesk-grid {
+        grid-template-columns: 1fr;
+      }
+      .helpdesk-aside .summary-card {
+        position: static;
+      }
+    }
+  </style>
 </head>
 <body class="application-page">
   <div class="topbar">
     <div class="container topbar__inner">
       <div class="topbar__left">
-        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="tel:+905391205115"><i class="fa-solid fa-phone"></i> +90 (539) 120 51 15</a>
         <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
       </div>
       <div class="topbar__right">
@@ -38,178 +154,187 @@
       </a>
 
       <nav class="navbar__nav" id="navbar-nav">
-                <ul class="nav-list">
+        <ul class="nav-list">
           <li class="nav-item has-dropdown">
-            <a href="javascript:void(0)" class="nav-link">ÃœRÃœNLERÄ°MÄ°Z <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik Ä°mza</strong><small>Nitelikli e-imza sertifikasÄ±</small></div></a>
-              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman DamgasÄ±</strong><small>Elektronik veriye zaman kanÄ±tÄ±</small></div></a>
-              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>Ä°mzalama ve doÄŸrulama masaÃ¼stÃ¼ yazÄ±lÄ±mÄ±</small></div></a>
-              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>YazÄ±lÄ±m KÃ¼tÃ¼phaneleri</strong><small>GÃ¼venli e-imza API Ã§Ã¶zÃ¼mleri</small></div></a>
+              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik İmza</strong><small>Nitelikli e-imza sertifikası</small></div></a>
+              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgası</strong><small>Elektronik veriye zaman kanıtı</small></div></a>
+              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>İmzalama ve doğrulama masaüstü yazılımı</small></div></a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown active">
-            <a href="javascript:void(0)" class="nav-link">HÄ°ZMETLERÄ°MÄ°Z <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="education.html" class="dropdown__item"><div><strong>EÄŸitim Hizmetleri</strong><small>Elektronik imza eÄŸitimleri</small></div></a>
-              <a href="consultancy.html" class="dropdown__item"><div><strong>DanÄ±ÅŸmanlÄ±k Hizmetleri</strong><small>Elektronik dÃ¶nÃ¼ÅŸÃ¼m danÄ±ÅŸmanlÄ±ÄŸÄ±</small></div></a>
-              <a href="verify.html" class="dropdown__item"><div><strong>Ä°mza DoÄŸrulama</strong><small>Elektronik imzalarÄ± doÄŸrulayÄ±n</small></div></a>
+              <a href="education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik imza eğitimleri</small></div></a>
+              <a href="consultancy.html" class="dropdown__item"><div><strong>Danışmanlık Hizmetleri</strong><small>Elektronik dönüşüm danışmanlığı</small></div></a>
+              <a href="verify.html" class="dropdown__item"><div><strong>İmza Doğrulama</strong><small>Elektronik imzaları doğrulayın</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
-            <a href="javascript:void(0)" class="nav-link">BÄ°LGÄ° BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown dropdown--two-columns">
-              <a href="../databank/certificates.html" class="dropdown__item"><div><strong>KÃ¶k Sertifikalar</strong><small>Sertifika zinciri ve geÃ§erlilik bilgileri</small></div></a>
-              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika Ä°ptal Listeleri</strong><small>Ä°ptal edilen sertifikalar ve CRL bilgileri</small></div></a>
-              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>SÃ¶zleÅŸmeler</strong><small>Bireysel, kurumsal ve kayÄ±t makamÄ± sÃ¶zleÅŸmeleri</small></div></a>
-              <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tÃ¼zÃ¼k ve dÃ¼zenleme belgeleri</small></div></a>
-              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>YazÄ±lÄ±m Ä°ndir</strong><small>SÃ¼rÃ¼cÃ¼ ve istemci yazÄ±lÄ±mlarÄ±</small></div></a>
-              <a href="../databank/principles.html" class="dropdown__item"><div><strong>Ä°lkeler</strong><small>NES ve Zaman DamgasÄ± ilkeleri</small></div></a>
-              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama EsaslarÄ±</strong><small>NES uygulama ve zaman damgasÄ± esaslarÄ±</small></div></a>
-              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>Ä°lgili Kurum Linkleri</strong><small>Resmi ve kurumsal dÄ±ÅŸ baÄŸlantÄ±lar</small></div></a>
+              <a href="../databank/certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
+              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
+              <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
+              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
+              <a href="../databank/principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası ilkeleri</small></div></a>
+              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esasları</strong><small>NES uygulama ve zaman damgası esasları</small></div></a>
+              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="helpdesk.html" class="dropdown__item"><div><strong>YardÄ±m MasasÄ±</strong><small>Kurulum ve sÃ¼rÃ¼cÃ¼ desteÄŸi</small></div></a>
-              <a href="onlineapplication.html" class="dropdown__item"><div><strong>Online BaÅŸvuru</strong><small>BaÅŸvurunuzu oluÅŸturun</small></div></a>
-                          </div>
+              <a href="helpdesk.html" class="dropdown__item"><div><strong>Yardım Masası</strong><small>Kurulum ve sürücü desteği</small></div></a>
+              <a href="onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
+            </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../about/index.html" class="dropdown__item"><div><strong>Åžirket HakkÄ±nda</strong><small>Denizler BiliÅŸim Hizmetleri</small></div></a>
-              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son geliÅŸmeler</small></div></a>
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Şirket Hakkında</strong><small>Denizler Bilişim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelişmeler</small></div></a>
             </div>
           </li>
-          <li class="nav-item"><a href="../contact/index.html" class="nav-link">Ä°LETÄ°ÅžÄ°M</a></li>
+          <li class="nav-item"><a href="../contact/index.html" class="nav-link">İLETİŞİM</a></li>
         </ul>
       </nav>
 
       <div class="navbar__cta">
-        <a href="onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAÅžVURU</a>
-        <a href="renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENÄ°LEME</a>
+        <a href="onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
       </div>
 
-      <button class="hamburger" id="hamburger" aria-label="MenÃ¼yÃ¼ aÃ§" aria-expanded="false">
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
   <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
-        <ul class="mobile-nav__list">
-      <li><a href="../products/esignature.html">ÃœRÃœNLERÄ°MÄ°Z</a></li>
-      <li><a href="onlineapplication.html">HÄ°ZMETLERÄ°MÄ°Z</a></li>
-      <li><a href="../databank/certificates.html">KÃ¶k Sertifikalar</a></li>
-      <li><a href="../databank/canceledcertificates.html">Sertifika Ä°ptal Listeleri</a></li>
-      <li><a href="../databank/contracts.html">SÃ¶zleÅŸmeler</a></li>
+    <ul class="mobile-nav__list">
+      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="../databank/certificates.html">Kök Sertifikalar</a></li>
+      <li><a href="../databank/canceledcertificates.html">Sertifika İptal Listeleri</a></li>
+      <li><a href="../databank/contracts.html">Sözleşmeler</a></li>
       <li><a href="../databank/legislations.html">Mevzuat</a></li>
-      <li><a href="../databank/softwares.html">YazÄ±lÄ±m Ä°ndir</a></li>
-      <li><a href="../databank/principles.html">Ä°lkeler</a></li>
-      <li><a href="../databank/applicationguidelines.html">Uygulama EsaslarÄ±</a></li>
-      <li><a href="../databank/relatedinstitutionlinks.html">Ä°lgili Kurum Linkleri</a></li>
-
+      <li><a href="../databank/softwares.html">Yazılım İndir</a></li>
+      <li><a href="../databank/principles.html">İlkeler</a></li>
+      <li><a href="../databank/applicationguidelines.html">Uygulama Esasları</a></li>
+      <li><a href="../databank/relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
       <li><a href="onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
-      <li><a href="../contact/index.html">Ä°LETÄ°ÅžÄ°M</a></li>
+      <li><a href="../contact/index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
-        <a href="onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAÅžVURU</a>
-        <a href="renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENÄ°LEME</a>
+        <a href="onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
       </li>
     </ul>
   </nav>
 
   <main>
-    <section class="page-hero page-hero--application">
+    <section class="helpdesk-hero">
       <div class="container page-hero__inner">
         <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag">YardÄ±m MasasÄ±</div>
+          <div class="section-tag" style="background:#fff;color:var(--color-text-primary);border-color:var(--color-border);">Yardım Masası</div>
           <h1 class="page-hero__title">Kurulum ve Teknik Destek Merkezi</h1>
-          <p class="page-hero__desc">
-            Nitelikli Elektronik Sertifika kurulumunuz iÃ§in akÄ±llÄ± Ã§ubuk (e-token) kurulum videolarÄ±,
-            sÃ¼rÃ¼cÃ¼ eriÅŸimleri ve teknik destek kanallarÄ± bu sayfada yer almaktadÄ±r.
-          </p>
+          <p class="page-hero__desc">Nitelikli Elektronik Sertifika kurulumunuz için e-token videoları, sürücü bağlantıları ve teknik destek bilgileri burada.</p>
           <div class="page-hero__actions">
-            <a href="#yardim-videolari" class="btn btn--primary btn--lg">VideolarÄ± GÃ¶r</a>
-            <a href="#surucu-linkleri" class="btn btn--outline btn--lg">SÃ¼rÃ¼cÃ¼lere Git</a>
+            <a href="#yardim-videolari" class="btn btn--primary btn--lg">Videolara Git</a>
+            <a href="#surucu-linkleri" class="btn btn--outline btn--lg">Sürücülere Git</a>
           </div>
-          <div class="page-hero__facts">
-            <div><i class="fa-solid fa-circle-play"></i> Kurulum VideolarÄ±</div>
-            <div><i class="fa-solid fa-download"></i> Driver BaÄŸlantÄ±larÄ±</div>
-            <div><i class="fa-solid fa-headset"></i> Teknik Destek</div>
+          <div class="helpdesk-chip-row">
+            <span class="helpdesk-chip"><i class="fa-solid fa-circle-play"></i> Kurulum Videoları</span>
+            <span class="helpdesk-chip"><i class="fa-solid fa-download"></i> Sürücü Bağlantıları</span>
+            <span class="helpdesk-chip"><i class="fa-solid fa-headset"></i> Canlı Teknik Destek</span>
           </div>
         </div>
         <div class="page-hero__media" data-animate="fade-left">
-          <img src="../assets/img/token2.jpeg" alt="YardÄ±m masasÄ±" style="width:100%; border-radius:12px; display:block; box-shadow:0 12px 40px rgba(0,0,0,0.12);" />
+          <img src="../assets/img/token2.jpeg" alt="Yardım masası" style="width:100%;border-radius:16px;display:block;box-shadow:0 20px 50px rgba(0,0,0,.18);" />
         </div>
       </div>
     </section>
 
-    <section class="application-builder section" id="yardim-videolari">
-      <div class="container application-builder__grid">
-        <div class="application-builder__main">
-          <div class="builder-card" data-animate="fade-up">
-            <div class="builder-card__head">
+    <section class="section" id="yardim-videolari" style="padding-top:44px;">
+      <div class="container helpdesk-grid">
+        <div>
+          <div class="helpdesk-card" data-animate="fade-up">
+            <div class="helpdesk-card__head">
               <div>
                 <div class="section-tag">Video Rehberler</div>
-                <h2 class="section-title">YardÄ±m MasasÄ± VideolarÄ±</h2>
+                <h2 class="section-title">Yardım Masası Videoları</h2>
               </div>
-              <p class="builder-card__head-text">Kurulum ve e-token iÅŸlemleri iÃ§in resmi videolara doÄŸrudan eriÅŸin.</p>
+              <p>Kurulum ve e-token işlemleri için resmi videolara doğrudan erişin.</p>
             </div>
 
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:28px;">
-              <a href="https://www.e-imzakibris.com/media/36288/safenet-kurulum.mp4" target="_blank" rel="noopener" style="display:block; padding:20px; background:var(--color-bg-soft); border:1px solid var(--color-border); border-radius:10px; text-decoration:none; color:inherit;">
-                <h3 style="margin:0 0 10px; font-size:1rem; color:var(--color-text-primary);">e-token Kurulum Videosu</h3>
-                <p style="margin:0; color:var(--color-text-secondary); font-size:0.95rem;">SafeNet e-token sÃ¼rÃ¼cÃ¼sÃ¼ ve ilk kurulum adÄ±mlarÄ±.</p>
+            <div class="helpdesk-links">
+              <a class="helpdesk-link" href="https://www.e-imzakibris.com/media/36288/safenet-kurulum.mp4" target="_blank" rel="noopener">
+                <h3>e-token Kurulum Videosu</h3>
+                <p>SafeNet e-token sürücüsü ve ilk kurulum adımları.</p>
               </a>
-              <a href="https://www.e-imzakibris.com/media/36289/etoken-sifre-degisimi.mp4" target="_blank" rel="noopener" style="display:block; padding:20px; background:var(--color-bg-soft); border:1px solid var(--color-border); border-radius:10px; text-decoration:none; color:inherit;">
-                <h3 style="margin:0 0 10px; font-size:1rem; color:var(--color-text-primary);">PIN Kodu DeÄŸiÅŸtirme</h3>
-                <p style="margin:0; color:var(--color-text-secondary); font-size:0.95rem;">e-token PIN kodunu gÃ¼venli ÅŸekilde yenileme adÄ±mlarÄ±.</p>
+              <a class="helpdesk-link" href="https://www.e-imzakibris.com/media/36289/etoken-sifre-degisimi.mp4" target="_blank" rel="noopener">
+                <h3>PIN Kodu Değiştirme</h3>
+                <p>e-token PIN kodunu güvenli şekilde yenileme adımları.</p>
               </a>
-              <a href="https://www.e-imzakibris.com/media/36290/kilitli-pin-kodu-acma.mp4" target="_blank" rel="noopener" style="display:block; padding:20px; background:var(--color-bg-soft); border:1px solid var(--color-border); border-radius:10px; text-decoration:none; color:inherit;">
-                <h3 style="margin:0 0 10px; font-size:1rem; color:var(--color-text-primary);">Kilitli PIN AÃ§ma</h3>
-                <p style="margin:0; color:var(--color-text-secondary); font-size:0.95rem;">Kilitli PIN iÃ§in rehber video.</p>
+              <a class="helpdesk-link" href="https://www.e-imzakibris.com/media/36290/kilitli-pin-kodu-acma.mp4" target="_blank" rel="noopener">
+                <h3>Kilitli PIN Açma</h3>
+                <p>Kilitli PIN için kısa rehber video.</p>
               </a>
             </div>
           </div>
 
-          <div class="builder-card" id="surucu-linkleri" data-animate="fade-up" style="margin-top:28px;">
-            <div class="builder-card__head">
+          <div class="helpdesk-card" id="surucu-linkleri" data-animate="fade-up">
+            <div class="helpdesk-card__head">
               <div>
-                <div class="section-tag">SÃ¼rÃ¼cÃ¼ler</div>
-                <h2 class="section-title">Ä°ÅŸletim Sisteminize Uygun SÃ¼rÃ¼cÃ¼ler</h2>
+                <div class="section-tag">Sürücüler</div>
+                <h2 class="section-title">İşletim Sistemine Uygun Sürücüler</h2>
               </div>
-              <p class="builder-card__head-text">AÅŸaÄŸÄ±daki baÄŸlantÄ±lardan sÃ¼rÃ¼cÃ¼lere ve sertifika dosyalarÄ±na eriÅŸebilirsiniz.</p>
+              <p>Aşağıdaki bağlantılardan sürücülere ve sertifika dosyalarına erişebilirsiniz.</p>
             </div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-top:26px;">
-              <a href="../databank/softwares.html" style="display:block; padding:20px; border:1px solid var(--color-border); border-radius:10px; text-decoration:none; color:inherit; background:#fff;">
-                <h3 style="margin:0 0 8px; font-size:1rem; color:var(--color-text-primary);">Windows / macOS / Linux Driver</h3>
-                <p style="margin:0; color:var(--color-text-secondary);">e-token ve masaÃ¼stÃ¼ yazÄ±lÄ±m sÃ¼rÃ¼mleri.</p>
+
+            <div class="helpdesk-links">
+              <a class="helpdesk-link" href="../databank/softwares.html">
+                <h4>Windows / macOS / Linux Driver</h4>
+                <p>e-token ve masaüstü yazılım sürümleri.</p>
               </a>
-              <a href="../databank/certificates.html" style="display:block; padding:20px; border:1px solid var(--color-border); border-radius:10px; text-decoration:none; color:inherit; background:#fff;">
-                <h3 style="margin:0 0 8px; font-size:1rem; color:var(--color-text-primary);">KÃ¶k Sertifika Kurulumu</h3>
-                <p style="margin:0; color:var(--color-text-secondary);">KÃ¶k sertifika zinciri ve doÄŸrulama dosyalarÄ±.</p>
+              <a class="helpdesk-link" href="../databank/certificates.html">
+                <h4>Kök Sertifika Kurulumu</h4>
+                <p>Kök sertifika zinciri ve doğrulama dosyaları.</p>
               </a>
             </div>
           </div>
         </div>
 
-        <aside class="application-builder__sidebar" data-animate="fade-left">
+        <aside class="helpdesk-aside" data-animate="fade-left">
           <div class="summary-card">
             <div class="summary-card__head">
               <div>
                 <div class="section-tag">Teknik Destek</div>
-                <h3>Ä°letiÅŸim Bilgileri</h3>
+                <h3>İletişim Bilgileri</h3>
               </div>
               <i class="fa-solid fa-headset"></i>
             </div>
             <div class="summary-highlights">
-              <div style="padding:12px 0; border-bottom:1px solid var(--color-border);"><strong style="display:block; margin-bottom:8px; color:var(--color-text-primary);">Ã‡aÄŸrÄ± Merkezi</strong><a href="tel:+903922280960" style="color:var(--color-accent); text-decoration:none;">+90 (392) 228 09 60</a></div>
-              <div style="padding:12px 0; border-bottom:1px solid var(--color-border);"><strong style="display:block; margin-bottom:8px; color:var(--color-text-primary);">Mobil</strong><a href="tel:+905488662279" style="color:var(--color-accent); text-decoration:none;">+90 (548) 866 22 79</a></div>
-              <div style="padding:12px 0; border-bottom:1px solid var(--color-border);"><strong style="display:block; margin-bottom:8px; color:var(--color-text-primary);">E-posta</strong><a href="mailto:info@e-imzakibris.com" style="color:var(--color-accent); text-decoration:none;">info@e-imzakibris.com</a></div>
-              <div style="padding:12px 0;"><strong style="display:block; margin-bottom:8px; color:var(--color-text-primary);">Adres</strong><span style="color:var(--color-text-secondary);">Mehmet ErtuÄŸruloÄŸlu Sokak, NO:10, D-4<br />Kumsal / LefkoÅŸa / Kuzey KÄ±brÄ±s</span></div>
+              <div class="summary-contact-item">
+                <strong>Çağrı Merkezi</strong>
+                <a href="tel:+905391205115" style="color:var(--color-accent);text-decoration:none;">+90 (539) 120 51 15</a>
+              </div>
+              <div class="summary-contact-item">
+                <strong>Mobil</strong>
+                <a href="tel:+905488662279" style="color:var(--color-accent);text-decoration:none;">+90 (548) 866 22 79</a>
+              </div>
+              <div class="summary-contact-item">
+                <strong>E-posta</strong>
+                <a href="mailto:info@e-imzakibris.com" style="color:var(--color-accent);text-decoration:none;">info@e-imzakibris.com</a>
+              </div>
+              <div class="summary-contact-item">
+                <strong>Adres</strong>
+                <span style="color:var(--color-text-secondary);">Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal / Lefkoşa / Kuzey Kıbrıs</span>
+              </div>
             </div>
           </div>
         </aside>
@@ -223,64 +348,49 @@
         <a href="../index.html" class="footer__logo">
           <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" />
         </a>
-        <p>
-          Denizler BiliÅŸim Hizmetleri Ltd., K.K.T.C.'nin gÃ¼venilir elektronik imza
-          hizmet saÄŸlayÄ±cÄ±sÄ±dÄ±r. ISO 27001 sertifikasÄ±na sahip gÃ¼venli altyapÄ±mÄ±zla hizmetinizdeyiz.
-        </p>
+        <p>Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza hizmet sağlayıcısıdır. ISO 27001 sertifikalı güvenli altyapımızla hizmetinizdeyiz.</p>
         <div class="footer__cert">
           <i class="fa-solid fa-shield-halved"></i>
-          <span>ISO/IEC 27001:2017 SertifikalÄ±</span>
+          <span>ISO/IEC 27001:2017 Sertifikalı</span>
         </div>
       </div>
 
       <div class="footer__col">
-        <h4>ÃœrÃ¼nler &amp; Hizmetler</h4>
+        <h4>Ürünler &amp; Hizmetler</h4>
         <ul>
-          <li><a href="../products/esignature.html">Elektronik Ä°mza</a></li>
-          <li><a href="onlineapplication.html">Online BaÅŸvuru</a></li>
-          <li><a href="renewal.html">Yenileme BaÅŸvurusu</a></li>
-          <li><a href="../index.html#pricing">FiyatlandÄ±rma</a></li>
+          <li><a href="../products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="renewal.html">Yenileme Başvurusu</a></li>
+          <li><a href="../index.html#pricing">Fiyatlandırma</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
-        <h4>Bilgi BankasÄ±</h4>
+        <h4>Bilgi Bankası</h4>
         <ul>
           <li><a href="../index.html#what-is">e-imza Nedir?</a></li>
-          <li><a href="../index.html#use-cases">Nerelerde KullanÄ±lÄ±r?</a></li>
-          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank" rel="noopener">93/2007 SayÄ±lÄ± Yasa</a></li>
+          <li><a href="../index.html#use-cases">Nerelerde Kullanılır?</a></li>
+          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank" rel="noopener">93/2007 Sayılı Yasa</a></li>
         </ul>
       </div>
 
       <div class="footer__contact">
-        <h4>Ä°letiÅŸim</h4>
+        <h4>İletişim</h4>
         <ul>
-          <li>
-            <i class="fa-solid fa-location-dot"></i>
-            <span>Mehmet ErtuÄŸruloÄŸlu Sokak, NO: 10, D-4<br />Kumsal/LefkoÅŸa/Kuzey KÄ±brÄ±s</span>
-          </li>
-          <li>
-            <i class="fa-solid fa-phone"></i>
-            <a href="tel:+903922280960">+90 (392) 228 09 60</a>
-          </li>
-          <li>
-            <i class="fa-solid fa-mobile-screen"></i>
-            <a href="tel:+905488662279">+90 (548) 866 22 79</a>
-          </li>
-          <li>
-            <i class="fa-solid fa-envelope"></i>
-            <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a>
-          </li>
+          <li><i class="fa-solid fa-location-dot"></i><span>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal/Lefkoşa/Kuzey Kıbrıs</span></li>
+          <li><i class="fa-solid fa-phone"></i><a href="tel:+905391205115">+90 (539) 120 51 15</a></li>
+          <li><i class="fa-solid fa-mobile-screen"></i><a href="tel:+905488662279">+90 (548) 866 22 79</a></li>
+          <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer__bottom">
       <div class="container footer__bottom-inner">
-        <p>&copy; 2026 Denizler BiliÅŸim Hizmetleri Ltd. TÃ¼m haklarÄ± saklÄ±dÄ±r.</p>
+        <p>&copy; 2026 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
         <div class="footer__bottom-links">
-          <a href="../privacypolicy.html">Gizlilik PolitikasÄ±</a>
-          <a href="../contact/index.html">Ä°letiÅŸim</a>
+          <a href="../privacypolicy.html">Gizlilik Politikası</a>
+          <a href="../contact/index.html">İletişim</a>
           <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
         </div>
       </div>
@@ -290,3 +400,4 @@
   <script src="../assets/js/main.js"></script>
 </body>
 </html>
+
