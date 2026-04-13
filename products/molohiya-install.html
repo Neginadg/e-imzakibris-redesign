@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MOlOhiya kurulum sayfasi. Kurulum onkosulleri, setup.exe indir, uygulamayi baslat ve teknik destek adimlari." />
+  <title>MOlOhiya Kurulum | e-imza KIBRIS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .install-hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.22), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.18), transparent 35%),
+        linear-gradient(135deg, #0f172a 0%, #1e3a8a 48%, #0b4f6c 100%);
+      color: #fff;
+      padding: 72px 0 64px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .install-hero h1 { color: #fff; margin-bottom: 14px; }
+    .install-hero p { color: rgba(255, 255, 255, 0.92); max-width: 720px; }
+    .install-chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .install-chip {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .install-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .install-actions .btn { min-width: 220px; justify-content: center; }
+
+    .install-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .install-card {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    }
+    .install-card h3 { margin-bottom: 10px; }
+    .install-list { margin: 0; padding-left: 18px; color: var(--color-text-secondary); }
+
+    .step-flow {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .step-item {
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 16px;
+    }
+    .step-item strong {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #111827;
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1024px) {
+      .install-grid { grid-template-columns: 1fr; }
+      .step-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .step-flow { grid-template-columns: 1fr; }
+      .install-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body class="inner-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+903922280960"><i class="fa-solid fa-phone"></i> +90 (392) 228 09 60</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr" class="active">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown active">
+            <a href="javascript:void(0)" class="nav-link">URUNLERIMIZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="esignature.html" class="dropdown__item"><div><strong>Elektronik Imza</strong><small>Nitelikli e-imza sertifikasi</small></div></a>
+              <a href="timestamp.html" class="dropdown__item"><div><strong>Zaman Damgasi</strong><small>Elektronik veriye zaman kaniti</small></div></a>
+              <a href="molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>Imzalama ve dogrulama masaustu yazilimi</small></div></a>
+              <a href="esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazilim Kutuphaneleri</strong><small>Guvenli e-imza API cozumleri</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HIZMETLERIMIZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/education.html" class="dropdown__item"><div><strong>Egitim Hizmetleri</strong><small>Elektronik imza egitimleri</small></div></a>
+              <a href="../support/consultancy.html" class="dropdown__item"><div><strong>Danismanlik Hizmetleri</strong><small>Elektronik donusum danismanligi</small></div></a>
+              <a href="../support/verify.html" class="dropdown__item"><div><strong>Imza Dogrulama</strong><small>Elektronik imzalari dogrulayin</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BILGI BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown dropdown--two-columns">
+              <a href="../databank/certificates.html" class="dropdown__item"><div><strong>Kok Sertifikalar</strong><small>Sertifika zinciri ve gecerlilik bilgileri</small></div></a>
+              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika Iptal Listeleri</strong><small>Iptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sozlesmeler</strong><small>Bireysel, kurumsal ve kayit makami sozlesmeleri</small></div></a>
+              <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tuzuk ve duzenleme belgeleri</small></div></a>
+              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazilim Indir</strong><small>Surucu ve istemci yazilimlari</small></div></a>
+              <a href="../databank/principles.html" class="dropdown__item"><div><strong>Ilkeler</strong><small>NES ve Zaman Damgasi ilkeleri</small></div></a>
+              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esaslari</strong><small>NES uygulama ve zaman damgasi esaslari</small></div></a>
+              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>Ilgili Kurum Linkleri</strong><small>Resmi ve kurumsal dis baglantilar</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../support/onlineapplication.html" class="dropdown__item"><div><strong>Online Basvuru</strong><small>Basvurunuzu olusturun</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Sirket Hakkinda</strong><small>Denizler Bilisim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelismeler</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item"><a href="../contact/index.html" class="nav-link">ILETISIM</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BASVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENILEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menuyu ac" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav__list">
+      <li><a href="esignature.html">URUNLERIMIZ</a></li>
+      <li><a href="../support/onlineapplication.html">HIZMETLERIMIZ</a></li>
+      <li><a href="../databank/certificates.html">Kok Sertifikalar</a></li>
+      <li><a href="../databank/canceledcertificates.html">Sertifika Iptal Listeleri</a></li>
+      <li><a href="../databank/contracts.html">Sozlesmeler</a></li>
+      <li><a href="../databank/legislations.html">Mevzuat</a></li>
+      <li><a href="../databank/softwares.html">Yazilim Indir</a></li>
+      <li><a href="../databank/principles.html">Ilkeler</a></li>
+      <li><a href="../databank/applicationguidelines.html">Uygulama Esaslari</a></li>
+      <li><a href="../databank/relatedinstitutionlinks.html">Ilgili Kurum Linkleri</a></li>
+      <li><a href="../support/onlineapplication.html">DESTEK</a></li>
+      <li><a href="../about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="../contact/index.html">ILETISIM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BASVURU</a>
+        <a href="../support/renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENILEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="install-hero">
+      <div class="container" data-animate="fade-up">
+        <div class="section-tag" style="background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.24);">MOlOhiya Kurulum</div>
+        <h1>MOlOhiya 1.0.1.205 Kurulum Merkezi</h1>
+        <p>
+        Buradan onkosulleri kontrol edebilir,
+          kurulum paketini indirebilir veya uygulamayi dogrudan baslatabilirsiniz.
+        </p>
+
+        <div class="install-chip-row">
+          <span class="install-chip"><i class="fa-solid fa-laptop-code"></i> Windows</span>
+          <span class="install-chip"><i class="fa-solid fa-cube"></i> Version: 1.0.1.205</span>
+          <span class="install-chip"><i class="fa-solid fa-shield-halved"></i> Publisher: e-imza KIBRIS</span>
+        </div>
+
+        <div class="install-actions">
+          <a href="https://www.signtifickibris.com/Molohiya/Mbtyk/setup.exe" class="btn btn--white btn--lg" target="_blank" rel="noopener">
+            <i class="fa-solid fa-download"></i> Kurulumu Baslat (setup.exe)
+          </a>
+          <a href="https://www.signtifickibris.com/Molohiya/Mbtyk/MOlOhiya.application" class="btn btn--outline-white btn--lg" target="_blank" rel="noopener">
+            <i class="fa-solid fa-bolt"></i> Uygulamayi Baslat (ClickOnce)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:42px;">
+      <div class="container install-grid">
+        <article class="install-card" data-animate="fade-up">
+          <h3>Onkosullar</h3>
+          <ul class="install-list">
+            <li>Microsoft .NET Framework 4.5 (x86 ve x64)</li>
+            <li>Windows tabanli isletim sistemi</li>
+            <li>Kurulum icin yonetici izni (onerilir)</li>
+          </ul>
+        </article>
+
+        <article class="install-card" data-animate="fade-up">
+          <h3>Kurulum Dosyalari</h3>
+          <ul class="install-list">
+            <li>Installer: setup.exe</li>
+            <li>Application: MOlOhiya.application</li>
+            <li>Resmi kaynaktan dogrudan baglanti</li>
+          </ul>
+        </article>
+
+        <article class="install-card" data-animate="fade-up">
+          <h3>Destek</h3>
+          <ul class="install-list">
+            <li>E-posta: info@e-imzakibris.com</li>
+            <li>Telefon: +90 (392) 228 09 60</li>
+            <li>Yardim Masasi: surucu ve kurulum videolari</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">Adimlar</div>
+          <h2 class="section-title">4 Adimda MOlOhiya Kurulumu</h2>
+        </div>
+        <div class="step-flow" data-animate="fade-up">
+          <article class="step-item"><strong>1</strong><h4>Onkosulu Kontrol Et</h4><p>.NET Framework 4.5 yuku degilse once kurun.</p></article>
+          <article class="step-item"><strong>2</strong><h4>setup.exe Calistir</h4><p>Kurulum paketini indirip yonetici izniyle acin.</p></article>
+          <article class="step-item"><strong>3</strong><h4>Ilk Acilisi Yap</h4><p>Gerekirse ClickOnce baglantisi ile uygulamayi tetikleyin.</p></article>
+          <article class="step-item"><strong>4</strong><h4>Imzalama Testi</h4><p>Kucuk bir belge ile imzalama ve dogrulamayi test edin.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-banner__inner">
+        <div class="cta-banner__text">
+          <h2>Kurulumda takildiniz mi?</h2>
+          <p>Teknik ekip kurulum, token surucusu ve ilk imzalama testi icin hizli destek saglar.</p>
+        </div>
+        <div class="cta-banner__actions">
+          <a href="../support/helpdesk.html" class="btn btn--white btn--lg">Yardim Masasina Git</a>
+          <a href="mailto:info@e-imzakibris.com" class="btn btn--outline-white btn--lg">E-posta Gonder</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo">
+          <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" />
+        </a>
+        <p>
+          Denizler Bilisim Hizmetleri Ltd., K.K.T.C.'nin guvenilir elektronik imza
+          hizmet saglayicisidir. ISO 27001 sertifikasina sahip guvenli altyapimizla hizmetinizdeyiz.
+        </p>
+        <div class="footer__cert">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>ISO/IEC 27001:2017 Sertifikali</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Urunler ve Hizmetler</h4>
+        <ul>
+          <li><a href="esignature.html">Elektronik Imza</a></li>
+          <li><a href="timestamp.html">Zaman Damgasi</a></li>
+          <li><a href="molohiya.html">MOlOhiya</a></li>
+          <li><a href="esignaturesoftwarelibraries.html">Yazilim Kutuphaneleri</a></li>
+          <li><a href="../support/onlineapplication.html">Online Basvuru</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Bilgi Bankasi</h4>
+        <ul>
+          <li><a href="../index.html#what-is">e-imza Nedir?</a></li>
+          <li><a href="../index.html#use-cases">Nerelerde Kullanilir?</a></li>
+          <li><a href="https://www.e-imzakibris.com/media/17472/93eiy2007.pdf" target="_blank" rel="noopener">93/2007 Sayili Yasa</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h4>Iletisim</h4>
+        <ul>
+          <li><i class="fa-solid fa-location-dot"></i><span>Mehmet Ertugruloglu Sokak, NO: 10, D-4<br />Kumsal/Lefkosa/Kuzey Kibris</span></li>
+          <li><i class="fa-solid fa-phone"></i><a href="tel:+903922280960">+90 (392) 228 09 60</a></li>
+          <li><i class="fa-solid fa-mobile-screen"></i><a href="tel:+905488662279">+90 (548) 866 22 79</a></li>
+          <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2026 Denizler Bilisim Hizmetleri Ltd. Tum haklari saklidir.</p>
+        <div class="footer__bottom-links">
+          <a href="../privacypolicy.html">Gizlilik Politikasi</a>
+          <a href="../contact/index.html">Iletisim</a>
+          <a href="../admin/index.html" style="opacity:.35;font-size:.72rem;" title="Admin Paneli"><i class="fa-solid fa-lock" style="font-size:.65rem;"></i> Admin</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

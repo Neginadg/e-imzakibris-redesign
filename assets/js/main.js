@@ -56,6 +56,8 @@
   const hamburger  = document.getElementById('hamburger');
   const mobileNav  = document.getElementById('mobile-nav');
 
+  ensureSupportDropdownOptions();
+
   if (hamburger && mobileNav) {
     setupMobileNavFromDesktop();
 
@@ -104,6 +106,60 @@
         closeMobileNav();
       }
     }, { passive: true });
+  }
+
+  function ensureSupportDropdownOptions() {
+    const navItems = Array.from(document.querySelectorAll('.navbar__nav .nav-list > .nav-item.has-dropdown'));
+    if (!navItems.length) return;
+
+    const supportItem = navItems.find((item) => {
+      const trigger = item.querySelector(':scope > .nav-link');
+      return trigger && (trigger.textContent || '').toUpperCase().includes('DESTEK');
+    });
+    if (!supportItem) return;
+
+    const dropdown = supportItem.querySelector(':scope > .dropdown');
+    if (!dropdown) return;
+
+    const links = Array.from(dropdown.querySelectorAll(':scope > .dropdown__item'));
+    const sourceHref = (links.find((link) => (link.getAttribute('href') || '').toLowerCase().includes('onlineapplication.html')) || links[0])?.getAttribute('href') || 'support/onlineapplication.html';
+
+    const helpdeskHref = sourceHref.replace(/onlineapplication\.html$/i, 'helpdesk.html');
+    const faqHref = sourceHref.replace(/onlineapplication\.html$/i, 'faq.html');
+
+    links.forEach((link) => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').toLowerCase();
+      if (
+        href.includes('onlineapplication.html') ||
+        href.includes('93eiy2007.pdf') ||
+        href.includes('helpdesk.html') ||
+        href.includes('faq.html') ||
+        text.includes('online başvuru') ||
+        text.includes('online basvuru') ||
+        text.includes('elektronik i̇mza yasası') ||
+        text.includes('elektronik imza yasasi') ||
+        text.includes('yardım masası') ||
+        text.includes('yardim masasi') ||
+        text.includes('sıkça sorulan sorular') ||
+        text.includes('sikca sorulan sorular')
+      ) {
+        link.remove();
+      }
+    });
+
+    const helpdeskLink = document.createElement('a');
+    helpdeskLink.className = 'dropdown__item';
+    helpdeskLink.href = helpdeskHref;
+    helpdeskLink.innerHTML = '<div><strong>Yardım Masası</strong><small>Kurulum ve sürücü desteği</small></div>';
+
+    const faqLink = document.createElement('a');
+    faqLink.className = 'dropdown__item';
+    faqLink.href = faqHref;
+    faqLink.innerHTML = '<div><strong>Sıkça Sorulan Sorular</strong><small>En çok sorulan sorular ve yanıtlar</small></div>';
+
+    dropdown.appendChild(helpdeskLink);
+    dropdown.appendChild(faqLink);
   }
 
   function setupMobileNavFromDesktop() {
@@ -212,9 +268,19 @@
   (function setupDesktopDropdowns() {
     const dropdownItems = Array.from(document.querySelectorAll('.nav-item.has-dropdown'));
     if (!dropdownItems.length) return;
+    const desktopNav = document.getElementById('navbar-nav');
+
+    const clearTriggerFocus = (exceptItem) => {
+      dropdownItems.forEach((item) => {
+        if (exceptItem && item === exceptItem) return;
+        const trigger = item.querySelector('.nav-link');
+        if (trigger instanceof HTMLElement) trigger.blur();
+      });
+    };
 
     const closeAll = () => {
       dropdownItems.forEach((item) => item.classList.remove('open'));
+      clearTriggerFocus();
     };
 
     dropdownItems.forEach((item) => {
@@ -225,9 +291,24 @@
         event.preventDefault();
         const isOpen = item.classList.contains('open');
         closeAll();
-        if (!isOpen) item.classList.add('open');
+        if (!isOpen) {
+          item.classList.add('open');
+          clearTriggerFocus(item);
+        }
+      });
+
+      // Prevent previously clicked dropdowns from staying open while hovering others.
+      item.addEventListener('mouseenter', () => {
+        dropdownItems.forEach((otherItem) => {
+          if (otherItem !== item) otherItem.classList.remove('open');
+        });
+        clearTriggerFocus(item);
       });
     });
+
+    if (desktopNav) {
+      desktopNav.addEventListener('mouseleave', closeAll);
+    }
 
     document.addEventListener('click', (event) => {
       const target = event.target;

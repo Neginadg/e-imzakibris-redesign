@@ -305,6 +305,19 @@ section,
   background: rgba(199, 45, 45, 0.08);
 }
 
+.nav-item.active > .nav-link {
+  background: transparent;
+}
+
+/* Keep hover tint strictly hover-based for non-active menu items. */
+.nav-item.has-dropdown.open:not(.active) > .nav-link,
+.nav-item.has-dropdown:not(.active) > .nav-link:focus,
+.nav-item.has-dropdown:not(.active) > .nav-link:focus-visible,
+.nav-item.has-dropdown:not(.active):not(:hover):not(:focus-within) > .nav-link {
+  color: var(--color-text);
+  background: transparent;
+}
+
 .nav-link:hover::after,
 .nav-item.active > .nav-link::after {
   transform: scaleX(1);
@@ -4229,7 +4242,7 @@ body.page-news { background: #fafaf8; }
   align-items: center;
   gap: 20px;
   width: max-content;
-  animation: slide-track 95s linear infinite;
+  animation: slide-track 82s linear infinite;
 }
 .customers-strip__inner:hover { animation-play-state: paused; }
 .customers-strip__logo {
