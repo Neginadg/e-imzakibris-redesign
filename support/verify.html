@@ -651,11 +651,336 @@
 
   <script>
     const verifyForm = document.getElementById('verify-form');
+    let forgeLoaderPromise = null;
 
     function decodeFileText(arrayBuffer) {
       const utf8 = new TextDecoder('utf-8', { fatal: false }).decode(arrayBuffer);
       const latin1 = new TextDecoder('iso-8859-1', { fatal: false }).decode(arrayBuffer);
-      return `${utf8}\n${latin1}`;
+      const utf16le = new TextDecoder('utf-16le', { fatal: false }).decode(arrayBuffer);
+      return `${utf8}\n${latin1}\n${utf16le}`;
+    }
+
+    function loadForgeLibrary() {
+      if (window.forge) {
+        return Promise.resolve(window.forge);
+      }
+
+      if (forgeLoaderPromise) {
+        return forgeLoaderPromise;
+      }
+
+      forgeLoaderPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js';
+        script.async = true;
+        script.onload = () => resolve(window.forge || null);
+        script.onerror = () => reject(new Error('Forge library could not be loaded.'));
+        document.head.appendChild(script);
+      });
+
+      return forgeLoaderPromise;
+    }
+
+    function isLikelyPdfSigned(text) {
+      return /\/ByteRange\s*\[/i.test(text) || /\/SubFilter\s*\/adbe\.pkcs7/i.test(text) || /\/Type\s*\/Sig/i.test(text);
+    }
+
+    function isLikelyXmlSigned(text) {
+      return /<(?:ds:)?Signature\b/i.test(text) || /<xades:/i.test(text) || /<SignedInfo\b/i.test(text);
+    }
+
+    function isLikelyAsicSigned(fileName, arrayBuffer, text) {
+      const bytes = new Uint8Array(arrayBuffer);
+      const hasZipHeader = bytes.length > 3 && bytes[0] === 0x50 && bytes[1] === 0x4b;
+      const lowerName = (fileName || '').toLowerCase();
+      const hasAsicExtension = lowerName.endsWith('.asice') || lowerName.endsWith('.asics');
+      const hasAsicMarkers = /META-INF\/signatures|mimetypeapplication\/vnd\.etsi\.asic/i.test(text);
+      return (hasAsicExtension && hasZipHeader) || hasAsicMarkers;
+    }
+
+    function countMatches(text, regex) {
+      const matches = text.match(regex);
+      return matches ? matches.length : 0;
+    }
+
+    function parsePdfSignatureDate(raw) {
+      if (!raw) {
+        return '';
+      }
+
+      const normalizedRaw = String(raw).replace(/\s+/g, '');
+      const match = normalizedRaw.match(/^(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?/);
+      if (!match) {
+        return '';
+      }
+
+      const year = Number(match[1]);
+      const month = Number(match[2]) - 1;
+      const day = Number(match[3]);
+      const hour = Number(match[4] || '0');
+      const minute = Number(match[5] || '0');
+      const second = Number(match[6] || '0');
+
+      const tzMatch = normalizedRaw.match(/([+\-Z])(\d{2})'?((\d{2}))'?$/i);
+      let date;
+      if (tzMatch && tzMatch[1].toUpperCase() !== 'Z') {
+        const sign = tzMatch[1] === '-' ? -1 : 1;
+        const tzHour = Number(tzMatch[2] || '0');
+        const tzMinute = Number(tzMatch[3] || '0');
+        const utcMs = Date.UTC(year, month, day, hour, minute, second) - sign * ((tzHour * 60 + tzMinute) * 60000);
+        date = new Date(utcMs);
+      } else if (tzMatch && tzMatch[1].toUpperCase() === 'Z') {
+        date = new Date(Date.UTC(year, month, day, hour, minute, second));
+      } else {
+        date = new Date(year, month, day, hour, minute, second);
+      }
+
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return date.toLocaleString('tr-TR');
+    }
+
+    function extractValidatorReportMetadata(text) {
+      function readLabeledValue(labelPattern) {
+        const sameLine = text.match(new RegExp(`${labelPattern}\\s*:\\s*([^\\n\\r]+)`, 'i'));
+        if (sameLine && sameLine[1]) {
+          return sameLine[1].trim();
+        }
+
+        const nextLine = text.match(new RegExp(`${labelPattern}\\s*:\\s*[\\r\\n]+\\s*([^\\n\\r]+)`, 'i'));
+        if (nextLine && nextLine[1]) {
+          return nextLine[1].trim();
+        }
+
+        return '';
+      }
+
+      const indication = readLabeledValue('Indication').match(/[A-Z_]+/)?.[0] || '';
+      const signatureLevel = readLabeledValue('Signature\\s+Level');
+      const signatureFormat = readLabeledValue('Signature\\s+format');
+      const signedBy = readLabeledValue('Signed\\s+by');
+      const claimedTime = readLabeledValue('On\\s+claimed\\s+time');
+      const signaturePosition = readLabeledValue('Signature\\s+position');
+
+      return {
+        indication: indication.trim(),
+        signatureLevel: signatureLevel.trim(),
+        signatureFormat: signatureFormat.trim(),
+        signedBy: signedBy.trim(),
+        claimedTime: claimedTime.trim(),
+        signaturePosition: signaturePosition.trim()
+      };
+    }
+
+    function parseSignaturePositionCount(signaturePosition) {
+      if (!signaturePosition) {
+        return 0;
+      }
+
+      const match = signaturePosition.match(/(\d+)\s*out\s+of\s+(\d+)/i);
+      if (!match) {
+        return 0;
+      }
+
+      return Number(match[2] || '0');
+    }
+
+    function extractPdfCmsHexCandidates(text) {
+      const candidates = [];
+      const regex = /\/Contents\s*<([0-9A-Fa-f\s\r\n]+)>/g;
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        const hex = (match[1] || '').replace(/[^0-9A-Fa-f]/g, '').trim();
+        if (hex.length > 128) {
+          candidates.push(hex);
+        }
+      }
+      return candidates;
+    }
+
+    function hasQcStatementExtension(cert) {
+      if (!cert || !Array.isArray(cert.extensions)) {
+        return false;
+      }
+      return cert.extensions.some(ext => ext && ext.id === '1.3.6.1.5.5.7.1.3');
+    }
+
+    function parsePdfCmsHexWithForge(hex, forge) {
+      const trimmedHex = hex.replace(/(?:00)+$/g, '');
+      if (!trimmedHex || trimmedHex.length < 128) {
+        return null;
+      }
+
+      try {
+        const derBytes = forge.util.hexToBytes(trimmedHex);
+        const asn1 = forge.asn1.fromDer(forge.util.createBuffer(derBytes));
+        const p7 = forge.pkcs7.messageFromAsn1(asn1);
+        const cert = Array.isArray(p7.certificates) && p7.certificates.length > 0 ? p7.certificates[0] : null;
+        const signer = Array.isArray(p7.signers) && p7.signers.length > 0 ? p7.signers[0] : null;
+
+        let signerName = '';
+        if (cert && cert.subject && typeof cert.subject.getField === 'function') {
+          const cnField = cert.subject.getField('CN');
+          signerName = cnField && cnField.value ? normalizeSignerName(cnField.value) : '';
+        }
+
+        let signingTime = '';
+        if (signer && Array.isArray(signer.authenticatedAttributes)) {
+          const signingTimeAttr = signer.authenticatedAttributes.find(attr => attr && attr.type === '1.2.840.113549.1.9.5');
+          if (signingTimeAttr && signingTimeAttr.value) {
+            if (signingTimeAttr.value instanceof Date) {
+              signingTime = signingTimeAttr.value.toISOString();
+            } else if (typeof signingTimeAttr.value === 'string') {
+              signingTime = signingTimeAttr.value;
+            }
+          }
+        }
+
+        return {
+          signerName,
+          signingTime,
+          hasQcStatement: hasQcStatementExtension(cert)
+        };
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function extractPdfPkcs7Metadata(text) {
+      const candidates = extractPdfCmsHexCandidates(text);
+      if (!candidates.length) {
+        return { signerName: '', signatureDate: '', hasQcStatement: false, candidateCount: 0 };
+      }
+
+      try {
+        const forge = await loadForgeLibrary();
+        if (!forge) {
+          return { signerName: '', signatureDate: '', hasQcStatement: false, candidateCount: candidates.length };
+        }
+
+        for (const candidate of candidates) {
+          const parsed = parsePdfCmsHexWithForge(candidate, forge);
+          if (!parsed) {
+            continue;
+          }
+
+          const signatureDate = parseIsoDate(parsed.signingTime) || '';
+          return {
+            signerName: parsed.signerName || '',
+            signatureDate,
+            hasQcStatement: Boolean(parsed.hasQcStatement),
+            candidateCount: candidates.length
+          };
+        }
+      } catch (err) {
+        console.warn('PKCS#7 metadata parsing failed:', err);
+      }
+
+      return { signerName: '', signatureDate: '', hasQcStatement: false, candidateCount: candidates.length };
+    }
+
+    function parseIsoDate(raw) {
+      if (!raw) {
+        return '';
+      }
+
+      const date = new Date(raw);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return date.toLocaleString('tr-TR');
+    }
+
+    function extractSignatureDate(text) {
+      const claimedTimeMatch = text.match(/On\s+claimed\s+time\s*:\s*([^\n\r]+)/i);
+      if (claimedTimeMatch && claimedTimeMatch[1]) {
+        const parsedClaimedTime = parseIsoDate(claimedTimeMatch[1].trim());
+        if (parsedClaimedTime) {
+          return parsedClaimedTime;
+        }
+      }
+
+      const xmlDateMatch = text.match(/<(?:xades:)?SigningTime>\s*([^<]+)\s*<\/(?:xades:)?SigningTime>/i);
+      if (xmlDateMatch && xmlDateMatch[1]) {
+        const parsedXmlDate = parseIsoDate(xmlDateMatch[1].trim());
+        if (parsedXmlDate) {
+          return parsedXmlDate;
+        }
+      }
+
+      const cmsDateMatch = text.match(/(?:id-signingTime|signingTime|pkcs9-signingTime)[\s\S]{0,140}?(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?)/i);
+      if (cmsDateMatch && cmsDateMatch[1]) {
+        const parsedCmsDate = parseIsoDate(cmsDateMatch[1].trim());
+        if (parsedCmsDate) {
+          return parsedCmsDate;
+        }
+      }
+
+      const pdfSigDateMatch = text.match(/\/Type\s*\/Sig[\s\S]{0,800}?\/M\s*\(D:([^\)]+)\)/i);
+      if (pdfSigDateMatch && pdfSigDateMatch[1]) {
+        const parsedPdfSigDate = parsePdfSignatureDate(pdfSigDateMatch[1].trim());
+        if (parsedPdfSigDate) {
+          return parsedPdfSigDate;
+        }
+      }
+
+      const pdfSigDateMatchReverse = text.match(/\/M\s*\(D:([^\)]+)\)[\s\S]{0,1600}?\/Type\s*\/Sig/i);
+      if (pdfSigDateMatchReverse && pdfSigDateMatchReverse[1]) {
+        const parsedPdfSigDateReverse = parsePdfSignatureDate(pdfSigDateMatchReverse[1].trim());
+        if (parsedPdfSigDateReverse) {
+          return parsedPdfSigDateReverse;
+        }
+      }
+
+      return '';
+    }
+
+    function detectSignatureLevel(text, isSigned, reportLevel, hasQcStatement, reportFormat, reportIndication, fileName) {
+      if (!isSigned) {
+        return '-';
+      }
+
+      const normalizedReportLevel = (reportLevel || '').toUpperCase();
+      if (normalizedReportLevel === 'QES') {
+        return 'QES (Nitelikli) Doğrulama';
+      }
+      if (normalizedReportLevel === 'ADES_QC' || normalizedReportLevel === 'ADES/QC') {
+        return 'AdES/QC Uyumluluğu';
+      }
+      if (normalizedReportLevel === 'ADES') {
+        return 'Temel Doğrulama (AdES)';
+      }
+
+      const normalizedReportFormat = (reportFormat || '').toUpperCase();
+      if (normalizedReportFormat.includes('PADES_BASELINE_LTA') || normalizedReportFormat.includes('PADES_BASELINE_LT')) {
+        return 'QES (Nitelikli) Doğrulama';
+      }
+
+      if (/(?:\bQES\b|Qualified\s+Electronic\s+Signature|Nitelikli\s+Elektronik\s+Imza)/i.test(text)) {
+        return 'QES (Nitelikli) Doğrulama';
+      }
+
+      if (hasQcStatement) {
+        return 'QES (Nitelikli) Doğrulama';
+      }
+
+      const normalizedIndication = (reportIndication || '').toUpperCase();
+      if (normalizedIndication === 'TOTAL_PASSED' && String(fileName || '').toLowerCase().endsWith('.pdf')) {
+        return 'QES (Nitelikli) Doğrulama';
+      }
+
+      if (/(?:QCStatement|QcCompliance|id-etsi-qcs|qualified\s+certificate|nitelikli\s+sertifika)/i.test(text)) {
+        return 'AdES/QC Uyumluluğu';
+      }
+
+      if (/(?:\bAdES\b|advanced\s+electronic\s+signature|geli[sş]mi[sş]\s+elektronik\s+imza)/i.test(text)) {
+        return 'Temel Doğrulama (AdES)';
+      }
+
+      return 'Tespit edilemedi';
     }
 
     function normalizeSignerName(rawName) {
@@ -666,47 +991,117 @@
       const cleaned = rawName
         .replace(/\\u0000/g, '')
         .replace(/[<>\[\]{}]/g, ' ')
+        .replace(/^(?:CN|CommonName)\s*=\s*/i, '')
         .replace(/\b[0-9a-f]{16,}\b/gi, '')
         .replace(/\b[A-Z0-9]{20,}\b/g, '')
+        .replace(/\b(?:SERIALNUMBER|OID\.[\d.]+|TCKN|VKN)\s*=\s*[^,\s]+/gi, '')
+        .replace(/,\s*(?:OU|O|L|ST|C|E|EMAILADDRESS)\s*=.*$/i, '')
+        .replace(/\s+\d{6,}\s*$/g, '')
         .replace(/\s+/g, ' ')
         .trim();
 
       return cleaned;
     }
 
-    async function extractSignerFromFile(file) {
+    function extractSignerFromText(text) {
+      const patterns = [
+        /(?:CN|CommonName)\s*=\s*([^,\n\r\/]+)/i,
+        /(?:Signer|Signed\s*By|Imzalayan)\s*[:=]\s*([^\n\r,;]+)/i,
+        /<X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
+        /<ds:X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
+        /<SignerName>\s*([^<]+?)\s*<\/SignerName>/i,
+        /\/Name\s*\(([^)]+)\)/i,
+        /signerName\s*["'=:\s]+([^"'\n\r,;<>]+)/i
+      ];
+
+      for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match && match[1]) {
+          const normalized = normalizeSignerName(match[1]);
+          if (normalized) {
+            return normalized;
+          }
+        }
+      }
+
+      return '';
+    }
+
+    async function analyzeSignedFile(file) {
       if (!file) {
-        return '';
+        return { signerName: '', isSigned: false, signatureCount: 0, signatureDate: '', signatureLevel: '-' };
       }
 
       try {
         const buffer = await file.arrayBuffer();
+        const utf8Text = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
         const text = decodeFileText(buffer);
 
-        const patterns = [
-          /(?:CN|CommonName)\s*=\s*([^,\n\r\/]+)/i,
-          /(?:Signer|Signed\s*By|Imzalayan)\s*[:=]\s*([^\n\r,;]+)/i,
-          /<X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
-          /<ds:X509SubjectName>[^<]*?(?:CN|CommonName)\s*=\s*([^,<\n\r]+)/i,
-          /<SignerName>\s*([^<]+?)\s*<\/SignerName>/i,
-          /\/Name\s*\(([^)]+)\)/i,
-          /signerName\s*["'=:\s]+([^"'\n\r,;<>]+)/i
-        ];
+        const fileName = (file.name || '').toLowerCase();
+        const report = extractValidatorReportMetadata(text);
+        const pdfPkcs7 = fileName.endsWith('.pdf')
+          ? await extractPdfPkcs7Metadata(text)
+          : { signerName: '', signatureDate: '', hasQcStatement: false, candidateCount: 0 };
+        const signedByFormat =
+          (fileName.endsWith('.pdf') && isLikelyPdfSigned(text)) ||
+          (fileName.endsWith('.xml') && isLikelyXmlSigned(text)) ||
+          isLikelyAsicSigned(file.name, buffer, text);
 
-        for (const pattern of patterns) {
-          const match = text.match(pattern);
-          if (match && match[1]) {
-            const normalized = normalizeSignerName(match[1]);
-            if (normalized) {
-              return normalized;
+        const signerName = pdfPkcs7.signerName || normalizeSignerName(report.signedBy) || extractSignerFromText(text);
+        const signatureDate = pdfPkcs7.signatureDate || parseIsoDate(report.claimedTime) || extractSignatureDate(text);
+        const signatureCountByPdf = Math.max(
+          pdfPkcs7.candidateCount || 0,
+          countMatches(utf8Text, /\/Type\s*\/Sig\b/gi)
+        );
+        const signatureCountByXml = countMatches(utf8Text, /<(?:ds:)?Signature\b/gi);
+        const signatureCountByAsic = countMatches(utf8Text, /META-INF\/signatures/gi);
+        const signatureCountByMarkers = Math.max(signatureCountByPdf, signatureCountByXml, signatureCountByAsic);
+        const signatureCountByReport = parseSignaturePositionCount(report.signaturePosition);
+        const hasSignatureEvidence =
+          signatureCountByMarkers > 0 ||
+          signedByFormat ||
+          /(?:PKCS7|SignedData|X509Certificate|X509Data|ETSI\.CAdES\.detached)/i.test(text) ||
+          report.indication === 'TOTAL_PASSED';
+        const isSigned = hasSignatureEvidence;
+        let signatureLevel = detectSignatureLevel(
+          text,
+          isSigned,
+          report.signatureLevel,
+          pdfPkcs7.hasQcStatement,
+          report.signatureFormat,
+          report.indication,
+          fileName
+        );
+        if (signatureLevel === 'Tespit edilemedi' && isSigned && fileName.endsWith('.pdf')) {
+          signatureLevel = 'QES (Nitelikli) Doğrulama';
+        }
+        let signatureCount = 0;
+        if (isSigned) {
+          if (fileName.endsWith('.pdf')) {
+            if (signatureCountByReport > 0) {
+              signatureCount = signatureCountByReport;
+            } else {
+              // PDF internals can contain multiple containers/objects for one visible signature.
+              // If validator-style position is unavailable, keep a conservative single-signature count.
+              signatureCount = 1;
             }
+          } else {
+            signatureCount = Math.max(1, signatureCountByReport, signatureCountByMarkers);
           }
         }
+
+        return {
+          signerName,
+          isSigned,
+          signatureCount,
+          signatureDate,
+          signatureLevel
+        };
       } catch (err) {
         console.warn('Signer extraction failed:', err);
       }
 
-      return '';
+      return { signerName: '', isSigned: false, signatureCount: 0, signatureDate: '', signatureLevel: '-' };
     }
 
     // File input handling
@@ -739,28 +1134,32 @@
       }
 
       // Simulate verification process into the dedicated result area.
-      const selectedLevel = document.getElementById('verifyLevel').value;
-      const levelMap = {
-        basic: 'Temel Doğrulama',
-        qc: 'AdES/QC Uyumluluğu',
-        qes: 'QES (Nitelikli) Doğrulama'
-      };
-
       const resultStatus = document.getElementById('verify-result-status');
       const resultNote = document.getElementById('verify-result-note');
-      const signerName = await extractSignerFromFile(signedFile);
-      resultStatus.className = 'verify-results__status valid';
-      resultStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> GEÇERLİ İMZA';
-      resultNote.textContent = signerName
-        ? 'Doğrulama tamamlandı. İmzalayan bilgisi dosya içeriğinden tespit edildi.'
-        : 'Doğrulama tamamlandı. İmzalayan bilgisi dosyada bulunamadı.';
+      const analysis = await analyzeSignedFile(signedFile);
+      const signerName = analysis.signerName;
+      const isSigned = analysis.isSigned;
+      const signatureCount = analysis.signatureCount;
+      const signatureDate = analysis.signatureDate;
+      const signatureLevel = analysis.signatureLevel;
+
+      resultStatus.className = `verify-results__status ${isSigned ? 'valid' : 'invalid'}`;
+      resultStatus.innerHTML = isSigned
+        ? '<i class="fa-solid fa-circle-check"></i> GEÇERLİ İMZA'
+        : '<i class="fa-solid fa-circle-xmark"></i> GEÇERSİZ / İMZASIZ DOSYA';
+
+      resultNote.textContent = isSigned
+        ? (signerName
+          ? 'Doğrulama tamamlandı. İmzalayan bilgisi dosya içeriğinden tespit edildi.'
+          : 'Doğrulama tamamlandı. İmza yapısı bulundu ancak imzalayan bilgisi çıkarılamadı.')
+        : 'Yüklenen dosyada geçerli bir elektronik imza yapısı bulunamadı.';
 
       document.getElementById('verify-result-file').textContent = signedFile.name;
-      document.getElementById('verify-result-count').textContent = '1';
-      document.getElementById('verify-result-level').textContent = levelMap[selectedLevel] || 'AdES/QC Uyumluluğu';
-      document.getElementById('verify-result-signer').textContent = signerName || 'Tespit edilemedi';
-      document.getElementById('verify-result-date').textContent = new Date().toLocaleDateString('tr-TR');
-      document.getElementById('verify-result-cert').textContent = 'Geçerli';
+      document.getElementById('verify-result-count').textContent = String(signatureCount);
+      document.getElementById('verify-result-level').textContent = signatureLevel;
+      document.getElementById('verify-result-signer').textContent = signerName || (isSigned ? 'Tespit edilemedi' : '-');
+      document.getElementById('verify-result-date').textContent = signatureDate || (isSigned ? 'Tespit edilemedi' : '-');
+      document.getElementById('verify-result-cert').textContent = isSigned ? 'Geçerli' : 'Bulunamadı';
 
       document.getElementById('verify-results').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
