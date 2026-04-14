@@ -13,8 +13,38 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .about-page main .container {
+      max-width: 1280px;
+    }
+
+    .about-page .split-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-page .info-surface {
+      width: 1200px;
+      max-width: 100%;
+      margin-inline: auto;
+    }
+
+    .about-page .feature-bullets {
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .about-page .feature-bullets li {
+      gap: 8px;
+      line-height: 1.45;
+      width: 100%;
+    }
+
+    .about-page .feature-bullets li + li {
+      margin-top: 0;
+    }
+  </style>
 </head>
-<body class="inner-page">
+<body class="inner-page about-page">
   <div class="topbar">
     <div class="container topbar__inner">
       <div class="topbar__left">
@@ -137,8 +167,8 @@
           </div>
           <div class="page-hero__facts">
             <div><i class="fa-solid fa-building"></i> Denizler Bilişim Hizmetleri Ltd.</div>
-            <div><i class="fa-solid fa-shield-halved"></i> ISO/IEC 27001:2017</div>
-            <div><i class="fa-solid fa-award"></i> İlk ve Lider Hizmet Sağlayıcı</div>
+            <div>ISO/IEC 27001:2017</div>
+            <div>İlk ve Lider Hizmet Sağlayıcı</div>
           </div>
         </div>
 
@@ -230,7 +260,6 @@
 
         <div class="value-grid" data-animate="fade-up">
           <article class="value-card">
-            <i class="fa-solid fa-award"></i>
             <h4>Kalite Politikası</h4>
             <p>
               Müşterilerimize yüksek kalitede bilgi teknolojileri hizmet ve çözümleri sunmayı
@@ -240,7 +269,6 @@
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-shield-halved"></i>
             <h4>Bilgi Güvenliği Politikası</h4>
             <p>
               Hizmet sürekliliğini, kritik bilgilerin gizliliğini ve bilgi varlıklarının bütünlüğünü
@@ -250,12 +278,47 @@
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-people-group"></i>
             <h4>Kalite Yönetim Yaklaşımı</h4>
             <p>
               Üst yönetimimiz, kuruluş amacına uygun kalite hedeflerini oluşturur; kalite yönetim
               sisteminin şartlarına uyumu ve sistem etkililiğinin süreksel iyileştirilmesini
               dokümante edilmiş bir politika çerçevesinde yürütür.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <div class="section-tag">İnsan Kaynakları</div>
+          <h2 class="section-title">Çalışan Odaklı Kurum Kültürü</h2>
+          <p class="section-subtitle">"Bir şirketin en önemli değeri çalışanlarıdır" yaklaşımıyla insan kaynağımızı geliştiriyoruz.</p>
+        </div>
+
+        <div class="value-grid" data-animate="fade-up">
+          <article class="value-card">
+            <h4>İK Politikamız</h4>
+            <p>
+              Değişime ayak uydurabilen, müşteri ve çalışan deneyimini birlikte geliştiren,
+              iş yapma kültürünü sürdürülebilir biçimde büyüten bir ekip yapısı oluştururuz.
+            </p>
+          </article>
+
+          <article class="value-card">
+            <h4>Teknoloji Odaklı Gelişim</h4>
+            <p>
+              Yeni teknolojiler üzerinde hizmet üretmeye odaklanan yaklaşımımızla çalışanlarımızın
+              teknik yetkinliklerini sürekli eğitim ve uygulama ile destekleriz.
+            </p>
+          </article>
+
+          <article class="value-card">
+            <h4>İletişim ve Değerler</h4>
+            <p>
+              Güven ve açıklığa dayalı iletişimi esas alır; iş etiği, inovasyon, girişimci ruh,
+              toplumsal sorumluluk ve müşteri memnuniyeti odaklı çalışma kültürünü güçlendiririz.
             </p>
           </article>
         </div>
@@ -272,25 +335,21 @@
 
         <div class="value-grid" data-animate="fade-up">
           <article class="value-card">
-            <i class="fa-solid fa-certificate"></i>
             <h4>İlk ve Lider ECSP</h4>
             <p>Kuzey Kıbrıs'ın ilk ve lider Elektronik Sertifika Hizmet Sağlayıcısı olarak konumlanır.</p>
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-mobile-screen-button"></i>
             <h4>Mobil İmza Liderliği</h4>
             <p>Kuzey Kıbrıs'ta mobil imza hizmet sağlayıcılığı alanında öncü rol üstlenir (proje aşaması).</p>
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-medal"></i>
             <h4>Nitelikli Sertifika Üretimi</h4>
             <p>Güvenli ve standartlara uygun süreçlerle nitelikli elektronik sertifika üretimi sağlar.</p>
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-building-shield"></i>
             <h4>Yerinde Hizmet Yetkinliği</h4>
             <p>Kuzey Kıbrıs'ta kendi yerinde hizmet sunabilen ECSP yaklaşımıyla operasyon yürütür.</p>
           </article>
@@ -304,10 +363,13 @@
           <h3>Şirket Bilgileri</h3>
           <ul class="feature-bullets">
             <li><i class="fa-solid fa-building"></i> <strong>Şirket Türü:</strong> Limited Şirket</li>
+            <li><i class="fa-solid fa-city"></i> <strong>Ticaret Sicili:</strong> Lefkoşa</li>
             <li><i class="fa-solid fa-file-signature"></i> <strong>Ticari Ünvan:</strong> Denizler Bilişim Hizmetleri Limited</li>
             <li><i class="fa-solid fa-location-dot"></i> <strong>Adres:</strong> Mehmet Ertuğruloğlu Sokak, NO:10, D-4 Kumsal/Lefkoşa/Kuzey Kıbrıs</li>
             <li><i class="fa-solid fa-scale-balanced"></i> <strong>Vergi Dairesi:</strong> Lefkoşa</li>
             <li><i class="fa-solid fa-hashtag"></i> <strong>Vergi Numarası:</strong> MŞ17098</li>
+            <li><i class="fa-solid fa-phone"></i> <strong>Telefon:</strong> +90 (539) 120 51 15</li>
+            <li><i class="fa-solid fa-globe"></i> <strong>Web:</strong> <a href="http://www.denizlerbilisim.com" target="_blank" rel="noopener">www.denizlerbilisim.com</a></li>
           </ul>
         </article>
 
@@ -341,7 +403,6 @@
 
         <div class="value-grid" data-animate="fade-up">
           <article class="value-card">
-            <i class="fa-solid fa-certificate"></i>
             <h4>ISO/IEC 27001:2017</h4>
             <p>
               Bilgi Güvenliği Yönetim Sistemi sertifikasını başarı ile almış ve sürdürmektedir.
@@ -350,7 +411,6 @@
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-check-double"></i>
             <h4>Düzenli Denetim ve Yenileme</h4>
             <p>
               Sertifika, bağımsız denetim şirketleri tarafından düzenli olarak gözden geçirilir 
@@ -359,7 +419,6 @@
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-shield-halved"></i>
             <h4>Veri Koruma Taahhütü</h4>
             <p>
               Hizmet sürekliliğini, kritik bilgilerin gizliliğini ve veri varlıklarının bütünlüğünü 
@@ -368,7 +427,6 @@
           </article>
 
           <article class="value-card">
-            <i class="fa-solid fa-people-group"></i>
             <h4>Çalışan Farkındalığı</h4>
             <p>
               Tüm çalışanlarımızın bilgi güvenliği konusunda farkındarlık ve sorumluluk sahibi olması 
@@ -438,7 +496,6 @@
           hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
         </p>
         <div class="footer__cert">
-          <i class="fa-solid fa-shield-halved"></i>
           <span>ISO/IEC 27001:2017 Sertifikalı</span>
         </div>
       </div>
