@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="e-imza KIBRIS sürücü linkleri sayfası. e-token sürücüleri ve masaüstü uygulama bağlantıları." />
+  <title>Sürücü Linkleri | e-imza KIBRIS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .driver-table-wrap {
+      width: 100%;
+      display: block;
+      overflow: hidden;
+      border: 1px solid rgba(180, 30, 30, 0.14);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .driver-table {
+      display: table;
+      width: 100%;
+      max-width: none;
+      overflow: visible;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .driver-table th:first-child,
+    .driver-table td:first-child {
+      width: auto;
+    }
+
+    .driver-table th,
+    .driver-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+      vertical-align: middle;
+      font-size: 0.93rem;
+    }
+
+    .driver-table th {
+      background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+      color: var(--color-text-primary);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .driver-table th:last-child,
+    .driver-table td:last-child {
+      width: 120px;
+      text-align: center;
+    }
+
+    .driver-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .driver-section-row td {
+      background: linear-gradient(90deg, rgba(180, 30, 30, 0.08), rgba(180, 30, 30, 0.02));
+      color: var(--color-text-primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      border-bottom-color: rgba(180, 30, 30, 0.12);
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .driver-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 9999px;
+      background: rgba(180, 30, 30, 0.08);
+      border: 1px solid rgba(180, 30, 30, 0.12);
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .driver-download:hover {
+      transform: translateY(-1px) scale(1.02);
+      background: rgba(180, 30, 30, 0.12);
+      box-shadow: 0 8px 20px rgba(180, 30, 30, 0.14);
+    }
+
+    .driver-download img {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .driver-download[aria-disabled="true"] {
+      pointer-events: none;
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    @media (max-width: 740px) {
+      .driver-table-wrap {
+        overflow-x: auto;
+      }
+
+      .driver-table {
+        min-width: 560px;
+      }
+    }
+  </style>
+</head>
+<body class="application-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+905391205115"><i class="fa-solid fa-phone"></i> +90 (539) 120 51 15</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher">
+          <a href="?lang=tr">TR</a>
+          <span>|</span>
+          <a href="?lang=en">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+        <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik İmza</strong><small>Nitelikli e-imza sertifikası</small></div></a>
+              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgası</strong><small>Elektronik veriye zaman kanıtı</small></div></a>
+              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>İmzalama ve doğrulama masaüstü yazılımı</small></div></a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik imza eğitimleri</small></div></a>
+              <a href="consultancy.html" class="dropdown__item"><div><strong>Danışmanlık Hizmetleri</strong><small>Elektronik dönüşüm danışmanlığı</small></div></a>
+              <a href="verify.html" class="dropdown__item"><div><strong>İmza Doğrulama</strong><small>Elektronik imzaları doğrulayın</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown dropdown--two-columns">
+              <a href="../databank/certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
+              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
+              <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
+              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
+              <a href="../databank/principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası ilkeleri</small></div></a>
+              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esasları</strong><small>NES uygulama ve zaman damgası esasları</small></div></a>
+              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="helpdesk.html" class="dropdown__item"><div><strong>Yardım Masası</strong><small>Kurulum ve sürücü desteği</small></div></a>
+              <a href="surucu-linkleri.html" class="dropdown__item"><div><strong>Sürücü Linkleri</strong><small>e-token sürücüleri ve uygulamalar</small></div></a>
+              <a href="onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Şirket Hakkında</strong><small>Denizler Bilişim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelişmeler</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item"><a href="../contact/index.html" class="nav-link">İLETİŞİM</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="driver-table">
+      <div class="container">
+        <div class="driver-table-wrap" data-animate="fade-up">
+          <table class="driver-table">
+            <thead>
+              <tr>
+                <th>Yazılım Bilgisi</th>
+                <th>İndir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="driver-section-row"><td colspan="2">E-token ile ilgili sürücüler (Driver)</td></tr>
+              <tr>
+                <td>e-Token Windows Tüm Sürücüler</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_60298_signtificclient_1.zip" download aria-label="e-Token Windows Tüm Sürücüler"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>MAC Driver 10.1 - 10.2</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_17513_safenetauthenticationclient90490.zip" download aria-label="MAC Driver 10.1 - 10.2"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>MAC Driver 10.2 GA</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_17513_safenetauthenticationclient90490.zip" download aria-label="MAC Driver 10.2 GA"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>MAC Driver 10.10 - 10.11</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_36466_safenetauthenticationclient91720dmg.zip" download aria-label="MAC Driver 10.10 - 10.11"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>Linux Driver</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_54347_sac83_linux.zip" download aria-label="Linux Driver"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>Aladdin 32 Bit Tüm Sürücüler</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_60298_signtificclient_1.zip" download aria-label="Aladdin 32 Bit Tüm Sürücüler"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr>
+                <td>Aladdin 64 Bit Tüm Sürücüler</td>
+                <td><a class="driver-download" href="../assets/docs/softwares/_media_60298_signtificclient_1.zip" download aria-label="Aladdin 64 Bit Tüm Sürücüler"><img src="../assets/img/download.svg" alt="İndir" /></a></td>
+              </tr>
+              <tr class="driver-section-row"><td colspan="2">Masaüstü Uygulamalar</td></tr>
+              <tr>
+                <td>MOlOhiya İmzalama ve Doğrulama Elektronik İmza Masaüstü Uygulaması</td>
+                <td><a class="driver-download" href="../products/molohiya-install.html" aria-label="MOlOhiya Masaüstü Uygulaması"><img src="../assets/img/download.svg" alt="Git" /></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo"><img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="footer__logo-img" /></a>
+        <p>Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik imza hizmet sağlayıcısıdır.</p>
+        <div class="footer__cert"><i class="fa-solid fa-shield-halved"></i><span>ISO/IEC 27001:2017 Sertifikalı</span></div>
+      </div>
+      <div class="footer__col">
+        <h4>Destek</h4>
+        <ul>
+          <li><a href="helpdesk.html">Yardım Masası</a></li>
+          <li><a href="surucu-linkleri.html">Sürücü Linkleri</a></li>
+          <li><a href="onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="renewal.html">Yenileme</a></li>
+        </ul>
+      </div>
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li><i class="fa-solid fa-phone"></i> <a href="tel:+905391205115">+90 (539) 120 51 15</a></li>
+          <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="../privacypolicy.html">Gizlilik Politikasi</a>
+          <a href="../contact/index.html">İletişim</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

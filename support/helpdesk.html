@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -25,6 +25,11 @@
     .helpdesk-hero p {
       color: var(--color-text-primary);
     }
+    .helpdesk-hero .section-tag {
+      background: var(--color-bg-blue);
+      color: #1a1a1a;
+      border: 1px solid rgba(180, 30, 30, 0.22);
+    }
     .helpdesk-chip-row {
       display: flex;
       flex-wrap: wrap;
@@ -37,10 +42,14 @@
       gap: 8px;
       border-radius: 999px;
       padding: 8px 12px;
-      border: 1px solid var(--color-border);
-      background: #fff;
+      border: 1px solid rgba(180, 30, 30, 0.22);
+      background: var(--color-bg-blue);
+      color: #1a1a1a;
       font-size: 0.88rem;
       font-weight: 600;
+    }
+    .helpdesk-chip i {
+      color: #1a1a1a;
     }
     .helpdesk-grid {
       display: grid;
@@ -143,7 +152,7 @@
       </div>
       <div class="topbar__right">
         <div class="lang-switcher">
-          <a href="?lang=tr" class="active">TR</a>
+          <a href="?lang=tr">TR</a>
           <span>|</span>
           <a href="?lang=en">EN</a>
         </div>
@@ -168,7 +177,7 @@
               <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
             </div>
           </li>
-          <li class="nav-item has-dropdown active">
+          <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
               <a href="education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik imza eğitimleri</small></div></a>
@@ -244,7 +253,7 @@
     <section class="helpdesk-hero">
       <div class="container page-hero__inner">
         <div class="page-hero__content" data-animate="fade-up">
-          <div class="section-tag" style="background:#fff;color:var(--color-text-primary);border-color:var(--color-border);">Yardım Masası</div>
+          <div class="section-tag">Yardım Masası</div>
           <h1 class="page-hero__title">Kurulum ve Teknik Destek Merkezi</h1>
           <p class="page-hero__desc">Nitelikli Elektronik Sertifika kurulumunuz için e-token videoları, sürücü bağlantıları ve teknik destek bilgileri burada.</p>
           <div class="page-hero__actions">
@@ -258,7 +267,7 @@
           </div>
         </div>
         <div class="page-hero__media" data-animate="fade-left">
-          <img src="../assets/img/token2.jpeg" alt="Yardım masası" style="width:100%;border-radius:16px;display:block;box-shadow:0 20px 50px rgba(0,0,0,.18);" />
+          <img src="../assets/img/helpdesk.jpeg" alt="Yardım Masası" style="width:100%;border-radius:16px;display:block;box-shadow:0 20px 50px rgba(0,0,0,.18);" />
         </div>
       </div>
     </section>
@@ -301,13 +310,9 @@
             </div>
 
             <div class="helpdesk-links">
-              <a class="helpdesk-link" href="../databank/softwares.html">
-                <h4>Windows / macOS / Linux Driver</h4>
-                <p>e-token ve masaüstü yazılım sürümleri.</p>
-              </a>
-              <a class="helpdesk-link" href="../databank/certificates.html">
-                <h4>Kök Sertifika Kurulumu</h4>
-                <p>Kök sertifika zinciri ve doğrulama dosyaları.</p>
+              <a class="helpdesk-link" href="surucu-linkleri.html">
+                <h4>Sürücü Linkleri</h4>
+                <p>TR yardım masası sürücü başlıklarıyla ayrı sayfada liste.</p>
               </a>
             </div>
           </div>

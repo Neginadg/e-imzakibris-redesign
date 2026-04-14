@@ -156,7 +156,7 @@ section,
 .topbar {
   height: var(--topbar-h);
   background: var(--color-primary-dark);
-  color: rgba(255,255,255,.75);
+  color: rgba(255,255,255,.9);
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -179,7 +179,7 @@ section,
   display: flex;
   align-items: center;
   gap: 6px;
-  color: rgba(255,255,255,.75);
+  color: rgba(255,255,255,.9);
   transition: color var(--transition);
 }
 .topbar__left a:hover { color: #fff; }
@@ -190,7 +190,7 @@ section,
   gap: 6px;
 }
 .lang-switcher a {
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.9);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .5px;
@@ -198,7 +198,7 @@ section,
 }
 .lang-switcher a:hover,
 .lang-switcher a.active { color: var(--color-accent); }
-.lang-switcher span { color: rgba(255,255,255,.3); }
+.lang-switcher span { color: rgba(255,255,255,.6); }
 
 /* ============================================================
    NAVBAR
