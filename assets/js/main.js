@@ -57,6 +57,7 @@
   const mobileNav  = document.getElementById('mobile-nav');
 
   ensureSupportDropdownOptions();
+  ensureAboutDropdownOptions();
 
   if (hamburger && mobileNav) {
     setupMobileNavFromDesktop();
@@ -160,6 +161,49 @@
 
     dropdown.appendChild(helpdeskLink);
     dropdown.appendChild(faqLink);
+  }
+
+  function ensureAboutDropdownOptions() {
+    const navItems = Array.from(document.querySelectorAll('.navbar__nav .nav-list > .nav-item.has-dropdown'));
+    if (!navItems.length) return;
+
+    const aboutItem = navItems.find((item) => {
+      const trigger = item.querySelector(':scope > .nav-link');
+      return trigger && (trigger.textContent || '').toUpperCase().includes('HAKKIMIZDA');
+    });
+    if (!aboutItem) return;
+
+    const dropdown = aboutItem.querySelector(':scope > .dropdown');
+    if (!dropdown) return;
+
+    const links = Array.from(dropdown.querySelectorAll(':scope > .dropdown__item'));
+    const alreadyExists = links.some((link) => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').toLowerCase();
+      return href.includes('certdocuments.html') || text.includes('belge ve sertifikalar');
+    });
+    if (alreadyExists) return;
+
+    const companyLink = links.find((link) => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').toLowerCase();
+      return href.includes('about/index.html') || href === 'index.html' || text.includes('şirket hakkında') || text.includes('sirket hakkinda');
+    });
+
+    const sourceHref = companyLink?.getAttribute('href') || 'about/index.html';
+    const certHref = sourceHref.replace(/index\.html$/i, 'certdocuments.html');
+
+    const certLink = document.createElement('a');
+    certLink.className = 'dropdown__item';
+    certLink.href = certHref;
+    certLink.innerHTML = '<div><strong>Belge ve Sertifikalar</strong><small>Kurumsal belgelerimiz</small></div>';
+
+    const newsLink = links.find((link) => (link.getAttribute('href') || '').toLowerCase().includes('news.html'));
+    if (newsLink) {
+      dropdown.insertBefore(certLink, newsLink);
+    } else {
+      dropdown.appendChild(certLink);
+    }
   }
 
   function setupMobileNavFromDesktop() {
