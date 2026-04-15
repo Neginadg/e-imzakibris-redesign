@@ -18,29 +18,264 @@
       max-width: 1280px;
     }
 
+    .about-page {
+      --about-accent-soft: rgba(180, 30, 30, 0.08);
+      --about-accent-border: rgba(180, 30, 30, 0.18);
+      --about-shadow-soft: 0 14px 38px rgba(15, 15, 15, 0.08);
+      --about-shadow-strong: 0 22px 50px rgba(15, 15, 15, 0.14);
+    }
+
+    .about-page .page-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-page .page-hero::before {
+      content: "";
+      position: absolute;
+      inset: 8% -18% auto;
+      height: 220px;
+      background: radial-gradient(circle at center, rgba(180, 30, 30, 0.14) 0%, rgba(180, 30, 30, 0) 72%);
+      pointer-events: none;
+    }
+
     .about-page .split-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .about-page .page-hero--about .page-hero__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+
+    .about-page .page-hero--about .page-hero__media {
+      display: flex;
+      padding: 40px;
+    }
+
+    .about-page .page-hero__content,
+    .about-page .page-hero__media {
+      border-radius: 30px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      box-shadow: var(--about-shadow-soft);
+    }
+
+    .about-page .page-hero__content {
+      background: linear-gradient(160deg, #ffffff 0%, #fff6f6 100%);
+    }
+
+    .about-page .section-tag {
+      background: linear-gradient(120deg, #fff7f7 0%, #ffe9e9 100%);
+      border-color: var(--about-accent-border);
+    }
+
+    .about-page .page-hero__title {
+      font-size: clamp(34px, 4vw, 50px);
+      line-height: 1.07;
+      max-width: 18ch;
+    }
+
+    .about-page .page-hero__desc {
+      color: #4b5563;
+    }
+
+    .about-page .page-hero__facts div {
+      background: #fff;
+      border-color: rgba(180, 30, 30, 0.2);
+      box-shadow: 0 8px 20px rgba(180, 30, 30, 0.1);
     }
 
     .about-page .info-surface {
-      width: 1200px;
+      width: 100%;
       max-width: 100%;
+      min-width: 0;
       margin-inline: auto;
+      border-radius: 24px;
+      box-shadow: var(--about-shadow-soft);
+      border: 1px solid rgba(20, 20, 20, 0.06);
+      background: linear-gradient(165deg, #ffffff 0%, #fcfcfc 100%);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .about-page .info-surface:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--about-shadow-strong);
+    }
+
+    .about-page .info-surface h3,
+    .about-page .value-card h4 {
+      color: #111827;
+      letter-spacing: -0.02em;
+    }
+
+    .about-page .info-surface p,
+    .about-page .value-card p {
+      color: #4b5563;
     }
 
     .about-page .feature-bullets {
-      gap: 6px;
+      gap: 8px;
       margin-top: 12px;
     }
 
     .about-page .feature-bullets li {
-      gap: 8px;
+      gap: 10px;
       line-height: 1.45;
       width: 100%;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 14px;
+      padding: 10px 12px;
     }
 
     .about-page .feature-bullets li + li {
       margin-top: 0;
+    }
+
+    .about-page .feature-bullets i {
+      color: #b41e1e;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .about-page .value-grid {
+      gap: 22px;
+    }
+
+    .about-page .value-card {
+      border-radius: 22px;
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      background: linear-gradient(160deg, #ffffff 0%, #fafafa 100%);
+      box-shadow: var(--about-shadow-soft);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .about-page .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--about-shadow-strong);
+    }
+
+    .about-page .timeline {
+      margin-top: 8px;
+      padding-left: 10px;
+    }
+
+    .about-page .timeline li {
+      position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      border-radius: 16px;
+      padding: 14px 16px 14px 18px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(15, 15, 15, 0.06);
+    }
+
+    .about-page .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 18px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #b41e1e;
+      box-shadow: 0 0 0 4px rgba(180, 30, 30, 0.12);
+    }
+
+    .about-page .timeline-year {
+      color: #9f1239;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .about-page .about-hero-image {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      max-height: none;
+      object-fit: cover;
+      border-radius: 22px;
+      display: block;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+    }
+
+    .about-page .section-header {
+      margin-bottom: 42px;
+    }
+
+    .about-page .section-title {
+      max-width: 20ch;
+      margin-inline: auto;
+    }
+
+    .about-page .section-subtitle {
+      color: #6b7280;
+    }
+
+    .about-page .cta-banner {
+      margin-top: 20px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--about-shadow-strong);
+    }
+
+    .about-page .cta-banner__text h2 {
+      letter-spacing: -0.02em;
+    }
+
+    @media (max-width: 1024px) {
+      .about-page .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-page .page-hero--about .page-hero__media {
+        padding: 28px;
+      }
+
+      .about-page .section-title {
+        max-width: 100%;
+      }
+
+      .about-page .feature-bullets[style*="columns:2"] {
+        columns: 1 !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .about-page .page-hero--about .page-hero__inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .about-page .page-hero--about .page-hero__media {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .about-page .page-hero__content,
+      .about-page .page-hero__media {
+        border-radius: 22px;
+      }
+
+      .about-page .page-hero__content {
+        padding: 28px;
+      }
+
+      .about-page .page-hero__title {
+        font-size: clamp(30px, 9vw, 40px);
+      }
+
+      .about-page .page-hero__facts {
+        gap: 8px;
+      }
+
+      .about-page .page-hero__facts div {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -173,24 +408,12 @@
         </div>
 
         <div class="page-hero__media" data-animate="fade-left">
-          <div class="hero-stat-panel">
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Şirket Tescil Tarihi</span>
-              <strong class="hero-stat-panel__value">16.10.2014</strong>
-            </div>
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Faaliyete Başlama</span>
-              <strong class="hero-stat-panel__value">01.11.2014</strong>
-            </div>
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Ticaret Sicili</span>
-              <strong class="hero-stat-panel__value">Lefkoşa</strong>
-            </div>
-            <div class="hero-stat-panel__item">
-              <span class="hero-stat-panel__label">Şirket Türü</span>
-              <strong class="hero-stat-panel__value">Ltd.</strong>
-            </div>
-          </div>
+          <img
+            src="../assets/img/about.jpeg"
+            alt="e-imza KIBRIS hakkında"
+            class="about-hero-image"
+            decoding="async"
+          />
         </div>
       </div>
     </section>
@@ -459,7 +682,7 @@
             <li><i class="fa-solid fa-checkmark"></i> Servis Tabanlı Elektronik İmza Çözümleri</li>
             <li><i class="fa-solid fa-checkmark"></i> Sign &amp; Send Hizmetleri</li>
             <li><i class="fa-solid fa-checkmark"></i> PDF Signer Uygulaması</li>
-            <li><i class="fa-solid fa-checkmark"></i> Adreste Kimlik Doğrulama</li>
+           
             <li><i class="fa-solid fa-checkmark"></i> Kurulum Hizmeti</li>
             <li><i class="fa-solid fa-checkmark"></i> Eğitim ve Danışmanlık</li>
             <li><i class="fa-solid fa-checkmark"></i> Sistem Entegrasyonu</li>
