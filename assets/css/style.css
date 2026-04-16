@@ -2448,6 +2448,207 @@ time {
   font-weight: 600;
 }
 
+.payment-final {
+  display: grid;
+  gap: 18px;
+}
+
+#payment-final-panel,
+#ts-payment-final-panel,
+#renewal-payment-final {
+  display: none;
+}
+
+.payment-method-gate {
+  display: grid;
+  gap: 16px;
+}
+
+.payment-method-card {
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.payment-method-card__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 14px 16px;
+  background: #ececec;
+  border-bottom: 3px solid #f3bf1a;
+  font-size: 22px;
+}
+
+.payment-method-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 18px 16px;
+}
+
+.payment-method-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: #374151;
+}
+
+.payment-method-options input[type="radio"] {
+  accent-color: #f3bf1a;
+}
+
+.payment-warning-box {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #e2bf53;
+  border-radius: 8px;
+  background: #f3e6bc;
+  padding: 16px;
+}
+
+.payment-warning-box i {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #9a6b00;
+  background: #ffd451;
+}
+
+.payment-warning-box p {
+  margin: 0;
+  font-size: 20px;
+  color: #4b5563;
+}
+
+.payment-gate-actions {
+  margin-top: 8px;
+}
+
+.payment-final__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #f4f4f4;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.payment-final__total span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+.payment-final__total strong {
+  font-size: 24px;
+  letter-spacing: -.4px;
+  color: #111;
+}
+
+.payment-final__panel {
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.payment-final__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 14px 16px;
+  background: #ededed;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  font-size: 20px;
+}
+
+.payment-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.payment-field {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  background: #f3f3f3;
+}
+
+.payment-field--full {
+  grid-column: 1 / -1;
+}
+
+.payment-field span {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.payment-field input {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 0;
+  background: #fff;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.payment-field input[readonly] {
+  background: #fdfdfd;
+  color: #1f2937;
+}
+
+.payment-info-box {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  background: #dbe8f4;
+}
+
+.payment-info-box:last-of-type {
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+.payment-info-box i {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #69a6d9;
+  color: #fff;
+  margin-top: 2px;
+}
+
+.payment-info-box p {
+  margin: 0;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.payment-final__actions {
+  padding: 16px;
+  margin-top: 0;
+  background: #f5f5f5;
+}
+
 /* ============================================================
   RESPONSIVE — TABLET (max 900px)
   ============================================================ */
@@ -2490,6 +2691,10 @@ time {
   .plan-grid                   { grid-template-columns: 1fr; }
   .field-grid                  { grid-template-columns: 1fr; }
   .field--full                 { grid-column: auto; }
+  .payment-field-grid          { grid-template-columns: 1fr; }
+  .payment-method-options      { flex-direction: column; gap: 12px; }
+  .payment-method-options label { font-size: 16px; }
+  .payment-warning-box p       { font-size: 16px; }
 }
 
 @media (max-width: 1280px) and (min-width: 1101px) {

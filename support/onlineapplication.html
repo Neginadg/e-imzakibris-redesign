@@ -290,8 +290,8 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span>Kimlik No *</span>
-                  <input type="text" name="identityNumber" placeholder="Kimlik numarası" required />
+                  <span>Kimlik/Pasaport No *</span>
+                  <input type="text" name="identityNumber" placeholder="Kimlik/Pasaport numarası" required />
                 </label>
                 <label class="field">
                   <span>Doğum Tarihi *</span>
@@ -428,7 +428,7 @@
 
               <div class="builder-actions builder-actions--between">
                 <button type="button" class="btn btn--outline" id="back-to-builder">Geri</button>
-                <button type="submit" class="btn btn--primary btn--lg">Başvuru Özetini Gönder</button>
+                <button type="submit" class="btn btn--primary btn--lg">İleri</button>
               </div>
             </form>
           </div>
@@ -437,15 +437,81 @@
             <div class="builder-card__head">
               <div>
                 <div class="section-tag">Adım 3</div>
-                <h2 class="section-title">Gönderim</h2>
+                <h2 class="section-title">Ödeme ve Son İşlem</h2>
               </div>
             </div>
-            <p class="application-submit__text">
-              “Başvuru Özetini Gönder” butonu varsayılan e-posta uygulamanızı açar ve seçtiğiniz paket ile iletişim bilgilerinizi
-              <strong>info@e-imzakibris.com</strong> adresine gönderim için hazırlar.
-            </p>
-            <div class="application-submit__box" id="application-submit-message">
-              Başvuru özetiniz gönderime hazır.
+
+            <div class="payment-method-gate" id="payment-method-gate">
+              <div class="payment-method-card">
+                <h3 class="payment-method-card__title"><i class="fa-regular fa-credit-card"></i> Ödeme Şekli</h3>
+                <div class="payment-method-options">
+                  <label><input type="radio" name="paymentMethod" value="Kredi Kartı" /> Kredi Kartı</label>
+                  <label><input type="radio" name="paymentMethod" value="Havale/EFT" /> Havale/EFT</label>
+                  <label><input type="radio" name="paymentMethod" value="Teslimatta Ödeme" /> Teslimatta Ödeme</label>
+                </div>
+              </div>
+
+              <div class="payment-warning-box" id="payment-method-note">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>Lütfen onay verdikten sonra internet tarayıcınızın <strong>Geri</strong> butonuna basmayınız.</p>
+              </div>
+
+              <div class="builder-actions builder-actions--between payment-gate-actions">
+                <button type="button" class="btn btn--outline" id="back-to-details-from-gate">Geri</button>
+                <button type="button" class="btn btn--primary btn--lg" id="confirm-payment-method">İşlemi Onaylıyorum</button>
+              </div>
+            </div>
+
+            <div class="payment-final" id="payment-final-panel">
+              <div class="payment-final__total">
+                <span>KDV Dahil Toplam Tutar</span>
+                <strong id="final-total-price">5.249,00 ₺</strong>
+              </div>
+
+              <div class="payment-final__panel">
+                <h3 class="payment-final__title"><i class="fa-solid fa-arrow-right-long"></i> Havale/EFT</h3>
+
+                <label class="payment-field payment-field--full">
+                  <span>Ödeme Tutarı (₺)</span>
+                  <input type="text" id="final-payment-amount" readonly value="5.249,00" />
+                </label>
+
+                <div class="payment-field-grid">
+                  <label class="payment-field">
+                    <span>Gönderenin Adı *</span>
+                    <input type="text" id="final-sender-first" placeholder="Ad" required />
+                  </label>
+                  <label class="payment-field">
+                    <span>Gönderenin Soyadı *</span>
+                    <input type="text" id="final-sender-last" placeholder="Soyad" required />
+                  </label>
+                </div>
+
+                <div class="payment-info-box">
+                  <i class="fa-solid fa-circle-info"></i>
+                  <p>
+                    Havale/EFT yaptıktan sonra dekontunuzu <strong>satis@e-imzakibris.com</strong> adresine e-posta ile
+                    göndermeniz veya +90 (392) 228 09 60 numaralı faks hattına iletmeniz gerekir. Ödemeniz finans
+                    ekibimizce onaylandıktan sonra başvuru süreci başlar.
+                  </p>
+                </div>
+
+                <div class="payment-info-box">
+                  <i class="fa-solid fa-building-columns"></i>
+                  <p>
+                    <strong>Havale/EFT için Banka Hesap Bilgileri</strong><br />
+                    Hesap Adı: Denizler Bilişim Hizmetleri Limited<br />
+                    Banka Adı: Türkiye Garanti Bankası Lefkoşa Şubesi<br />
+                    TL Hesap No: 493-6294690<br />
+                    IBAN: TR34 0006 2000 4930 0006 2946 90 10
+                  </p>
+                </div>
+
+                <div class="builder-actions builder-actions--between payment-final__actions">
+                  <button type="button" class="btn btn--outline" id="back-to-details">Geri</button>
+                  <button type="button" class="btn btn--primary btn--lg" id="finalize-application-send">Başvuru Özetini Gönder</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
