@@ -5,12 +5,55 @@
   'use strict';
 
   // ── Storage keys ──────────────────────────────────────────
-  const KEY_PRICES   = 'eimza_prices';
-  const KEY_PW_HASH  = 'eimza_admin_hash';
-  const KEY_SESSION  = 'eimza_admin_session';
+  const KEY_PRICES = 'eimza_prices';
+  const KEY_PW_HASH = 'eimza_admin_hash';
+  const KEY_SESSION = 'eimza_admin_session';
+  const KEY_ADMIN_NEWS = 'eimza_admin_news';
+  const KEY_ADMIN_FILES = 'eimza_admin_files';
 
   // Default prices (raw numbers)
-  const DEFAULTS = { '1y': 2650, '2y': 4690, '3y': 6950, stick: 1875, install: 1875, renewal: 2650 };
+  const DEFAULTS = {
+    '1y': 2650,
+    '2y': 4690,
+    '3y': 6950,
+    stick: 1875,
+    install: 1875,
+    renewal: 2650,
+    ts_1000: 2650,
+    ts_5000: 10000,
+    ts_10000: 14750,
+    molohiya_1y: 2650,
+    molohiya_2y: 4690,
+    molohiya_3y: 6950,
+    renewal_1y: 2650,
+    renewal_2y: 4690,
+    renewal_3y: 6950
+  };
+
+  const PRICE_KEYS = [
+    '1y', '2y', '3y', 'stick', 'install', 'renewal',
+    'ts_1000', 'ts_5000', 'ts_10000',
+    'molohiya_1y', 'molohiya_2y', 'molohiya_3y',
+    'renewal_1y', 'renewal_2y', 'renewal_3y'
+  ];
+
+  const PRICE_FIELD_MAP = {
+    '1y': 'field-1y',
+    '2y': 'field-2y',
+    '3y': 'field-3y',
+    stick: 'field-stick',
+    install: 'field-install',
+    renewal: 'field-renewal',
+    ts_1000: 'field-ts-1000',
+    ts_5000: 'field-ts-5000',
+    ts_10000: 'field-ts-10000',
+    molohiya_1y: 'field-molohiya-1y',
+    molohiya_2y: 'field-molohiya-2y',
+    molohiya_3y: 'field-molohiya-3y',
+    renewal_1y: 'field-renewal-1y',
+    renewal_2y: 'field-renewal-2y',
+    renewal_3y: 'field-renewal-3y'
+  };
 
   // Default password – change via the panel's "Change Password" section.
   // The actual check is done by comparing SHA-256 hashes.
@@ -35,6 +78,59 @@
 
   function savePrices(prices) {
     localStorage.setItem(KEY_PRICES, JSON.stringify(prices));
+  }
+
+  function loadAdminNews() {
+    try {
+      const raw = localStorage.getItem(KEY_ADMIN_NEWS);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveAdminNews(items) {
+    localStorage.setItem(KEY_ADMIN_NEWS, JSON.stringify(items));
+  }
+
+  function loadAdminFiles() {
+    try {
+      const raw = localStorage.getItem(KEY_ADMIN_FILES);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveAdminFiles(items) {
+    localStorage.setItem(KEY_ADMIN_FILES, JSON.stringify(items));
+  }
+
+  function formatDateTR(isoDate) {
+    const parts = String(isoDate || '').split('-');
+    if (parts.length !== 3) return '';
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+  }
+
+  function getBadgeClass(badge) {
+    return badge === 'Sertifika' ? '' : 'news-badge--green';
+  }
+
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error || new Error('Dosya okunamadı'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function formatFileSize(size) {
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
   }
 
   // ── Session ───────────────────────────────────────────────
@@ -125,6 +221,203 @@
     });
   }
 
+  function renderNewsList() {
+    const listEl = document.getElementById('news-list');
+    if (!listEl) return;
+
+    const rows = loadAdminNews().sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (!rows.length) {
+      listEl.innerHTML = '<p class="save-hint">Henüz panelden eklenmiş haber bulunmuyor.</p>';
+      return;
+    }
+
+    listEl.innerHTML = rows.map((item) => `
+      <div class="admin-list__item">
+        <div class="admin-list__meta">
+          <div class="admin-list__title">${item.title}</div>
+          <div class="admin-list__sub">${item.displayDate} • ${item.badge}</div>
+        </div>
+        <div class="admin-list__actions">
+          <button type="button" class="btn btn--ghost btn--sm" data-news-delete="${item.id}">
+            <i class="fa-solid fa-trash"></i> Sil
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    listEl.querySelectorAll('[data-news-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-news-delete');
+        const filtered = loadAdminNews().filter((row) => row.id !== id);
+        saveAdminNews(filtered);
+        renderNewsList();
+      });
+    });
+  }
+
+  function initNewsManager() {
+    const newsForm = document.getElementById('news-form');
+    const newsAlert = document.getElementById('news-alert');
+    if (!newsForm) return;
+
+    const freshForm = newsForm.cloneNode(true);
+    newsForm.parentNode.replaceChild(freshForm, newsForm);
+
+    freshForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dateInput = document.getElementById('news-date');
+      const badgeInput = document.getElementById('news-badge');
+      const titleInput = document.getElementById('news-title');
+      const excerptInput = document.getElementById('news-excerpt');
+      const imagePathInput = document.getElementById('news-image-path');
+      const imageFileInput = document.getElementById('news-image-file');
+
+      if (!dateInput || !badgeInput || !titleInput || !excerptInput) return;
+
+      const date = dateInput.value.trim();
+      const badge = badgeInput.value.trim() || 'Haber';
+      const title = titleInput.value.trim();
+      const excerpt = excerptInput.value.trim();
+
+      if (!date || !title || !excerpt) {
+        setAlert(newsAlert, 'danger', 'Tarih, başlık ve özet alanları zorunludur.');
+        return;
+      }
+
+      let image = imagePathInput ? imagePathInput.value.trim() : '';
+      const selectedFile = imageFileInput && imageFileInput.files ? imageFileInput.files[0] : null;
+
+      if (!image && selectedFile) {
+        try {
+          image = await fileToDataUrl(selectedFile);
+        } catch (error) {
+          setAlert(newsAlert, 'danger', 'Görsel dosyası okunamadı.');
+          return;
+        }
+      }
+
+      if (!image) {
+        image = 'assets/img/news.png';
+      }
+
+      const items = loadAdminNews();
+      items.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        date,
+        displayDate: formatDateTR(date),
+        badge,
+        badgeClass: getBadgeClass(badge),
+        title,
+        excerpt,
+        image,
+        alt: title
+      });
+
+      saveAdminNews(items);
+      setAlert(newsAlert, 'success', 'Haber kaydedildi.');
+      freshForm.reset();
+      renderNewsList();
+    });
+
+    renderNewsList();
+  }
+
+  function renderFilesList() {
+    const listEl = document.getElementById('files-list');
+    if (!listEl) return;
+
+    const rows = loadAdminFiles().sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    if (!rows.length) {
+      listEl.innerHTML = '<p class="save-hint">Henüz yüklenmiş dosya yok.</p>';
+      return;
+    }
+
+    listEl.innerHTML = rows.map((item) => `
+      <div class="admin-list__item">
+        <div class="admin-list__meta">
+          <div class="admin-list__title">${item.name}</div>
+          <div class="admin-list__sub">${formatFileSize(item.size || 0)} • ${new Date(item.uploadedAt).toLocaleString('tr-TR')}</div>
+        </div>
+        <div class="admin-list__actions">
+          <button type="button" class="btn btn--ghost btn--sm" data-file-download="${item.id}">
+            <i class="fa-solid fa-download"></i> İndir
+          </button>
+          <button type="button" class="btn btn--ghost btn--sm" data-file-delete="${item.id}">
+            <i class="fa-solid fa-trash"></i> Sil
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    listEl.querySelectorAll('[data-file-download]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-file-download');
+        const target = loadAdminFiles().find((row) => row.id === id);
+        if (!target) return;
+
+        const link = document.createElement('a');
+        link.href = target.dataUrl;
+        link.download = target.name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
+    });
+
+    listEl.querySelectorAll('[data-file-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-file-delete');
+        const filtered = loadAdminFiles().filter((row) => row.id !== id);
+        saveAdminFiles(filtered);
+        renderFilesList();
+      });
+    });
+  }
+
+  function initFilesManager() {
+    const filesForm = document.getElementById('files-form');
+    const filesAlert = document.getElementById('files-alert');
+    if (!filesForm) return;
+
+    const freshForm = filesForm.cloneNode(true);
+    filesForm.parentNode.replaceChild(freshForm, filesForm);
+
+    freshForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('files-input');
+      if (!fileInput || !fileInput.files || !fileInput.files.length) {
+        setAlert(filesAlert, 'warning', 'Lütfen en az bir dosya seçin.');
+        return;
+      }
+
+      const existing = loadAdminFiles();
+
+      try {
+        for (const file of Array.from(fileInput.files)) {
+          const dataUrl = await fileToDataUrl(file);
+          existing.push({
+            id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+            name: file.name,
+            type: file.type || 'application/octet-stream',
+            size: file.size || 0,
+            uploadedAt: new Date().toISOString(),
+            dataUrl
+          });
+        }
+
+        saveAdminFiles(existing);
+        setAlert(filesAlert, 'success', 'Dosyalar kaydedildi.');
+        freshForm.reset();
+        renderFilesList();
+      } catch (error) {
+        setAlert(filesAlert, 'danger', 'Dosyalar kaydedilemedi. Tarayıcı depolaması dolu olabilir.');
+      }
+    });
+
+    renderFilesList();
+  }
+
   // ── Render admin panel ────────────────────────────────────
   function renderPanel() {
     const loginScreen = document.getElementById('login-screen');
@@ -135,8 +428,9 @@
     const prices = loadPrices();
 
     // Populate price fields
-    ['1y', '2y', '3y', 'stick', 'install', 'renewal'].forEach(key => {
-      const input = document.getElementById('field-' + key);
+    PRICE_KEYS.forEach((key) => {
+      const fieldId = PRICE_FIELD_MAP[key];
+      const input = fieldId ? document.getElementById(fieldId) : null;
       if (input) input.value = prices[key];
     });
 
@@ -149,13 +443,20 @@
       const newForm = priceForm.cloneNode(true);
       priceForm.parentNode.replaceChild(newForm, priceForm);
 
+      PRICE_KEYS.forEach((key) => {
+        const fieldId = PRICE_FIELD_MAP[key];
+        const input = fieldId ? document.getElementById(fieldId) : null;
+        if (input) input.value = prices[key];
+      });
+
       newForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const updated = {};
         let valid = true;
 
-        ['1y', '2y', '3y', 'stick', 'install', 'renewal'].forEach(key => {
-          const input = document.getElementById('field-' + key);
+        PRICE_KEYS.forEach((key) => {
+          const fieldId = PRICE_FIELD_MAP[key];
+          const input = fieldId ? document.getElementById(fieldId) : null;
           if (!input) return;
           const val = parseFloat(input.value.replace(',', '.'));
           if (isNaN(val) || val < 0) {
@@ -176,6 +477,9 @@
         setAlert(priceAlert, 'success', 'Fiyatlar başarıyla kaydedildi. Değişiklikler sitede anında görünür.');
       });
     }
+
+    initNewsManager();
+    initFilesManager();
 
     // ── Password change form ──
     const pwForm    = document.getElementById('pw-form');

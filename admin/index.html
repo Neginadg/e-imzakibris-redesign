@@ -41,7 +41,7 @@
             type="password"
             id="login-password"
             name="password"
-            placeholder="��������"
+            placeholder="Şifrenizi girin"
             autocomplete="current-password"
             required
           />
@@ -80,6 +80,12 @@
       <nav class="sidebar__nav">
         <a href="#prices" class="sidebar__nav-item active">
           <i class="fa-solid fa-tag"></i> Fiyat Yönetimi
+        </a>
+        <a href="#news-manager" class="sidebar__nav-item">
+          <i class="fa-solid fa-newspaper"></i> Haber Yönetimi
+        </a>
+        <a href="#files-manager" class="sidebar__nav-item">
+          <i class="fa-solid fa-file-arrow-up"></i> Dosya Yönetimi
         </a>
         <a href="#security" class="sidebar__nav-item">
           <i class="fa-solid fa-lock"></i> Güvenlik
@@ -278,6 +284,102 @@
 
               <div class="panel-card__divider"></div>
 
+              <p style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.9rem;">
+                Zaman Damgası Paketleri
+              </p>
+
+              <div class="price-grid">
+                <div class="price-field">
+                  <label for="field-ts-1000">1.000 Adet</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-ts-1000" name="price_ts_1000" min="0" step="0.01" placeholder="2650" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-ts-5000">5.000 Adet</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-ts-5000" name="price_ts_5000" min="0" step="0.01" placeholder="10000" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-ts-10000">10.000 Adet</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-ts-10000" name="price_ts_10000" min="0" step="0.01" placeholder="14750" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-card__divider"></div>
+
+              <p style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.9rem;">
+                MOlOhiya Lisans Paketleri
+              </p>
+
+              <div class="price-grid">
+                <div class="price-field">
+                  <label for="field-molohiya-1y">1 Yıllık Lisans</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-molohiya-1y" name="price_molohiya_1y" min="0" step="0.01" placeholder="2650" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-molohiya-2y">2 Yıllık Lisans</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-molohiya-2y" name="price_molohiya_2y" min="0" step="0.01" placeholder="4690" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-molohiya-3y">3 Yıllık Lisans</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-molohiya-3y" name="price_molohiya_3y" min="0" step="0.01" placeholder="6950" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-card__divider"></div>
+
+              <p style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.9rem;">
+                Yenileme Paketleri (KDV Hariç)
+              </p>
+
+              <div class="price-grid">
+                <div class="price-field">
+                  <label for="field-renewal-1y">1 Yıllık Yenileme</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-renewal-1y" name="price_renewal_1y" min="0" step="0.01" placeholder="2650" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-renewal-2y">2 Yıllık Yenileme</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-renewal-2y" name="price_renewal_2y" min="0" step="0.01" placeholder="4690" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+
+                <div class="price-field">
+                  <label for="field-renewal-3y">3 Yıllık Yenileme</label>
+                  <div class="price-input-wrap">
+                    <input type="number" id="field-renewal-3y" name="price_renewal_3y" min="0" step="0.01" placeholder="6950" />
+                    <span class="currency">TL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-card__divider"></div>
+
               <div class="panel-card__actions">
                 <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Tüm fiyatlar KDV dahil olarak gösterilir.</span>
                 <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
@@ -286,6 +388,93 @@
               </div>
 
             </form>
+          </div>
+        </div>
+
+        <div class="panel-card" id="news-manager">
+          <div class="panel-card__header">
+            <div class="panel-card__header-left">
+              <div class="panel-card__title">Haber Yönetimi</div>
+              <div class="panel-card__sub">Yeni haber ekleyin, anında anasayfa ve haberler sayfasına yansısın</div>
+            </div>
+            <div class="panel-card__header-icon">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+          </div>
+          <div class="panel-card__body">
+            <div id="news-alert" class="alert" style="margin-bottom:1rem;" aria-live="polite"></div>
+            <form id="news-form" novalidate>
+              <div class="price-grid">
+                <div class="form-group">
+                  <label for="news-date">Tarih</label>
+                  <input type="date" id="news-date" required />
+                </div>
+                <div class="form-group">
+                  <label for="news-badge">Etiket</label>
+                  <select id="news-badge" class="admin-select">
+                    <option value="Haber">Haber</option>
+                    <option value="Sertifika">Sertifika</option>
+                    <option value="Duyuru">Duyuru</option>
+                  </select>
+                </div>
+                <div class="form-group" style="grid-column:1 / -1;">
+                  <label for="news-title">Başlık</label>
+                  <input type="text" id="news-title" placeholder="Haber başlığı" required />
+                </div>
+                <div class="form-group" style="grid-column:1 / -1;">
+                  <label for="news-excerpt">Özet</label>
+                  <textarea id="news-excerpt" class="admin-textarea" rows="4" placeholder="Kısa haber özeti" required></textarea>
+                </div>
+                <div class="form-group" style="grid-column:1 / -1;">
+                  <label for="news-image-path">Görsel Yolu (opsiyonel)</label>
+                  <input type="text" id="news-image-path" placeholder="assets/img/haberler/yeni-haber.jpg" />
+                </div>
+                <div class="form-group" style="grid-column:1 / -1;">
+                  <label for="news-image-file">Görsel Yükle (opsiyonel)</label>
+                  <input type="file" id="news-image-file" accept="image/*" />
+                </div>
+              </div>
+
+              <div class="panel-card__actions" style="margin-top:1rem;">
+                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Görsel yolu girmezseniz dosya yükleyebilirsiniz.</span>
+                <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
+                  <i class="fa-solid fa-plus"></i> Haberi Kaydet
+                </button>
+              </div>
+            </form>
+
+            <div class="panel-card__divider"></div>
+            <div id="news-list" class="admin-list"></div>
+          </div>
+        </div>
+
+        <div class="panel-card" id="files-manager">
+          <div class="panel-card__header">
+            <div class="panel-card__header-left">
+              <div class="panel-card__title">Dosya Yönetimi</div>
+              <div class="panel-card__sub">Panel içinde dosya yükleyin, listeleyin ve indirin</div>
+            </div>
+            <div class="panel-card__header-icon">
+              <i class="fa-solid fa-file-arrow-up"></i>
+            </div>
+          </div>
+          <div class="panel-card__body">
+            <div id="files-alert" class="alert" style="margin-bottom:1rem;" aria-live="polite"></div>
+            <form id="files-form" novalidate>
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label for="files-input">Dosya Seç</label>
+                <input type="file" id="files-input" multiple />
+              </div>
+              <div class="panel-card__actions">
+                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Bu alan tarayıcı depolamasında çalışır.</span>
+                <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
+                  <i class="fa-solid fa-upload"></i> Dosyaları Kaydet
+                </button>
+              </div>
+            </form>
+
+            <div class="panel-card__divider"></div>
+            <div id="files-list" class="admin-list"></div>
           </div>
         </div>
 
@@ -312,7 +501,7 @@
                     type="password"
                     id="pw-current"
                     name="pw_current"
-                    placeholder="��������"
+                    placeholder="Mevcut şifre"
                     autocomplete="current-password"
                   />
                 </div>
@@ -335,7 +524,7 @@
                     type="password"
                     id="pw-confirm"
                     name="pw_confirm"
-                    placeholder="��������"
+                    placeholder="Yeni şifreyi tekrar girin"
                     autocomplete="new-password"
                   />
                 </div>

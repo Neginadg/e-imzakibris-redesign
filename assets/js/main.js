@@ -485,8 +485,59 @@
     // Input value attributes used for price calculations
     document.querySelectorAll('[data-price-input]').forEach(function (el) {
       const key = el.dataset.priceInput;
-      if (key && prices[key] != null) el.value = String(prices[key]);
+      if (key && prices[key] != null) {
+        el.value = String(prices[key]);
+        if (el.hasAttribute('data-price')) {
+          el.setAttribute('data-price', String(prices[key]));
+        }
+      }
     });
+
+    // Renewal package labels and radio values (KDV included)
+    const renewalKeys = ['renewal_1y', 'renewal_2y', 'renewal_3y'];
+    const renewalInputs = document.querySelectorAll('input[name="renewalTerm"]');
+    const renewalOptions = document.querySelectorAll('.renewal-package-option');
+    if (renewalInputs.length && renewalOptions.length) {
+      renewalInputs.forEach(function (input, index) {
+        const key = renewalKeys[index];
+        if (!key || prices[key] == null) return;
+
+        const base = Number(prices[key]);
+        const vat = base * 1.15;
+        const baseText = fmt.format(base) + ' TL';
+        const vatText = fmt.format(vat) + ' TL';
+
+        const option = renewalOptions[index];
+        const labelText = option ? ((option.querySelector('strong') || {}).textContent || 'Yenileme Paketi').trim() : 'Yenileme Paketi';
+        const small = option ? option.querySelector('small') : null;
+        if (small) small.textContent = baseText + ' + KDV = ' + vatText;
+
+        input.value = labelText + ' ' + baseText + ' + KDV = ' + vatText;
+      });
+    }
+
+    // MOlOhiya renewal license options in renewal form
+    const molohiyaKeys = ['molohiya_1y', 'molohiya_2y', 'molohiya_3y'];
+    const molohiyaInputs = document.querySelectorAll('input[name="molohiyaLicense"]');
+    const molohiyaOptions = document.querySelectorAll('input[name="molohiyaLicense"]');
+    if (molohiyaInputs.length && molohiyaOptions.length) {
+      molohiyaInputs.forEach(function (input, index) {
+        const key = molohiyaKeys[index];
+        if (!key || prices[key] == null) return;
+
+        const base = Number(prices[key]);
+        const vat = base * 1.15;
+        const baseText = fmt.format(base) + ' TL';
+        const vatText = fmt.format(vat) + ' TL';
+
+        const optionLabel = input.closest('.renewal-package-option');
+        const title = optionLabel ? ((optionLabel.querySelector('strong') || {}).textContent || 'MOlOhiya Lisans') : 'MOlOhiya Lisans';
+        const small = optionLabel ? optionLabel.querySelector('small') : null;
+        if (small) small.textContent = baseText + ' + KDV = ' + vatText;
+
+        input.value = title + ': ' + baseText + ' + KDV = ' + vatText;
+      });
+    }
   })();
 
   // Preview mode: use ?hero=red to compare a red hero background variant.
@@ -634,12 +685,19 @@
     if (!dropdown) return;
 
     const links = Array.from(dropdown.querySelectorAll(':scope > .dropdown__item'));
-    const alreadyExists = links.some((link) => {
+    const hasCertLink = links.some((link) => {
       const href = (link.getAttribute('href') || '').toLowerCase();
       const text = (link.textContent || '').toLowerCase();
       return href.includes('certdocuments.html') || text.includes('belge ve sertifikalar') || text.includes('documents and certificates');
     });
-    if (alreadyExists) return;
+
+    const hasAnnouncementsLink = links.some((link) => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').toLowerCase();
+      return href.includes('announcements.html') || text.includes('duyurular') || text.includes('announcements');
+    });
+
+    if (hasCertLink && hasAnnouncementsLink) return;
 
     const companyLink = links.find((link) => {
       const href = (link.getAttribute('href') || '').toLowerCase();
@@ -649,17 +707,34 @@
 
     const sourceHref = companyLink?.getAttribute('href') || 'about/index.html';
     const certHref = sourceHref.replace(/index\.html$/i, 'certdocuments.html');
-
-    const certLink = document.createElement('a');
-    certLink.className = 'dropdown__item';
-    certLink.href = certHref;
-    certLink.innerHTML = `<div><strong>${t('Belge ve Sertifikalar', 'Documents and Certificates')}</strong><small>${t('Kurumsal belgelerimiz', 'Our corporate documents')}</small></div>`;
-
+    const announcementsHref = sourceHref.replace(/index\.html$/i, 'announcements.html');
     const newsLink = links.find((link) => (link.getAttribute('href') || '').toLowerCase().includes('news.html'));
-    if (newsLink) {
-      dropdown.insertBefore(certLink, newsLink);
-    } else {
-      dropdown.appendChild(certLink);
+
+    if (!hasCertLink) {
+      const certLink = document.createElement('a');
+      certLink.className = 'dropdown__item';
+      certLink.href = certHref;
+      certLink.innerHTML = `<div><strong>${t('Belge ve Sertifikalar', 'Documents and Certificates')}</strong><small>${t('Kurumsal belgelerimiz', 'Our corporate documents')}</small></div>`;
+
+      if (newsLink) {
+        dropdown.insertBefore(certLink, newsLink);
+      } else {
+        dropdown.appendChild(certLink);
+      }
+    }
+
+    if (!hasAnnouncementsLink) {
+      const announcementsLink = document.createElement('a');
+      announcementsLink.className = 'dropdown__item';
+      announcementsLink.href = announcementsHref;
+      announcementsLink.innerHTML = `<div><strong>${t('Duyurular', 'Announcements')}</strong><small>${t('Kurumsal duyurular', 'Corporate announcements')}</small></div>`;
+
+      const latestNewsLink = dropdown.querySelector(':scope > .dropdown__item[href*="news.html"]');
+      if (latestNewsLink && latestNewsLink.nextSibling) {
+        dropdown.insertBefore(announcementsLink, latestNewsLink.nextSibling);
+      } else {
+        dropdown.appendChild(announcementsLink);
+      }
     }
   }
 
