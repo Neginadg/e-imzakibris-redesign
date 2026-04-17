@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Paneli – e-imza KIBRIS</title>
+  <title>Admin Paneli | e-imza KIBRIS</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
@@ -25,26 +25,23 @@
   <div id="login-screen" class="login-screen">
     <div class="login-card">
       <div class="login-card__logo">
-        <div class="login-card__logo-icon">
-          <img src="../assets/img/icon.png" alt="e-imza KIBRIS simgesi" />
-        </div>
         <div class="login-card__logo-text">
           <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="brand-logo" />
           <span>Admin Paneli</span>
         </div>
       </div>
 
-      <h1>Giris Yap</h1>
-      <p class="subtitle">Fiyat yönetimine erismek için sifrenizi girin.</p>
+      <h1>GiriÅŸ Yap</h1>
+      <p class="subtitle">Fiyat yÃ¶netimine eriÅŸmek iÃ§in ÅŸifrenizi girin.</p>
 
       <form id="login-form" novalidate>
         <div class="form-group">
-          <label for="login-password">Sifre</label>
+          <label for="login-password">Åifre</label>
           <input
             type="password"
             id="login-password"
             name="password"
-            placeholder="••••••••"
+            placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
             autocomplete="current-password"
             required
           />
@@ -52,14 +49,14 @@
         </div>
 
         <button type="submit" class="btn btn--primary" id="login-submit">
-          <i class="fa-solid fa-right-to-bracket"></i> Giris Yap
+          <i class="fa-solid fa-right-to-bracket"></i> GiriÅŸ Yap
         </button>
       </form>
 
       <p style="margin-top:1.5rem;font-size:.75rem;color:var(--muted);text-align:center;line-height:1.5;">
         <i class="fa-solid fa-circle-info" style="color:var(--warning)"></i>
-        Varsayilan sifre: <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px;">Admin@1234</code><br>
-        Giris yaptiktan sonra sifrenizi degistirmeniz önerilir.
+        VarsayÄ±lan ÅŸifre: <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px;">Admin@1234</code><br>
+        GiriÅŸ yaptÄ±ktan sonra ÅŸifrenizi deÄŸiÅŸtirmeniz Ã¶nerilir.
       </p>
     </div>
   </div>
@@ -75,24 +72,21 @@
     <!-- -- Sidebar -- -->
     <aside id="sidebar" class="sidebar">
       <div class="sidebar__logo">
-        <div class="sidebar__logo-icon">
-          <img src="../assets/img/icon.png" alt="e-imza KIBRIS simgesi" />
-        </div>
         <div class="sidebar__logo-text">
-          <img src="../assets/img/logo.png" alt="e-imza KIBRIS" class="brand-logo brand-logo--sidebar" />
+          <img src="../assets/img/admin.png" alt="e-imza KIBRIS" class="brand-logo brand-logo--sidebar" />
           <span>Admin Paneli</span>
         </div>
       </div>
 
       <nav class="sidebar__nav">
         <a href="#prices" class="sidebar__nav-item active">
-          <i class="fa-solid fa-tag"></i> Fiyat Yönetimi
+          <i class="fa-solid fa-tag"></i> Fiyat YÃ¶netimi
         </a>
         <a href="#security" class="sidebar__nav-item">
-          <i class="fa-solid fa-lock"></i> Güvenlik
+          <i class="fa-solid fa-lock"></i> GÃ¼venlik
         </a>
         <a href="../index.html" class="sidebar__nav-item" target="_blank" rel="noopener">
-          <i class="fa-solid fa-house"></i> Siteyi Görüntüle
+          <i class="fa-solid fa-house"></i> Siteyi GÃ¶rÃ¼ntÃ¼le
         </a>
       </nav>
 
@@ -101,11 +95,11 @@
           <div class="sidebar__user-avatar">A</div>
           <div>
             <div class="sidebar__user-name">Admin</div>
-            <div class="sidebar__user-role">Yönetici</div>
+            <div class="sidebar__user-role">YÃ¶netici</div>
           </div>
         </div>
         <button class="btn btn--ghost" data-action="logout" style="width:100%">
-          <i class="fa-solid fa-right-from-bracket"></i> Çikis Yap
+          <i class="fa-solid fa-right-from-bracket"></i> Ã‡Ä±kÄ±ÅŸ Yap
         </button>
       </div>
     </aside>
@@ -116,15 +110,15 @@
       <!-- Top bar -->
       <header class="admin-topbar">
         <div style="display:flex;align-items:center;gap:.75rem;">
-          <button id="hamburger-admin" class="hamburger-admin" aria-label="Menü">
+          <button id="hamburger-admin" class="hamburger-admin" aria-label="MenÃ¼">
             <i class="fa-solid fa-bars"></i>
           </button>
-          <span class="admin-topbar__title">Yönetim Paneli</span>
+          <span class="admin-topbar__title">YÃ¶netim Paneli</span>
         </div>
         <div class="admin-topbar__right">
-          <span class="admin-topbar__badge"><i class="fa-solid fa-circle" style="font-size:.5rem;vertical-align:middle;"></i> Çevrimiçi</span>
+          <span class="admin-topbar__badge"><i class="fa-solid fa-circle" style="font-size:.5rem;vertical-align:middle;"></i> Ã‡evrimiÃ§i</span>
           <button class="btn btn--ghost btn--sm" data-action="logout">
-            <i class="fa-solid fa-right-from-bracket"></i> Çikis
+            <i class="fa-solid fa-right-from-bracket"></i> Ã‡Ä±kÄ±ÅŸ
           </button>
         </div>
       </header>
@@ -134,9 +128,9 @@
 
         <!-- Preview banner -->
         <div class="preview-banner">
-          <p>Kaydettiginiz fiyatlar <strong>aninda</strong> sitede görünür — sayfa yenileme yeterlidir.</p>
+          <p>KaydettiÄŸiniz fiyatlar <strong>anÄ±nda</strong> sitede gÃ¶rÃ¼nÃ¼r â€“ sayfa yenileme yeterlidir.</p>
           <a href="../index.html#pricing" target="_blank" rel="noopener">
-            Fiyatlandirma Bölümünü Gör <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            FiyatlandÄ±rma BÃ¶lÃ¼mÃ¼nÃ¼ GÃ¶r <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </a>
         </div>
 
@@ -144,8 +138,8 @@
         <div class="panel-card" id="prices">
           <div class="panel-card__header">
             <div class="panel-card__header-left">
-              <div class="panel-card__title">Fiyat Yönetimi</div>
-              <div class="panel-card__sub">Sertifika ve ek hizmet fiyatlarini düzenleyin</div>
+              <div class="panel-card__title">Fiyat YÃ¶netimi</div>
+              <div class="panel-card__sub">Sertifika ve ek hizmet fiyatlarÄ±nÄ± dÃ¼zenleyin</div>
             </div>
             <div class="panel-card__header-icon">
               <i class="fa-solid fa-tag"></i>
@@ -158,7 +152,7 @@
 
             <form id="price-form" novalidate>
 
-              <!-- Sertifika Fiyatlari -->
+              <!-- Sertifika FiyatlarÄ± -->
               <p style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.9rem;">
                 Nitelikli Elektronik Sertifika
               </p>
@@ -166,7 +160,7 @@
               <div class="price-grid">
                 <div class="price-field">
                   <label for="field-1y">
-                    1 Yillik Paket
+                    1 YÄ±llÄ±k Paket
                     <span class="field-tag">?</span>
                   </label>
                   <div class="price-input-wrap">
@@ -184,7 +178,7 @@
 
                 <div class="price-field">
                   <label for="field-2y">
-                    2 Yillik Paket
+                    2 YÄ±llÄ±k Paket
                     <span class="field-tag">?</span>
                   </label>
                   <div class="price-input-wrap">
@@ -202,7 +196,7 @@
 
                 <div class="price-field">
                   <label for="field-3y">
-                    3 Yillik Paket
+                    3 YÄ±llÄ±k Paket
                     <span class="field-tag">?</span>
                   </label>
                   <div class="price-input-wrap">
@@ -224,13 +218,13 @@
               <!-- Ek Hizmetler -->
               <p style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.9rem;">
                 <i class="fa-solid fa-plus" style="color:var(--teal);margin-right:.35rem;"></i>
-                Istege Bagli Ek Hizmetler
+                Ä°steÄŸe BaÄŸlÄ± Ek Hizmetler
               </p>
 
               <div class="price-grid">
                 <div class="price-field price-field--addon">
                   <label for="field-stick">
-                    Akilli Çubuk (Token)
+                    AkÄ±llÄ± Ã‡ubuk (Token)
                     <span class="field-tag" style="background:rgba(0,212,170,.15);color:var(--teal);">Opsiyonel</span>
                   </label>
                   <div class="price-input-wrap">
@@ -248,7 +242,7 @@
 
                 <div class="price-field price-field--addon">
                   <label for="field-install">
-                    Uzak Baglantili Kurulum
+                    Uzak BaÄŸlantÄ±lÄ± Kurulum
                     <span class="field-tag" style="background:rgba(0,212,170,.15);color:var(--teal);">Opsiyonel</span>
                   </label>
                   <div class="price-input-wrap">
@@ -266,7 +260,7 @@
 
                 <div class="price-field price-field--addon">
                   <label for="field-renewal">
-                    Yenileme Basvuru Ücreti
+                    Yenileme BaÅŸvuru Ãœcreti
                     <span class="field-tag" style="background:rgba(0,212,170,.15);color:var(--teal);">Yenileme</span>
                   </label>
                   <div class="price-input-wrap">
@@ -286,9 +280,9 @@
               <div class="panel-card__divider"></div>
 
               <div class="panel-card__actions">
-                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Tüm fiyatlar KDV dahil olarak gösterilir.</span>
+                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> TÃ¼m fiyatlar KDV dahil olarak gÃ¶sterilir.</span>
                 <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
-                  <i class="fa-solid fa-floppy-disk"></i> Fiyatlari Kaydet
+                  <i class="fa-solid fa-floppy-disk"></i> FiyatlarÄ± Kaydet
                 </button>
               </div>
 
@@ -300,8 +294,8 @@
         <div class="panel-card" id="security">
           <div class="panel-card__header">
             <div class="panel-card__header-left">
-              <div class="panel-card__title">Sifre Degistir</div>
-              <div class="panel-card__sub">Admin paneli giris sifrenizi güncelleyin</div>
+              <div class="panel-card__title">Åifre DeÄŸiÅŸtir</div>
+              <div class="panel-card__sub">Admin paneli giriÅŸ ÅŸifrenizi gÃ¼ncelleyin</div>
             </div>
             <div class="panel-card__header-icon">
               <i class="fa-solid fa-lock"></i>
@@ -314,18 +308,18 @@
             <form id="pw-form" novalidate>
               <div class="pw-grid">
                 <div class="form-group">
-                  <label for="pw-current">Mevcut Sifre</label>
+                  <label for="pw-current">Mevcut Åifre</label>
                   <input
                     type="password"
                     id="pw-current"
                     name="pw_current"
-                    placeholder="••••••••"
+                    placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                     autocomplete="current-password"
                   />
                 </div>
 
                 <div class="form-group">
-                  <label for="pw-new">Yeni Sifre</label>
+                  <label for="pw-new">Yeni Åifre</label>
                   <input
                     type="password"
                     id="pw-new"
@@ -337,12 +331,12 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="pw-confirm">Yeni Sifreyi Onayla</label>
+                  <label for="pw-confirm">Yeni Åifreyi Onayla</label>
                   <input
                     type="password"
                     id="pw-confirm"
                     name="pw_confirm"
-                    placeholder="••••••••"
+                    placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                     autocomplete="new-password"
                   />
                 </div>
@@ -350,16 +344,16 @@
 
               <div style="margin-top:1.25rem;">
                 <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
-                  <i class="fa-solid fa-key"></i> Sifreyi Güncelle
+                  <i class="fa-solid fa-key"></i> Åifreyi GÃ¼ncelle
                 </button>
               </div>
             </form>
 
             <p style="margin-top:1.25rem;font-size:.75rem;color:var(--muted);line-height:1.6;">
               <i class="fa-solid fa-triangle-exclamation" style="color:var(--warning);"></i>
-              Sifreler yalnizca bu tarayicida saklanir. Bu site statik bir site oldugundan,
-              sifre korumasi bilgisayarla sinirlidir. Farkli bir cihazdan erisim için
-              sifreyi ayrica ayarlamaniz gerekir.
+              Åifreler yalnÄ±zca bu tarayÄ±cÄ±da saklanÄ±r. Bu site statik bir site olduÄŸundan,
+              ÅŸifre korumasÄ± bilgisayarla sÄ±nÄ±rlandÄ±rÄ±lmÄ±ÅŸtÄ±r. FarklÄ± bir cihazdan eriÅŸim iÃ§in
+              ÅŸifreyi ayrÄ±ca ayarlamanÄ±z gerekir.
             </p>
           </div>
         </div>

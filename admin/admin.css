@@ -172,6 +172,8 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   line-height: 1.15;
+  gap: 0.6rem;
+  align-items: center;
 }
 
 .login-card__logo-text strong {
@@ -189,6 +191,7 @@ a { color: inherit; text-decoration: none; }
 
 .brand-logo--sidebar {
   width: 126px;
+  display: block;
 }
 
 .login-card__logo-text span {

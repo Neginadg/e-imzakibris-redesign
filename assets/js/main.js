@@ -193,6 +193,7 @@
       if (!parent) return;
       const parentTag = parent.tagName;
       if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'NOSCRIPT') return;
+      if (parent.closest('.lang-switcher')) return;
 
       // Store original Turkish text if not already stored
       if (!ORIGINAL_TEXT_MAP.has(node)) {
@@ -215,6 +216,7 @@
 
     ['title', 'aria-label', 'placeholder', 'alt'].forEach((attribute) => {
       document.querySelectorAll(`[${attribute}]`).forEach((el) => {
+        if (el.closest('.lang-switcher')) return;
         if (!ORIGINAL_TEXT_MAP.has(el)) {
           ORIGINAL_TEXT_MAP.set(el, el.getAttribute(attribute) || '');
         }
@@ -273,6 +275,10 @@
       '.goog-te-gadget { display: none !important; }',
       '.goog-te-gadget-simple { display: none !important; }',
       '.goog-te-combo { display: none !important; }',
+      '#google_translate_element { position: fixed !important; left: -9999px !important; top: auto !important; width: 1px !important; height: 1px !important; overflow: hidden !important; display: none !important; visibility: hidden !important; }',
+      '.VIpgJd-ZVi9od-ORHb-OEVmcd { display: none !important; }',
+      '.VIpgJd-ZVi9od-l4eHX-hSRGPd { display: none !important; }',
+      '.VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }',
       '#goog-gt-tt { display: none !important; }',
       '.goog-te-tooltip { display: none !important; }',
       '.goog-te-tooltip-loading { display: none !important; }',
@@ -395,6 +401,25 @@
     return 'tr';
   }
 
+  function getSwitcherTargetLanguage(link) {
+    const dataLang = (link.dataset.lang || '').toLowerCase();
+    if (dataLang === 'tr' || dataLang === 'en') return dataLang;
+
+    const href = (link.getAttribute('href') || '').trim();
+    if (href) {
+      try {
+        const url = new URL(href, window.location.href);
+        const hrefLang = (url.searchParams.get('lang') || '').toLowerCase();
+        if (hrefLang === 'tr' || hrefLang === 'en') return hrefLang;
+      } catch (error) {
+        // Ignore malformed URLs and continue with text fallback.
+      }
+    }
+
+    const linkText = (link.textContent || '').trim().toUpperCase();
+    return linkText === 'EN' ? 'en' : 'tr';
+  }
+
   function setPreferredLanguage(lang) {
     const normalizedLang = lang === 'en' ? 'en' : 'tr';
     currentLanguage = normalizedLang;
@@ -404,13 +429,22 @@
     translateCurrentPage(normalizedLang);
     applyGoogleTranslateLanguage(normalizedLang);
 
+    const switcher = document.querySelector('.lang-switcher');
+    if (switcher) {
+      switcher.setAttribute('translate', 'no');
+      switcher.classList.add('notranslate');
+    }
+
     const switcherLinks = document.querySelectorAll('.lang-switcher a');
     switcherLinks.forEach((link) => {
-      const linkText = (link.textContent || '').trim().toUpperCase();
-      const targetLang = linkText === 'EN' ? 'en' : 'tr';
+      const targetLang = getSwitcherTargetLanguage(link);
       const targetUrl = new URL(window.location.href);
       targetUrl.searchParams.set('lang', targetLang);
       link.setAttribute('href', targetUrl.href);
+      link.dataset.lang = targetLang;
+      link.textContent = targetLang.toUpperCase();
+      link.setAttribute('translate', 'no');
+      link.classList.add('notranslate');
       link.classList.toggle('active', targetLang === normalizedLang);
       if (targetLang === normalizedLang) {
         link.setAttribute('aria-current', 'true');
@@ -421,6 +455,8 @@
   }
 
   (function initLanguageToggle() {
+    injectGoogleTranslateStyles();
+    ensureGoogleTranslateContainer();
     setPreferredLanguage(getPreferredLanguage());
   })();
 
