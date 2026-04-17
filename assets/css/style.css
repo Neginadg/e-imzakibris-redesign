@@ -1497,9 +1497,11 @@ time {
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 16px;
+  height: 100%;
+  min-height: 0;
 }
 
 .news-card--cta > i { color: rgba(255,255,255,.7); }
@@ -2821,6 +2823,32 @@ time {
   padding: 28px;
 }
 
+.page-hero--news .page-hero__media--image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.page-hero--news .page-hero__inner {
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+
+.page-hero--news .page-hero__content,
+.page-hero--news .page-hero__media {
+  height: 100%;
+}
+
+.news-hero-image {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+
 .hero-stat-panel {
   background: #111;
   color: #fff;
@@ -3216,10 +3244,71 @@ time {
   letter-spacing: .4px;
 }
 
+.news-item img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(0, 0, 0, .06);
+}
+
+/* Reference-like stacked layout for the news listing page */
+.news-page .news-grid--full {
+  grid-template-columns: 1fr;
+}
+
+.news-page .news-item {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-areas:
+    "image date"
+    "image title"
+    "image desc";
+  gap: 14px;
+  align-items: start;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.news-page .news-item img {
+  grid-area: image;
+  width: 100%;
+  height: 280px;
+  margin-bottom: 0;
+  object-fit: cover;
+  border-radius: 12px;
+  align-self: start;
+}
+
+.news-page .news-item time {
+  grid-area: date;
+}
+
+.news-page .news-item h3 {
+  grid-area: title;
+  margin-top: 0;
+}
+
+.news-page .news-item p {
+  grid-area: desc;
+  margin-top: 0;
+}
+
+/* Keep news content visible even if scroll animation JS fails or is delayed */
+.news-page [data-animate] {
+  opacity: 1;
+  transform: none;
+}
+
 @media (max-width: 1024px) {
   .value-grid,
   .news-grid--full,
   .price-pill-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .news-page .page-hero__inner {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -3235,6 +3324,24 @@ time {
   .price-pill-list,
   .contact-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .news-page .page-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .news-page .news-item {
+    grid-template-columns: 140px minmax(0, 1fr);
+    grid-template-areas:
+      "image date"
+      "image title"
+      "image desc";
+    align-items: start;
+  }
+
+  .news-page .news-item img {
+    width: 100%;
+    height: 140px;
   }
 
   .timestamp-hero-image {

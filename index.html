@@ -614,51 +614,7 @@
           <p class="section-subtitle">e-imza dünyasindaki son haberler ve duyurular.</p>
         </div>
 
-        <div class="news-grid" data-animate="fade-up">
-          <article class="news-card">
-            <div class="news-card__meta">
-              <span class="news-badge">Sertifika</span>
-              <time>03.05.2021</time>
-            </div>
-            <h3 class="news-card__title">
-              <a href="about/news.html">ISO 27001 Sertifikasi Yenilendi</a>
-            </h3>
-            <p class="news-card__excerpt">
-              Denizler Bilisim Hizmetleri Limited, ISO/IEC 27001:2017 Bilgi Güvenligi Sertifikasini
-              yeniledi. Proks Firmasi tarafindan yapilan denetimlerden sonra belgeyi almaya hak kazandi.
-            </p>
-            <a href="about/news.html" class="news-card__link">
-              Daha Fazlasi <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </article>
-
-          <article class="news-card">
-            <div class="news-card__meta">
-              <span class="news-badge news-badge--green"><i class="fa-solid fa-pen-ruler"></i> Haber</span>
-              <time>02.08.2021</time>
-            </div>
-            <h3 class="news-card__title">
-              <a href="about/news.html">Mimarlar Odasi, Mimari Projeleri e-Vize'ye Geçti</a>
-            </h3>
-            <p class="news-card__excerpt">
-              Mimarlar Odasi, üyelerinin mimari projelerini elektronik ortamda vizeleme islemine basladi.
-              Denizler Bilisim ve CBKSoft ile enVision elektronik Belge, Form ve Süreç Yönetim Sistemi devreye girdi.
-            </p>
-            <a href="about/news.html" class="news-card__link">
-              Daha Fazlasi <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </article>
-
-          <!-- CTA Card -->
-          <div class="news-card news-card--cta">
-            <i class="fa-solid fa-bell fa-2x"></i>
-            <h3>Tüm Haberleri Takip Edin</h3>
-            <p>e-imza sektöründeki son gelismeler ve duyurular için haberler sayfamizi ziyaret edin.</p>
-            <a href="about/news.html" class="btn btn--primary">
-              Tüm Haberler <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
+        <div class="news-grid" id="home-news-grid" data-animate="fade-up"></div>
       </div>
     </section>
 
@@ -754,6 +710,8 @@
       </div>
     </div>
   </footer>
+  <script src="assets/js/news-data.js"></script>
+  <script src="assets/js/news-render.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
