@@ -271,7 +271,7 @@
           <h2 class="section-title" style="text-align:left;margin-bottom:8px;">Mesaj Gönderin</h2>
           <p class="section-subtitle" style="text-align:left;margin-bottom:20px;">Formu doldurun, size en kısa sürede geri dönüş yapalım.</p>
 
-          <form class="contact-form-grid" action="mailto:info@e-imzakibris.com" method="post" enctype="text/plain">
+          <form class="contact-form-grid" id="contact-form">
             <label class="field">
               <span>İsim & Soyisim *</span>
               <input type="text" name="isim_soyisim" required />
@@ -304,8 +304,10 @@
             </div>
           </form>
 
+          <div id="contact-form-message" class="application-submit__box" style="display:none; margin-top: 14px;"></div>
+
           <p style="font-size:12px;color:var(--color-text-muted);margin-top:14px;">
-            Not: Statik site yapısı nedeniyle form, varsayılan e-posta uygulamanızı açar.
+            Not: Form gönderimi doğrudan Supabase veritabanına kaydedilir.
           </p>
         </div>
 
@@ -399,6 +401,7 @@
 
   
 
+  <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

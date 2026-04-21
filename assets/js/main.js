@@ -9,9 +9,62 @@
   const KDV_RATE = 0.16;
   const NAV_MOBILE_BREAKPOINT = 1100;
   const LANGUAGE_STORAGE_KEY = 'eimza_language';
+  const SUPABASE_CONFIG = window.EIMZA_SUPABASE_CONFIG || {};
+  const SUPABASE_URL = String(SUPABASE_CONFIG.url || '').trim();
+  const SUPABASE_ANON_KEY = String(SUPABASE_CONFIG.anonKey || '').trim();
   let currentLanguage = 'tr';
   let googleTranslatePromise = null;
   let googleTranslateInitialized = false;
+
+  function isSupabaseConfigured() {
+    return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+  }
+
+  async function fetchSupabaseTable(tableName, select = '*') {
+    if (!isSupabaseConfigured()) return null;
+
+    const url = new URL(`${SUPABASE_URL}/rest/v1/${tableName}`);
+    url.searchParams.set('select', select);
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Supabase request failed: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async function insertSupabaseRow(tableName, payload) {
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not configured');
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || `Supabase insert failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) ? data[0] || null : data;
+  }
 
   const EN_TRANSLATIONS = {
     "e-imza KIBRIS - K.K.T.C.'nin güvenilir elektronik imza hizmet saglayicisi. Güvenli, hizli ve yasal geçerlilige sahip elektronik imza çözümleri.": "e-imza KIBRIS - The trusted electronic signature service provider in the TRNC. Secure, fast and legally valid e-signature solutions.",
@@ -166,6 +219,28 @@
       .replace(/Ş/g, 's')
       .replace(/Ö/g, 'o')
       .replace(/Ç/g, 'c');
+  }
+
+  function setFormMessage(element, type, message) {
+    if (!element) return;
+
+    const iconClass = type === 'success'
+      ? 'circle-check'
+      : type === 'danger'
+        ? 'circle-xmark'
+        : 'triangle-exclamation';
+
+    element.style.display = 'block';
+    element.innerHTML = `<i class="fa-solid fa-${iconClass}"></i> ${message}`;
+    element.dataset.type = type;
+  }
+
+  function buildFormPayload(formData, extra = {}) {
+    const payload = {};
+    for (const [key, value] of formData.entries()) {
+      payload[key] = value instanceof File ? value.name : value;
+    }
+    return Object.assign(payload, extra);
   }
 
   const EN_TRANSLATION_LOOKUP = Object.fromEntries(
@@ -511,29 +586,39 @@
     tbody.insertAdjacentHTML('beforeend', rowsHtml);
   }
 
-  /* ---- Load prices from admin panel (localStorage) ---- */
-  (function loadPrices() {
-    const raw = localStorage.getItem('eimza_prices');
-    if (!raw) return;
-    let prices;
-    try { prices = JSON.parse(raw); } catch (e) { return; }
+  async function loadSupabasePrices() {
+    try {
+      const rows = await fetchSupabaseTable('pricing', 'price_key,value');
+      if (!Array.isArray(rows) || !rows.length) return null;
+
+      return rows.reduce((accumulator, row) => {
+        if (!row || !row.price_key) return accumulator;
+        const numericValue = Number(row.value);
+        if (Number.isFinite(numericValue)) {
+          accumulator[row.price_key] = numericValue;
+        }
+        return accumulator;
+      }, {});
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function applyPrices(prices) {
     if (!prices || typeof prices !== 'object') return;
 
     const fmt = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    // Main price amounts (no currency symbol)
     document.querySelectorAll('[data-price-amount]').forEach(function (el) {
       const key = el.dataset.priceAmount;
       if (key && prices[key] != null) el.textContent = fmt.format(prices[key]);
     });
 
-    // Display elements that include the ₺ symbol
     document.querySelectorAll('[data-price-display]').forEach(function (el) {
       const key = el.dataset.priceDisplay;
       if (key && prices[key] != null) el.textContent = fmt.format(prices[key]) + ' ₺';
     });
 
-    // Input value attributes used for price calculations
     document.querySelectorAll('[data-price-input]').forEach(function (el) {
       const key = el.dataset.priceInput;
       if (key && prices[key] != null) {
@@ -544,7 +629,6 @@
       }
     });
 
-    // Renewal package labels and radio values (KDV included)
     const renewalKeys = ['renewal_1y', 'renewal_2y', 'renewal_3y'];
     const renewalInputs = document.querySelectorAll('input[name="renewalTerm"]');
     const renewalOptions = document.querySelectorAll('.renewal-package-option');
@@ -567,7 +651,6 @@
       });
     }
 
-    // MOlOhiya renewal license options in renewal form
     const molohiyaKeys = ['molohiya_1y', 'molohiya_2y', 'molohiya_3y'];
     const molohiyaInputs = document.querySelectorAll('input[name="molohiyaLicense"]');
     const molohiyaOptions = document.querySelectorAll('input[name="molohiyaLicense"]');
@@ -589,6 +672,23 @@
         input.value = title + ': ' + baseText + ' + KDV = ' + vatText;
       });
     }
+  }
+
+  /* ---- Load prices from admin panel (localStorage) ---- */
+  (async function loadPrices() {
+    const raw = localStorage.getItem('eimza_prices');
+    let prices = null;
+
+    try { prices = raw ? JSON.parse(raw) : null; } catch (e) { prices = null; }
+
+    const remotePrices = await loadSupabasePrices();
+    if (remotePrices && typeof remotePrices === 'object') {
+      prices = remotePrices;
+    }
+
+    if (!prices || typeof prices !== 'object') return;
+
+    applyPrices(prices);
   })();
 
   renderUploadedCertificates();
@@ -1054,6 +1154,47 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  /* ---- Contact form ---- */
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    const contactMessage = document.getElementById('contact-form-message');
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!contactForm.reportValidity()) return;
+
+      const formData = new FormData(contactForm);
+      const payload = {
+        full_name: String(formData.get('isim_soyisim') || '').trim(),
+        phone: String(formData.get('telefon') || '').trim(),
+        email: String(formData.get('eposta') || '').trim(),
+        subject: String(formData.get('konu') || '').trim(),
+        message: String(formData.get('mesaj') || '').trim(),
+        source_page: 'contact/index.html'
+      };
+
+      const submitButton = contactForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+      }
+
+      try {
+        await insertSupabaseRow('contact_messages', payload);
+        contactForm.reset();
+        setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
+      } catch (error) {
+        setFormMessage(contactMessage, 'danger', 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = '<i class="fa-solid fa-paper-plane"></i> GÖNDER';
+        }
+      }
+    });
+  }
+
   /* ---- Online application page ---- */
   const builderForm = document.getElementById('application-builder-form');
   if (builderForm) {
@@ -1090,6 +1231,7 @@
     const summarySetupPrice = document.getElementById('summary-setup-price');
     const summaryTotalPrice = document.getElementById('summary-total-price');
     let pendingApplicationMail = null;
+    let pendingApplicationSubmission = null;
 
     const setPaymentGateView = () => {
       if (paymentMethodGate) paymentMethodGate.style.display = 'grid';
@@ -1285,51 +1427,45 @@
         const privacyConsent = formData.get('privacyConsent') ? 'Evet' : 'Hayir';
 
         const mailSubject = `Online Basvuru - ${pricing.planLabel}`;
-        const mailBody = [
-          'Merhaba,',
-          '',
-          'Asagidaki online basvuru ozeti iletmek istiyorum:',
-          '',
-          `Paket: ${pricing.planLabel}`,
-          `Elektronik Sertifika: ${formatPrice(pricing.certificatePrice)}`,
-          `Akilli Cubuk: ${formatPrice(pricing.tokenPrice)}`,
-          `Uzak Kurulum: ${formatPrice(pricing.setupPrice)}`,
-          `Ara Toplam: ${formatPrice(pricing.subtotal)}`,
-          `KDV (%16): ${formatPrice(pricing.kdvAmount)}`,
-          `KDV Dahil Toplam: ${formatPrice(pricing.total)}`,
-          '',
-          'Basvuru Bilgileri',
-          '',
-          'Kimlik Bilgileri',
-          `Ad Soyad: ${fullName}`,
-          `Uyruk: ${nationality}`,
-          `Kimlik/Pasaport No: ${identityNumber}`,
-          `Dogum Tarihi: ${birthDate}`,
-          `Dogum Yeri: ${birthPlace}`,
-          `Mesleki Sicil No: ${professionalRegistryNo}`,
-          `Kamu Acik Dizin Izni: ${publicDirectoryConsent}`,
-          '',
-          'Iletisim ve Teslimat Bilgileri',
-          `Sirket: ${company}`,
-          `Gorevi: ${jobTitle}`,
-          `E-posta: ${email}`,
-          `E-posta Sertifikada Gorunsun: ${showEmailOnCertificate}`,
-          `Adres: ${address}`,
-          `Bolge: ${region}`,
-          `Telefon Numarasi: ${phone}`,
-          `Cep Telefonu: ${mobileCode} ${mobilePhone}`,
-          '',
-          'Fatura Bilgilerim',
-          `Fatura ve Iletisim Adresi Ayni: ${invoiceSameAsContact}`,
-          `Calistigi Kurum: ${invoiceCompany}`,
-          `Fatura Adresi: ${invoiceAddress}`,
-          `Fatura Bolgesi: ${invoiceRegion}`,
-          `Vergi No: ${taxNumber}`,
-          `Vergi Dairesi: ${taxOffice}`,
-          `Fatura Turu: ${invoiceType}`,
-          `KVKK/Iletisim Onayi: ${privacyConsent}`,
-          `Notlar: ${notes}`,
-        ].join('\n');
+        const submissionPayload = {
+          form_kind: 'certificate',
+          source_page: 'support/onlineapplication.html',
+          plan_label: pricing.planLabel,
+          total_text: formatPrice(pricing.total),
+          full_name: fullName,
+          email,
+          phone: `${mobileCode} ${mobilePhone}`.trim(),
+          payment_method: 'Havale/EFT',
+          payload: {
+            pricing,
+            application: {
+              fullName,
+              nationality,
+              identityNumber,
+              birthDate,
+              birthPlace,
+              professionalRegistryNo,
+              publicDirectoryConsent,
+              company,
+              jobTitle,
+              showEmailOnCertificate,
+              address,
+              region,
+              phone,
+              mobileCode,
+              mobilePhone,
+              invoiceSameAsContact,
+              invoiceCompany,
+              invoiceAddress,
+              invoiceRegion,
+              taxNumber,
+              taxOffice,
+              invoiceType,
+              privacyConsent,
+              notes
+            }
+          }
+        };
 
         if (submitSection) {
           submitSection.classList.add('is-visible');
@@ -1337,9 +1473,9 @@
 
         pendingApplicationMail = {
           subject: mailSubject,
-          body: mailBody,
           totalText: formatPrice(pricing.total),
         };
+        pendingApplicationSubmission = submissionPayload;
 
         setPaymentGateView();
 
@@ -1384,8 +1520,8 @@
     }
 
     if (finalizeSendBtn) {
-      finalizeSendBtn.addEventListener('click', () => {
-        if (!pendingApplicationMail) {
+      finalizeSendBtn.addEventListener('click', async () => {
+        if (!pendingApplicationMail || !pendingApplicationSubmission) {
           setActiveStep(2);
           scrollToSection(detailsSection || builderForm);
           return;
@@ -1408,17 +1544,41 @@
           return;
         }
 
-        const paymentAppendix = [
-          '',
-          'Odeme Bilgileri',
-          `Gonderenin Adi: ${finalSenderFirst.value.trim()}`,
-          `Gonderenin Soyadi: ${finalSenderLast.value.trim()}`,
-          `Odeme Tutari: ${pendingApplicationMail.totalText}`,
-          'Odeme Tipi: Havale/EFT',
-        ].join('\n');
+        finalizeSendBtn.disabled = true;
+        finalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
 
-        const finalBody = `${pendingApplicationMail.body}${paymentAppendix}`;
-        window.location.href = `mailto:info@e-imzakibris.com?subject=${encodeURIComponent(pendingApplicationMail.subject)}&body=${encodeURIComponent(finalBody)}`;
+        try {
+          const payload = {
+            ...pendingApplicationSubmission,
+            full_name: pendingApplicationSubmission.full_name || '',
+            payment_method: 'Havale/EFT',
+            payload: {
+              ...pendingApplicationSubmission.payload,
+              payment: {
+                senderFirst: finalSenderFirst.value.trim(),
+                senderLast: finalSenderLast.value.trim(),
+                paymentAmount: pendingApplicationMail.totalText,
+                paymentMethod: 'Havale/EFT'
+              }
+            }
+          };
+
+          await insertSupabaseRow('applications', payload);
+
+          setFormMessage(paymentMethodNote, 'success', 'Başvurunuz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+          setActiveStep(1);
+          detailsForm.reset();
+          pendingApplicationMail = null;
+          pendingApplicationSubmission = null;
+          setPaymentGateView();
+          if (submitSection) submitSection.classList.remove('is-visible');
+          scrollToSection(builderForm);
+        } catch (error) {
+          setFormMessage(paymentMethodNote, 'danger', 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+        } finally {
+          finalizeSendBtn.disabled = false;
+          finalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
+        }
       });
     }
   }
@@ -1453,6 +1613,7 @@
     const tsSummaryPackagePrice = document.getElementById('ts-summary-package-price');
     const tsSummaryTotalPrice = document.getElementById('ts-summary-total-price');
     let pendingTsMail = null;
+    let pendingTsSubmission = null;
 
     const setTsPaymentGateView = () => {
       if (tsPaymentMethodGate) tsPaymentMethodGate.style.display = 'grid';
@@ -1641,25 +1802,43 @@
         }
 
         const mailSubject = `Zaman Damgasi Online Basvuru - ${pricing.planLabel}`;
-        const mailBody = [
-          'Merhaba,',
-          '',
-          'Asagidaki zaman damgasi basvuru ozeti iletmek istiyorum:',
-          '',
-          `Paket: ${pricing.planLabel}`,
-          `Paket Tutari: ${formatPrice(pricing.packagePrice)}`,
-          `KDV (%16): ${formatPrice(pricing.kdvAmount)}`,
-          `KDV Dahil Toplam: ${formatPrice(pricing.total)}`,
-          '',
-          'Basvuru Bilgileri',
-          `Basvuru Tipi: ${applicationType}`,
-          applicantSection,
-          `Cep Telefon Numarasi: ${mobilePhone}`,
-          `E-posta: ${email}`,
-          `IP Adresi: ${ipAddress}`,
-          `Fatura Ad Soyad: ${invoiceFullName}`,
-          `Fatura Adresi: ${invoiceAddress}`,
-        ].join('\n');
+        const submissionPayload = {
+          form_kind: 'timestamp',
+          source_page: 'support/tsonlineapplication.html',
+          application_type: applicationType,
+          plan_label: pricing.planLabel,
+          total_text: formatPrice(pricing.total),
+          email,
+          phone: mobilePhone,
+          payload: {
+            pricing,
+            applicationType,
+            applicantSection,
+            mobilePhone,
+            email,
+            ipAddress,
+            invoiceFullName,
+            invoiceAddress,
+            personal: isPersonal
+              ? {
+                  fullName: String(formData.get('fullName') || ''),
+                  nationality: String(formData.get('nationality') || ''),
+                  identityNumber: String(formData.get('identityNumber') || ''),
+                  birthDay: String(formData.get('birthDay') || ''),
+                  birthMonth: String(formData.get('birthMonth') || ''),
+                  birthYear: String(formData.get('birthYear') || ''),
+                  birthPlace: String(formData.get('birthPlace') || '')
+                }
+              : null,
+            corporate: !isPersonal
+              ? {
+                  companyName: String(formData.get('companyName') || ''),
+                  taxNumber: String(formData.get('taxNumber') || ''),
+                  taxOffice: String(formData.get('taxOffice') || '')
+                }
+              : null
+          }
+        };
 
         if (tsSubmitSection) {
           tsSubmitSection.classList.add('is-visible');
@@ -1667,9 +1846,9 @@
 
         pendingTsMail = {
           subject: mailSubject,
-          body: mailBody,
           totalText: formatPrice(pricing.total),
         };
+        pendingTsSubmission = submissionPayload;
 
         setTsPaymentGateView();
 
@@ -1714,8 +1893,8 @@
     }
 
     if (tsFinalizeSendBtn) {
-      tsFinalizeSendBtn.addEventListener('click', () => {
-        if (!pendingTsMail) {
+      tsFinalizeSendBtn.addEventListener('click', async () => {
+        if (!pendingTsMail || !pendingTsSubmission) {
           setActiveTsStep(2);
           scrollToSection(tsDetailsSection || tsBuilderForm);
           return;
@@ -1738,17 +1917,45 @@
           return;
         }
 
-        const paymentAppendix = [
-          '',
-          'Odeme Bilgileri',
-          `Gonderenin Adi: ${tsFinalSenderFirst.value.trim()}`,
-          `Gonderenin Soyadi: ${tsFinalSenderLast.value.trim()}`,
-          `Odeme Tutari: ${pendingTsMail.totalText}`,
-          'Odeme Tipi: Havale/EFT',
-        ].join('\n');
+        tsFinalizeSendBtn.disabled = true;
+        tsFinalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
 
-        const finalBody = `${pendingTsMail.body}${paymentAppendix}`;
-        window.location.href = `mailto:info@e-imzakibris.com?subject=${encodeURIComponent(pendingTsMail.subject)}&body=${encodeURIComponent(finalBody)}`;
+        try {
+          const payload = {
+            ...pendingTsSubmission,
+            payment_method: 'Havale/EFT',
+            payload: {
+              ...pendingTsSubmission.payload,
+              payment: {
+                senderFirst: tsFinalSenderFirst.value.trim(),
+                senderLast: tsFinalSenderLast.value.trim(),
+                paymentAmount: pendingTsMail.totalText,
+                paymentMethod: 'Havale/EFT'
+              }
+            }
+          };
+
+          await insertSupabaseRow('applications', payload);
+
+          setTsPaymentGateView();
+          setActiveTsStep(1);
+          tsDetailsForm.reset();
+          pendingTsMail = null;
+          pendingTsSubmission = null;
+          if (tsSubmitSection) tsSubmitSection.classList.remove('is-visible');
+          scrollToSection(tsBuilderForm);
+          setTsPaymentGateView();
+          if (tsPaymentMethodNote) {
+            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-check"></i><p>Başvurunuz kaydedildi. Ekibimiz sizinle iletişime geçecektir.</p>';
+          }
+        } catch (error) {
+          if (tsPaymentMethodNote) {
+            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-xmark"></i><p>Başvuru kaydedilemedi. Lütfen tekrar deneyin.</p>';
+          }
+        } finally {
+          tsFinalizeSendBtn.disabled = false;
+          tsFinalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
+        }
       });
     }
   }
@@ -1777,6 +1984,7 @@
     const renewalTermInputs = renewalForm.querySelectorAll('input[name="renewalTerm"]');
     const molohiyaLicenseInputs = renewalForm.querySelectorAll('input[name="molohiyaLicense"]');
     let pendingRenewalMail = null;
+    let pendingRenewalSubmission = null;
     let pendingRenewalTotalText = '-';
 
     const extractFinalPrice = (rawValue) => {
@@ -1889,23 +2097,29 @@
       const molohiyaLicense = String(formData.get('molohiyaLicense') || '-');
 
       const mailSubject = `Yenileme Basvurusu - ${fullName}`;
-      const mailBody = [
-        'Merhaba,',
-        '',
-        'Asagidaki bilgilerle e-imza yenileme talebimi iletmek istiyorum:',
-        '',
-        `Ad Soyad: ${fullName}`,
-        `E-posta: ${email}`,
-        `Telefon: ${phone}`,
-        `Kimlik/Pasaport No: ${identityNumber}`,
-        `Elektronik Imzanizi Yenilemek Istediginiz Sure: ${renewalTerm}`,
-        `MOlOhiya e-imza Imzalama ve Dogrulama Yazilim Lisansi: ${molohiyaLicense}`,
-      ].join('\n');
+      const submissionPayload = {
+        form_kind: 'renewal',
+        source_page: 'support/renewal.html',
+        plan_label: renewalTerm,
+        total_text: pendingRenewalTotalText,
+        full_name: fullName,
+        email,
+        phone,
+        payload: {
+          fullName,
+          email,
+          phone,
+          identityNumber,
+          renewalTerm,
+          molohiyaLicense
+        }
+      };
 
       pendingRenewalMail = {
         subject: mailSubject,
-        body: mailBody,
+        totalText: pendingRenewalTotalText,
       };
+      pendingRenewalSubmission = submissionPayload;
 
       if (renewalMessage) {
         renewalMessage.textContent = 'Ödeme yöntemi seçimi için bir sonraki adıma geçiniz.';
@@ -1921,8 +2135,8 @@
     });
 
     if (renewalFinalizeSendBtn) {
-      renewalFinalizeSendBtn.addEventListener('click', () => {
-        if (!pendingRenewalMail) {
+      renewalFinalizeSendBtn.addEventListener('click', async () => {
+        if (!pendingRenewalMail || !pendingRenewalSubmission) {
           renewalForm.requestSubmit();
           return;
         }
@@ -1944,17 +2158,43 @@
           return;
         }
 
-        const paymentAppendix = [
-          '',
-          'Odeme Bilgileri',
-          `Gonderenin Adi: ${renewalFinalSenderFirst.value.trim()}`,
-          `Gonderenin Soyadi: ${renewalFinalSenderLast.value.trim()}`,
-          `Odeme Tutari: ${pendingRenewalTotalText}`,
-          'Odeme Tipi: Havale/EFT',
-        ].join('\n');
+        renewalFinalizeSendBtn.disabled = true;
+        renewalFinalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
 
-        const finalBody = `${pendingRenewalMail.body}${paymentAppendix}`;
-        window.location.href = `mailto:info@e-imzakibris.com?subject=${encodeURIComponent(pendingRenewalMail.subject)}&body=${encodeURIComponent(finalBody)}`;
+        try {
+          const payload = {
+            ...pendingRenewalSubmission,
+            payment_method: 'Havale/EFT',
+            payload: {
+              ...pendingRenewalSubmission.payload,
+              payment: {
+                senderFirst: renewalFinalSenderFirst.value.trim(),
+                senderLast: renewalFinalSenderLast.value.trim(),
+                paymentAmount: pendingRenewalTotalText,
+                paymentMethod: 'Havale/EFT'
+              }
+            }
+          };
+
+          await insertSupabaseRow('applications', payload);
+
+          if (renewalMessage) {
+            setFormMessage(renewalMessage, 'success', 'Yenileme talebiniz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+          }
+          renewalForm.reset();
+          pendingRenewalMail = null;
+          pendingRenewalSubmission = null;
+          setRenewalPaymentGateView();
+          if (renewalPaymentFinal) renewalPaymentFinal.style.display = 'none';
+          updateRenewalSummary();
+        } catch (error) {
+          if (renewalMessage) {
+            setFormMessage(renewalMessage, 'danger', 'Yenileme talebi kaydedilemedi. Lütfen tekrar deneyin.');
+          }
+        } finally {
+          renewalFinalizeSendBtn.disabled = false;
+          renewalFinalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
+        }
       });
     }
   }
