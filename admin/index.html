@@ -177,7 +177,7 @@
                       step="0.01"
                       placeholder="2650"
                     />
-                    <span class="currency">?</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -195,7 +195,7 @@
                       step="0.01"
                       placeholder="4690"
                     />
-                    <span class="currency">?</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -213,7 +213,7 @@
                       step="0.01"
                       placeholder="6950"
                     />
-                    <span class="currency">?</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
               </div>
@@ -241,7 +241,7 @@
                       step="0.01"
                       placeholder="1875"
                     />
-                    <span class="currency" style="color:var(--teal);">?</span>
+                    <span class="currency" style="color:var(--teal);">₺</span>
                   </div>
                 </div>
 
@@ -259,7 +259,7 @@
                       step="0.01"
                       placeholder="1875"
                     />
-                    <span class="currency" style="color:var(--teal);">?</span>
+                    <span class="currency" style="color:var(--teal);">₺</span>
                   </div>
                 </div>
 
@@ -277,7 +277,7 @@
                       step="0.01"
                       placeholder="2650"
                     />
-                    <span class="currency" style="color:var(--teal);">?</span>
+                    <span class="currency" style="color:var(--teal);">₺</span>
                   </div>
                 </div>
               </div>
@@ -293,7 +293,7 @@
                   <label for="field-ts-1000">1.000 Adet</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-ts-1000" name="price_ts_1000" min="0" step="0.01" placeholder="2650" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -301,7 +301,7 @@
                   <label for="field-ts-5000">5.000 Adet</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-ts-5000" name="price_ts_5000" min="0" step="0.01" placeholder="10000" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -309,7 +309,7 @@
                   <label for="field-ts-10000">10.000 Adet</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-ts-10000" name="price_ts_10000" min="0" step="0.01" placeholder="14750" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
               </div>
@@ -325,7 +325,7 @@
                   <label for="field-molohiya-1y">1 Yıllık Lisans</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-molohiya-1y" name="price_molohiya_1y" min="0" step="0.01" placeholder="2650" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -333,7 +333,7 @@
                   <label for="field-molohiya-2y">2 Yıllık Lisans</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-molohiya-2y" name="price_molohiya_2y" min="0" step="0.01" placeholder="4690" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -341,7 +341,7 @@
                   <label for="field-molohiya-3y">3 Yıllık Lisans</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-molohiya-3y" name="price_molohiya_3y" min="0" step="0.01" placeholder="6950" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
               </div>
@@ -357,7 +357,7 @@
                   <label for="field-renewal-1y">1 Yıllık Yenileme</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-renewal-1y" name="price_renewal_1y" min="0" step="0.01" placeholder="2650" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -365,7 +365,7 @@
                   <label for="field-renewal-2y">2 Yıllık Yenileme</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-renewal-2y" name="price_renewal_2y" min="0" step="0.01" placeholder="4690" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
 
@@ -373,7 +373,7 @@
                   <label for="field-renewal-3y">3 Yıllık Yenileme</label>
                   <div class="price-input-wrap">
                     <input type="number" id="field-renewal-3y" name="price_renewal_3y" min="0" step="0.01" placeholder="6950" />
-                    <span class="currency">TL</span>
+                    <span class="currency">₺</span>
                   </div>
                 </div>
               </div>
@@ -382,9 +382,18 @@
 
               <div class="panel-card__actions">
                 <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Tüm fiyatlar KDV dahil olarak gösterilir.</span>
-                <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
-                  <i class="fa-solid fa-floppy-disk"></i> Fiyatları Kaydet
-                </button>
+                <div class="admin-actions-group">
+                  <button type="button" class="btn btn--ghost" id="btn-price-export" style="width:auto;min-width:180px;">
+                    <i class="fa-solid fa-file-export"></i> JSON Dışa Aktar
+                  </button>
+                  <button type="button" class="btn btn--ghost" id="btn-price-import" style="width:auto;min-width:180px;">
+                    <i class="fa-solid fa-file-import"></i> JSON İçe Aktar
+                  </button>
+                  <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
+                    <i class="fa-solid fa-floppy-disk"></i> Fiyatları Kaydet
+                  </button>
+                  <input type="file" id="price-import-file" accept="application/json,.json" class="visually-hidden-file" />
+                </div>
               </div>
 
             </form>
@@ -461,12 +470,38 @@
           <div class="panel-card__body">
             <div id="files-alert" class="alert" style="margin-bottom:1rem;" aria-live="polite"></div>
             <form id="files-form" novalidate>
-              <div class="form-group" style="margin-bottom:1rem;">
-                <label for="files-input">Dosya Seç</label>
-                <input type="file" id="files-input" multiple />
+              <div class="price-grid">
+                <div class="form-group">
+                  <label for="files-table">Tablo Seç</label>
+                  <select id="files-table" class="admin-select" required>
+                    <option value="">Tablo seçin</option>
+                    <option value="applicationguidelines">Application Guidelines</option>
+                    <option value="canceledcertificates">Canceled Certificates</option>
+                    <option value="certificates">Certificates</option>
+                    <option value="contracts">Contracts</option>
+                    <option value="legislations">Legislations</option>
+                    <option value="principles">Principles</option>
+                    <option value="softwares">Softwares</option>
+                  </select>
+                </div>
+
+                <div id="files-dynamic-fields" class="price-grid" style="grid-column:1 / -1;"></div>
+
+                <div id="files-table-items" style="grid-column:1 / -1; margin-bottom:1rem; display:none;">
+                  <h4 style="margin-bottom:0.75rem; font-weight:600;">Tablodaki Mevcut Öğeler</h4>
+                  <div id="files-table-content" style="overflow-x:auto; border:1px solid var(--color-border); border-radius:6px;"></div>
+                </div>
+
+                <div class="form-group" style="grid-column:1 / -1; margin-bottom:1rem;">
+                  <label for="files-input">Dosya Seç</label>
+                  <input type="file" id="files-input" multiple required />
+                </div>
               </div>
               <div class="panel-card__actions">
-                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Bu alan tarayıcı depolamasında çalışır.</span>
+                <span class="save-hint"><i class="fa-solid fa-circle-info"></i> Belge metadata bilgileriyle birlikte tarayıcı depolamasında saklanır.</span>
+                <button type="button" class="btn btn--ghost" id="files-cancel-edit" style="display:none;">
+                  <i class="fa-solid fa-xmark"></i> Düzenlemeyi İptal Et
+                </button>
                 <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
                   <i class="fa-solid fa-upload"></i> Dosyaları Kaydet
                 </button>

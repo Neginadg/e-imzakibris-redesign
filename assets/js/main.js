@@ -460,6 +460,57 @@
     setPreferredLanguage(getPreferredLanguage());
   })();
 
+  function loadAdminFilesFromStorage() {
+    try {
+      const raw = localStorage.getItem('eimza_admin_files');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function formatCertificateDate(value) {
+    const parts = String(value || '').split('-');
+    if (parts.length !== 3) return '';
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+  }
+
+  function renderUploadedCertificates() {
+    const tbody = document.getElementById('certificates-root-body');
+    if (!tbody) return;
+
+    const records = loadAdminFilesFromStorage()
+      .filter((item) => item && item.table === 'certificates')
+      .sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+
+    if (!records.length) return;
+
+    const rowsHtml = records.map((item) => {
+        const fileName = item.name || `${item.documentName || 'certificate'}.crt`;
+        const startDate = formatCertificateDate(item.certificateStartDate);
+        const endDate = formatCertificateDate(item.certificateEndDate);
+        const downloadLabel = currentLanguage === 'en' ? 'Download' : 'İndir';
+
+        return `
+          <tr>
+            <td>${item.documentId || '-'}</td>
+            <td>${item.documentName || item.name || '-'}</td>
+            <td>${startDate || '-'}</td>
+            <td>${endDate || '-'}</td>
+            <td>
+              <a class="crt-download-btn" href="${item.dataUrl || '#'}" download="${fileName}">
+                <img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="${downloadLabel}" />
+              </a>
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    tbody.insertAdjacentHTML('beforeend', rowsHtml);
+  }
+
   /* ---- Load prices from admin panel (localStorage) ---- */
   (function loadPrices() {
     const raw = localStorage.getItem('eimza_prices');
@@ -504,8 +555,8 @@
 
         const base = Number(prices[key]);
         const vat = base * 1.15;
-        const baseText = fmt.format(base) + ' TL';
-        const vatText = fmt.format(vat) + ' TL';
+        const baseText = fmt.format(base) + ' ₺';
+        const vatText = fmt.format(vat) + ' ₺';
 
         const option = renewalOptions[index];
         const labelText = option ? ((option.querySelector('strong') || {}).textContent || 'Yenileme Paketi').trim() : 'Yenileme Paketi';
@@ -527,8 +578,8 @@
 
         const base = Number(prices[key]);
         const vat = base * 1.15;
-        const baseText = fmt.format(base) + ' TL';
-        const vatText = fmt.format(vat) + ' TL';
+        const baseText = fmt.format(base) + ' ₺';
+        const vatText = fmt.format(vat) + ' ₺';
 
         const optionLabel = input.closest('.renewal-package-option');
         const title = optionLabel ? ((optionLabel.querySelector('strong') || {}).textContent || 'MOlOhiya Lisans') : 'MOlOhiya Lisans';
@@ -539,6 +590,8 @@
       });
     }
   })();
+
+  renderUploadedCertificates();
 
   // Preview mode: use ?hero=red to compare a red hero background variant.
   const params = new URLSearchParams(window.location.search);
@@ -1729,8 +1782,8 @@
     const extractFinalPrice = (rawValue) => {
       const text = String(rawValue || '');
       const match =
-        text.match(/=\s*([0-9][0-9.,]*)\s*\.?\s*TL/i) ||
-        text.match(/([0-9][0-9.,]*)\s*\.?\s*TL/i);
+        text.match(/=\s*([0-9][0-9.,]*)\s*\.?\s*₺/i) ||
+        text.match(/([0-9][0-9.,]*)\s*\.?\s*₺/i);
 
       if (!match) return null;
 
