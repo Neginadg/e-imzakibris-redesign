@@ -1,7 +1,4 @@
-/* ============================================================
-   e-imza KIBRIS – Main JavaScript
-   Modern Redesign | 2026
-   ============================================================ */
+
 
 (function () {
   'use strict';
@@ -64,6 +61,30 @@
 
     const data = await response.json();
     return Array.isArray(data) ? data[0] || null : data;
+  }
+
+  async function postBackendForm(endpoint, payload) {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    let body = null;
+    try {
+      body = await response.json();
+    } catch (error) {
+      body = null;
+    }
+
+    if (!response.ok) {
+      const message = body && body.error ? body.error : 'Request failed';
+      throw new Error(message);
+    }
+
+    return body;
   }
 
   const EN_TRANSLATIONS = {
@@ -242,6 +263,73 @@
     }
     return Object.assign(payload, extra);
   }
+
+  function keepDigitsOnly(value) {
+    return String(value || '').replace(/\D+/g, '');
+  }
+
+  function extractLocalPhoneDigits(value) {
+    const digits = keepDigitsOnly(value);
+    if (!digits) return '';
+
+    if (digits.startsWith('90') && digits.length >= 12) {
+      return digits.slice(2, 12);
+    }
+
+    if (digits.startsWith('0') && digits.length >= 11) {
+      return digits.slice(1, 11);
+    }
+
+    return digits.slice(0, 10);
+  }
+
+  function formatPhoneWithCountry(value) {
+    const localDigits = extractLocalPhoneDigits(value);
+    if (!localDigits) return '';
+
+    const p1 = localDigits.slice(0, 3);
+    const p2 = localDigits.slice(3, 6);
+    const p3 = localDigits.slice(6, 8);
+    const p4 = localDigits.slice(8, 10);
+
+    let formatted = '+90';
+    if (p1) formatted += ` ${p1}`;
+    if (p2) formatted += ` ${p2}`;
+    if (p3) formatted += ` ${p3}`;
+    if (p4) formatted += ` ${p4}`;
+    return formatted;
+  }
+
+  function enforcePhoneInputsFormat() {
+    const selector = [
+      'input[type="tel"]',
+      'input[name="telefon"]',
+      'input[name="phone"]',
+      'input[name="mobilePhone"]'
+    ].join(',');
+
+    document.querySelectorAll(selector).forEach((input) => {
+      if (!(input instanceof HTMLInputElement)) return;
+
+      input.setAttribute('inputmode', 'tel');
+      input.setAttribute('pattern', '^\\+90\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}$');
+      input.setAttribute('maxlength', '17');
+      input.setAttribute('title', '+90 5xx xxx xx xx formatini kullaniniz.');
+
+      const normalizeValue = () => {
+        const formatted = formatPhoneWithCountry(input.value);
+        if (formatted !== input.value) {
+          input.value = formatted;
+        }
+      };
+
+      input.addEventListener('input', normalizeValue);
+      input.addEventListener('blur', normalizeValue);
+      normalizeValue();
+    });
+  }
+
+  enforcePhoneInputsFormat();
 
   const EN_TRANSLATION_LOOKUP = Object.fromEntries(
     Object.entries(EN_TRANSLATIONS).map(([source, target]) => [normalizeTranslationText(source), target])
@@ -504,11 +592,10 @@
     translateCurrentPage(normalizedLang);
     applyGoogleTranslateLanguage(normalizedLang);
 
-    const switcher = document.querySelector('.lang-switcher');
-    if (switcher) {
+    document.querySelectorAll('.lang-switcher').forEach((switcher) => {
       switcher.setAttribute('translate', 'no');
       switcher.classList.add('notranslate');
-    }
+    });
 
     const switcherLinks = document.querySelectorAll('.lang-switcher a');
     switcherLinks.forEach((link) => {
@@ -715,6 +802,7 @@
   ensureAboutDropdownOptions();
 
   if (hamburger && mobileNav) {
+    ensureMobileBarLanguageSwitcher();
     setupMobileNavFromDesktop();
 
     hamburger.addEventListener('click', () => {
@@ -735,6 +823,16 @@
         event.preventDefault();
         const group = toggleBtn.closest('.mobile-nav__group');
         if (!group) return;
+
+        const groups = Array.from(mobileNav.querySelectorAll('.mobile-nav__group'));
+        groups.forEach((otherGroup) => {
+          if (otherGroup === group) return;
+          otherGroup.classList.remove('open');
+          const otherToggle = otherGroup.querySelector('.mobile-nav__group-toggle');
+          if (otherToggle instanceof HTMLElement) {
+            otherToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
 
         const isOpen = group.classList.toggle('open');
         toggleBtn.setAttribute('aria-expanded', String(isOpen));
@@ -762,6 +860,37 @@
         closeMobileNav();
       }
     }, { passive: true });
+  }
+
+  function ensureMobileBarLanguageSwitcher() {
+    const navInner = document.querySelector('.navbar__inner');
+    if (!navInner || !hamburger) return;
+    if (navInner.querySelector('.lang-switcher--mobile-bar')) return;
+
+    const mobileBarSwitcher = document.createElement('div');
+    mobileBarSwitcher.className = 'lang-switcher lang-switcher--mobile-bar';
+
+    ['tr', 'en'].forEach((lang, index) => {
+      const link = document.createElement('a');
+      const targetUrl = new URL(window.location.href);
+      targetUrl.searchParams.set('lang', lang);
+      link.href = targetUrl.href;
+      link.dataset.lang = lang;
+      link.textContent = lang.toUpperCase();
+      link.classList.toggle('active', currentLanguage === lang);
+      if (currentLanguage === lang) {
+        link.setAttribute('aria-current', 'true');
+      }
+      mobileBarSwitcher.appendChild(link);
+
+      if (index === 0) {
+        const separator = document.createElement('span');
+        separator.textContent = '|';
+        mobileBarSwitcher.appendChild(separator);
+      }
+    });
+
+    navInner.insertBefore(mobileBarSwitcher, hamburger);
   }
 
   function ensureSupportDropdownOptions() {
@@ -984,6 +1113,35 @@
       fragment.appendChild(listItem);
     });
 
+    const mobileLangItem = document.createElement('li');
+    mobileLangItem.className = 'mobile-nav__lang';
+
+    const mobileSwitcher = document.createElement('div');
+    mobileSwitcher.className = 'lang-switcher';
+
+    ['tr', 'en'].forEach((lang, index) => {
+      const link = document.createElement('a');
+      const targetUrl = new URL(window.location.href);
+      targetUrl.searchParams.set('lang', lang);
+      link.href = targetUrl.href;
+      link.dataset.lang = lang;
+      link.textContent = lang.toUpperCase();
+      link.classList.toggle('active', currentLanguage === lang);
+      if (currentLanguage === lang) {
+        link.setAttribute('aria-current', 'true');
+      }
+      mobileSwitcher.appendChild(link);
+
+      if (index === 0) {
+        const separator = document.createElement('span');
+        separator.textContent = '|';
+        mobileSwitcher.appendChild(separator);
+      }
+    });
+
+    mobileLangItem.appendChild(mobileSwitcher);
+    fragment.appendChild(mobileLangItem);
+
     if (ctaNode) {
       fragment.appendChild(ctaNode.cloneNode(true));
     }
@@ -1167,7 +1325,7 @@
       const formData = new FormData(contactForm);
       const payload = {
         full_name: String(formData.get('isim_soyisim') || '').trim(),
-        phone: String(formData.get('telefon') || '').trim(),
+        phone: keepDigitsOnly(formData.get('telefon')),
         email: String(formData.get('eposta') || '').trim(),
         subject: String(formData.get('konu') || '').trim(),
         message: String(formData.get('mesaj') || '').trim(),
@@ -1181,7 +1339,7 @@
       }
 
       try {
-        await insertSupabaseRow('contact_messages', payload);
+        await postBackendForm('/api/contact-submit', payload);
         contactForm.reset();
         setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
       } catch (error) {
@@ -1413,9 +1571,9 @@
         const showEmailOnCertificate = formData.get('showEmailOnCertificate') ? 'Evet' : 'Hayir';
         const address = String(formData.get('address') || '-');
         const region = String(formData.get('region') || '');
-        const phone = String(formData.get('phone') || '-');
+        const phone = keepDigitsOnly(formData.get('phone')) || '-';
         const mobileCode = String(formData.get('mobileCode') || '');
-        const mobilePhone = String(formData.get('mobilePhone') || '');
+        const mobilePhone = keepDigitsOnly(formData.get('mobilePhone'));
         const invoiceSameAsContact = formData.get('invoiceSameAsContact') ? 'Evet' : 'Hayir';
         const invoiceCompany = String(formData.get('invoiceCompany') || '-');
         const invoiceAddress = String(formData.get('invoiceAddress') || '-');
@@ -1563,7 +1721,7 @@
             }
           };
 
-          await insertSupabaseRow('applications', payload);
+          await postBackendForm('/api/application-submit', payload);
 
           setFormMessage(paymentMethodNote, 'success', 'Başvurunuz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
           setActiveStep(1);
@@ -1765,7 +1923,7 @@
         const applicationType = getTsApplicationType();
         const isPersonal = applicationType === 'Bireysel Başvuru';
         
-        const mobilePhone = String(formData.get('mobilePhone') || '');
+        const mobilePhone = keepDigitsOnly(formData.get('mobilePhone'));
         const email = String(formData.get('email') || '');
         const ipAddress = String(formData.get('ipAddress') || '');
         const invoiceFullName = String(formData.get('invoiceFullName') || '');
@@ -1935,7 +2093,7 @@
             }
           };
 
-          await insertSupabaseRow('applications', payload);
+          await postBackendForm('/api/application-submit', payload);
 
           setTsPaymentGateView();
           setActiveTsStep(1);
@@ -2091,7 +2249,7 @@
       const formData = new FormData(renewalForm);
       const fullName = String(formData.get('fullName') || '');
       const email = String(formData.get('email') || '');
-      const phone = String(formData.get('phone') || '');
+      const phone = keepDigitsOnly(formData.get('phone'));
       const identityNumber = String(formData.get('identityNumber') || '');
       const renewalTerm = String(formData.get('renewalTerm') || '');
       const molohiyaLicense = String(formData.get('molohiyaLicense') || '-');
@@ -2176,7 +2334,7 @@
             }
           };
 
-          await insertSupabaseRow('applications', payload);
+          await postBackendForm('/api/renewal-submit', payload);
 
           if (renewalMessage) {
             setFormMessage(renewalMessage, 'success', 'Yenileme talebiniz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');

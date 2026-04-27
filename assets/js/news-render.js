@@ -139,7 +139,7 @@
       <article class="news-card news-card--cta">
         <i class="fa-solid fa-bell fa-2x"></i>
         <h3>Tüm Haberleri Takip Edin</h3>
-        <p>e-imza sektöründeki son gelismeler ve duyurular için haberler sayfamizi ziyaret edin.</p>
+          <p>e-imza sektöründeki son gelismeler ve duyurular için haberler sayfamizi ziyaret edin.</p>
         <a href="about/news.html" class="btn btn--primary">
           Tüm Haberler <i class="fa-solid fa-arrow-right"></i>
         </a>
