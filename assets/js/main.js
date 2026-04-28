@@ -268,38 +268,6 @@
     return String(value || '').replace(/\D+/g, '');
   }
 
-  function extractLocalPhoneDigits(value) {
-    const digits = keepDigitsOnly(value);
-    if (!digits) return '';
-
-    if (digits.startsWith('90') && digits.length >= 12) {
-      return digits.slice(2, 12);
-    }
-
-    if (digits.startsWith('0') && digits.length >= 11) {
-      return digits.slice(1, 11);
-    }
-
-    return digits.slice(0, 10);
-  }
-
-  function formatPhoneWithCountry(value) {
-    const localDigits = extractLocalPhoneDigits(value);
-    if (!localDigits) return '';
-
-    const p1 = localDigits.slice(0, 3);
-    const p2 = localDigits.slice(3, 6);
-    const p3 = localDigits.slice(6, 8);
-    const p4 = localDigits.slice(8, 10);
-
-    let formatted = '+90';
-    if (p1) formatted += ` ${p1}`;
-    if (p2) formatted += ` ${p2}`;
-    if (p3) formatted += ` ${p3}`;
-    if (p4) formatted += ` ${p4}`;
-    return formatted;
-  }
-
   function enforcePhoneInputsFormat() {
     const selector = [
       'input[type="tel"]',
@@ -312,14 +280,14 @@
       if (!(input instanceof HTMLInputElement)) return;
 
       input.setAttribute('inputmode', 'tel');
-      input.setAttribute('pattern', '^\\+90\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}$');
-      input.setAttribute('maxlength', '17');
-      input.setAttribute('title', '+90 5xx xxx xx xx formatini kullaniniz.');
+      input.setAttribute('pattern', '^[0-9+\\s()-]{7,20}$');
+      input.setAttribute('maxlength', '20');
+      input.setAttribute('title', 'Telefon numarasini rakamlarla giriniz.');
 
       const normalizeValue = () => {
-        const formatted = formatPhoneWithCountry(input.value);
-        if (formatted !== input.value) {
-          input.value = formatted;
+        const digitsOnly = keepDigitsOnly(input.value);
+        if (digitsOnly !== input.value) {
+          input.value = digitsOnly;
         }
       };
 
