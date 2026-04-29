@@ -272,7 +272,7 @@ section,
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
-  gap: 5px;
+  gap: 20px;
 }
 
 .nav-item { position: relative; }
@@ -420,7 +420,7 @@ section,
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 15px;
   flex: 0 0 auto;
   flex-shrink: 0;
 }

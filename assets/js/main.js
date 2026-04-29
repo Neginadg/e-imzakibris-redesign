@@ -9,6 +9,7 @@
   const SUPABASE_CONFIG = window.EIMZA_SUPABASE_CONFIG || {};
   const SUPABASE_URL = String(SUPABASE_CONFIG.url || '').trim();
   const SUPABASE_ANON_KEY = String(SUPABASE_CONFIG.anonKey || '').trim();
+  const API_BASE_URL = String(window.EIMZA_API_BASE_URL || '').trim();
   let currentLanguage = 'tr';
   let googleTranslatePromise = null;
   let googleTranslateInitialized = false;
@@ -38,6 +39,18 @@
     return response.json();
   }
 
+  function resolveApiEndpoint(endpoint) {
+    if (/^https?:\/\//i.test(endpoint)) {
+      return endpoint;
+    }
+
+    if (API_BASE_URL) {
+      return API_BASE_URL.replace(/\/+$/, '') + endpoint;
+    }
+
+    return endpoint;
+  }
+
   async function insertSupabaseRow(tableName, payload) {
     if (!isSupabaseConfigured()) {
       throw new Error('Supabase is not configured');
@@ -64,7 +77,7 @@
   }
 
   async function postBackendForm(endpoint, payload) {
-    const response = await fetch(endpoint, {
+    const response = await fetch(resolveApiEndpoint(endpoint), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -72,17 +85,23 @@
       body: JSON.stringify(payload)
     });
 
+    let responseText = '';
     let body = null;
     try {
-      body = await response.json();
+      responseText = await response.text();
+      body = responseText ? JSON.parse(responseText) : null;
     } catch (error) {
       body = null;
     }
 
     if (!response.ok) {
-      const message = body && body.error ? body.error : 'Request failed';
+      const message = body && (body.error || body.message)
+        ? (body.error || body.message)
+        : responseText || 'Request failed';
       throw new Error(message);
     }
+
+    return body;
 
     return body;
   }
