@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -13,6 +13,9 @@
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+
   <style>
     .contact-map__header {
       display: flex;
@@ -108,6 +111,8 @@
   </style>
 </head>
 <body class="inner-page">
+
+  <!-- ===================== TOP BAR ===================== -->
   <div class="topbar">
     <div class="container topbar__inner">
       <div class="topbar__left">
@@ -116,7 +121,7 @@
       </div>
       <div class="topbar__right">
         <div class="lang-switcher">
-          <a href="?lang=tr">TR</a>
+          <a href="?lang=tr" class="active">TR</a>
           <span>|</span>
           <a href="?lang=en">EN</a>
         </div>
@@ -124,6 +129,7 @@
     </div>
   </div>
 
+  <!-- ===================== NAVBAR ===================== -->
   <header class="navbar" id="navbar">
     <div class="container navbar__inner">
       <a href="../index.html" class="navbar__logo">
@@ -131,48 +137,48 @@
       </a>
 
       <nav class="navbar__nav" id="navbar-nav">
-                <ul class="nav-list">
+        <ul class="nav-list">
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik İmza</strong><small>Nitelikli e-imza sertifikası</small></div></a>
-              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgası</strong><small>Elektronik veriye zaman kanıtı</small></div></a>
-              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>İmzalama ve doğrulama masaüstü yazılımı</small></div></a>
-              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
+              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik Imza</strong><small>Nitelikli e-imza sertifikasi</small></div></a>
+              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgasi</strong><small>Elektronik veriye zaman kaniti</small></div></a>
+              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>Imzalama ve dogrulama masaüstü yazilimi</small></div></a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazilim Kütüphaneleri</strong><small>Güvenli e-imza API çözümleri</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../support/education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik imza eğitimleri</small></div></a>
-              <a href="../support/consultancy.html" class="dropdown__item"><div><strong>Danışmanlık Hizmetleri</strong><small>Elektronik dönüşüm danışmanlığı</small></div></a>
-              <a href="../support/verify.html" class="dropdown__item"><div><strong>İmza Doğrulama</strong><small>Elektronik imzaları doğrulayın</small></div></a>
+              <a href="../support/education.html" class="dropdown__item"><div><strong>Egitim Hizmetleri</strong><small>Elektronik imza egitimleri</small></div></a>
+              <a href="../support/consultancy.html" class="dropdown__item"><div><strong>Danismanlik Hizmetleri</strong><small>Elektronik dönüsüm danismanligi</small></div></a>
+              <a href="../support/verify.html" class="dropdown__item"><div><strong>Imza Dogrulama</strong><small>Elektronik imzalari dogrulayin</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown dropdown--two-columns">
               <a href="../databank/certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
-              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
-              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
+              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika Iptal Listeleri</strong><small>Iptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sözlesmeler</strong><small>Bireysel, kurumsal ve kayit makami sözlesmeleri</small></div></a>
               <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
-              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
-              <a href="../databank/principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası ilkeleri</small></div></a>
-              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esasları</strong><small>NES uygulama ve zaman damgası esasları</small></div></a>
-              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
+              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazilim Indir</strong><small>Sürücü ve istemci yazilimlari</small></div></a>
+              <a href="../databank/principles.html" class="dropdown__item"><div><strong>Ilkeler</strong><small>NES ve Zaman Damgasi ilkeleri</small></div></a>
+              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esaslari</strong><small>NES uygulama ve zaman damgasi esaslari</small></div></a>
+              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>Ilgili Kurum Linkleri</strong><small>Resmi ve kurumsal dis baglantilar</small></div></a>
             </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">DESTEK <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-                            <a href="../support/onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
-                          </div>
+              <a href="../support/onlineapplication.html" class="dropdown__item"><div><strong>Online Basvuru</strong><small>Basvurunuzu olusturun</small></div></a>
+            </div>
           </li>
           <li class="nav-item has-dropdown">
             <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA <i class="fa-solid fa-chevron-down fa-xs"></i></a>
             <div class="dropdown">
-              <a href="../about/index.html" class="dropdown__item"><div><strong>Şirket Hakkında</strong><small>Denizler Bilişim Hizmetleri</small></div></a>
-              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelişmeler</small></div></a>
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Sirket Hakkinda</strong><small>Denizler Bilisim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelismeler</small></div></a>
             </div>
           </li>
           <li class="nav-item"><a href="index.html" class="nav-link">İLETİŞİM</a></li>
@@ -180,8 +186,12 @@
       </nav>
 
       <div class="navbar__cta">
-        <a href="../support/onlineapplication.html" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> BAŞVURU</a>
-        <a href="../support/renewal.html" class="btn btn--outline"><i class="fa-solid fa-rotate"></i> YENİLEME</a>
+        <a href="../support/onlineapplication.html" class="btn btn--primary">
+          <i class="fa-solid fa-pen-to-square"></i> BAŞVURU
+        </a>
+        <a href="../support/renewal.html" class="btn btn--outline">
+          <i class="fa-solid fa-rotate"></i> YENİLEME
+        </a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
@@ -190,8 +200,9 @@
     </div>
   </header>
 
+  <!-- Mobile Nav Overlay -->
   <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
-        <ul class="mobile-nav__list">
+    <ul class="mobile-nav__list">
       <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
       <li><a href="../support/onlineapplication.html">HİZMETLERİMİZ</a></li>
       <li><a href="../databank/certificates.html">Kök Sertifikalar</a></li>
@@ -202,10 +213,9 @@
       <li><a href="../databank/principles.html">İlkeler</a></li>
       <li><a href="../databank/applicationguidelines.html">Uygulama Esasları</a></li>
       <li><a href="../databank/relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
-      
       <li><a href="../support/onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
-      <li><a href="../about/certdocuments.html">BELGELERIMIZ</a></li>
+      <li><a href="../about/certdocuments.html">BELGELERİMİZ</a></li>
       <li><a href="index.html">İLETİŞİM</a></li>
       <li class="mobile-nav__cta">
         <a href="../support/onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
@@ -316,13 +326,13 @@
             <span class="contact-map__icon"><img src="../assets/img/location.svg" alt="Konum" /></span>
             <div class="contact-map__text">
               <strong>Bizi Burada Bulabilirsiniz</strong>
-              <small>Ofis konumumuzu harita uzerinden inceleyin.</small>
+              <small>Ofis konumumuzu harita üzerinden inceleyin.</small>
             </div>
           </div>
           <div class="contact-map__frame">
             <iframe
               src="https://maps.google.com/maps?q=Denizler+Bilisim+Hizmetleri+Lefkosa+North+Cyprus&t=&z=16&ie=UTF8&iwloc=&output=embed"
-              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Denizler Bilişim Harita">
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Denizler Bilisim Harita">
             </iframe>
           </div>
         </div>
@@ -354,7 +364,7 @@
           hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
         </p>
         <div class="footer__cert">
-          <span>ISO/IEC 27001:2017 Sertifikalı</span>
+          <span>ISO/IEC 27001:2017 Sertifikali</span>
         </div>
       </div>
 
@@ -393,13 +403,10 @@
         <div class="footer__bottom-links">
           <a href="../privacypolicy.html">Gizlilik Politikası</a>
           <a href="index.html">İletişim</a>
-          
         </div>
       </div>
     </div>
   </footer>
-
-  
 
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/main.js"></script>
