@@ -102,8 +102,38 @@
     }
 
     return body;
+  }
 
-    return body;
+  async function insertContactMessageDirect(payload) {
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not configured');
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseText = await response.text();
+    if (!response.ok) {
+      throw new Error(responseText || `Supabase insert failed with status ${response.status}`);
+    }
+
+    if (!responseText) {
+      return null;
+    }
+
+    const data = JSON.parse(responseText);
+    if (Array.isArray(data)) {
+      return data[0] || null;
+    }
+    return data;
   }
 
   const EN_TRANSLATIONS = {
@@ -1330,7 +1360,13 @@
         contactForm.reset();
         setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
       } catch (error) {
-        setFormMessage(contactMessage, 'danger', 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
+        try {
+          await insertContactMessageDirect(payload);
+          contactForm.reset();
+          setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
+        } catch (fallbackError) {
+          setFormMessage(contactMessage, 'danger', error.message || fallbackError.message || 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
+        }
       } finally {
         if (submitButton) {
           submitButton.disabled = false;
