@@ -1,7 +1,7 @@
-const { sendJson, readJsonBody } = require('./_lib/http');
-const { getRuntimeEnv } = require('./_lib/env');
-const { insertSupabaseRow } = require('./_lib/supabase');
-const { buildHtmlSummary, toPlainText, sendEmail } = require('./_lib/email');
+const { sendJson, readJsonBody } = require('../lib/http');
+const { getRuntimeEnv } = require('../lib/env');
+const { insertSupabaseRow } = require('../lib/supabase');
+const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
