@@ -38,16 +38,12 @@ create table if not exists public.renewal_requests (
   created_at timestamptz not null default now()
 );
 
-alter table public.contact_messages enable row level security;
+-- contact_messages: Disable RLS for public contact form submissions
+alter table public.contact_messages disable row level security;
+
+-- Keep RLS enabled for app-specific tables that need protection
 alter table public.applications enable row level security;
 alter table public.renewal_requests enable row level security;
 
-create policy "Allow public insert on contact_messages"
-  on public.contact_messages
-  for insert
-  to anon, authenticated
-  with check (true);
-
--- Public inserts are allowed for contact_messages so the browser can fall back
--- to a direct Supabase write if the serverless contact endpoint is unavailable.
--- Serverless functions still use SUPABASE_SERVICE_ROLE_KEY when configured.
+-- Public inserts (via RLS-disabled table) fallback if serverless endpoint fails.
+-- Serverless functions use SUPABASE_SERVICE_ROLE_KEY when configured.
