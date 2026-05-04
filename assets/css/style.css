@@ -2520,7 +2520,7 @@ time {
   margin: 0;
   padding: 14px 16px;
   background: #ececec;
-  border-bottom: 3px solid #f3bf1a;
+  border-bottom: 3px solid #d11c1c;
   font-size: 22px;
 }
 
@@ -2540,7 +2540,7 @@ time {
 }
 
 .payment-method-options input[type="radio"] {
-  accent-color: #f3bf1a;
+  accent-color: #d11c1c;
 }
 
 .payment-warning-box {
@@ -2550,7 +2550,7 @@ time {
   align-items: center;
   border: 1px solid rgba(180, 30, 30, .22);
   border-radius: 16px;
-  background: linear-gradient(180deg, #1c1c1c 0%, #0f0f0f 100%);
+  background: linear-gradient(180deg, #ffe0e0 0%, #ffc9c9 100%);
   padding: 16px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
 }
@@ -2571,7 +2571,7 @@ time {
 .payment-warning-box p {
   margin: 0;
   font-size: 20px;
-  color: #f3f4f6;
+  color: #8b0000;
 }
 
 .payment-gate-actions {
@@ -2583,7 +2583,7 @@ time {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: linear-gradient(180deg, #111111 0%, #1a1a1a 100%);
+  background: linear-gradient(180deg, #ffe0e0 0%, #ffc9c9 100%);
   border: 1px solid rgba(180, 30, 30, .2);
   border-radius: 18px;
   padding: 14px 16px;
@@ -2593,21 +2593,21 @@ time {
 .payment-final__total span {
   font-size: 14px;
   font-weight: 700;
-  color: #f3f4f6;
+  color: #8b0000;
   letter-spacing: .02em;
 }
 
 .payment-final__total strong {
   font-size: 24px;
   letter-spacing: -.4px;
-  color: #fff;
+  color: #8b0000;
 }
 
 .payment-final__panel {
   border: 1px solid rgba(180, 30, 30, .22);
   border-radius: 18px;
   overflow: hidden;
-  background: linear-gradient(180deg, #111111 0%, #161616 100%);
+  background: linear-gradient(180deg, #ffe0e0 0%, #ffc9c9 100%);
   box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
 }
 
@@ -2617,10 +2617,10 @@ time {
   gap: 10px;
   margin: 0;
   padding: 14px 16px;
-  background: linear-gradient(180deg, #1b1b1b 0%, #131313 100%);
+  background: linear-gradient(180deg, #ffcccb 0%, #ffb3b3 100%);
   border-bottom: 1px solid rgba(180, 30, 30, .18);
   font-size: 20px;
-  color: #fff;
+  color: #8b0000;
 }
 
 .payment-field-grid {
@@ -2633,7 +2633,7 @@ time {
   gap: 8px;
   padding: 14px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, .06);
-  background: linear-gradient(180deg, #171717 0%, #151515 100%);
+  background: linear-gradient(180deg, #fff5f5 0%, #ffecec 100%);
 }
 
 .payment-field--full {
@@ -2642,7 +2642,7 @@ time {
 
 .payment-field span {
   font-size: 14px;
-  color: #e5e7eb;
+  color: #8b0000;
 }
 
 .payment-field input {
@@ -2682,7 +2682,7 @@ time {
   gap: 12px;
   padding: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, .06);
-  background: linear-gradient(180deg, #1b1b1b 0%, #121212 100%);
+  background: linear-gradient(180deg, #fff5f5 0%, #ffecec 100%);
 }
 
 .payment-info-box:last-of-type {
