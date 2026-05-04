@@ -2571,7 +2571,7 @@ time {
 .payment-warning-box p {
   margin: 0;
   font-size: 20px;
-  color: #8b0000;
+  color: #ffffff;
 }
 
 .payment-gate-actions {
@@ -2593,14 +2593,14 @@ time {
 .payment-final__total span {
   font-size: 14px;
   font-weight: 700;
-  color: #8b0000;
+  color: #ffffff;
   letter-spacing: .02em;
 }
 
 .payment-final__total strong {
   font-size: 24px;
   letter-spacing: -.4px;
-  color: #8b0000;
+  color: #ffffff;
 }
 
 .payment-final__panel {
@@ -2620,7 +2620,7 @@ time {
   background: linear-gradient(180deg, #ffcccb 0%, #ffb3b3 100%);
   border-bottom: 1px solid rgba(180, 30, 30, .18);
   font-size: 20px;
-  color: #8b0000;
+  color: #ffffff;
 }
 
 .payment-field-grid {
@@ -2642,7 +2642,7 @@ time {
 
 .payment-field span {
   font-size: 14px;
-  color: #8b0000;
+  color: #333333;
 }
 
 .payment-field input {
@@ -2711,7 +2711,7 @@ time {
 .payment-info-box p {
   margin: 0;
   line-height: 1.6;
-  color: #f3f4f6;
+  color: #333333;
   white-space: normal;
   overflow-wrap: break-word;
 }
