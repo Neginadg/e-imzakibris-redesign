@@ -1755,7 +1755,7 @@
           if (submitSection) submitSection.classList.remove('is-visible');
           scrollToSection(builderForm);
         } catch (error) {
-          setFormMessage(paymentMethodNote, 'danger', 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+          setFormMessage(paymentMethodNote, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
         } finally {
           finalizeSendBtn.disabled = false;
           finalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
@@ -2131,7 +2131,7 @@
           }
         } catch (error) {
           if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-xmark"></i><p>Başvuru kaydedilemedi. Lütfen tekrar deneyin.</p>';
+            tsPaymentMethodNote.innerHTML = `<i class="fa-solid fa-circle-xmark"></i><p>${error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.'}</p>`;
           }
         } finally {
           tsFinalizeSendBtn.disabled = false;

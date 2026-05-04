@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const config = getRuntimeEnv();
+    const config = getRuntimeEnv({ requireEmail: false });
     const body = readJsonBody(req);
 
     const record = {
@@ -27,6 +27,21 @@ module.exports = async function handler(req, res) {
     }
 
     const inserted = await insertSupabaseRow(config, 'applications', record);
+
+    const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
+    if (!hasEmailConfig) {
+      return sendJson(res, 200, {
+        ok: true,
+        stored: true,
+        emailStatus: {
+          company: false,
+          customerConfirmation: false,
+          customerPayment: false
+        },
+        id: inserted && inserted.id ? inserted.id : null,
+        warning: 'Saved to database. Emails are skipped because email configuration is missing.'
+      });
+    }
 
     const companyMailData = {
       full_name: record.full_name,
