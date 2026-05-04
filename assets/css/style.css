@@ -2652,6 +2652,7 @@ time {
 .payment-info-box {
   display: grid;
   grid-template-columns: 36px 1fr;
+  align-items: start;
   gap: 12px;
   padding: 16px;
   border-bottom: 1px solid rgba(0, 0, 0, .08);
@@ -2672,12 +2673,21 @@ time {
   background: #69a6d9;
   color: #fff;
   margin-top: 2px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.payment-info-box > :not(i) {
+  grid-column: 2;
+  min-width: 0;
 }
 
 .payment-info-box p {
   margin: 0;
   line-height: 1.6;
   color: #1f2937;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .payment-final__actions {
