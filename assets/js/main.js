@@ -2062,6 +2062,18 @@
       });
     }
 
+    // Handle Teslimatta Ödeme notice visibility
+    const tsTeslimattaOdemeNotice = document.getElementById('ts-teslimatta-odeme-notice');
+    const tsPaymentMethodInputs = Array.from(document.querySelectorAll('input[name="tsPaymentMethod"]'));
+    
+    tsPaymentMethodInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (tsTeslimattaOdemeNotice) {
+          tsTeslimattaOdemeNotice.style.display = input.value === 'Teslimatta Ödeme' ? 'block' : 'none';
+        }
+      });
+    });
+
     if (tsConfirmPaymentMethodBtn) {
       tsConfirmPaymentMethodBtn.addEventListener('click', () => {
         const selectedMethod = document.querySelector('input[name="tsPaymentMethod"]:checked');
@@ -2072,9 +2084,10 @@
           return;
         }
 
-        if (selectedMethod.value !== 'Havale/EFT') {
+        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
+        if (selectedMethod.value === 'Kredi Kartı') {
           if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Bu sürümde sadece <strong>Havale/EFT</strong> ile devam edebilirsiniz. Lütfen Havale/EFT seçiniz.</p>';
+            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
           }
           return;
         }
@@ -2124,16 +2137,18 @@
         }
 
         try {
+          const selectedPaymentMethod = document.querySelector('input[name="tsPaymentMethod"]:checked')?.value || 'Havale/EFT';
+          
           const payload = {
             ...pendingTsSubmission,
-            payment_method: 'Havale/EFT',
+            payment_method: selectedPaymentMethod,
             payload: {
               ...pendingTsSubmission.payload,
               payment: {
                 senderFirst: tsFinalSenderFirst.value.trim(),
                 senderLast: tsFinalSenderLast.value.trim(),
                 paymentAmount: pendingTsMail.totalText,
-                paymentMethod: 'Havale/EFT'
+                paymentMethod: selectedPaymentMethod
               }
             }
           };
