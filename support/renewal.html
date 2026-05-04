@@ -248,7 +248,7 @@
               <div class="payment-method-card">
                 <h3 class="payment-method-card__title"><i class="fa-regular fa-credit-card"></i> Ödeme Şekli</h3>
                 <div class="payment-method-options">
-                  <label><input type="radio" name="renewalPaymentMethod" value="Kredi Kartı" /> Kredi Kartı</label>
+                  <label><input type="radio" name="renewalPaymentMethod" value="Kredi Kartı" disabled /> Kredi Kartı</label>
                   <label><input type="radio" name="renewalPaymentMethod" value="Havale/EFT" /> Havale/EFT</label>
                   <label><input type="radio" name="renewalPaymentMethod" value="Teslimatta Ödeme" /> Teslimatta Ödeme</label>
                 </div>
@@ -257,7 +257,16 @@
               <div class="payment-warning-box" id="renewal-payment-note">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <p>Lütfen onay verdikten sonra internet tarayıcınızın <strong>Geri</strong> butonuna basmayınız.</p>
-              </div>
+                </div>
+
+                <div class="payment-info-box" id="renewal-teslimatta-notice" style="display: none; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                  <i class="fa-solid fa-exclamation-circle" style="color: #ffc107;"></i>
+                  <p style="font-weight: 500; margin: 8px 0;"><strong>ÖNEMLİ NOT:</strong></p>
+                  <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li>Elektronik imza tesliminde kimlik kontrolü yapılmaktadır, lütfen kimlik kartınızı yanınıza almayı unutmayınız.</li>
+                    <li>Eğer imzanız bir başkası tarafından teslim alınacaksa, lütfen yetki verdiğiniz kişiyi bize bildiriniz.</li>
+                  </ul>
+                </div>
 
               <div class="builder-actions builder-actions--between payment-gate-actions">
                 <button type="button" class="btn btn--outline" id="back-to-renewal-form">Geri</button>
@@ -290,23 +299,30 @@
                   </label>
                 </div>
 
-                <div class="payment-info-box">
-                  <i class="fa-solid fa-circle-info"></i>
-                  <p>
-                    Havale/EFT yaptıktan sonra dekontunuzu <strong>satis@e-imzakibris.com</strong> adresine e-posta ile
-                    göndermeniz veya +90 (392) 228 09 60 numaralı faks hattına iletmeniz gerekir. Ödemeniz finans
-                    ekibimizce onaylandıktan sonra yenileme süreci başlar.
+                <div class="payment-info-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                  <i class="fa-solid fa-triangle-exclamation" style="color: #ffc107;"></i>
+                  <p style="font-weight: 500; margin-bottom: 10px;"><strong>Önemli</strong></p>
+                  <p style="margin-bottom: 12px; line-height: 1.6;">
+                    Havale/EFT yaptıktan sonra dekontunuzu <strong>satis@e-imzakibris.com</strong> adresine e-posta ile göndermeniz ya da <strong>+90 (539) 120 5115</strong> nolu What's App numarasına iletmeniz gerekmektedir.<br /><br />
+                    İşlemleriniz ödemeniz hesabımıza aktarıldıktan ve finans ekibimizin onayından sonra başlayacaktır.
+                  </p>
+                  <p style="font-weight: 500; color: #d32f2f;">
+                    Bir hafta içinde havalesi yapılmayan siparişler iptal edilir!
                   </p>
                 </div>
 
                 <div class="payment-info-box">
                   <i class="fa-solid fa-building-columns"></i>
                   <p>
-                    <strong>Havale/EFT için Banka Hesap Bilgileri</strong><br />
-                    Hesap Adı: Denizler Bilişim Hizmetleri Limited<br />
-                    Banka Adı: Türkiye Garanti Bankası Lefkoşa Şubesi<br />
-                    ₺ Hesap No: 493-6294690<br />
-                    IBAN: TR34 0006 2000 4930 0006 2946 90 10
+                    <strong>Havale/EFT ile Ödeme için Banka Hesap Bilgileri</strong><br />
+                    <br />
+                    <strong>Hesap Adı:</strong><br />
+                    Denizler Bilişim Hizmetleri Limited<br />
+                    <br />
+                    <strong>Banka Adı:</strong> Türkiye Garanti Bankası Lefkoşa Şubesi<br />
+                    <br />
+                    <strong>TL Hesap No:</strong> 493-6294690<br />
+                    <strong>IBAN:</strong> TR34 0006 2000 4930 0006 2946 90 10
                   </p>
                 </div>
 

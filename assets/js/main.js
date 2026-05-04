@@ -1673,6 +1673,18 @@
       });
     }
 
+    // Handle Teslimatta Ödeme notice visibility for application form
+    const paymentTeslimattaNotice = document.getElementById('payment-teslimatta-notice');
+    const paymentMethodInputs = Array.from(document.querySelectorAll('input[name="paymentMethod"]'));
+    
+    paymentMethodInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (paymentTeslimattaNotice) {
+          paymentTeslimattaNotice.style.display = input.value === 'Teslimatta Ödeme' ? 'block' : 'none';
+        }
+      });
+    });
+
     if (confirmPaymentMethodBtn) {
       confirmPaymentMethodBtn.addEventListener('click', () => {
         const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
@@ -1683,9 +1695,10 @@
           return;
         }
 
-        if (selectedMethod.value !== 'Havale/EFT') {
+        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
+        if (selectedMethod.value === 'Kredi Kartı') {
           if (paymentMethodNote) {
-            paymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Bu sürümde sadece <strong>Havale/EFT</strong> ile devam edebilirsiniz. Lütfen Havale/EFT seçiniz.</p>';
+            paymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
           }
           return;
         }
@@ -2268,6 +2281,18 @@
       });
     }
 
+    // Handle Teslimatta Ödeme notice visibility for renewal form
+    const renewalTeslimattaNotice = document.getElementById('renewal-teslimatta-notice');
+    const renewalPaymentMethodInputs = Array.from(document.querySelectorAll('input[name="renewalPaymentMethod"]'));
+    
+    renewalPaymentMethodInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (renewalTeslimattaNotice) {
+          renewalTeslimattaNotice.style.display = input.value === 'Teslimatta Ödeme' ? 'block' : 'none';
+        }
+      });
+    });
+
     if (confirmRenewalPaymentMethodBtn) {
       confirmRenewalPaymentMethodBtn.addEventListener('click', () => {
         const selectedMethod = document.querySelector('input[name="renewalPaymentMethod"]:checked');
@@ -2278,9 +2303,10 @@
           return;
         }
 
-        if (selectedMethod.value !== 'Havale/EFT') {
+        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
+        if (selectedMethod.value === 'Kredi Kartı') {
           if (renewalPaymentNote) {
-            renewalPaymentNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Bu sürümde sadece <strong>Havale/EFT</strong> ile devam edebilirsiniz. Lütfen Havale/EFT seçiniz.</p>';
+            renewalPaymentNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
           }
           return;
         }
