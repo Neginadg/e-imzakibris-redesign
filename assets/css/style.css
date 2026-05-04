@@ -1,5 +1,5 @@
-/* ============================================================
-   e-imza KIBRIS – Main Stylesheet
+﻿/* ============================================================
+   e-imza KIBRIS â€“ Main Stylesheet
    Modern Redesign | 2026
    ============================================================ */
 
@@ -2548,10 +2548,11 @@ time {
   grid-template-columns: 52px 1fr;
   gap: 12px;
   align-items: center;
-  border: 1px solid #e2bf53;
-  border-radius: 8px;
-  background: #f3e6bc;
+  border: 1px solid rgba(180, 30, 30, .22);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #1c1c1c 0%, #0f0f0f 100%);
   padding: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
 }
 
 .payment-warning-box i {
@@ -2562,14 +2563,15 @@ time {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: #9a6b00;
-  background: #ffd451;
+  color: #fff;
+  background: linear-gradient(180deg, #d11c1c 0%, #8b1010 100%);
+  box-shadow: 0 6px 14px rgba(209, 28, 28, .28);
 }
 
 .payment-warning-box p {
   margin: 0;
   font-size: 20px;
-  color: #4b5563;
+  color: #f3f4f6;
 }
 
 .payment-gate-actions {
@@ -2581,29 +2583,32 @@ time {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: #f4f4f4;
-  border: 1px solid rgba(0, 0, 0, .1);
-  border-radius: 14px;
+  background: linear-gradient(180deg, #111111 0%, #1a1a1a 100%);
+  border: 1px solid rgba(180, 30, 30, .2);
+  border-radius: 18px;
   padding: 14px 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
 }
 
 .payment-final__total span {
   font-size: 14px;
   font-weight: 700;
-  color: #2a2a2a;
+  color: #f3f4f6;
+  letter-spacing: .02em;
 }
 
 .payment-final__total strong {
   font-size: 24px;
   letter-spacing: -.4px;
-  color: #111;
+  color: #fff;
 }
 
 .payment-final__panel {
-  border: 1px solid rgba(0, 0, 0, .08);
-  border-radius: 14px;
+  border: 1px solid rgba(180, 30, 30, .22);
+  border-radius: 18px;
   overflow: hidden;
-  background: #f5f5f5;
+  background: linear-gradient(180deg, #111111 0%, #161616 100%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
 }
 
 .payment-final__title {
@@ -2612,9 +2617,10 @@ time {
   gap: 10px;
   margin: 0;
   padding: 14px 16px;
-  background: #ededed;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  background: linear-gradient(180deg, #1b1b1b 0%, #131313 100%);
+  border-bottom: 1px solid rgba(180, 30, 30, .18);
   font-size: 20px;
+  color: #fff;
 }
 
 .payment-field-grid {
@@ -2626,8 +2632,8 @@ time {
   display: grid;
   gap: 8px;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
-  background: #f3f3f3;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  background: linear-gradient(180deg, #171717 0%, #151515 100%);
 }
 
 .payment-field--full {
@@ -2636,15 +2642,15 @@ time {
 
 .payment-field span {
   font-size: 14px;
-  color: #4b5563;
+  color: #e5e7eb;
 }
 
 .payment-field input {
   width: 100%;
   min-height: 52px;
-  border: 1px solid rgba(17, 24, 39, .12);
+  border: 1px solid rgba(255, 255, 255, .08);
   border-radius: 14px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  background: linear-gradient(180deg, #fafafa 0%, #f1f1f1 100%);
   padding: 12px 14px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
   color: #111827;
@@ -2652,7 +2658,7 @@ time {
 }
 
 .payment-field input[readonly] {
-  background: #f8fafc;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
   color: #1f2937;
 }
 
@@ -2675,12 +2681,12 @@ time {
   align-items: start;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
-  background: #dbe8f4;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  background: linear-gradient(180deg, #1b1b1b 0%, #121212 100%);
 }
 
 .payment-info-box:last-of-type {
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
 }
 
 .payment-info-box i {
@@ -2690,7 +2696,7 @@ time {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #69a6d9;
+  background: linear-gradient(180deg, #d11c1c 0%, #8b1010 100%);
   color: #fff;
   margin-top: 2px;
   grid-column: 1;
@@ -2705,7 +2711,7 @@ time {
 .payment-info-box p {
   margin: 0;
   line-height: 1.6;
-  color: #1f2937;
+  color: #f3f4f6;
   white-space: normal;
   overflow-wrap: break-word;
 }
@@ -2717,7 +2723,7 @@ time {
 }
 
 /* ============================================================
-  RESPONSIVE — TABLET (max 900px)
+  RESPONSIVE â€” TABLET (max 900px)
   ============================================================ */
 @media (max-width: 1100px) {
   .navbar__nav          { display: none; }
@@ -2793,7 +2799,7 @@ time {
 }
 
 /* ============================================================
-   RESPONSIVE — MOBILE (max 640px)
+   RESPONSIVE â€” MOBILE (max 640px)
    ============================================================ */
 @media (max-width: 640px) {
   :root {
@@ -3482,12 +3488,12 @@ time {
 }
 
 /* ============================================================
-   ABOUT PAGE — Dark Editorial / Museum
+   ABOUT PAGE â€” Dark Editorial / Museum
    Theme: near-black hero, crimson #C41E3A, warm-grey body
    ============================================================ */
 body.page-about { background: #f1f0ee; }
 
-/* ── About Hero (dark, full-bleed) ── */
+/* â”€â”€ About Hero (dark, full-bleed) â”€â”€ */
 .about-hero {
   background: #0d0d0d;
   color: #fff;
@@ -3582,7 +3588,7 @@ body.page-about { background: #f1f0ee; }
   border-right: 1px solid rgba(255,255,255,.3);
 }
 
-/* ── Mission / Values (grey bg) ── */
+/* â”€â”€ Mission / Values (grey bg) â”€â”€ */
 .about-body { background: #f1f0ee; padding: 80px 0; }
 .about-mission-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -3614,7 +3620,7 @@ body.page-about { background: #f1f0ee; }
 .about-mission-card li { display: flex; gap: 9px; font-size: 14px; color: #444; align-items: flex-start; }
 .about-mission-card li i { color: #C41E3A; font-size: 11px; margin-top: 5px; flex-shrink: 0; }
 
-/* ── Dark company strip ── */
+/* â”€â”€ Dark company strip â”€â”€ */
 .about-dark-strip {
   background: #111; color: #fff;
   padding: 80px 0; position: relative; overflow: hidden;
@@ -3668,7 +3674,7 @@ body.page-about { background: #f1f0ee; }
 .about-timeline__title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px; }
 .about-timeline__desc  { font-size: 14px; color: rgba(255,255,255,.48); line-height: 1.6; }
 
-/* ── Values 3-col (grey bg) ── */
+/* â”€â”€ Values 3-col (grey bg) â”€â”€ */
 .about-values { background: #f1f0ee; padding: 80px 0; }
 .about-values-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -3688,12 +3694,12 @@ body.page-about { background: #f1f0ee; }
 .about-value-card p      { font-size: 14px; line-height: 1.75; opacity: .72; }
 
 /* ============================================================
-   PRODUCTS PAGE — Diagonal Split / High-Contrast Tech
+   PRODUCTS PAGE â€” Diagonal Split / High-Contrast Tech
    Theme: pure white bg, #101010 panel, vivid #E52323 accent
    ============================================================ */
 body.page-product { background: #fff; }
 
-/* ── Split hero ── */
+/* â”€â”€ Split hero â”€â”€ */
 .product-hero {
   position: relative; overflow: hidden;
   min-height: 90vh; display: flex; align-items: center;
@@ -3851,12 +3857,12 @@ body.page-product { background: #fff; }
 .product-step p  { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.6; }
 
 /* ============================================================
-   CONTACT PAGE — Warm Architectural / Dramatic Header
+   CONTACT PAGE â€” Warm Architectural / Dramatic Header
    Theme: warm #FAF9F7 body, very-dark #1a0a0a hero, burgundy #6B1E1E
    ============================================================ */
 body.page-contact { background: #faf9f7; }
 
-/* ── Full-bleed dark hero ── */
+/* â”€â”€ Full-bleed dark hero â”€â”€ */
 .contact-masthead {
   background: #1a0a0a; color: #fff;
   padding: 0; position: relative; overflow: hidden;
@@ -3936,7 +3942,7 @@ body.page-contact { background: #faf9f7; }
 .contact-pill a     { color: inherit; }
 .contact-pill i     { color: #e55; font-size: 14px; }
 
-/* ── Contact body layout ── */
+/* â”€â”€ Contact body layout â”€â”€ */
 .contact-page-body { padding: 60px 0 80px; }
 .contact-page-grid {
   display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start;
@@ -4441,12 +4447,12 @@ a.contact-eg-box:hover {
 }
 
 /* ============================================================
-   NEWS PAGE — Bold Editorial / Newspaper
+   NEWS PAGE â€” Bold Editorial / Newspaper
    Theme: off-white #FAFAF8, slate #2a2a2a, rust #B7300A
    ============================================================ */
 body.page-news { background: #fafaf8; }
 
-/* ── Newspaper masthead ── */
+/* â”€â”€ Newspaper masthead â”€â”€ */
 .news-masthead {
   background: #fafaf8; border-bottom: 3px solid #111; padding: 52px 0 30px;
 }
@@ -4469,7 +4475,7 @@ body.page-news { background: #fafaf8; }
 }
 .news-masthead__tagline svg { vertical-align: middle; margin-right: 6px; }
 
-/* ── Featured article ── */
+/* â”€â”€ Featured article â”€â”€ */
 .news-featured { padding: 52px 0 0; }
 .news-featured__grid {
   display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start;
@@ -4500,7 +4506,7 @@ body.page-news { background: #fafaf8; }
 .news-sidebar__title { font-size: 14px; font-weight: 700; color: #111; line-height: 1.4; }
 .news-sidebar__date  { font-size: 12px; color: #bbb; margin-top: 4px; }
 
-/* ── All news grid ── */
+/* â”€â”€ All news grid â”€â”€ */
 .news-all-section { padding: 52px 0 80px; }
 .news-all-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -4533,7 +4539,7 @@ body.page-news { background: #fafaf8; }
 }
 
 /* ============================================================
-   RESPONSIVE — inner page themes
+   RESPONSIVE â€” inner page themes
    ============================================================ */
 @media (max-width: 1024px) {
   .about-hero__inner      { grid-template-columns: 1fr; }
@@ -4673,7 +4679,7 @@ body.page-news { background: #fafaf8; }
 }
 
 /* ============================================================
-   CONTACT PAGE – photo hero & SVG card icons
+   CONTACT PAGE â€“ photo hero & SVG card icons
    ============================================================ */
 .contact-hero-photo-wrap {
   padding: 0 !important;
@@ -4765,3 +4771,5 @@ body.page-news { background: #fafaf8; }
   max-height: 22px !important;
   display: block;
 }
+
+
