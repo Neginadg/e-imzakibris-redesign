@@ -1952,6 +1952,9 @@
         const invoiceFullName = String(formData.get('invoiceFullName') || '');
         const invoiceAddress = String(formData.get('invoiceAddress') || '');
 
+        let resolvedFullName = '';
+        let resolvedIdentityNumber = '';
+
         let applicantSection = '';
         if (isPersonal) {
           const fullName = String(formData.get('fullName') || '');
@@ -1970,6 +1973,9 @@
             `Dogum Tarihi: ${birthDate}`,
             `Dogum Yeri: ${birthPlace}`,
           ].join('\n          ');
+
+          resolvedFullName = fullName;
+          resolvedIdentityNumber = identityNumber;
         } else {
           const companyName = String(formData.get('companyName') || '');
           const taxNumber = String(formData.get('taxNumber') || '');
@@ -1980,12 +1986,17 @@
             `Vergi Numarasi: ${taxNumber}`,
             `Vergi Dairesi: ${taxOffice}`,
           ].join('\n          ');
+
+          resolvedFullName = invoiceFullName || companyName;
+          resolvedIdentityNumber = '';
         }
 
         const mailSubject = `Zaman Damgasi Online Basvuru - ${pricing.planLabel}`;
         const submissionPayload = {
           form_kind: 'timestamp',
           source_page: 'support/tsonlineapplication.html',
+          full_name: resolvedFullName,
+          identity_number: resolvedIdentityNumber,
           application_type: applicationType,
           plan_label: pricing.planLabel,
           total_text: formatPrice(pricing.total),
