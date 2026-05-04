@@ -2337,21 +2337,25 @@ time {
 .field select,
 .field textarea {
   width: 100%;
+  min-height: 54px;
   padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, .1);
-  background: #fcfcfc;
+  border-radius: 14px;
+  border: 1px solid rgba(17, 24, 39, .12);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  color: #111827;
   font: inherit;
-  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
 }
 
 .field input:not([type="checkbox"]):not([type="radio"]):focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  border-color: rgba(180, 30, 30, .4);
-  box-shadow: 0 0 0 4px rgba(180, 30, 30, .08);
+  border-color: rgba(180, 30, 30, .42);
+  box-shadow: 0 0 0 4px rgba(180, 30, 30, .1);
   background: #fff;
+  transform: translateY(-1px);
 }
 
 .field input[type="checkbox"],
@@ -2637,16 +2641,32 @@ time {
 
 .payment-field input {
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, .08);
-  border-radius: 0;
-  background: #fff;
-  padding: 10px 12px;
+  min-height: 52px;
+  border: 1px solid rgba(17, 24, 39, .12);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  padding: 12px 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  color: #111827;
   font: inherit;
 }
 
 .payment-field input[readonly] {
-  background: #fdfdfd;
+  background: #f8fafc;
   color: #1f2937;
+}
+
+.payment-field input:focus {
+  outline: none;
+  border-color: rgba(180, 30, 30, .42);
+  box-shadow: 0 0 0 4px rgba(180, 30, 30, .1);
+  background: #fff;
+}
+
+.payment-field input::placeholder,
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #9ca3af;
 }
 
 .payment-info-box {
