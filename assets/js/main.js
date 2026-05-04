@@ -1399,6 +1399,7 @@
     const confirmPaymentMethodBtn = document.getElementById('confirm-payment-method');
     const detailsSection = document.getElementById('application-details');
     const submitSection = document.getElementById('application-submit');
+    const applicationSubmitMessage = document.getElementById('application-submit-message');
     const detailsForm = document.getElementById('application-details-form');
     const birthDateInput = detailsForm ? detailsForm.querySelector('input[name="birthDate"]') : null;
     const finalTotalPrice = document.getElementById('final-total-price');
@@ -1727,6 +1728,11 @@
 
         finalizeSendBtn.disabled = true;
         finalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+        if (applicationSubmitMessage) {
+          applicationSubmitMessage.style.display = 'none';
+          applicationSubmitMessage.innerHTML = '';
+          applicationSubmitMessage.className = 'application-submit__box';
+        }
 
         try {
           const payload = {
@@ -1746,16 +1752,15 @@
 
           await postBackendForm('/api/application-submit', payload);
 
-          setFormMessage(paymentMethodNote, 'success', 'Başvurunuz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
-          setActiveStep(1);
-          detailsForm.reset();
+          setFormMessage(applicationSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
           pendingApplicationMail = null;
           pendingApplicationSubmission = null;
-          setPaymentGateView();
-          if (submitSection) submitSection.classList.remove('is-visible');
-          scrollToSection(builderForm);
+          setActiveStep(3);
+          scrollToSection(submitSection);
         } catch (error) {
-          setFormMessage(paymentMethodNote, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+          setFormMessage(applicationSubmitMessage, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+          setActiveStep(3);
+          scrollToSection(submitSection);
         } finally {
           finalizeSendBtn.disabled = false;
           finalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
@@ -1784,6 +1789,7 @@
     const tsConfirmPaymentMethodBtn = document.getElementById('ts-confirm-payment-method');
     const tsDetailsSection = document.getElementById('ts-details');
     const tsSubmitSection = document.getElementById('ts-submit');
+    const tsSubmitMessage = document.getElementById('ts-submit-message');
     const tsDetailsForm = document.getElementById('ts-details-form');
     const tsFinalTotalPrice = document.getElementById('ts-final-total-price');
     const tsFinalPaymentAmount = document.getElementById('ts-final-payment-amount');
@@ -2111,6 +2117,11 @@
 
         tsFinalizeSendBtn.disabled = true;
         tsFinalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+        if (tsSubmitMessage) {
+          tsSubmitMessage.style.display = 'none';
+          tsSubmitMessage.innerHTML = '';
+          tsSubmitMessage.className = 'application-submit__box';
+        }
 
         try {
           const payload = {
@@ -2129,21 +2140,15 @@
 
           await postBackendForm('/api/application-submit', payload);
 
-          setTsPaymentGateView();
-          setActiveTsStep(1);
-          tsDetailsForm.reset();
+          setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
           pendingTsMail = null;
           pendingTsSubmission = null;
-          if (tsSubmitSection) tsSubmitSection.classList.remove('is-visible');
-          scrollToSection(tsBuilderForm);
-          setTsPaymentGateView();
-          if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-check"></i><p>Başvurunuz kaydedildi. Ekibimiz sizinle iletişime geçecektir.</p>';
-          }
+          setActiveTsStep(3);
+          scrollToSection(tsSubmitSection);
         } catch (error) {
-          if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = `<i class="fa-solid fa-circle-xmark"></i><p>${error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.'}</p>`;
-          }
+          setFormMessage(tsSubmitMessage, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+          setActiveTsStep(3);
+          scrollToSection(tsSubmitSection);
         } finally {
           tsFinalizeSendBtn.disabled = false;
           tsFinalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
