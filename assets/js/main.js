@@ -312,9 +312,53 @@
     ]);
 
     if (popupTargetIds.has(element.id)) {
-      const prefix = type === 'success' ? 'Başarılı' : 'Hata';
-      window.alert(`${prefix}: ${message}`);
+      showSubmitResultPopup(type, message);
     }
+  }
+
+  function showSubmitResultPopup(type, message) {
+    let popup = document.getElementById('submit-result-popup');
+    if (!popup) {
+      popup = document.createElement('div');
+      popup.id = 'submit-result-popup';
+      popup.className = 'submit-result-popup';
+      popup.innerHTML = [
+        '<div class="submit-result-popup__backdrop" data-popup-close="1"></div>',
+        '<div class="submit-result-popup__dialog" role="dialog" aria-modal="true" aria-live="polite">',
+        '  <div class="submit-result-popup__title" id="submit-result-popup-title"></div>',
+        '  <div class="submit-result-popup__message" id="submit-result-popup-message"></div>',
+        '  <button type="button" class="btn btn--primary submit-result-popup__button" data-popup-close="1">Tamam</button>',
+        '</div>'
+      ].join('');
+      document.body.appendChild(popup);
+
+      popup.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target && target.dataset && target.dataset.popupClose === '1') {
+          popup.classList.remove('is-visible');
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && popup.classList.contains('is-visible')) {
+          popup.classList.remove('is-visible');
+        }
+      });
+    }
+
+    const title = popup.querySelector('#submit-result-popup-title');
+    const body = popup.querySelector('#submit-result-popup-message');
+    popup.dataset.type = type;
+
+    if (title) {
+      title.textContent = type === 'success' ? 'Başvuru Başarılı' : 'Başvuru Başarısız';
+    }
+
+    if (body) {
+      body.textContent = message || 'İşlem sonucu oluşturulamadı.';
+    }
+
+    popup.classList.add('is-visible');
   }
 
   function buildFormPayload(formData, extra = {}) {
