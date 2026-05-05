@@ -303,6 +303,18 @@
     element.style.display = 'block';
     element.innerHTML = `<i class="fa-solid fa-${iconClass}"></i> ${message}`;
     element.dataset.type = type;
+
+    // Show popup for final submit result messages in application flows.
+    const popupTargetIds = new Set([
+      'application-submit-message',
+      'ts-submit-message',
+      'renewal-submit-message'
+    ]);
+
+    if (popupTargetIds.has(element.id)) {
+      const prefix = type === 'success' ? 'Başarılı' : 'Hata';
+      window.alert(`${prefix}: ${message}`);
+    }
   }
 
   function buildFormPayload(formData, extra = {}) {
