@@ -1686,7 +1686,7 @@
     });
 
     if (confirmPaymentMethodBtn) {
-      confirmPaymentMethodBtn.addEventListener('click', () => {
+      confirmPaymentMethodBtn.addEventListener('click', async () => {
         const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
         if (!selectedMethod) {
           if (paymentMethodNote) {
@@ -1695,7 +1695,7 @@
           return;
         }
 
-        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
+        // Reject credit card option
         if (selectedMethod.value === 'Kredi Kartı') {
           if (paymentMethodNote) {
             paymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
@@ -1703,6 +1703,60 @@
           return;
         }
 
+        // If user chooses "Teslimatta Ödeme", submit immediately (no Havale fields required)
+        if (selectedMethod.value === 'Teslimatta Ödeme') {
+          if (!pendingApplicationSubmission) {
+            if (paymentMethodNote) {
+              paymentMethodNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Başvuru verileri eksik. Lütfen formu kontrol edin.</p>';
+            }
+            return;
+          }
+
+          // Prepare payload and send
+          const payload = {
+            ...pendingApplicationSubmission,
+            payment_method: 'Teslimatta Ödeme',
+            payload: {
+              ...pendingApplicationSubmission.payload,
+              payment: {
+                paymentMethod: 'Teslimatta Ödeme'
+              }
+            }
+          };
+
+          try {
+            // show saving state
+            if (confirmPaymentMethodBtn) {
+              confirmPaymentMethodBtn.disabled = true;
+              confirmPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+            }
+
+            await postBackendForm('/api/application-submit', payload);
+
+            if (applicationSubmitMessage) {
+              setFormMessage(applicationSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+            }
+            pendingApplicationMail = null;
+            pendingApplicationSubmission = null;
+            setActiveStep(3);
+            scrollToSection(submitSection);
+          } catch (error) {
+            if (applicationSubmitMessage) {
+              setFormMessage(applicationSubmitMessage, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+            }
+            setActiveStep(3);
+            scrollToSection(submitSection);
+          } finally {
+            if (confirmPaymentMethodBtn) {
+              confirmPaymentMethodBtn.disabled = false;
+              confirmPaymentMethodBtn.innerHTML = 'İşlemi Onaylıyorum';
+            }
+          }
+
+          return;
+        }
+
+        // Default: Havale/EFT -> show final payment panel to collect transfer details
         setPaymentFinalView();
       });
     }
@@ -2088,7 +2142,7 @@
     });
 
     if (tsConfirmPaymentMethodBtn) {
-      tsConfirmPaymentMethodBtn.addEventListener('click', () => {
+      tsConfirmPaymentMethodBtn.addEventListener('click', async () => {
         const selectedMethod = document.querySelector('input[name="tsPaymentMethod"]:checked');
         if (!selectedMethod) {
           if (tsPaymentMethodNote) {
@@ -2102,6 +2156,49 @@
           if (tsPaymentMethodNote) {
             tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
           }
+          return;
+        }
+
+        // If user chooses "Teslimatta Ödeme", submit immediately (no Havale fields required)
+        if (selectedMethod.value === 'Teslimatta Ödeme') {
+          if (!pendingTsSubmission) {
+            if (tsPaymentMethodNote) {
+              tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Başvuru verileri eksik. Lütfen formu kontrol edin.</p>';
+            }
+            return;
+          }
+
+          const payload = {
+            ...pendingTsSubmission,
+            payment_method: 'Teslimatta Ödeme',
+            payload: {
+              ...pendingTsSubmission.payload,
+              payment: {
+                paymentMethod: 'Teslimatta Ödeme'
+              }
+            }
+          };
+
+          try {
+            tsConfirmPaymentMethodBtn.disabled = true;
+            tsConfirmPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+
+            await postBackendForm('/api/application-submit', payload);
+
+            setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+            pendingTsMail = null;
+            pendingTsSubmission = null;
+            setActiveTsStep(3);
+            scrollToSection(tsSubmitSection);
+          } catch (error) {
+            setFormMessage(tsSubmitMessage, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
+            setActiveTsStep(3);
+            scrollToSection(tsSubmitSection);
+          } finally {
+            tsConfirmPaymentMethodBtn.disabled = false;
+            tsConfirmPaymentMethodBtn.innerHTML = 'İşlemi Onaylıyorum';
+          }
+
           return;
         }
 
@@ -2294,7 +2391,7 @@
     });
 
     if (confirmRenewalPaymentMethodBtn) {
-      confirmRenewalPaymentMethodBtn.addEventListener('click', () => {
+      confirmRenewalPaymentMethodBtn.addEventListener('click', async () => {
         const selectedMethod = document.querySelector('input[name="renewalPaymentMethod"]:checked');
         if (!selectedMethod) {
           if (renewalPaymentNote) {
@@ -2308,6 +2405,53 @@
           if (renewalPaymentNote) {
             renewalPaymentNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
           }
+          return;
+        }
+
+        // If user chooses "Teslimatta Ödeme", submit immediately (no Havale fields required)
+        if (selectedMethod.value === 'Teslimatta Ödeme') {
+          if (!pendingRenewalSubmission) {
+            if (renewalPaymentNote) {
+              renewalPaymentNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Başvuru verileri eksik. Lütfen formu kontrol edin.</p>';
+            }
+            return;
+          }
+
+          const payload = {
+            ...pendingRenewalSubmission,
+            payment_method: 'Teslimatta Ödeme',
+            payload: {
+              ...pendingRenewalSubmission.payload,
+              payment: {
+                paymentMethod: 'Teslimatta Ödeme'
+              }
+            }
+          };
+
+          try {
+            confirmRenewalPaymentMethodBtn.disabled = true;
+            confirmRenewalPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+
+            await postBackendForm('/api/renewal-submit', payload);
+
+            if (renewalMessage) {
+              setFormMessage(renewalMessage, 'success', 'Yenileme talebiniz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+            }
+            renewalForm.reset();
+            pendingRenewalMail = null;
+            pendingRenewalSubmission = null;
+            setRenewalPaymentGateView();
+            if (renewalPaymentFinal) renewalPaymentFinal.style.display = 'none';
+            updateRenewalSummary();
+          } catch (error) {
+            if (renewalMessage) {
+              setFormMessage(renewalMessage, 'danger', error.message || 'Yenileme talebi kaydedilemedi. Lütfen tekrar deneyin.');
+            }
+          } finally {
+            confirmRenewalPaymentMethodBtn.disabled = false;
+            confirmRenewalPaymentMethodBtn.innerHTML = 'İşlemi Onaylıyorum';
+          }
+
           return;
         }
 
