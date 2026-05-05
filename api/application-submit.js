@@ -1,7 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
-const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
+const { buildHtmlSummary, toPlainText, sendEmail, buildApplicationConfirmationEmail, buildApplicationPaymentEmail } = require('../lib/email');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -87,9 +87,9 @@ module.exports = async function handler(req, res) {
     try {
       await sendEmail(config, {
         to: record.email,
-        subject: 'Basvuru Onayi',
-        html: buildHtmlSummary(customerSummaryData, 'Basvurunuz Alindi'),
-        text: toPlainText(customerSummaryData).join('\n')
+        subject: 'e-imza Başvuru',
+        html: buildApplicationConfirmationEmail(customerSummaryData, inserted && inserted.id ? inserted.id : 'N/A'),
+        text: 'Başvurunuz alınmıştır.'
       });
       emailStatus.customerConfirmation = true;
     } catch (error) {
@@ -99,9 +99,9 @@ module.exports = async function handler(req, res) {
     try {
       await sendEmail(config, {
         to: record.email,
-        subject: 'Odeme Bilgileri',
-        html: '<div style="font-family:Arial,sans-serif;font-size:14px;color:#111;"><h2>Odeme Bilgileri</h2><p>Basvurunuz icin tesekkur ederiz.</p><pre style="white-space:pre-wrap;background:#f7f7f7;padding:12px;border:1px solid #ddd;">' + paymentText + '</pre></div>',
-        text: paymentText
+        subject: 'e-imza PAKETİNİZ',
+        html: buildApplicationPaymentEmail(record, config.bankAccountDetails || ''),
+        text: 'Ödeme detayları için lütfen HTML versiyonu görüntüleyiniz.'
       });
       emailStatus.customerPayment = true;
     } catch (error) {
