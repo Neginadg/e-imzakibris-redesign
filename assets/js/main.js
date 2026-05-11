@@ -2239,7 +2239,7 @@
             tsConfirmPaymentMethodBtn.disabled = true;
             tsConfirmPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
 
-            await postBackendForm('/api/application-submit', payload);
+            await postBackendForm('/api/timestamp-submit', payload);
 
             setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
             pendingTsMail = null;
@@ -2319,7 +2319,7 @@
             }
           };
 
-          await postBackendForm('/api/application-submit', payload);
+          await postBackendForm('/api/timestamp-submit', payload);
 
           setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
           pendingTsMail = null;
@@ -2540,6 +2540,65 @@
         renewalForm.requestSubmit();
       });
     }
+  }
+
+  /* ---- MOlOhiya purchase form ---- */
+  const molohiyaForm = document.getElementById('molohiya-application-form-fields');
+  if (molohiyaForm) {
+    const molohiyaMessage = document.getElementById('molohiya-application-submit-message');
+
+    molohiyaForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!molohiyaForm.reportValidity()) return;
+
+      const submitBtn = molohiyaForm.querySelector('button[type="submit"]');
+      if (!submitBtn) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+
+      try {
+        const formData = new FormData(molohiyaForm);
+        const fullName = String(formData.get('fullName') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const phone = keepDigitsOnly(formData.get('phone'));
+        const identityNumber = String(formData.get('identityNumber') || '').trim();
+        const renewalTerm = String(formData.get('renewalTerm') || '');
+
+        const submissionPayload = {
+          form_kind: 'molohiya',
+          source_page: 'products/molohiya.html',
+          plan_label: renewalTerm,
+          full_name: fullName,
+          email,
+          phone,
+          identity_number: identityNumber,
+          payment_method: 'Havale/EFT',
+          payload: {
+            fullName,
+            email,
+            phone,
+            identityNumber,
+            renewalTerm
+          }
+        };
+
+        await postBackendForm('/api/molohiya-submit', submissionPayload);
+
+        if (molohiyaMessage) {
+          setFormMessage(molohiyaMessage, 'success', 'Teşekkürler, MOlOhiya satın alma talebiniz alınmıştır. Ekibimiz sizinle iletişime geçecektir.');
+        }
+        molohiyaForm.reset();
+      } catch (error) {
+        if (molohiyaMessage) {
+          setFormMessage(molohiyaMessage, 'danger', error.message || 'Satın alma talebi kaydedilemedi. Lütfen tekrar deneyin.');
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Satin Alma Talebini Gonder';
+      }
+    });
   }
 
 })();
