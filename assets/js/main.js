@@ -2186,78 +2186,10 @@
     }
 
     // Handle Teslimatta Ödeme notice visibility
-    const tsTeslimattaOdemeNotice = document.getElementById('ts-teslimatta-odeme-notice');
     const tsPaymentMethodInputs = Array.from(document.querySelectorAll('input[name="tsPaymentMethod"]'));
     
-    tsPaymentMethodInputs.forEach((input) => {
-      input.addEventListener('change', () => {
-        if (tsTeslimattaOdemeNotice) {
-          tsTeslimattaOdemeNotice.style.display = input.value === 'Teslimatta Ödeme' ? 'block' : 'none';
-        }
-      });
-    });
-
     if (tsConfirmPaymentMethodBtn) {
       tsConfirmPaymentMethodBtn.addEventListener('click', async () => {
-        const selectedMethod = document.querySelector('input[name="tsPaymentMethod"]:checked');
-        if (!selectedMethod) {
-          if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Lütfen devam etmek için bir ödeme yöntemi seçiniz.</p>';
-          }
-          return;
-        }
-
-        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
-        if (selectedMethod.value === 'Kredi Kartı') {
-          if (tsPaymentMethodNote) {
-            tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
-          }
-          return;
-        }
-
-        // If user chooses "Teslimatta Ödeme", submit immediately (no Havale fields required)
-        if (selectedMethod.value === 'Teslimatta Ödeme') {
-          if (!pendingTsSubmission) {
-            if (tsPaymentMethodNote) {
-              tsPaymentMethodNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Başvuru verileri eksik. Lütfen formu kontrol edin.</p>';
-            }
-            return;
-          }
-
-          const payload = {
-            ...pendingTsSubmission,
-            payment_method: 'Teslimatta Ödeme',
-            payload: {
-              ...pendingTsSubmission.payload,
-              payment: {
-                paymentMethod: 'Teslimatta Ödeme'
-              }
-            }
-          };
-
-          try {
-            tsConfirmPaymentMethodBtn.disabled = true;
-            tsConfirmPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
-
-            await postBackendForm('/api/timestamp-submit', payload);
-
-            setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
-            pendingTsMail = null;
-            pendingTsSubmission = null;
-            setActiveTsStep(3);
-            scrollToSection(tsSubmitSection);
-          } catch (error) {
-            setFormMessage(tsSubmitMessage, 'danger', error.message || 'Başvuru kaydedilemedi. Lütfen tekrar deneyin.');
-            setActiveTsStep(3);
-            scrollToSection(tsSubmitSection);
-          } finally {
-            tsConfirmPaymentMethodBtn.disabled = false;
-            tsConfirmPaymentMethodBtn.innerHTML = 'İşlemi Onaylıyorum';
-          }
-
-          return;
-        }
-
         setTsPaymentFinalView();
       });
     }
@@ -2546,6 +2478,70 @@
   const molohiyaForm = document.getElementById('molohiya-application-form-fields');
   if (molohiyaForm) {
     const molohiyaMessage = document.getElementById('molohiya-application-submit-message');
+    const molohiyaPaymentGate = document.getElementById('molohiya-payment-gate');
+    const molohiyaPaymentFinal = document.getElementById('molohiya-payment-final');
+    const molohiyaPaymentNote = document.getElementById('molohiya-payment-note');
+    const molohiyaBackToDetails = document.getElementById('molohiya-back-to-details');
+    const molohiyaConfirmPayment = document.getElementById('molohiya-confirm-payment');
+    const molohiyaBackToGate = document.getElementById('molohiya-back-to-gate');
+    const molohiyaFinalizeSend = document.getElementById('molohiya-finalize-send');
+    const molohiyaFinalTotalPrice = document.getElementById('molohiya-final-total-price');
+    const molohiyaFinalPaymentAmount = document.getElementById('molohiya-final-payment-amount');
+    const molohiyaFinalSenderFirst = document.getElementById('molohiya-final-sender-first');
+    const molohiyaFinalSenderLast = document.getElementById('molohiya-final-sender-last');
+
+    let pendingMolohiyaMail = null;
+    let pendingMolohiyaSubmission = null;
+    let molohiyaTotalText = '-';
+
+    const currencyFormatter = new Intl.NumberFormat('tr-TR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    const formatPrice = (value) => `${currencyFormatter.format(value)} ₺`;
+    const KDV_RATE = 0.15;
+
+    const setMolohiyaPaymentGateView = () => {
+      if (molohiyaPaymentGate) molohiyaPaymentGate.style.display = 'grid';
+      if (molohiyaPaymentFinal) molohiyaPaymentFinal.style.display = 'none';
+    };
+
+    const setMolohiyaPaymentFinalView = () => {
+      if (molohiyaPaymentGate) molohiyaPaymentGate.style.display = 'none';
+      if (molohiyaPaymentFinal) molohiyaPaymentFinal.style.display = 'grid';
+    };
+
+    const calculateMolohiyaTotal = (basePrice) => {
+      const kdvAmount = basePrice * KDV_RATE;
+      return basePrice + kdvAmount;
+    };
+
+    const scrollToSection = (element) => {
+      if (!element) return;
+      const offset = (navbar ? navbar.offsetHeight : 0) + 20;
+      const top = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    };
+
+    if (molohiyaBackToDetails) {
+      molohiyaBackToDetails.addEventListener('click', () => {
+        if (molohiyaPaymentGate) molohiyaPaymentGate.style.display = 'none';
+        scrollToSection(molohiyaForm);
+      });
+    }
+
+    if (molohiyaConfirmPayment) {
+      molohiyaConfirmPayment.addEventListener('click', () => {
+        setMolohiyaPaymentFinalView();
+      });
+    }
+
+    if (molohiyaBackToGate) {
+      molohiyaBackToGate.addEventListener('click', () => {
+        setMolohiyaPaymentGateView();
+      });
+    }
 
     molohiyaForm.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -2555,50 +2551,114 @@
       const submitBtn = molohiyaForm.querySelector('button[type="submit"]');
       if (!submitBtn) return;
 
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+      const formData = new FormData(molohiyaForm);
+      const fullName = String(formData.get('fullName') || '').trim();
+      const email = String(formData.get('email') || '').trim();
+      const phone = keepDigitsOnly(formData.get('phone'));
+      const identityNumber = String(formData.get('identityNumber') || '').trim();
+      const renewalTerm = String(formData.get('renewalTerm') || '');
 
-      try {
-        const formData = new FormData(molohiyaForm);
-        const fullName = String(formData.get('fullName') || '').trim();
-        const email = String(formData.get('email') || '').trim();
-        const phone = keepDigitsOnly(formData.get('phone'));
-        const identityNumber = String(formData.get('identityNumber') || '').trim();
-        const renewalTerm = String(formData.get('renewalTerm') || '');
+      const termInput = molohiyaForm.querySelector('input[name="renewalTerm"]:checked');
+      const basePrice = termInput ? Number(termInput.dataset.price || 0) : 0;
+      const total = calculateMolohiyaTotal(basePrice);
+      molohiyaTotalText = formatPrice(total);
 
-        const submissionPayload = {
-          form_kind: 'molohiya',
-          source_page: 'products/molohiya.html',
-          plan_label: renewalTerm,
-          full_name: fullName,
+      if (molohiyaFinalTotalPrice) molohiyaFinalTotalPrice.textContent = molohiyaTotalText;
+      if (molohiyaFinalPaymentAmount) molohiyaFinalPaymentAmount.value = currencyFormatter.format(total);
+
+      const submissionPayload = {
+        form_kind: 'molohiya',
+        source_page: 'products/molohiya.html',
+        plan_label: renewalTerm,
+        total_text: molohiyaTotalText,
+        full_name: fullName,
+        email,
+        phone,
+        identity_number: identityNumber,
+        payment_method: 'Havale/EFT',
+        payload: {
+          fullName,
           email,
           phone,
-          identity_number: identityNumber,
-          payment_method: 'Havale/EFT',
-          payload: {
-            fullName,
-            email,
-            phone,
-            identityNumber,
-            renewalTerm
-          }
-        };
-
-        await postBackendForm('/api/molohiya-submit', submissionPayload);
-
-        if (molohiyaMessage) {
-          setFormMessage(molohiyaMessage, 'success', 'Teşekkürler, MOlOhiya satın alma talebiniz alınmıştır. Ekibimiz sizinle iletişime geçecektir.');
+          identityNumber,
+          renewalTerm,
+          basePrice,
+          total
         }
-        molohiyaForm.reset();
-      } catch (error) {
-        if (molohiyaMessage) {
-          setFormMessage(molohiyaMessage, 'danger', error.message || 'Satın alma talebi kaydedilemedi. Lütfen tekrar deneyin.');
-        }
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Satin Alma Talebini Gonder';
-      }
+      };
+
+      pendingMolohiyaMail = {
+        subject: `MOlOhiya Satin Alma - ${renewalTerm}`,
+        totalText: molohiyaTotalText,
+      };
+      pendingMolohiyaSubmission = submissionPayload;
+
+      setMolohiyaPaymentGateView();
+      scrollToSection(molohiyaPaymentGate);
     });
+
+    if (molohiyaFinalizeSend) {
+      molohiyaFinalizeSend.addEventListener('click', async () => {
+        if (!pendingMolohiyaMail || !pendingMolohiyaSubmission) {
+          molohiyaForm.requestSubmit();
+          return;
+        }
+
+        if (!molohiyaFinalSenderFirst || !molohiyaFinalSenderLast) return;
+
+        molohiyaFinalSenderFirst.setCustomValidity('');
+        molohiyaFinalSenderLast.setCustomValidity('');
+
+        if (!molohiyaFinalSenderFirst.value.trim()) {
+          molohiyaFinalSenderFirst.setCustomValidity('Gonderenin adi zorunludur.');
+          molohiyaFinalSenderFirst.reportValidity();
+          return;
+        }
+
+        if (!molohiyaFinalSenderLast.value.trim()) {
+          molohiyaFinalSenderLast.setCustomValidity('Gonderenin soyadi zorunludur.');
+          molohiyaFinalSenderLast.reportValidity();
+          return;
+        }
+
+        molohiyaFinalizeSend.disabled = true;
+        molohiyaFinalizeSend.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+
+        try {
+          const payload = {
+            ...pendingMolohiyaSubmission,
+            payment_method: 'Havale/EFT',
+            payload: {
+              ...pendingMolohiyaSubmission.payload,
+              payment: {
+                senderFirst: molohiyaFinalSenderFirst.value.trim(),
+                senderLast: molohiyaFinalSenderLast.value.trim(),
+                paymentAmount: molohiyaTotalText,
+                paymentMethod: 'Havale/EFT'
+              }
+            }
+          };
+
+          await postBackendForm('/api/molohiya-submit', payload);
+
+          if (molohiyaMessage) {
+            setFormMessage(molohiyaMessage, 'success', 'Teşekkürler, MOlOhiya satın alma talebiniz alınmıştır. Ödeme ile ilgili size ayrı e-posta gönderilecektir.');
+          }
+          molohiyaForm.reset();
+          pendingMolohiyaMail = null;
+          pendingMolohiyaSubmission = null;
+          setMolohiyaPaymentGateView();
+          if (molohiyaPaymentFinal) molohiyaPaymentFinal.style.display = 'none';
+        } catch (error) {
+          if (molohiyaMessage) {
+            setFormMessage(molohiyaMessage, 'danger', error.message || 'Satın alma talebi kaydedilemedi. Lütfen tekrar deneyin.');
+          }
+        } finally {
+          molohiyaFinalizeSend.disabled = false;
+          molohiyaFinalizeSend.innerHTML = 'Satın Alma Talebini Gönder';
+        }
+      });
+    }
   }
 
 })();

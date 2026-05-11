@@ -363,6 +363,81 @@
               </div>
             </form>
 
+            <div class="payment-method-gate" id="molohiya-payment-gate" style="display:none; margin-top: 16px;">
+              <div class="payment-method-card">
+                <h3 class="payment-method-card__title">Ödeme şekli</h3>
+                <div class="payment-method-options">
+                  <label><input type="radio" name="molohiyaPaymentMethod" value="Havale/EFT" checked /> Havale/EFT</label>
+                </div>
+              </div>
+
+              <div class="payment-info-box" id="molohiya-payment-note">
+                <p>Lütfen onay verdikten sonra internet tarayıcınızın <strong>Geri</strong> butonuna basmayınız.</p>
+              </div>
+
+              <div class="builder-actions builder-actions--between payment-gate-actions">
+                <button type="button" class="btn btn--outline" id="molohiya-back-to-details">Geri</button>
+                <button type="button" class="btn btn--primary btn--lg" id="molohiya-confirm-payment">İşlemi Onaylıyorum</button>
+              </div>
+            </div>
+
+            <div class="payment-final" id="molohiya-payment-final" style="display:none; margin-top: 16px;">
+              <div class="payment-final__total">
+                <span>KDV Dahil Toplam Tutar</span>
+                <strong id="molohiya-final-total-price">-</strong>
+              </div>
+
+              <div class="payment-final__panel">
+                <h3 class="payment-final__title">Havale/EFT</h3>
+
+                <label class="payment-field payment-field--full">
+                  <span>Ödeme Tutarı (₺)</span>
+                  <input type="text" id="molohiya-final-payment-amount" readonly value="-" />
+                </label>
+
+                <div class="payment-field-grid">
+                  <label class="payment-field">
+                    <span>Gönderenin Adı *</span>
+                    <input type="text" id="molohiya-final-sender-first" placeholder="Ad" required />
+                  </label>
+                  <label class="payment-field">
+                    <span>Gönderenin Soyadı *</span>
+                    <input type="text" id="molohiya-final-sender-last" placeholder="Soyad" required />
+                  </label>
+                </div>
+
+                <div class="payment-info-box" style="border-left: 4px solid #d11c1c;">
+                  <p style="font-weight: 500; margin-bottom: 10px;"><strong>Önemli</strong></p>
+                  <p style="margin-bottom: 12px; line-height: 1.6;">
+                    Havale/EFT yaptıktan sonra dekontunuzu <strong>satis@e-imzakibris.com</strong> adresine e-posta ile göndermeniz ya da <strong>+90 (539) 120 5115</strong> nolu What's App numarasına iletmeniz gerekmektedir.<br /><br />
+                    İşlemleriniz ödemeniz hesabımıza aktarıldıktan ve finans ekibimizin onayından sonra başlayacaktır.
+                  </p>
+                  <p style="font-weight: 500; color: #d32f2f;">
+                    Bir hafta içinde havalesi yapılmayan siparişler İptal edilir!
+                  </p>
+                </div>
+
+                <div class="payment-info-box">
+                  <p>
+                    <strong>Havale/EFT ile Ödeme için Banka Hesap Bilgileri</strong><br />
+                    <br />
+                    <strong>Hesap Adı:</strong><br />
+                    Denizler Bilişim Hizmetleri Limited<br />
+                    <br />
+                    <strong>Banka Adı:</strong> Türkiye Garanti Bankası Lefkoşa şubesi<br />
+                    <br />
+                    <strong>TL Hesap No:</strong> 493-6294690<br />
+                    <strong>IBAN:</strong> TR34 0006 2000 4930 0006 2946 90 10
+                  </p>
+                </div>
+
+                <div class="builder-actions builder-actions--between payment-final__actions">
+                  <button type="button" class="btn btn--outline" id="molohiya-back-to-gate">Geri</button>
+                  <button type="button" class="btn btn--primary btn--lg" id="molohiya-finalize-send">Satın Alma Talebini Gönder</button>
+                </div>
+              </div>
+            </div>
+
             <div class="application-submit__box" id="molohiya-application-submit-message" style="display:none; margin-top: 14px;">
               Satin alma talebiniz gonderime hazir.
             </div>
