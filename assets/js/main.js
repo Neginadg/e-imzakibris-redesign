@@ -2426,6 +2426,33 @@
 
     renewalTermInputs.forEach((input) => input.addEventListener('change', updateRenewalSummary));
     molohiyaLicenseInputs.forEach((input) => input.addEventListener('change', updateRenewalSummary));
+
+    // Add toggle (deselect on re-click) for renewal term options
+    renewalTermInputs.forEach((input) => {
+      input.addEventListener('click', (e) => {
+        if (input.dataset.wasChecked === 'true') {
+          input.checked = false;
+          input.dataset.wasChecked = 'false';
+          updateRenewalSummary();
+        } else {
+          input.dataset.wasChecked = 'true';
+        }
+      });
+    });
+
+    // Add toggle (deselect on re-click) for molohiya license options
+    molohiyaLicenseInputs.forEach((input) => {
+      input.addEventListener('click', (e) => {
+        if (input.dataset.wasChecked === 'true') {
+          input.checked = false;
+          input.dataset.wasChecked = 'false';
+          updateRenewalSummary();
+        } else {
+          input.dataset.wasChecked = 'true';
+        }
+      });
+    });
+
     updateRenewalSummary();
 
     if (backToRenewalFormBtn) {
@@ -2446,193 +2473,71 @@
       });
     });
 
-    if (confirmRenewalPaymentMethodBtn) {
-      confirmRenewalPaymentMethodBtn.addEventListener('click', async () => {
-        const selectedMethod = document.querySelector('input[name="renewalPaymentMethod"]:checked');
-        if (!selectedMethod) {
-          if (renewalPaymentNote) {
-            renewalPaymentNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Lütfen devam etmek için bir ödeme yöntemi seçiniz.</p>';
-          }
-          return;
-        }
-
-        // Allow Havale/EFT and Teslimatta Ödeme, reject Kredi Kartı
-        if (selectedMethod.value === 'Kredi Kartı') {
-          if (renewalPaymentNote) {
-            renewalPaymentNote.innerHTML = '<i class="fa-solid fa-circle-info"></i><p>Kredi Kartı ile ödeme şu anda kullanılamıyor. Lütfen <strong>Havale/EFT</strong> veya <strong>Teslimatta Ödeme</strong> seçiniz.</p>';
-          }
-          return;
-        }
-
-        // If user chooses "Teslimatta Ödeme", submit immediately (no Havale fields required)
-        if (selectedMethod.value === 'Teslimatta Ödeme') {
-          if (!pendingRenewalSubmission) {
-            if (renewalPaymentNote) {
-              renewalPaymentNote.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Başvuru verileri eksik. Lütfen formu kontrol edin.</p>';
-            }
-            return;
-          }
-
-          const payload = {
-            ...pendingRenewalSubmission,
-            payment_method: 'Teslimatta Ödeme',
-            payload: {
-              ...pendingRenewalSubmission.payload,
-              payment: {
-                paymentMethod: 'Teslimatta Ödeme'
-              }
-            }
-          };
-
-          try {
-            confirmRenewalPaymentMethodBtn.disabled = true;
-            confirmRenewalPaymentMethodBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
-
-            await postBackendForm('/api/renewal-submit', payload);
-
-            if (renewalMessage) {
-              setFormMessage(renewalMessage, 'success', 'Yenileme talebiniz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
-            }
-            renewalForm.reset();
-            pendingRenewalMail = null;
-            pendingRenewalSubmission = null;
-            setRenewalPaymentGateView();
-            if (renewalPaymentFinal) renewalPaymentFinal.style.display = 'none';
-            updateRenewalSummary();
-          } catch (error) {
-            if (renewalMessage) {
-              setFormMessage(renewalMessage, 'danger', error.message || 'Yenileme talebi kaydedilemedi. Lütfen tekrar deneyin.');
-            }
-          } finally {
-            confirmRenewalPaymentMethodBtn.disabled = false;
-            confirmRenewalPaymentMethodBtn.innerHTML = 'İşlemi Onaylıyorum';
-          }
-
-          return;
-        }
-
-        setRenewalPaymentFinalView();
-      });
-    }
-
-    if (backToRenewalGateBtn) {
-      backToRenewalGateBtn.addEventListener('click', () => {
-        setRenewalPaymentGateView();
-      });
-    }
-
-    renewalForm.addEventListener('submit', (event) => {
+    renewalForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       if (!renewalForm.reportValidity()) return;
 
-      const formData = new FormData(renewalForm);
-      const fullName = String(formData.get('fullName') || '');
-      const email = String(formData.get('email') || '');
-      const phone = keepDigitsOnly(formData.get('phone'));
-      const identityNumber = String(formData.get('identityNumber') || '');
-      const renewalTerm = String(formData.get('renewalTerm') || '');
-      const molohiyaLicense = String(formData.get('molohiyaLicense') || '-');
+      const submitBtn = renewalForm.querySelector('button[type="submit"]');
+      if (!submitBtn) return;
 
-      const mailSubject = `Yenileme Basvurusu - ${fullName}`;
-      const submissionPayload = {
-        form_kind: 'renewal',
-        source_page: 'support/renewal.html',
-        plan_label: renewalTerm,
-        total_text: pendingRenewalTotalText,
-        full_name: fullName,
-        email,
-        phone,
-        payload: {
-          fullName,
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yenileme Başvurusu Gönderiliyor...';
+
+      try {
+        const formData = new FormData(renewalForm);
+        const fullName = String(formData.get('fullName') || '');
+        const email = String(formData.get('email') || '');
+        const phone = keepDigitsOnly(formData.get('phone'));
+        const identityNumber = String(formData.get('identityNumber') || '');
+        const renewalTerm = String(formData.get('renewalTerm') || '');
+        const molohiyaLicense = String(formData.get('molohiyaLicense') || '-');
+
+        const submissionPayload = {
+          form_kind: 'renewal',
+          source_page: 'support/renewal.html',
+          plan_label: renewalTerm,
+          total_text: pendingRenewalTotalText,
+          full_name: fullName,
           email,
           phone,
-          identityNumber,
-          renewalTerm,
-          molohiyaLicense
+          payment_method: 'Havale/EFT',
+          payload: {
+            fullName,
+            email,
+            phone,
+            identityNumber,
+            renewalTerm,
+            molohiyaLicense
+          }
+        };
+
+        await postBackendForm('/api/renewal-submit', submissionPayload);
+
+        if (renewalMessage) {
+          setFormMessage(renewalMessage, 'success', 'Teşekkürler, Yenileme Başvurunuz Alınmıştır. Ödeme ile ilgili size ayrı e-posta gönderilecektir.');
         }
-      };
-
-      pendingRenewalMail = {
-        subject: mailSubject,
-        totalText: pendingRenewalTotalText,
-      };
-      pendingRenewalSubmission = submissionPayload;
-
-      if (renewalMessage) {
-        renewalMessage.textContent = 'Ödeme yöntemi seçimi için bir sonraki adıma geçiniz.';
-        renewalMessage.style.display = 'block';
-      }
-
-      setRenewalPaymentGateView();
-      if (renewalPaymentGate) {
-        const offset = (navbar ? navbar.offsetHeight : 0) + 20;
-        const top = renewalPaymentGate.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        
+        renewalForm.reset();
+        pendingRenewalMail = null;
+        pendingRenewalSubmission = null;
+        if (renewalPaymentGate) renewalPaymentGate.style.display = 'none';
+        if (renewalPaymentFinal) renewalPaymentFinal.style.display = 'none';
+        updateRenewalSummary();
+      } catch (error) {
+        if (renewalMessage) {
+          setFormMessage(renewalMessage, 'danger', error.message || 'Yenileme başvurusu kaydedilemedi. Lütfen tekrar deneyin.');
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Yenileme Talebini Gönder';
       }
     });
 
     if (renewalFinalizeSendBtn) {
       renewalFinalizeSendBtn.addEventListener('click', async () => {
-        if (!pendingRenewalMail || !pendingRenewalSubmission) {
-          renewalForm.requestSubmit();
-          return;
-        }
-
-        if (!renewalFinalSenderFirst || !renewalFinalSenderLast) return;
-
-        renewalFinalSenderFirst.setCustomValidity('');
-        renewalFinalSenderLast.setCustomValidity('');
-
-        if (!renewalFinalSenderFirst.value.trim()) {
-          renewalFinalSenderFirst.setCustomValidity('Gonderenin adi zorunludur.');
-          renewalFinalSenderFirst.reportValidity();
-          return;
-        }
-
-        if (!renewalFinalSenderLast.value.trim()) {
-          renewalFinalSenderLast.setCustomValidity('Gonderenin soyadi zorunludur.');
-          renewalFinalSenderLast.reportValidity();
-          return;
-        }
-
-        renewalFinalizeSendBtn.disabled = true;
-        renewalFinalizeSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
-
-        try {
-          const payload = {
-            ...pendingRenewalSubmission,
-            payment_method: 'Havale/EFT',
-            payload: {
-              ...pendingRenewalSubmission.payload,
-              payment: {
-                senderFirst: renewalFinalSenderFirst.value.trim(),
-                senderLast: renewalFinalSenderLast.value.trim(),
-                paymentAmount: pendingRenewalTotalText,
-                paymentMethod: 'Havale/EFT'
-              }
-            }
-          };
-
-          await postBackendForm('/api/renewal-submit', payload);
-
-          if (renewalMessage) {
-            setFormMessage(renewalMessage, 'success', 'Yenileme talebiniz kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
-          }
-          renewalForm.reset();
-          pendingRenewalMail = null;
-          pendingRenewalSubmission = null;
-          setRenewalPaymentGateView();
-          if (renewalPaymentFinal) renewalPaymentFinal.style.display = 'none';
-          updateRenewalSummary();
-        } catch (error) {
-          if (renewalMessage) {
-            setFormMessage(renewalMessage, 'danger', 'Yenileme talebi kaydedilemedi. Lütfen tekrar deneyin.');
-          }
-        } finally {
-          renewalFinalizeSendBtn.disabled = false;
-          renewalFinalizeSendBtn.innerHTML = 'Başvuru Özetini Gönder';
-        }
+        // Payment flow disabled - form now submits directly
+        renewalForm.requestSubmit();
       });
     }
   }

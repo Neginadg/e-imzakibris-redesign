@@ -1,7 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
-const { buildHtmlSummary, toPlainText, sendEmail, buildApplicationConfirmationEmail, buildApplicationPaymentEmail } = require('../lib/email');
+const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -87,25 +87,13 @@ module.exports = async function handler(req, res) {
     try {
       await sendEmail(config, {
         to: record.email,
-        subject: 'e-imza Başvuru',
-        html: buildApplicationConfirmationEmail(customerSummaryData, inserted && inserted.id ? inserted.id : 'N/A'),
-        text: 'Başvurunuz alınmıştır.'
+        subject: 'Basvuru Onayi',
+        html: buildHtmlSummary(customerSummaryData, 'Basvurunuz Alindi'),
+        text: toPlainText(customerSummaryData).join('\n')
       });
       emailStatus.customerConfirmation = true;
     } catch (error) {
       emailStatus.customerConfirmation = false;
-    }
-
-    try {
-      await sendEmail(config, {
-        to: record.email,
-        subject: 'e-imza PAKETİNİZ',
-        html: buildApplicationPaymentEmail(record, config.bankAccountDetails || ''),
-        text: 'Ödeme detayları için lütfen HTML versiyonu görüntüleyiniz.'
-      });
-      emailStatus.customerPayment = true;
-    } catch (error) {
-      emailStatus.customerPayment = false;
     }
 
     return sendJson(res, 200, {
@@ -113,7 +101,7 @@ module.exports = async function handler(req, res) {
       stored: true,
       emailStatus,
       id: inserted && inserted.id ? inserted.id : null,
-      warning: emailStatus.company && emailStatus.customerConfirmation && emailStatus.customerPayment
+      warning: emailStatus.company && emailStatus.customerConfirmation
         ? null
         : 'Saved to database but one or more emails failed to send.'
     });
