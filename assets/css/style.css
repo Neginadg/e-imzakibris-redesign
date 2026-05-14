@@ -210,10 +210,12 @@ section,
 .navbar {
   position: relative;
   z-index: 1000;
-  height: var(--navbar-h);
+  width: 100%;
   background: transparent;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 12px 0;
   transition: all var(--transition);
 }
 
@@ -226,6 +228,7 @@ section,
   .navbar {
     position: sticky;
     top: var(--topbar-h);
+    padding: 8px 0;
   }
 }
 
@@ -234,15 +237,16 @@ section,
   grid-template-columns: max-content minmax(0, 1fr) max-content;
   align-items: center;
   gap: 36px;
-  height: calc(var(--navbar-h) - 10px);
-  margin-top: 5px;
-  padding-inline: 24px;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px 24px;
   border: 1px solid rgba(255,255,255,.55);
   border-radius: 18px;
   background: rgba(255,255,255,.84);
   box-shadow: 0 10px 28px rgba(0,0,0,.10);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  margin: 0 24px;
 }
 
 .navbar.scrolled .navbar__inner {
