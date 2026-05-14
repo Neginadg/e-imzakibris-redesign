@@ -209,7 +209,7 @@ section,
    ============================================================ */
 .navbar {
   position: sticky;
-  top: 0;
+  top: var(--topbar-h);
   z-index: 1000;
   height: var(--navbar-h);
   background: transparent;
@@ -2981,6 +2981,9 @@ time {
 
   .page-hero__inner { grid-template-columns: 1fr; }
   .page-hero__inner > * { min-width: 0; }
+
+  /* On small screens topbar is hidden; ensure navbar sits at top */
+  .navbar { top: 0; }
 
   .product-feature-row > * { min-width: 0; }
   .about-mission-grid > * { min-width: 0; }
