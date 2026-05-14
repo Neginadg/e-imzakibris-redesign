@@ -447,9 +447,16 @@ section,
   height: 40px;
   padding: 9px;
   flex-shrink: 0;
+  z-index: 1001;
   border-radius: 12px;
   border: 1px solid rgba(0,0,0,.1);
   background: rgba(255,255,255,.9);
+  transition: all var(--transition);
+}
+
+.hamburger:hover {
+  background: rgba(255,255,255,1);
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 
 .hamburger span {
@@ -468,13 +475,21 @@ section,
 /* Mobile Nav */
 .mobile-nav {
   position: fixed;
-  inset: var(--header-h) 0 0 0;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: #fff;
-  z-index: 999;
+  z-index: 998;
   padding: 24px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transform: translateX(100%);
   transition: transform var(--transition-slow);
+  will-change: transform;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .mobile-nav.open {
@@ -484,10 +499,16 @@ section,
 @media (min-width: 1101px) {
   .mobile-nav {
     display: none !important;
+    transform: translateX(100%);
   }
 }
 
-.mobile-nav__list { display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav__list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 4px;
+  min-width: 0;
+}
 
 .mobile-nav__list > li:not(.mobile-nav__cta) > a {
   display: block;
@@ -499,6 +520,9 @@ section,
   border-radius: var(--radius-md);
   border-bottom: 1px solid var(--color-border-light);
   transition: all var(--transition);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mobile-nav__list > li:not(.mobile-nav__cta) > a:hover {
   color: var(--color-primary);
@@ -2799,10 +2823,14 @@ time {
     font-size: 12px;
     font-weight: 700;
     letter-spacing: .5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all var(--transition);
   }
   .lang-switcher--mobile-bar a.active,
   .lang-switcher--mobile-bar a:hover {
     color: var(--color-primary);
+    background: rgba(180,30,30,.08);
   }
   .lang-switcher--mobile-bar span {
     color: rgba(0,0,0,.35);
@@ -2923,7 +2951,25 @@ time {
 
   .section-title { font-size: 26px; }
 
-  .mobile-nav__cta { flex-direction: column; }
+  .mobile-nav__cta { 
+    flex-direction: column; 
+    gap: 8px;
+  }
+
+  .mobile-nav__cta .btn {
+    min-height: 44px;
+    flex: 1;
+    width: 100%;
+  }
+
+  .mobile-nav__list > li:not(.mobile-nav__cta) > a {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .mobile-nav {
+    padding: 16px;
+  }
 
   .about-hero__inner { grid-template-columns: 1fr; gap: 28px; }
   .about-hero__inner > * { min-width: 0; }

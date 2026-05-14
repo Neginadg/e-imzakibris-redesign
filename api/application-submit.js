@@ -89,7 +89,8 @@ module.exports = async function handler(req, res) {
         to: record.email,
         subject: 'Basvuru Onayi',
         html: buildHtmlSummary(customerSummaryData, 'Basvurunuz Alindi'),
-        text: toPlainText(customerSummaryData).join('\n')
+        text: toPlainText(customerSummaryData).join('\n'),
+        attachmentPath: config.customerAttachmentPath
       });
       emailStatus.customerConfirmation = true;
     } catch (error) {

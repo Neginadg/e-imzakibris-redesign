@@ -40,12 +40,15 @@ Add these in Vercel Project Settings -> Environment Variables:
 - `RESEND_API_KEY`
 - `MAIL_FROM`
 - `COMPANY_EMAIL`
+- `CUSTOMER_ATTACHMENT_PATH` optional; points to the PDF attached to application customer emails
 - `BANK_ACCOUNT_DETAILS`
 
 Important:
 - Never put service role keys in frontend files.
 - `SUPABASE_SERVICE_ROLE_KEY` must exist only in backend/serverless env vars.
 - `MAIL_FROM` must be a verified sender/domain in Resend.
+- `CUSTOMER_ATTACHMENT_PATH` can be a relative project path such as `assets/docs/applicationguidelines/dbh_nesue_10_last_clean.pdf`.
+- No Supabase schema migration is required for the attachment setting; it is handled entirely in backend mail configuration.
 
 ## Supabase setup
 
