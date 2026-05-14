@@ -208,8 +208,7 @@ section,
    NAVBAR
    ============================================================ */
 .navbar {
-  position: sticky;
-  top: var(--topbar-h);
+  position: relative;
   z-index: 1000;
   height: var(--navbar-h);
   background: transparent;
@@ -220,6 +219,14 @@ section,
 
 .navbar.scrolled {
   box-shadow: none;
+}
+
+/* Sticky navbar only on screens large enough to show topbar */
+@media (min-width: 641px) {
+  .navbar {
+    position: sticky;
+    top: var(--topbar-h);
+  }
 }
 
 .navbar__inner {
