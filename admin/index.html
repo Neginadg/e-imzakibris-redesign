@@ -87,6 +87,9 @@
         <a href="#files-manager" class="sidebar__nav-item">
           <i class="fa-solid fa-file-arrow-up"></i> Dosya Yönetimi
         </a>
+        <a href="#customer-center" class="sidebar__nav-item">
+          <i class="fa-solid fa-address-card"></i> Müşteri Kayıtları
+        </a>
         <a href="#security" class="sidebar__nav-item">
           <i class="fa-solid fa-lock"></i> Güvenlik
         </a>
@@ -510,6 +513,75 @@
 
             <div class="panel-card__divider"></div>
             <div id="files-list" class="admin-list"></div>
+          </div>
+        </div>
+
+        <div class="panel-card" id="customer-center">
+          <div class="panel-card__header">
+            <div class="panel-card__header-left">
+              <div class="panel-card__title">Müşteri Kayıtları</div>
+              <div class="panel-card__sub">Ad, e-posta, telefon veya kimlik numarasıyla arayın; seçili kayıt için PIN/PUK oluşturun</div>
+            </div>
+            <div class="panel-card__header-icon">
+              <i class="fa-solid fa-address-card"></i>
+            </div>
+          </div>
+
+          <div class="panel-card__body">
+            <div id="customer-alert" class="alert" style="margin-bottom:1rem;" aria-live="polite"></div>
+
+            <form id="customer-search-form" class="customer-search" novalidate>
+              <div class="customer-search__bar">
+                <input
+                  type="search"
+                  id="customer-search-input"
+                  class="admin-search"
+                  placeholder="Ad, e-posta, telefon veya kimlik no ile ara"
+                  autocomplete="off"
+                />
+                <button type="submit" class="btn btn--primary customer-search__button">
+                  <i class="fa-solid fa-magnifying-glass"></i> Ara
+                </button>
+              </div>
+              <div class="customer-search__hint save-hint">
+                <i class="fa-solid fa-circle-info"></i> Arama sonuçlarından bir kaydı seçin, ardından PIN ve PUK kodunu üretin veya güncelleyin.
+              </div>
+            </form>
+
+            <div class="customer-center__layout">
+              <div class="customer-center__results">
+                <div class="customer-center__results-head">
+                  <h4>Sonuçlar</h4>
+                  <span id="customer-results-count" class="save-hint">0 kayıt</span>
+                </div>
+                <div class="customer-table-wrap">
+                  <table class="customer-table">
+                    <thead>
+                      <tr>
+                        <th>Ad / Soyad</th>
+                        <th>Kimlik / Pasaport</th>
+                        <th>E-Posta</th>
+                        <th>Telefon</th>
+                        <th>PIN / PUK</th>
+                        <th>Seç</th>
+                      </tr>
+                    </thead>
+                    <tbody id="customer-results-body">
+                      <tr>
+                        <td colspan="6" class="customer-table__empty">Arama yapıldığında sonuçlar burada görünecek.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <aside class="customer-center__detail" id="customer-detail">
+                <div class="customer-detail__empty">
+                  <i class="fa-solid fa-user-magnifying-glass"></i>
+                  <p>Bir kayıt seçildiğinde müşteri detayları burada gösterilir.</p>
+                </div>
+              </aside>
+            </div>
           </div>
         </div>
 

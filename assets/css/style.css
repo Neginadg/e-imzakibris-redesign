@@ -200,10 +200,6 @@ section,
 .lang-switcher a.active { color: var(--color-accent); }
 .lang-switcher span { color: rgba(255,255,255,.6); }
 
-.lang-switcher--mobile-bar {
-  display: none;
-}
-
 /* ============================================================
    NAVBAR
    ============================================================ */
@@ -223,11 +219,11 @@ section,
   box-shadow: none;
 }
 
-/* Sticky navbar only on screens large enough to show topbar */
+/* Keep navbar static on all screen sizes. */
 @media (min-width: 641px) {
   .navbar {
-    position: sticky;
-    top: var(--topbar-h);
+    position: relative;
+    top: auto;
     padding: 8px 0;
   }
 }
@@ -247,8 +243,8 @@ section,
 }
 
 .navbar.scrolled .navbar__inner {
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 14px 34px rgba(0,0,0,.14);
+  background: rgba(255,255,255,.84);
+  box-shadow: 0 10px 28px rgba(0,0,0,.10);
 }
 
 /* Logo */
@@ -2817,32 +2813,20 @@ time {
 @media (max-width: 1100px) {
   .navbar__nav          { display: none; }
   .navbar__cta          { display: none; }
-  .hamburger            { display: flex; margin-left: auto; }
-  .navbar__inner        { gap: 16px; padding-inline: 12px; border-radius: 14px; height: calc(var(--navbar-h) - 12px); }
-  .lang-switcher--mobile-bar {
-    display: inline-flex;
+  /* Center logo + hamburger together inside the rounded navbar on mobile */
+  .navbar__inner {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-left: auto;
-    margin-right: 8px;
+    gap: 18px;
+    padding-inline: 12px;
+    border-radius: 14px;
+    height: calc(var(--navbar-h) - 12px);
+    margin: 0 auto;
   }
-  .lang-switcher--mobile-bar a {
-    color: var(--color-text-muted);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: all var(--transition);
-  }
-  .lang-switcher--mobile-bar a.active,
-  .lang-switcher--mobile-bar a:hover {
-    color: var(--color-primary);
-    background: rgba(180,30,30,.08);
-  }
-  .lang-switcher--mobile-bar span {
-    color: rgba(0,0,0,.35);
-  }
+  .navbar__logo { margin: 0; flex: 0 0 auto; }
+  .navbar__logo-img { height: 44px; width: auto; display: block; }
+  .hamburger { display: flex; margin-left: 0; flex: 0 0 auto; }
 }
 
 @media (max-width: 900px) {

@@ -859,13 +859,8 @@
     document.body.classList.add('hero-red');
   }
 
-  /* ---- Navbar scroll shadow ---- */
+  /* ---- Navbar state ---- */
   const navbar = document.getElementById('navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-  }
 
   /* ---- Mobile hamburger menu ---- */
   const hamburger  = document.getElementById('hamburger');
@@ -875,7 +870,6 @@
   ensureAboutDropdownOptions();
 
   if (hamburger && mobileNav) {
-    ensureMobileBarLanguageSwitcher();
     setupMobileNavFromDesktop();
 
     hamburger.addEventListener('click', () => {
@@ -933,37 +927,6 @@
         closeMobileNav();
       }
     }, { passive: true });
-  }
-
-  function ensureMobileBarLanguageSwitcher() {
-    const navInner = document.querySelector('.navbar__inner');
-    if (!navInner || !hamburger) return;
-    if (navInner.querySelector('.lang-switcher--mobile-bar')) return;
-
-    const mobileBarSwitcher = document.createElement('div');
-    mobileBarSwitcher.className = 'lang-switcher lang-switcher--mobile-bar';
-
-    ['tr', 'en'].forEach((lang, index) => {
-      const link = document.createElement('a');
-      const targetUrl = new URL(window.location.href);
-      targetUrl.searchParams.set('lang', lang);
-      link.href = targetUrl.href;
-      link.dataset.lang = lang;
-      link.textContent = lang.toUpperCase();
-      link.classList.toggle('active', currentLanguage === lang);
-      if (currentLanguage === lang) {
-        link.setAttribute('aria-current', 'true');
-      }
-      mobileBarSwitcher.appendChild(link);
-
-      if (index === 0) {
-        const separator = document.createElement('span');
-        separator.textContent = '|';
-        mobileBarSwitcher.appendChild(separator);
-      }
-    });
-
-    navInner.insertBefore(mobileBarSwitcher, hamburger);
   }
 
   function ensureSupportDropdownOptions() {
@@ -1361,29 +1324,30 @@
   });
 
   /* ---- Active nav link on scroll ---- */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  if (sections.length && navLinks.length) {
-    const onScroll = () => {
-      const scrollY = window.scrollY + 120;
-      sections.forEach(section => {
-        const top    = section.offsetTop;
-        const height = section.offsetHeight;
-        const id     = section.getAttribute('id');
-        if (scrollY >= top && scrollY < top + height) {
-          navLinks.forEach(link => {
-            link.closest('.nav-item')?.classList.remove('active');
-            if (link.getAttribute('href') === '#' + id) {
-              link.closest('.nav-item')?.classList.add('active');
-            }
-          });
-        }
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
+  // Active nav highlighting is disabled - menu bar should never show active state
+  // const sections = document.querySelectorAll('section[id]');
+  // const navLinks = document.querySelectorAll('.nav-link');
+  //
+  // if (sections.length && navLinks.length) {
+  //   const onScroll = () => {
+  //     const scrollY = window.scrollY + 120;
+  //     sections.forEach(section => {
+  //       const top    = section.offsetTop;
+  //       const height = section.offsetHeight;
+  //       const id     = section.getAttribute('id');
+  //       if (scrollY >= top && scrollY < top + height) {
+  //         navLinks.forEach(link => {
+  //           link.closest('.nav-item')?.classList.remove('active');
+  //           if (link.getAttribute('href') === '#' + id) {
+  //             link.closest('.nav-item')?.classList.add('active');
+  //           }
+  //         });
+  //       }
+  //     });
+  //   };
+  //
+  //   window.addEventListener('scroll', onScroll, { passive: true });
+  // }
 
   /* ---- Contact form ---- */
   const contactForm = document.getElementById('contact-form');
