@@ -1,4 +1,3 @@
 Place legal PDF files in this folder.
 
-Required file for current links:
-- 93eiy2007.pdf
+Current site links use the Supabase-hosted 93/2007 PDF, so no local copy is required here.

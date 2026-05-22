@@ -20,6 +20,8 @@ create table if not exists public.applications (
   email text not null,
   phone text,
   identity_number text,
+  pin text,
+  puk text,
   payment_method text,
   source_page text,
   payload jsonb not null default '{}'::jsonb,
@@ -73,3 +75,58 @@ alter table public.timestamp_requests enable row level security;
 
 -- Public inserts (via RLS-disabled table) fallback if serverless endpoint fails.
 -- Serverless functions use SUPABASE_SERVICE_ROLE_KEY when configured.
+
+create table if not exists public.eimza_kibris_applications_2026 (
+  id uuid primary key default gen_random_uuid(),
+  source_file_name text not null,
+  source_row_number integer not null,
+  kayit_numarasi text,
+  kayit_tarihi text,
+  adi_soyadi text,
+  uyrugu text,
+  kimlik_pasaport_numarasi text,
+  dogum_tarihi text,
+  dogum_yeri text,
+  calistigi_sirket text,
+  gorevi text,
+  e_posta_adresi text,
+  e_posta_adresini_sertifikada_goster text,
+  adres text,
+  bolge text,
+  telefon_numarasi text,
+  cep_telefon_numarasi text,
+  faks_numarasi text,
+  fatura_adresi_ayniidir text,
+  calistigi_kurum text,
+  calistigi_kurum_adresi text,
+  calistigi_kurum_bolgesi text,
+  vergi_numarasi text,
+  vergi_dairesi text,
+  fatura_turu text,
+  sertifika_paketi text,
+  akilli_cubuk text,
+  uzak_baglantili_kurulum text,
+  sertifika_public_directory_consent text,
+  odeme_sekli text,
+  sertifika_ucreti_tl text,
+  akilli_cubuk_ucreti_tl text,
+  uzaktan_kurulum_ucreti_tl text,
+  kdv_dahil_toplam_tutar_tl text,
+  pin text,
+  puk text,
+  durum text,
+  payload jsonb not null default '{}'::jsonb,
+  imported_at timestamptz not null default now(),
+  unique (source_file_name, source_row_number)
+);
+
+create index if not exists eimza_kibris_applications_2026_kayit_numarasi_idx
+  on public.eimza_kibris_applications_2026 (kayit_numarasi);
+
+create index if not exists eimza_kibris_applications_2026_email_idx
+  on public.eimza_kibris_applications_2026 (e_posta_adresi);
+
+create index if not exists eimza_kibris_applications_2026_identity_idx
+  on public.eimza_kibris_applications_2026 (kimlik_pasaport_numarasi);
+
+alter table public.eimza_kibris_applications_2026 enable row level security;

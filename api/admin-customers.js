@@ -94,6 +94,9 @@ module.exports = async function handler(req, res) {
         return sendJson(res, 400, { ok: false, error: 'Missing application_id' });
       }
 
+      const manualPin = typeof body.pin_code === 'string' ? body.pin_code.trim() : '';
+      const manualPuk = typeof body.puk_code === 'string' ? body.puk_code.trim() : '';
+
       const rows = await selectSupabaseRows(config, 'applications', {
         select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at',
         id: `eq.${applicationId}`,
@@ -109,15 +112,15 @@ module.exports = async function handler(req, res) {
         ? Object.assign({}, current.payload)
         : {};
 
-      const regenerate = body.regenerate !== false;
+      const regenerate = body.regenerate !== false && !manualPin && !manualPuk;
       const existingCodes = normalizeAdminCodes(payload);
-      const pinCode = regenerate || !existingCodes.pin_code ? generateNumericCode(4) : existingCodes.pin_code;
-      const pukCode = regenerate || !existingCodes.puk_code ? generateNumericCode(4) : existingCodes.puk_code;
+      const pinCode = manualPin || (regenerate || !existingCodes.pin_code ? generateNumericCode(4) : existingCodes.pin_code);
+      const pukCode = manualPuk || (regenerate || !existingCodes.puk_code ? generateNumericCode(4) : existingCodes.puk_code);
 
       payload.admin_codes = {
         pin_code: pinCode,
         puk_code: pukCode,
-        generated_at: new Date().toISOString()
+        generated_at: (regenerate || manualPin || manualPuk) ? new Date().toISOString() : existingCodes.generated_at
       };
 
       const updated = await updateSupabaseRow(config, 'applications', { id: applicationId }, { payload });

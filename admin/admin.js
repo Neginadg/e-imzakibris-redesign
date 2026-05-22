@@ -417,6 +417,36 @@
       </div>
 
       <div class="customer-detail__section">
+        <h5>PIN / PUK Düzenle</h5>
+        <div class="customer-code-edit">
+          <div class="form-group">
+            <label for="customer-pin-input">PIN Kodu</label>
+            <input
+              type="text"
+              id="customer-pin-input"
+              inputmode="numeric"
+              maxlength="12"
+              value="${escapeHtml(codes.pin_code || '')}"
+              placeholder="PIN"
+              data-customer-pin
+            />
+          </div>
+          <div class="form-group">
+            <label for="customer-puk-input">PUK Kodu</label>
+            <input
+              type="text"
+              id="customer-puk-input"
+              inputmode="numeric"
+              maxlength="12"
+              value="${escapeHtml(codes.puk_code || '')}"
+              placeholder="PUK"
+              data-customer-puk
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="customer-detail__section">
         <h5>Temel Bilgiler</h5>
         <div class="customer-detail__grid">
           <div class="customer-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
@@ -436,7 +466,10 @@
       </div>
 
       <div class="customer-detail__actions">
-        <button type="button" class="btn btn--primary" data-customer-generate>
+        <button type="button" class="btn btn--primary" data-customer-save>
+          <i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet
+        </button>
+        <button type="button" class="btn btn--ghost" data-customer-generate>
           <i class="fa-solid fa-key"></i> PIN / PUK Oluştur
         </button>
         <button type="button" class="btn btn--ghost" data-customer-copy ${codes.pin_code && codes.puk_code ? '' : 'disabled'}>
@@ -527,7 +560,57 @@
 
       if (detailEl) {
         const generateButton = detailEl.querySelector('[data-customer-generate]');
+        const saveButton = detailEl.querySelector('[data-customer-save]');
         const copyButton = detailEl.querySelector('[data-customer-copy]');
+        const pinInput = detailEl.querySelector('[data-customer-pin]');
+        const pukInput = detailEl.querySelector('[data-customer-puk]');
+
+        if (saveButton) {
+          saveButton.addEventListener('click', async () => {
+            if (!selected) return;
+
+            const pinValue = pinInput ? pinInput.value.trim() : '';
+            const pukValue = pukInput ? pukInput.value.trim() : '';
+
+            if (!pinValue || !pukValue) {
+              setAlert(alertEl, 'warning', 'PIN ve PUK kodları boş olamaz.');
+              return;
+            }
+
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+
+            try {
+              const response = await fetch(CUSTOMER_API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  application_id: selected.id,
+                  pin_code: pinValue,
+                  puk_code: pukValue,
+                  regenerate: false
+                })
+              });
+
+              const data = await response.json().catch(() => ({}));
+              if (!response.ok || !data.ok || !data.record) {
+                throw new Error((data && data.error) || 'PIN/PUK kaydedilemedi.');
+              }
+
+              const updated = data.record;
+              currentItems = currentItems.map((item) => (item.id === updated.id ? updated : item));
+              selectedId = updated.id;
+              renderCustomerResults(currentItems, selectedId);
+              renderCustomerDetail(updated);
+              setAlert(alertEl, 'success', 'PIN ve PUK kodları kaydedildi.');
+            } catch (error) {
+              setAlert(alertEl, 'danger', error.message || 'PIN/PUK kaydedilemedi.');
+            } finally {
+              saveButton.disabled = false;
+              saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet';
+            }
+          });
+        }
 
         if (generateButton) {
           generateButton.addEventListener('click', async () => {
