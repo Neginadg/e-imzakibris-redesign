@@ -37,6 +37,7 @@ function normalizeCustomerRecord(row, tableName) {
   const sourcePage = isLegacy ? row.source_page : 'eimza-kibris-import';
   const pinCode = isLegacy ? adminCodes.pin_code : (row.pin || adminCodes.pin_code || '');
   const pukCode = isLegacy ? adminCodes.puk_code : (row.puk || adminCodes.puk_code || '');
+  const createdAt = isLegacy ? row.created_at : (row.kayit_tarihi || row.created_at || '');
 
   return {
     id: row.id,
@@ -51,7 +52,7 @@ function normalizeCustomerRecord(row, tableName) {
     pin_code: String(pinCode || ''),
     puk_code: String(pukCode || ''),
     generated_at: adminCodes.generated_at,
-    created_at: row.created_at
+    created_at: createdAt
   };
 }
 
@@ -103,8 +104,8 @@ module.exports = async function handler(req, res) {
           limit: query ? '25' : '20'
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,created_at',
-          order: 'created_at.desc',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,source_row_number',
+          order: 'source_row_number.desc',
           limit: query ? '25' : '20'
         };
 
@@ -137,7 +138,7 @@ module.exports = async function handler(req, res) {
           limit: '1'
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,created_at',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,source_row_number',
           id: `eq.${applicationId}`,
           limit: '1'
         });
