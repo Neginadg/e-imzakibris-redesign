@@ -2217,7 +2217,7 @@
 
           await postBackendForm('/api/timestamp-submit', payload);
 
-          setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+          setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle e-posta ile iletişime geçecektir.');
           pendingTsMail = null;
           pendingTsSubmission = null;
           setActiveTsStep(3);
