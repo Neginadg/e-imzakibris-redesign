@@ -89,12 +89,26 @@
       border: 1px solid var(--color-border);
       border-radius: 10px;
       background: #fff;
+      width: 100%;
     }
 
     .crl-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 680px;
+      table-layout: auto;
+      min-width: 0;
+    }
+
+    .crl-table th:nth-child(1),
+    .crl-table td:nth-child(1) {
+      width: 70px;
+    }
+
+    .crl-table th:nth-child(3),
+    .crl-table td:nth-child(3) {
+      width: 1%;
+      text-align: right;
+      white-space: nowrap;
     }
 
     .crl-table th,
@@ -104,6 +118,7 @@
       text-align: left;
       vertical-align: top;
       font-size: 0.93rem;
+      word-break: break-word;
     }
 
     .crl-table th {
@@ -121,7 +136,7 @@
       color: var(--color-accent);
       font-weight: 600;
       text-decoration: none;
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .crl-view-link:hover {
@@ -148,6 +163,18 @@
       font-size: 0.78rem;
       padding: 6px 12px;
       letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 720px) {
+      .crl-table th,
+      .crl-table td {
+        padding: 10px 12px;
+        font-size: 0.86rem;
+      }
+
+      .crl-table th {
+        white-space: normal;
+      }
     }
   </style>
 </head>
@@ -291,7 +318,7 @@
                 <tr>
                   <td>100</td>
                   <td>E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı</td>
-                  <td><a href="#" class="crl-hero-link">CRL Görüntüle</a></td>
+                  <td><a href="http://sil.e-imzakibris.com/e-imzakibrisNesS1/LatestCRL.crl" class="crl-hero-link" onclick="return false;">CRL Görüntüle</a></td>
                 </tr>
               </tbody>
             </table>
@@ -327,7 +354,7 @@
                   <tr>
                     <td>100</td>
                     <td>E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı</td>
-                    <td><a class="crl-view-link" href="#">CRL Görüntüle</a></td>
+                    <td><a class="crl-view-link" href="http://sil.e-imzakibris.com/e-imzakibrisNesS1/LatestCRL.crl" onclick="return false;">CRL Görüntüle</a></td>
                   </tr>
                 </tbody>
               </table>
