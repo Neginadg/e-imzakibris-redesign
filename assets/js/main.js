@@ -14,6 +14,42 @@
   let googleTranslatePromise = null;
   let googleTranslateInitialized = false;
 
+  function applyImageLoadingHints() {
+    const images = document.querySelectorAll('img');
+    if (!images.length) return;
+
+    const viewportHeight = window.innerHeight || 0;
+    let boosted = false;
+
+    images.forEach((img) => {
+      if (!img.hasAttribute('decoding')) {
+        img.setAttribute('decoding', 'async');
+      }
+
+      if (!img.hasAttribute('loading')) {
+        const rect = img.getBoundingClientRect();
+        const isNearViewport = rect.top <= viewportHeight * 1.2;
+        img.setAttribute('loading', isNearViewport ? 'eager' : 'lazy');
+      }
+
+      if (!boosted && !img.hasAttribute('fetchpriority')) {
+        const rect = img.getBoundingClientRect();
+        if (rect.top <= viewportHeight && rect.bottom >= 0) {
+          img.setAttribute('fetchpriority', 'high');
+          boosted = true;
+        }
+      }
+    });
+  }
+
+  (function initImageHints() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyImageLoadingHints, { once: true });
+    } else {
+      applyImageLoadingHints();
+    }
+  })();
+
   function isSupabaseConfigured() {
     return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
   }
