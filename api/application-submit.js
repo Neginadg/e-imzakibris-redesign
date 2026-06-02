@@ -28,15 +28,14 @@ module.exports = async function handler(req, res) {
 
     const inserted = await insertSupabaseRow(config, 'applications', record);
 
-    const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
+    const hasEmailConfig = Boolean(config.smtpHost && config.mailFrom && config.companyEmail);
     if (!hasEmailConfig) {
       return sendJson(res, 200, {
         ok: true,
         stored: true,
         emailStatus: {
           company: false,
-          customerConfirmation: false,
-          customerPayment: false
+          customerConfirmation: false
         },
         id: inserted && inserted.id ? inserted.id : null,
         warning: 'Saved to database. Emails are skipped because email configuration is missing.'
@@ -62,21 +61,16 @@ module.exports = async function handler(req, res) {
       payload: record.payload
     };
 
-    const paymentText = config.bankAccountDetails
-      ? 'Odeme icin banka hesap bilgileri:\n\n' + config.bankAccountDetails
-      : 'Odeme bilgileri su an sistemde tanimli degil. Lutfen destek ekibimizle iletisime geciniz.';
-
     const emailStatus = {
       company: false,
-      customerConfirmation: false,
-      customerPayment: false
+      customerConfirmation: false
     };
 
     try {
       await sendEmail(config, {
         to: config.companyEmail,
-        subject: 'Yeni Basvuru Formu',
-        html: buildHtmlSummary(companyMailData, 'Application Form Submission'),
+        subject: 'Yeni E-Imza Basvurusu',
+        html: buildHtmlSummary(companyMailData, 'E-Imza Basvuru Formu'),
         text: toPlainText(companyMailData).join('\n')
       });
       emailStatus.company = true;
@@ -87,10 +81,9 @@ module.exports = async function handler(req, res) {
     try {
       await sendEmail(config, {
         to: record.email,
-        subject: 'Basvuru Onayi',
-        html: buildHtmlSummary(customerSummaryData, 'Basvurunuz Alindi'),
-        text: toPlainText(customerSummaryData).join('\n'),
-        attachmentPath: config.customerAttachmentPath
+        subject: 'Your E-Imza Application Was Submitted Successfully',
+        html: buildHtmlSummary(customerSummaryData, 'E-Imza Basvurunuz Alindi'),
+        text: toPlainText(customerSummaryData).join('\n')
       });
       emailStatus.customerConfirmation = true;
     } catch (error) {

@@ -1791,7 +1791,7 @@
             await postBackendForm('/api/application-submit', payload);
 
             if (applicationSubmitMessage) {
-              setFormMessage(applicationSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+              setFormMessage(applicationSubmitMessage, 'success', 'Your application has been submitted successfully.');
             }
             pendingApplicationMail = null;
             pendingApplicationSubmission = null;
@@ -1876,7 +1876,7 @@
 
           await postBackendForm('/api/application-submit', payload);
 
-          setFormMessage(applicationSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle iletişime geçecektir.');
+          setFormMessage(applicationSubmitMessage, 'success', 'Your application has been submitted successfully.');
           pendingApplicationMail = null;
           pendingApplicationSubmission = null;
           setActiveStep(3);
@@ -2262,7 +2262,7 @@
 
           await postBackendForm('/api/timestamp-submit', payload);
 
-          setFormMessage(tsSubmitMessage, 'success', 'Başvurunuz başarıyla kaydedildi. Ekibimiz sizinle e-posta ile iletişime geçecektir.');
+          setFormMessage(tsSubmitMessage, 'success', 'Your application has been submitted successfully.');
           pendingTsMail = null;
           pendingTsSubmission = null;
           setActiveTsStep(3);
@@ -2456,7 +2456,7 @@
         await postBackendForm('/api/renewal-submit', submissionPayload);
 
         if (renewalMessage) {
-          setFormMessage(renewalMessage, 'success', 'Teşekkürler, Yenileme Başvurunuz Alınmıştır. Ödeme ile ilgili size ayrı e-posta gönderilecektir.');
+          setFormMessage(renewalMessage, 'success', 'Your application has been submitted successfully.');
         }
         
         renewalForm.reset();
@@ -2652,7 +2652,7 @@
           await postBackendForm('/api/molohiya-submit', payload);
 
           if (molohiyaMessage) {
-            setFormMessage(molohiyaMessage, 'success', 'Teşekkürler, MOlOhiya satın alma talebiniz alınmıştır. Ödeme ile ilgili size ayrı e-posta gönderilecektir.');
+            setFormMessage(molohiyaMessage, 'success', 'Your application has been submitted successfully.');
           }
           molohiyaForm.reset();
           pendingMolohiyaMail = null;

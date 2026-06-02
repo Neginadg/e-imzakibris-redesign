@@ -10,9 +10,7 @@ This project now uses Vercel serverless API routes for secure form handling.
 - Application form posts to `/api/application-submit`
   - Stores data in `applications`
   - Sends company notification email
-  - Sends 2 customer emails:
-    - Confirmation email (all submitted info)
-    - Payment email (bank details)
+  - Sends customer confirmation email (all submitted info)
 - Renewal form posts to `/api/renewal-submit`
   - Stores data in `renewal_requests`
   - Sends company notification email
@@ -37,16 +35,18 @@ Add these in Vercel Project Settings -> Environment Variables:
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `RESEND_API_KEY`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
 - `MAIL_FROM`
 - `COMPANY_EMAIL`
 - `CUSTOMER_ATTACHMENT_PATH` optional; points to the PDF attached to application customer emails
-- `BANK_ACCOUNT_DETAILS`
 
 Important:
 - Never put service role keys in frontend files.
 - `SUPABASE_SERVICE_ROLE_KEY` must exist only in backend/serverless env vars.
-- `MAIL_FROM` must be a verified sender/domain in Resend.
+- `MAIL_FROM` must be a valid sender address in your SMTP account.
 - `CUSTOMER_ATTACHMENT_PATH` can be a relative project path such as `assets/docs/applicationguidelines/dbh_nesue_10_last_clean.pdf`.
 - No Supabase schema migration is required for the attachment setting; it is handled entirely in backend mail configuration.
 
@@ -61,7 +61,7 @@ Important:
 
 ## How email works
 
-Email sending is done in serverless API routes using Resend HTTP API.
+Email sending is done in serverless API routes using Nodemailer + SMTP.
 
 Flow per form:
 1. API receives form payload.
@@ -81,9 +81,7 @@ This guarantees emails are attempted only after successful DB insertion.
 ### Application form
 1. Submit full application flow until final send.
 2. Verify new row in `applications`.
-3. Verify customer receives 2 emails:
-   - Confirmation with entered data
-   - Payment details with bank account info
+3. Verify customer receives confirmation email with entered data
 4. Verify company receives notification email.
 
 ### Renewal form

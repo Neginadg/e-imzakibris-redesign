@@ -31,14 +31,13 @@ module.exports = async function handler(req, res) {
 
     const inserted = await insertSupabaseRow(config, 'molohiya_application', record);
 
-    const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
+    const hasEmailConfig = Boolean(config.smtpHost && config.mailFrom && config.companyEmail);
     if (!hasEmailConfig) {
       return sendJson(res, 200, {
         ok: true,
         stored: true,
         emailStatus: {
-          company: false,
-          customerConfirmation: false
+          company: false
         },
         id: inserted && inserted.id ? inserted.id : null,
         warning: 'Saved to database. Emails are skipped because email configuration is missing.'
@@ -57,26 +56,14 @@ module.exports = async function handler(req, res) {
       payload: record.payload
     };
 
-    const customerSummaryData = {
-      full_name: record.full_name,
-      email: record.email,
-      phone: record.phone,
-      identity_number: record.identity_number,
-      plan_label: record.plan_label,
-      total_text: record.total_text,
-      payment_method: record.payment_method,
-      payload: record.payload
-    };
-
     const emailStatus = {
-      company: false,
-      customerConfirmation: false
+      company: false
     };
 
     try {
       await sendEmail(config, {
         to: config.companyEmail,
-        subject: 'Yeni MOlOhiya Satin Alma Talebiniz',
+        subject: 'Yeni MOlOhiya Satin Alma Talebi',
         html: buildHtmlSummary(companyMailData, 'MOlOhiya Satin Alma Formu'),
         text: toPlainText(companyMailData).join('\n')
       });
@@ -85,26 +72,14 @@ module.exports = async function handler(req, res) {
       emailStatus.company = false;
     }
 
-    try {
-      await sendEmail(config, {
-        to: record.email,
-        subject: 'MOlOhiya Satin Alma Talebiniz Alinmistir',
-        html: '<div style="font-family:Arial,sans-serif;font-size:14px;color:#333;"><div style="background:#f5f5f5;padding:15px;margin-bottom:20px;border-left:4px solid #d11c1c;"><p>Sayın ' + (record.full_name || 'Müşteri') + ', MOlOhiya satin alma talebiniz alınmıştır. Ekibimiz sizinle iletişim kuracaktır. e-imza KIBRIS</p></div><p>Talebiniz başarıyla kaydedilmiştir. En kısa sürede sizin ile iletişim kurulacaktır.</p></div>',
-        text: 'Talebiniz alınmıştır. En kısa sürede iletişim kurulacaktır.'
-      });
-      emailStatus.customerConfirmation = true;
-    } catch (error) {
-      emailStatus.customerConfirmation = false;
-    }
-
     return sendJson(res, 200, {
       ok: true,
       stored: true,
       emailStatus,
       id: inserted && inserted.id ? inserted.id : null,
-      warning: emailStatus.company && emailStatus.customerConfirmation
+      warning: emailStatus.company
         ? null
-        : 'Saved to database but one or more emails failed to send.'
+        : 'Saved to database but company email failed to send.'
     });
   } catch (error) {
     return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });

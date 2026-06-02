@@ -1,0 +1,8 @@
+{
+  "name": "e-imzakibris-redesign-backend",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "nodemailer": "^6.9.12"
+  }
+}
