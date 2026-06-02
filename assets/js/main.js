@@ -344,7 +344,8 @@
     const popupTargetIds = new Set([
       'application-submit-message',
       'ts-submit-message',
-      'renewal-submit-message'
+      'renewal-submit-message',
+      'molohiya-application-submit-message'
     ]);
 
     if (popupTargetIds.has(element.id)) {
