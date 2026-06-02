@@ -2003,8 +2003,15 @@
     const hasTsApplicationType = () => tsApplicationTypeInputs.some((input) => input.checked);
     const getTsApplicationType = () => tsApplicationTypeInputs.find((input) => input.checked)?.value || '';
 
+    const normalizeTsApplicationType = (value) => {
+      const normalized = String(value || '').toLowerCase();
+      if (normalized.includes('bireysel')) return 'Bireysel Başvuru';
+      if (normalized.includes('kurumsal')) return 'Kurumsal Başvuru';
+      return String(value || '').trim();
+    };
+
     const updateTsFormSections = () => {
-      const appType = getTsApplicationType();
+      const appType = normalizeTsApplicationType(getTsApplicationType());
       const isPersonal = appType === 'Bireysel Başvuru';
       const isCorporate = appType === 'Kurumsal Başvuru';
 
@@ -2072,7 +2079,7 @@
 
         const pricing = updateTsSummary();
         const formData = new FormData(tsDetailsForm);
-        const applicationType = getTsApplicationType();
+        const applicationType = normalizeTsApplicationType(getTsApplicationType());
         const isPersonal = applicationType === 'Bireysel Başvuru';
         
         const mobilePhone = keepDigitsOnly(formData.get('mobilePhone'));
@@ -2123,6 +2130,7 @@
         const mailSubject = `Zaman Damgasi Online Basvuru - ${pricing.planLabel}`;
         const submissionPayload = {
           form_kind: 'timestamp',
+          form_type: 'timestamp',
           source_page: 'support/tsonlineapplication.html',
           full_name: resolvedFullName,
           identity_number: resolvedIdentityNumber,
@@ -2568,6 +2576,7 @@
 
       const submissionPayload = {
         form_kind: 'molohiya',
+        form_type: 'molohiya',
         source_page: 'products/molohiya.html',
         plan_label: renewalTerm,
         total_text: molohiyaTotalText,

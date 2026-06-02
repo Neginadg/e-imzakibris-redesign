@@ -13,11 +13,14 @@ module.exports = async function handler(req, res) {
     const body = readJsonBody(req);
 
     const record = {
+      form_type: String(body.form_type || 'timestamp').trim(),
       full_name: String(body.full_name || '').trim(),
       email: String(body.email || '').trim(),
       phone: String(body.phone || '').trim(),
-      payment_method: String(body.payment_method || 'Havale/EFT').trim(),
       application_type: String(body.application_type || '').trim(),
+      plan_label: String(body.plan_label || '').trim(),
+      total_text: String(body.total_text || '').trim(),
+      payment_method: String(body.payment_method || 'Havale/EFT').trim(),
       source_page: String(body.source_page || 'support/tsonlineapplication.html').trim(),
       payload: body.payload && typeof body.payload === 'object' ? body.payload : {}
     };
@@ -26,7 +29,7 @@ module.exports = async function handler(req, res) {
       return sendJson(res, 400, { ok: false, error: 'Missing required Zaman Damgası form fields' });
     }
 
-    const inserted = await insertSupabaseRow(config, 'timestamp_requests', record);
+    const inserted = await insertSupabaseRow(config, 'timestamp_application', record);
 
     const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
     if (!hasEmailConfig) {
@@ -47,6 +50,8 @@ module.exports = async function handler(req, res) {
       email: record.email,
       phone: record.phone,
       application_type: record.application_type,
+      plan_label: record.plan_label,
+      total_text: record.total_text,
       payment_method: record.payment_method,
       source_page: record.source_page,
       payload: record.payload
@@ -57,6 +62,8 @@ module.exports = async function handler(req, res) {
       email: record.email,
       phone: record.phone,
       application_type: record.application_type,
+      plan_label: record.plan_label,
+      total_text: record.total_text,
       payment_method: record.payment_method,
       payload: record.payload
     };

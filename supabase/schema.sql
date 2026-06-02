@@ -64,6 +64,36 @@ create table if not exists public.timestamp_requests (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.timestamp_application (
+  id uuid primary key default gen_random_uuid(),
+  form_type text not null default 'timestamp',
+  full_name text not null,
+  email text not null,
+  phone text,
+  application_type text,
+  plan_label text,
+  total_text text,
+  payment_method text,
+  source_page text,
+  payload jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.molohiya_application (
+  id uuid primary key default gen_random_uuid(),
+  form_type text not null default 'molohiya',
+  full_name text not null,
+  email text not null,
+  phone text,
+  identity_number text,
+  plan_label text,
+  total_text text,
+  payment_method text,
+  source_page text,
+  payload jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
 -- contact_messages: Disable RLS for public contact form submissions
 alter table public.contact_messages disable row level security;
 
@@ -72,6 +102,8 @@ alter table public.applications enable row level security;
 alter table public.renewal_requests enable row level security;
 alter table public.molohiya_requests enable row level security;
 alter table public.timestamp_requests enable row level security;
+alter table public.timestamp_application enable row level security;
+alter table public.molohiya_application enable row level security;
 
 -- Public inserts (via RLS-disabled table) fallback if serverless endpoint fails.
 -- Serverless functions use SUPABASE_SERVICE_ROLE_KEY when configured.
