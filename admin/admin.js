@@ -129,6 +129,15 @@
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
+  // Small debounce helper for search input
+  function debounce(fn, wait) {
+    let t = null;
+    return function (...args) {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
   function loadPrices() {
     try {
       const raw = localStorage.getItem(KEY_PRICES);
@@ -701,16 +710,28 @@
 
     const resultsBody = document.getElementById('customer-results-body');
     if (resultsBody) {
+      // Click anywhere on a row to select the record (not only the small button)
       resultsBody.addEventListener('click', function (event) {
-        const target = event.target instanceof Element ? event.target.closest('[data-customer-select]') : null;
-        if (!target) return;
+        const el = event.target instanceof Element ? event.target : null;
+        if (!el) return;
 
-        const id = target.getAttribute('data-customer-select');
+        // Prefer explicit select button attribute, otherwise nearest row
+        const btn = el.closest('[data-customer-select]');
+        const row = el.closest('tr[data-customer-id]');
+        const id = btn ? btn.getAttribute('data-customer-select') : (row ? row.getAttribute('data-customer-id') : null);
+        if (!id) return;
+
         const selected = currentItems.find((item) => item.id === id);
-        if (selected) {
-          setSelected(selected.id);
-        }
+        if (selected) setSelected(selected.id);
       });
+    }
+
+    // Live search while typing (debounced) for faster UX
+    if (queryInput) {
+      queryInput.addEventListener('input', debounce(() => {
+        const term = queryInput.value.trim();
+        loadRecords(term);
+      }, 350));
     }
 
     loadRecords('');

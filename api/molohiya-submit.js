@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
 
     const inserted = await insertSupabaseRow(config, 'molohiya_application', record);
 
-    const hasEmailConfig = Boolean(config.smtpHost && config.mailFrom && config.companyEmail);
+    const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
     if (!hasEmailConfig) {
       return sendJson(res, 200, {
         ok: true,
