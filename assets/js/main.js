@@ -1413,17 +1413,27 @@
       }
 
       try {
-        await postBackendForm('/api/contact-submit', payload);
-        contactForm.reset();
-        setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
-      } catch (error) {
+        // Fast path: try direct Supabase insert (uses anon key) so user gets immediate response.
+        // contact_messages has RLS disabled in migrations so this should succeed. If it fails,
+        // fall back to the server endpoint which uses the service_role key and may also send emails.
         try {
           await insertContactMessageDirect(payload);
           contactForm.reset();
           setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
-        } catch (fallbackError) {
-          setFormMessage(contactMessage, 'danger', error.message || fallbackError.message || 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
+
+          // Notify backend (email, analytics) asynchronously — do not block the user.
+          postBackendForm('/api/contact-submit', payload).catch((err) => {
+            // Log but don't show to user; backend may retry or log separately.
+            console.warn('Background notify failed:', err && err.message ? err.message : err);
+          });
+        } catch (directError) {
+          // Direct insert failed (likely RLS). Try server endpoint synchronously as a fallback.
+          await postBackendForm('/api/contact-submit', payload);
+          contactForm.reset();
+          setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
         }
+      } catch (error) {
+        setFormMessage(contactMessage, 'danger', error.message || 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
       } finally {
         if (submitButton) {
           submitButton.disabled = false;
