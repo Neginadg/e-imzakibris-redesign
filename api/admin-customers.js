@@ -22,37 +22,26 @@ function normalizeAdminCodes(payload) {
   };
 }
 
-function normalizeCustomerRecord(row, tableName) {
+function normalizeCustomerRecord(row) {
   const payload = row && row.payload && typeof row.payload === 'object' && !Array.isArray(row.payload)
     ? row.payload
     : {};
   const adminCodes = normalizeAdminCodes(payload);
-  const isLegacy = tableName === 'applications';
-
-  const fullName = isLegacy ? row.full_name : row.adi_soyadi;
-  const email = isLegacy ? row.email : row.e_posta_adresi;
-  const phone = isLegacy ? row.phone : (row.cep_telefon_numarasi || row.telefon_numarasi);
-  const identityNumber = isLegacy ? row.identity_number : row.kimlik_pasaport_numarasi;
-  const paymentMethod = isLegacy ? row.payment_method : row.odeme_sekli;
-  const sourcePage = isLegacy ? row.source_page : 'eimza-kibris-import';
-  const pinCode = isLegacy ? adminCodes.pin_code : (row.pin || adminCodes.pin_code || '');
-  const pukCode = isLegacy ? adminCodes.puk_code : (row.puk || adminCodes.puk_code || '');
-  const createdAt = isLegacy ? row.created_at : (row.kayit_tarihi || row.created_at || '');
 
   return {
     id: row.id,
-    full_name: String(fullName || '').trim(),
-    email: String(email || '').trim(),
-    phone: String(phone || '').trim(),
-    identity_number: String(identityNumber || '').trim(),
-    payment_method: String(paymentMethod || '').trim(),
-    source_page: String(sourcePage || '').trim(),
+    full_name: String(row.adi_soyadi || '').trim(),
+    email: String(row.e_posta_adresi || '').trim(),
+    phone: String(row.cep_telefon_numarasi || row.telefon_numarasi || '').trim(),
+    identity_number: String(row.kimlik_pasaport_numarasi || '').trim(),
+    payment_method: String(row.odeme_sekli || '').trim(),
+    source_page: String((payload && payload.source_page) || '').trim(),
     payload,
     admin_codes: adminCodes,
-    pin_code: String(pinCode || ''),
-    puk_code: String(pukCode || ''),
+    pin_code: String(row.pin || adminCodes.pin_code || ''),
+    puk_code: String(row.puk || adminCodes.puk_code || ''),
     generated_at: adminCodes.generated_at,
-    created_at: createdAt
+    created_at: String(row.kayit_tarihi || row.imported_at || '')
   };
 }
 
@@ -65,21 +54,9 @@ function generateNumericCode(length) {
   return value;
 }
 
-function buildSearchQuery(term, tableName) {
-  const trimmed = String(term || '').trim();
-  if (!trimmed) return null;
-
-  const escaped = trimmed.replace(/\*/g, '');
+function buildSearchQuery(term) {
+  const escaped = String(term || '').trim().replace(/\*/g, '');
   if (!escaped) return null;
-
-  if (tableName === 'applications') {
-    return [
-      `full_name.ilike.*${escaped}*`,
-      `email.ilike.*${escaped}*`,
-      `phone.ilike.*${escaped}*`,
-      `identity_number.ilike.*${escaped}*`
-    ].join(',');
-  }
 
   return [
     `adi_soyadi.ilike.*${escaped}*`,
@@ -104,8 +81,8 @@ module.exports = async function handler(req, res) {
           limit: query ? '25' : '20'
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,source_row_number',
-          order: 'source_row_number.desc',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
+          order: 'imported_at.desc',
           limit: query ? '25' : '20'
         };
 
@@ -138,7 +115,7 @@ module.exports = async function handler(req, res) {
           limit: '1'
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,source_row_number',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
           id: `eq.${applicationId}`,
           limit: '1'
         });

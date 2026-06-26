@@ -162,3 +162,14 @@ create index if not exists eimza_kibris_applications_2026_identity_idx
   on public.eimza_kibris_applications_2026 (kimlik_pasaport_numarasi);
 
 alter table public.eimza_kibris_applications_2026 enable row level security;
+
+-- Service role (used by the Node API with SUPABASE_SERVICE_ROLE_KEY) needs
+-- explicit ALL policy when RLS is enabled, even though the service_role key
+-- bypasses RLS by default in most Supabase versions. This is a safety net.
+drop policy if exists "Service role full access" on public.eimza_kibris_applications_2026;
+create policy "Service role full access"
+  on public.eimza_kibris_applications_2026
+  for all
+  to service_role
+  using (true)
+  with check (true);

@@ -13,20 +13,24 @@ module.exports = async function handler(req, res) {
     const body = readJsonBody(req);
 
     const record = {
-      full_name: String(body.full_name || '').trim(),
-      email: String(body.email || '').trim(),
-      phone: String(body.phone || '').trim(),
-      identity_number: String(body.identity_number || '').trim(),
-      payment_method: String(body.payment_method || 'Havale/EFT').trim(),
-      source_page: String(body.source_page || 'support/onlineapplication.html').trim(),
-      payload: body.payload && typeof body.payload === 'object' ? body.payload : {}
+      source_file_name: 'website',
+      adi_soyadi: String(body.full_name || '').trim(),
+      e_posta_adresi: String(body.email || '').trim(),
+      cep_telefon_numarasi: String(body.phone || '').trim(),
+      kimlik_pasaport_numarasi: String(body.identity_number || '').trim(),
+      odeme_sekli: String(body.payment_method || 'Havale/EFT').trim(),
+      durum: 'Yeni',
+      payload: Object.assign(
+        { source_page: String(body.source_page || 'support/onlineapplication.html').trim() },
+        body.payload && typeof body.payload === 'object' ? body.payload : {}
+      )
     };
 
-    if (!record.full_name || !record.email) {
+    if (!record.adi_soyadi || !record.e_posta_adresi) {
       return sendJson(res, 400, { ok: false, error: 'Missing required application fields' });
     }
 
-    const inserted = await insertSupabaseRow(config, 'applications', record);
+    const inserted = await insertSupabaseRow(config, 'eimza_kibris_applications_2026', record);
 
     const hasEmailConfig = Boolean(config.resendApiKey && config.mailFrom && config.companyEmail);
     if (!hasEmailConfig) {
@@ -43,21 +47,21 @@ module.exports = async function handler(req, res) {
     }
 
     const companyMailData = {
-      full_name: record.full_name,
-      email: record.email,
-      phone: record.phone,
-      identity_number: record.identity_number,
-      payment_method: record.payment_method,
-      source_page: record.source_page,
+      full_name: record.adi_soyadi,
+      email: record.e_posta_adresi,
+      phone: record.cep_telefon_numarasi,
+      identity_number: record.kimlik_pasaport_numarasi,
+      payment_method: record.odeme_sekli,
+      source_page: record.payload.source_page,
       payload: record.payload
     };
 
     const customerSummaryData = {
-      full_name: record.full_name,
-      email: record.email,
-      phone: record.phone,
-      identity_number: record.identity_number,
-      payment_method: record.payment_method,
+      full_name: record.adi_soyadi,
+      email: record.e_posta_adresi,
+      phone: record.cep_telefon_numarasi,
+      identity_number: record.kimlik_pasaport_numarasi,
+      payment_method: record.odeme_sekli,
       payload: record.payload
     };
 
@@ -80,7 +84,7 @@ module.exports = async function handler(req, res) {
 
     try {
       await sendEmail(config, {
-        to: record.email,
+        to: record.e_posta_adresi,
         subject: 'Your E-Imza Application Was Submitted Successfully',
         html: buildHtmlSummary(customerSummaryData, 'E-Imza Basvurunuz Alindi'),
         text: toPlainText(customerSummaryData).join('\n')
