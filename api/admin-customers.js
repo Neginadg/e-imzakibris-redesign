@@ -74,17 +74,28 @@ module.exports = async function handler(req, res) {
 
     if (req.method === 'GET') {
       const query = String((req.query && req.query.q) || '').trim();
+      const dateFrom = String((req.query && req.query.dateFrom) || '').trim();
+      const dateTo = String((req.query && req.query.dateTo) || '').trim();
+
+      const dateCol = tableName === 'applications' ? 'created_at' : 'imported_at';
       const params = tableName === 'applications'
         ? {
           select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at',
           order: 'created_at.desc',
-          limit: query ? '25' : '20'
+          limit: query || dateFrom || dateTo ? '100' : '20'
         }
         : {
           select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
           order: 'imported_at.desc',
-          limit: query ? '25' : '20'
+          limit: query || dateFrom || dateTo ? '100' : '20'
         };
+
+      // Date range filter — array values produce repeated keys for PostgREST
+      const dateFilters = [];
+      if (dateFrom) dateFilters.push('gte.' + dateFrom + 'T00:00:00.000Z');
+      if (dateTo) dateFilters.push('lte.' + dateTo + 'T23:59:59.999Z');
+      if (dateFilters.length === 1) params[dateCol] = dateFilters[0];
+      else if (dateFilters.length === 2) params[dateCol] = dateFilters;
 
       const searchQuery = buildSearchQuery(query, tableName);
       if (searchQuery) {

@@ -519,8 +519,8 @@
         <div class="panel-card" id="customer-center">
           <div class="panel-card__header">
             <div class="panel-card__header-left">
-              <div class="panel-card__title">Müşteri Kayıtları</div>
-              <div class="panel-card__sub">Ad, e-posta, telefon veya kimlik numarasıyla arayın; seçili kayıt için PIN/PUK oluşturun</div>
+              <div class="panel-card__title">Başvuru Yönetimi</div>
+              <div class="panel-card__sub">Tüm form başvurularını görüntüleyin, filtreleyin ve yönetin</div>
             </div>
             <div class="panel-card__header-icon">
               <i class="fa-solid fa-address-card"></i>
@@ -530,6 +530,23 @@
           <div class="panel-card__body">
             <div id="customer-alert" class="alert" style="margin-bottom:1rem;" aria-live="polite"></div>
 
+            <!-- Application type tabs -->
+            <div class="req-tabs" role="tablist">
+              <button type="button" class="req-tab req-tab--active" data-req-tab="eimzakibris" role="tab">
+                <i class="fa-solid fa-signature"></i> E-İmza
+              </button>
+              <button type="button" class="req-tab" data-req-tab="timestamp" role="tab">
+                <i class="fa-solid fa-clock-rotate-left"></i> Zaman Damgası
+              </button>
+              <button type="button" class="req-tab" data-req-tab="molohiya" role="tab">
+                <i class="fa-solid fa-file-contract"></i> Molohiya
+              </button>
+              <button type="button" class="req-tab" data-req-tab="renewal" role="tab">
+                <i class="fa-solid fa-rotate"></i> Yenileme
+              </button>
+            </div>
+
+            <!-- Search + date filters -->
             <form id="customer-search-form" class="customer-search" novalidate>
               <div class="customer-search__bar">
                 <input
@@ -543,8 +560,31 @@
                   <i class="fa-solid fa-magnifying-glass"></i> Ara
                 </button>
               </div>
+
+              <div class="req-date-row">
+                <div class="req-date-inputs">
+                  <div class="req-date-group">
+                    <label for="req-date-from">Başlangıç</label>
+                    <input type="date" id="req-date-from" class="admin-date-input" />
+                  </div>
+                  <span class="req-date-sep">—</span>
+                  <div class="req-date-group">
+                    <label for="req-date-to">Bitiş</label>
+                    <input type="date" id="req-date-to" class="admin-date-input" />
+                  </div>
+                </div>
+                <div class="req-quick-btns">
+                  <button type="button" class="btn btn--ghost btn--sm" data-quick="today">Bugün</button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-quick="yesterday">Dün</button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-quick="week">Son 7 Gün</button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-quick="month">Son 30 Gün</button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-quick="clear"><i class="fa-solid fa-xmark"></i> Temizle</button>
+                </div>
+              </div>
+
               <div class="customer-search__hint save-hint">
-                <i class="fa-solid fa-circle-info"></i> Arama sonuçlarından bir kaydı seçin, ardından PIN ve PUK kodunu üretin veya güncelleyin.
+                <i class="fa-solid fa-circle-info"></i>
+                <span id="req-hint">E-İmza sekmesinde PIN/PUK yönetimi de mevcuttur.</span>
               </div>
             </form>
 
@@ -556,7 +596,7 @@
                 </div>
                 <div class="customer-table-wrap">
                   <table class="customer-table">
-                    <thead>
+                    <thead id="customer-results-head">
                       <tr>
                         <th>Ad / Soyad</th>
                         <th>Kimlik / Pasaport</th>
@@ -568,7 +608,7 @@
                     </thead>
                     <tbody id="customer-results-body">
                       <tr>
-                        <td colspan="6" class="customer-table__empty">Arama yapıldığında sonuçlar burada görünecek.</td>
+                        <td colspan="6" class="customer-table__empty">Sekmeyi seçin veya arama yapın.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -578,7 +618,7 @@
               <aside class="customer-center__detail" id="customer-detail">
                 <div class="customer-detail__empty">
                   <i class="fa-solid fa-user-magnifying-glass"></i>
-                  <p>Bir kayıt seçildiğinde müşteri detayları burada gösterilir.</p>
+                  <p>Bir kayıt seçildiğinde detaylar burada gösterilir.</p>
                 </div>
               </aside>
             </div>

@@ -72,6 +72,16 @@
         { key: 'documentId', label: 'ID', placeholder: '100', required: true },
         { key: 'documentName', label: 'Sertifika İptal Listesi', placeholder: 'E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı', required: true, fullWidth: true }
       ]
+    },
+    tscertificates: {
+      label: 'TS Certificates',
+      title: 'Zaman Damgası Sertifikaları',
+      fields: [
+        { key: 'documentId', label: 'ID', placeholder: '5', required: true },
+        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Zaman Damgası Sertifikası', required: true, fullWidth: true },
+        { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
+        { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
+      ]
     }
   };
 
@@ -261,7 +271,7 @@
     const schema = getFileTableSchema(item.table);
     if (!schema) return item.documentName || item.name || '-';
 
-    if (item.table === 'certificates') {
+    if (item.table === 'certificates' || item.table === 'tscertificates') {
       return `${item.documentId || '-'} • ${item.documentName || item.name || '-'}${item.certificateStartDate ? ` • ${formatDisplayDate(item.certificateStartDate)}` : ''}${item.certificateEndDate ? ` - ${formatDisplayDate(item.certificateEndDate)}` : ''}`;
     }
 
@@ -488,253 +498,363 @@
     `;
   }
 
-  function renderCustomerResults(items, selectedId) {
+  // ── Request detail panel (non-E-İmza tabs) ──────────────────
+  function renderRequestDetail(record) {
+    const detailEl = document.getElementById('customer-detail');
+    if (!detailEl) return;
+
+    if (!record) {
+      detailEl.innerHTML = `
+        <div class="customer-detail__empty">
+          <i class="fa-solid fa-user-magnifying-glass"></i>
+          <p>Bir kayıt seçildiğinde detaylar burada gösterilir.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const payload = record.payload && typeof record.payload === 'object' ? record.payload : {};
+    const payloadEntries = Object.entries(payload).filter(([k]) => k !== 'admin_codes');
+    const payloadHtml = payloadEntries.length
+      ? payloadEntries.map(([k, v]) => `
+          <div class="req-detail__pair">
+            <span>${escapeHtml(k)}</span>
+            <strong>${escapeHtml(typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v == null ? '-' : v))}</strong>
+          </div>`).join('')
+      : '<p class="save-hint">Ek form verisi bulunamadı.</p>';
+
+    detailEl.innerHTML = `
+      <div class="req-detail__header">
+        <div>
+          <div class="req-detail__name">${escapeHtml(record.full_name || '-')}</div>
+          <div class="req-detail__meta">Gönderim: ${escapeHtml(formatCustomerDateTime(record.created_at))}</div>
+        </div>
+        <div class="req-detail__badge">
+          <i class="fa-solid fa-file-lines"></i>
+          ${escapeHtml(record.form_type || 'Başvuru')}
+        </div>
+      </div>
+
+      <div class="req-detail__section">
+        <h5>İletişim Bilgileri</h5>
+        <div class="req-detail__grid">
+          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
+          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
+          ${record.identity_number ? `<div class="req-detail__pair"><span>Kimlik No</span><strong>${escapeHtml(record.identity_number)}</strong></div>` : ''}
+          ${record.payment_method ? `<div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method)}</strong></div>` : ''}
+          ${record.plan_label ? `<div class="req-detail__pair"><span>Plan</span><strong>${escapeHtml(record.plan_label)}</strong></div>` : ''}
+          ${record.total_text ? `<div class="req-detail__pair"><span>Toplam</span><strong>${escapeHtml(record.total_text)}</strong></div>` : ''}
+          ${record.application_type ? `<div class="req-detail__pair"><span>Başvuru Tipi</span><strong>${escapeHtml(record.application_type)}</strong></div>` : ''}
+          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
+        </div>
+      </div>
+
+      ${payloadEntries.length ? `
+      <div class="req-detail__section">
+        <h5>Form Verileri</h5>
+        <div class="req-detail__grid">${payloadHtml}</div>
+      </div>` : ''}
+    `;
+  }
+
+  // ── Results table renderer (tab-aware) ────────────────────────
+  function renderResults(items, selectedId, tabType) {
     const resultsBody = document.getElementById('customer-results-body');
+    const resultsHead = document.getElementById('customer-results-head');
     const resultsCount = document.getElementById('customer-results-count');
     if (!resultsBody) return;
 
     const list = Array.isArray(items) ? items : [];
-    if (resultsCount) {
-      resultsCount.textContent = `${list.length} kayıt`;
+    if (resultsCount) resultsCount.textContent = `${list.length} kayıt`;
+
+    if (tabType === 'eimzakibris') {
+      if (resultsHead) {
+        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th><th>Telefon</th><th>PIN / PUK</th><th>Seç</th></tr>';
+      }
+      if (!list.length) {
+        resultsBody.innerHTML = '<tr><td colspan="6" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        return;
+      }
+      resultsBody.innerHTML = list.map((item) => {
+        const codes = getCustomerCodes(item);
+        const rowClass = item.id === selectedId ? 'is-selected' : '';
+        return `
+          <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
+            <td>${escapeHtml(item.full_name || '-')}</td>
+            <td>${escapeHtml(item.identity_number || '-')}</td>
+            <td>${escapeHtml(item.email || '-')}</td>
+            <td>${escapeHtml(item.phone || '-')}</td>
+            <td><span class="code-pill ${codes.pin_code && codes.puk_code ? '' : 'code-pill--empty'}">${codes.pin_code && codes.puk_code ? 'Hazır' : 'Yok'}</span></td>
+            <td><button type="button" class="btn btn--ghost btn--sm" data-customer-select="${escapeHtml(item.id)}"><i class="fa-solid fa-eye"></i> Görüntüle</button></td>
+          </tr>`;
+      }).join('');
+    } else {
+      if (resultsHead) {
+        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>E-Posta</th><th>Telefon</th><th>Plan</th><th>Tarih</th><th>Seç</th></tr>';
+      }
+      if (!list.length) {
+        resultsBody.innerHTML = '<tr><td colspan="6" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        return;
+      }
+      resultsBody.innerHTML = list.map((item) => {
+        const rowClass = item.id === selectedId ? 'is-selected' : '';
+        return `
+          <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
+            <td>${escapeHtml(item.full_name || '-')}</td>
+            <td>${escapeHtml(item.email || '-')}</td>
+            <td>${escapeHtml(item.phone || '-')}</td>
+            <td>${escapeHtml(item.plan_label || item.application_type || '-')}</td>
+            <td>${escapeHtml(formatCustomerDateTime(item.created_at))}</td>
+            <td><button type="button" class="btn btn--ghost btn--sm" data-customer-select="${escapeHtml(item.id)}"><i class="fa-solid fa-eye"></i> Görüntüle</button></td>
+          </tr>`;
+      }).join('');
     }
-
-    if (!list.length) {
-      resultsBody.innerHTML = '<tr><td colspan="6" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
-      renderCustomerDetail(null);
-      return;
-    }
-
-    resultsBody.innerHTML = list.map((item) => {
-      const codes = getCustomerCodes(item);
-      const rowClass = item.id === selectedId ? 'is-selected' : '';
-      return `
-        <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
-          <td>${escapeHtml(item.full_name || '-')}</td>
-          <td>${escapeHtml(item.identity_number || '-')}</td>
-          <td>${escapeHtml(item.email || '-')}</td>
-          <td>${escapeHtml(item.phone || '-')}</td>
-          <td>
-            <span class="code-pill ${codes.pin_code && codes.puk_code ? '' : 'code-pill--empty'}">
-              ${codes.pin_code && codes.puk_code ? 'Hazır' : 'Yok'}
-            </span>
-          </td>
-          <td>
-            <button type="button" class="btn btn--ghost btn--sm" data-customer-select="${escapeHtml(item.id)}">
-              <i class="fa-solid fa-eye"></i> Görüntüle
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  }
-
-  async function fetchCustomerRecords(query) {
-    const url = new URL(CUSTOMER_API_ENDPOINT, window.location.origin);
-    if (query) {
-      url.searchParams.set('q', query);
-    }
-
-    const response = await fetch(url.toString(), {
-      headers: { Accept: 'application/json' }
-    });
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data.ok) {
-      throw new Error((data && data.error) || 'Müşteri kayıtları alınamadı.');
-    }
-
-    return Array.isArray(data.items) ? data.items : [];
   }
 
   function initCustomerCenter() {
-    const form = document.getElementById('customer-search-form');
-    if (!form) return;
-
-    const freshForm = form.cloneNode(true);
-    form.parentNode.replaceChild(freshForm, form);
-
     const alertEl = document.getElementById('customer-alert');
-    const queryInput = freshForm.querySelector('#customer-search-input');
+    const searchInput = document.getElementById('customer-search-input');
+    const dateFromInput = document.getElementById('req-date-from');
+    const dateToInput = document.getElementById('req-date-to');
+    const resultsBody = document.getElementById('customer-results-body');
     const detailEl = document.getElementById('customer-detail');
 
+    let activeTab = 'eimzakibris';
     let currentItems = [];
     let selectedId = '';
     let isLoading = false;
 
+    // ── Tab switching ───────────────────────────────────────────
+    document.querySelectorAll('[data-req-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeTab = btn.getAttribute('data-req-tab');
+        document.querySelectorAll('[data-req-tab]').forEach(function (b) {
+          b.classList.toggle('req-tab--active', b === btn);
+        });
+        selectedId = '';
+        loadRecords();
+      });
+    });
+
+    // ── Quick date shortcuts ────────────────────────────────────
+    document.querySelectorAll('[data-quick]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const type = btn.getAttribute('data-quick');
+        const now = new Date();
+        const pad = function (n) { return String(n).padStart(2, '0'); };
+        const toISO = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+        const today = toISO(now);
+
+        if (type === 'today') {
+          if (dateFromInput) dateFromInput.value = today;
+          if (dateToInput) dateToInput.value = today;
+        } else if (type === 'yesterday') {
+          const yest = toISO(new Date(now - 86400000));
+          if (dateFromInput) dateFromInput.value = yest;
+          if (dateToInput) dateToInput.value = yest;
+        } else if (type === 'week') {
+          if (dateFromInput) dateFromInput.value = toISO(new Date(now - 6 * 86400000));
+          if (dateToInput) dateToInput.value = today;
+        } else if (type === 'month') {
+          if (dateFromInput) dateFromInput.value = toISO(new Date(now - 29 * 86400000));
+          if (dateToInput) dateToInput.value = today;
+        } else if (type === 'clear') {
+          if (dateFromInput) dateFromInput.value = '';
+          if (dateToInput) dateToInput.value = '';
+        }
+        loadRecords();
+      });
+    });
+
+    // ── Date inputs ─────────────────────────────────────────────
+    if (dateFromInput) dateFromInput.addEventListener('change', function () { loadRecords(); });
+    if (dateToInput) dateToInput.addEventListener('change', function () { loadRecords(); });
+
+    // ── Search form ─────────────────────────────────────────────
+    const form = document.getElementById('customer-search-form');
+    if (form) {
+      const freshForm = form.cloneNode(true);
+      form.parentNode.replaceChild(freshForm, form);
+      freshForm.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(); });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', debounce(function () { loadRecords(); }, 350));
+    }
+
+    // ── Row click ───────────────────────────────────────────────
+    if (resultsBody) {
+      resultsBody.addEventListener('click', function (event) {
+        const el = event.target instanceof Element ? event.target : null;
+        if (!el) return;
+        const btn = el.closest('[data-customer-select]');
+        const row = el.closest('tr[data-customer-id]');
+        const id = btn ? btn.getAttribute('data-customer-select') : (row ? row.getAttribute('data-customer-id') : null);
+        if (!id) return;
+        const found = currentItems.find(function (item) { return item.id === id; });
+        if (found) setSelected(found.id);
+      });
+    }
+
+    // ── setSelected ─────────────────────────────────────────────
     function setSelected(id) {
       selectedId = id || '';
-      const selected = currentItems.find((item) => item.id === selectedId) || null;
-      renderCustomerResults(currentItems, selectedId);
-      renderCustomerDetail(selected);
+      const selected = currentItems.find(function (item) { return item.id === selectedId; }) || null;
+      renderResults(currentItems, selectedId, activeTab);
 
-      if (detailEl) {
-        const generateButton = detailEl.querySelector('[data-customer-generate]');
-        const saveButton = detailEl.querySelector('[data-customer-save]');
-        const copyButton = detailEl.querySelector('[data-customer-copy]');
-        const pinInput = detailEl.querySelector('[data-customer-pin]');
-        const pukInput = detailEl.querySelector('[data-customer-puk]');
-
-        if (saveButton) {
-          saveButton.addEventListener('click', async () => {
-            if (!selected) return;
-
-            const pinValue = pinInput ? pinInput.value.trim() : '';
-            const pukValue = pukInput ? pukInput.value.trim() : '';
-
-            if (!pinValue || !pukValue) {
-              setAlert(alertEl, 'warning', 'PIN ve PUK kodları boş olamaz.');
-              return;
-            }
-
-            saveButton.disabled = true;
-            saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
-
-            try {
-              const response = await fetch(CUSTOMER_API_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  application_id: selected.id,
-                  pin_code: pinValue,
-                  puk_code: pukValue,
-                  regenerate: false
-                })
-              });
-
-              const data = await response.json().catch(() => ({}));
-              if (!response.ok || !data.ok || !data.record) {
-                throw new Error((data && data.error) || 'PIN/PUK kaydedilemedi.');
-              }
-
-              const updated = data.record;
-              currentItems = currentItems.map((item) => (item.id === updated.id ? updated : item));
-              selectedId = updated.id;
-              renderCustomerResults(currentItems, selectedId);
-              renderCustomerDetail(updated);
-              setAlert(alertEl, 'success', 'PIN ve PUK kodları kaydedildi.');
-            } catch (error) {
-              setAlert(alertEl, 'danger', error.message || 'PIN/PUK kaydedilemedi.');
-            } finally {
-              saveButton.disabled = false;
-              saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet';
-            }
-          });
-        }
-
-        if (generateButton) {
-          generateButton.addEventListener('click', async () => {
-            if (!selected) return;
-
-            generateButton.disabled = true;
-            generateButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
-
-            try {
-              const response = await fetch(CUSTOMER_API_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ application_id: selected.id, regenerate: true })
-              });
-
-              const data = await response.json().catch(() => ({}));
-              if (!response.ok || !data.ok || !data.record) {
-                throw new Error((data && data.error) || 'PIN/PUK üretilemedi.');
-              }
-
-              const updated = data.record;
-              currentItems = currentItems.map((item) => (item.id === updated.id ? updated : item));
-              selectedId = updated.id;
-              renderCustomerResults(currentItems, selectedId);
-              renderCustomerDetail(updated);
-              setAlert(alertEl, 'success', 'PIN ve PUK kodları oluşturuldu ve kaydedildi.');
-            } catch (error) {
-              setAlert(alertEl, 'danger', error.message || 'PIN/PUK oluşturulamadı.');
-            } finally {
-              generateButton.disabled = false;
-              generateButton.innerHTML = '<i class="fa-solid fa-key"></i> PIN / PUK Oluştur';
-            }
-          });
-        }
-
-        if (copyButton) {
-          copyButton.addEventListener('click', async () => {
-            if (!selected) return;
-
-            const codes = getCustomerCodes(selected);
-            if (!codes.pin_code || !codes.puk_code) {
-              setAlert(alertEl, 'warning', 'Kopyalanacak PIN/PUK kodu bulunmuyor.');
-              return;
-            }
-
-            try {
-              await navigator.clipboard.writeText(`PIN: ${codes.pin_code}\nPUK: ${codes.puk_code}`);
-              setAlert(alertEl, 'success', 'PIN ve PUK kodları kopyalandı.');
-            } catch (error) {
-              setAlert(alertEl, 'danger', 'Kodlar panoya kopyalanamadı.');
-            }
-          });
-        }
+      if (activeTab === 'eimzakibris') {
+        renderCustomerDetail(selected);
+        attachPinPukListeners(selected);
+      } else {
+        renderRequestDetail(selected);
       }
     }
 
-    async function loadRecords(term) {
+    function attachPinPukListeners(selected) {
+      if (!detailEl || !selected) return;
+      const generateButton = detailEl.querySelector('[data-customer-generate]');
+      const saveButton = detailEl.querySelector('[data-customer-save]');
+      const copyButton = detailEl.querySelector('[data-customer-copy]');
+      const pinInput = detailEl.querySelector('[data-customer-pin]');
+      const pukInput = detailEl.querySelector('[data-customer-puk]');
+
+      if (saveButton) {
+        saveButton.addEventListener('click', async function () {
+          const pinValue = pinInput ? pinInput.value.trim() : '';
+          const pukValue = pukInput ? pukInput.value.trim() : '';
+          if (!pinValue || !pukValue) {
+            setAlert(alertEl, 'warning', 'PIN ve PUK kodları boş olamaz.');
+            return;
+          }
+          saveButton.disabled = true;
+          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+          try {
+            const response = await fetch(CUSTOMER_API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ application_id: selected.id, pin_code: pinValue, puk_code: pukValue, regenerate: false })
+            });
+            const data = await response.json().catch(function () { return {}; });
+            if (!response.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'PIN/PUK kaydedilemedi.');
+            const updated = data.record;
+            currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
+            selectedId = updated.id;
+            renderResults(currentItems, selectedId, activeTab);
+            renderCustomerDetail(updated);
+            attachPinPukListeners(updated);
+            setAlert(alertEl, 'success', 'PIN ve PUK kodları kaydedildi.');
+          } catch (error) {
+            setAlert(alertEl, 'danger', error.message || 'PIN/PUK kaydedilemedi.');
+          } finally {
+            saveButton.disabled = false;
+            saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet';
+          }
+        });
+      }
+
+      if (generateButton) {
+        generateButton.addEventListener('click', async function () {
+          generateButton.disabled = true;
+          generateButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
+          try {
+            const response = await fetch(CUSTOMER_API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ application_id: selected.id, regenerate: true })
+            });
+            const data = await response.json().catch(function () { return {}; });
+            if (!response.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'PIN/PUK üretilemedi.');
+            const updated = data.record;
+            currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
+            selectedId = updated.id;
+            renderResults(currentItems, selectedId, activeTab);
+            renderCustomerDetail(updated);
+            attachPinPukListeners(updated);
+            setAlert(alertEl, 'success', 'PIN ve PUK kodları oluşturuldu ve kaydedildi.');
+          } catch (error) {
+            setAlert(alertEl, 'danger', error.message || 'PIN/PUK oluşturulamadı.');
+          } finally {
+            generateButton.disabled = false;
+            generateButton.innerHTML = '<i class="fa-solid fa-key"></i> PIN / PUK Oluştur';
+          }
+        });
+      }
+
+      if (copyButton) {
+        copyButton.addEventListener('click', async function () {
+          const codes = getCustomerCodes(selected);
+          if (!codes.pin_code || !codes.puk_code) {
+            setAlert(alertEl, 'warning', 'Kopyalanacak PIN/PUK kodu bulunmuyor.');
+            return;
+          }
+          try {
+            await navigator.clipboard.writeText('PIN: ' + codes.pin_code + '\nPUK: ' + codes.puk_code);
+            setAlert(alertEl, 'success', 'PIN ve PUK kodları kopyalandı.');
+          } catch (_) {
+            setAlert(alertEl, 'danger', 'Kodlar panoya kopyalanamadı.');
+          }
+        });
+      }
+    }
+
+    // ── loadRecords ─────────────────────────────────────────────
+    async function loadRecords() {
       if (isLoading) return;
       isLoading = true;
 
+      const q = searchInput ? searchInput.value.trim() : '';
+      const dateFrom = dateFromInput ? dateFromInput.value : '';
+      const dateTo = dateToInput ? dateToInput.value : '';
+
       try {
-        setAlert(alertEl, 'warning', 'Kayıtlar aranıyor...');
-        currentItems = await fetchCustomerRecords(term);
-        if (currentItems.length) {
-          setAlert(alertEl, 'success', `${currentItems.length} kayıt bulundu.`);
-          setSelected(currentItems[0].id);
+        setAlert(alertEl, 'warning', 'Yükleniyor...');
+
+        let items;
+        if (activeTab === 'eimzakibris') {
+          const url = new URL(CUSTOMER_API_ENDPOINT, window.location.origin);
+          if (q) url.searchParams.set('q', q);
+          if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
+          if (dateTo) url.searchParams.set('dateTo', dateTo);
+          const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+          const data = await resp.json().catch(function () { return {}; });
+          if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'E-İmza kayıtları alınamadı.');
+          items = Array.isArray(data.items) ? data.items : [];
+        } else {
+          const url = new URL('/api/admin-requests', window.location.origin);
+          url.searchParams.set('table', activeTab);
+          if (q) url.searchParams.set('q', q);
+          if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
+          if (dateTo) url.searchParams.set('dateTo', dateTo);
+          const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+          const data = await resp.json().catch(function () { return {}; });
+          if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Kayıtlar alınamadı.');
+          items = Array.isArray(data.items) ? data.items : [];
+        }
+
+        currentItems = items;
+        if (items.length) {
+          setAlert(alertEl, 'success', items.length + ' kayıt bulundu.');
+          setSelected(items[0].id);
         } else {
           selectedId = '';
-          renderCustomerResults([], '');
-          renderCustomerDetail(null);
+          renderResults([], '', activeTab);
+          if (activeTab === 'eimzakibris') renderCustomerDetail(null);
+          else renderRequestDetail(null);
           setAlert(alertEl, 'warning', 'Kayıt bulunamadı.');
         }
       } catch (error) {
         currentItems = [];
         selectedId = '';
-        renderCustomerResults([], '');
-        renderCustomerDetail(null);
-        setAlert(alertEl, 'danger', error.message || 'Müşteri kayıtları alınamadı.');
+        renderResults([], '', activeTab);
+        if (activeTab === 'eimzakibris') renderCustomerDetail(null);
+        else renderRequestDetail(null);
+        setAlert(alertEl, 'danger', error.message || 'Kayıtlar alınamadı.');
       } finally {
         isLoading = false;
       }
     }
 
-    freshForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      loadRecords(queryInput ? queryInput.value.trim() : '');
-    });
-
-    const resultsBody = document.getElementById('customer-results-body');
-    if (resultsBody) {
-      // Click anywhere on a row to select the record (not only the small button)
-      resultsBody.addEventListener('click', function (event) {
-        const el = event.target instanceof Element ? event.target : null;
-        if (!el) return;
-
-        // Prefer explicit select button attribute, otherwise nearest row
-        const btn = el.closest('[data-customer-select]');
-        const row = el.closest('tr[data-customer-id]');
-        const id = btn ? btn.getAttribute('data-customer-select') : (row ? row.getAttribute('data-customer-id') : null);
-        if (!id) return;
-
-        const selected = currentItems.find((item) => item.id === id);
-        if (selected) setSelected(selected.id);
-      });
-    }
-
-    // Live search while typing (debounced) for faster UX
-    if (queryInput) {
-      queryInput.addEventListener('input', debounce(() => {
-        const term = queryInput.value.trim();
-        loadRecords(term);
-      }, 350));
-    }
-
-    loadRecords('');
+    loadRecords();
   }
 
   // ── Session ───────────────────────────────────────────────

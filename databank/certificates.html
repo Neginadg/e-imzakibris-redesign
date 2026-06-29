@@ -333,12 +333,8 @@
                   </tr>
                 </thead>
                 <tbody id="certificates-ts-body">
-                  <tr>
-                    <td>5</td>
-                    <td>e-İmza Kıbrıs Elektronik Sertifika Hizmet Sağlayıcısı Zaman Damgası Sertifikası</td>
-                    <td>25.07.2016</td>
-                    <td>02.06.2026</td>
-                    <td><a class="crt-download-btn" href="https://qtuxtmdrsnqsojrpcuew.supabase.co/storage/v1/object/public/Public%20Bucket/certificates/e-Imza-Kibris-zaman-damgasi.cer" download><img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a></td>
+                  <tr id="certificates-ts-loading">
+                    <td colspan="5" style="text-align:center;color:var(--color-text-muted,#888);padding:18px;">Yükleniyor...</td>
                   </tr>
                 </tbody>
               </table>
@@ -445,6 +441,58 @@
 
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script>
+    (function () {
+      function esc(v) {
+        return String(v == null ? '' : v)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function fmtDate(v) {
+        if (!v) return '-';
+        var p = String(v).split('-');
+        return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : String(v);
+      }
+
+      async function loadTsCerts() {
+        var tbody = document.getElementById('certificates-ts-body');
+        if (!tbody) return;
+
+        try {
+          var resp = await fetch('/api/public-files?table=tscertificates');
+          var data = await resp.json().catch(function () { return {}; });
+
+          if (!resp.ok || !data.ok || !Array.isArray(data.items) || !data.items.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Kayıt bulunamadı.</td></tr>';
+            return;
+          }
+
+          var sorted = data.items.slice().sort(function (a, b) {
+            return Number(a.documentId || 0) - Number(b.documentId || 0);
+          });
+
+          tbody.innerHTML = sorted.map(function (item) {
+            var dlBtn = item.file_url
+              ? '<a class="crt-download-btn" href="' + esc(item.file_url) + '" download target="_blank">' +
+                '<img class="crt-download-btn__icon" src="../assets/img/download.svg" alt="İndir" /></a>'
+              : '-';
+            return '<tr>' +
+              '<td>' + esc(item.documentId || '-') + '</td>' +
+              '<td>' + esc(item.documentName || item.name || '-') + '</td>' +
+              '<td>' + esc(fmtDate(item.certificateStartDate)) + '</td>' +
+              '<td>' + esc(fmtDate(item.certificateEndDate)) + '</td>' +
+              '<td>' + dlBtn + '</td>' +
+              '</tr>';
+          }).join('');
+        } catch (_) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Yüklenemedi.</td></tr>';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', loadTsCerts);
+    })();
+  </script>
 </body>
 </html>
 
