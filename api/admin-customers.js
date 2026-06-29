@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
         : {
           select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
           order: 'imported_at.desc',
-          limit: query || dateFrom || dateTo ? '100' : '20'
+          limit: '5'
         };
 
       // Date range filter — array values produce repeated keys for PostgREST
