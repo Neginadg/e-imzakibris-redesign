@@ -10,6 +10,8 @@
   const KEY_SESSION = 'eimza_admin_session';
   const KEY_ADMIN_NEWS = 'eimza_admin_news';
   const KEY_ADMIN_FILES = 'eimza_admin_files';
+  const FILES_API_ENDPOINT = '/api/admin-files';
+  let cachedFiles = [];
   const CUSTOMER_API_ENDPOINT = '/api/admin-customers';
   const FILE_TABLES = {
     applicationguidelines: {
@@ -210,18 +212,16 @@
     localStorage.setItem(KEY_ADMIN_NEWS, JSON.stringify(items));
   }
 
-  function loadAdminFiles() {
+  async function refreshFilesCache() {
     try {
-      const raw = localStorage.getItem(KEY_ADMIN_FILES);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      return [];
+      const response = await fetch(FILES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.ok && Array.isArray(data.items)) {
+        cachedFiles = data.items;
+      }
+    } catch (_) {
+      // keep existing cache on network error
     }
-  }
-
-  function saveAdminFiles(items) {
-    localStorage.setItem(KEY_ADMIN_FILES, JSON.stringify(items));
   }
 
   function formatDateTR(isoDate) {
@@ -927,11 +927,13 @@
     renderNewsList();
   }
 
-  function renderFilesList(onEdit) {
+  async function renderFilesList(onEdit) {
     const listEl = document.getElementById('files-list');
     if (!listEl) return;
 
-    const rows = loadAdminFiles().map(normalizeFileRecord).sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    await refreshFilesCache();
+
+    const rows = cachedFiles.map(normalizeFileRecord).sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
     if (!rows.length) {
       listEl.innerHTML = '<p class="save-hint">Henüz yüklenmiş dosya yok.</p>';
       return;
@@ -960,12 +962,12 @@
     listEl.querySelectorAll('[data-file-download]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-file-download');
-        const target = loadAdminFiles().find((row) => row.id === id);
-        if (!target) return;
-
+        const target = cachedFiles.find((row) => row.id === id);
+        if (!target || !target.file_url) return;
         const link = document.createElement('a');
-        link.href = target.dataUrl;
+        link.href = target.file_url;
         link.download = target.name;
+        link.target = '_blank';
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -981,16 +983,26 @@
     });
 
     listEl.querySelectorAll('[data-file-delete]').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-file-delete');
-        const filtered = loadAdminFiles().filter((row) => row.id !== id);
-        saveAdminFiles(filtered);
-        renderFilesList(onEdit);
+        const target = cachedFiles.find((row) => row.id === id);
+        if (!confirm('Bu dosyayı silmek istediğinizden emin misiniz?')) return;
+        try {
+          const resp = await fetch(FILES_API_ENDPOINT, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, file_url: target && target.file_url })
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (resp.ok && data.ok) {
+            await renderFilesList(onEdit);
+          }
+        } catch (_) { /* ignore */ }
       });
     });
   }
 
-  function initFilesManager() {
+  async function initFilesManager() {
     const filesForm = document.getElementById('files-form');
     const filesAlert = document.getElementById('files-alert');
     if (!filesForm) return;
@@ -1036,7 +1048,7 @@
     }
 
     function applyEditState(id) {
-      const target = loadAdminFiles().map(normalizeFileRecord).find((row) => row.id === id);
+      const target = cachedFiles.map(normalizeFileRecord).find((row) => row.id === id);
       if (!target) {
         setAlert(filesAlert, 'danger', 'Düzenlenecek kayıt bulunamadı.');
         return;
@@ -1078,7 +1090,7 @@
         return;
       }
 
-      const items = loadAdminFiles()
+      const items = cachedFiles
         .filter(item => item.table === tableKey)
         .map(normalizeFileRecord);
 
@@ -1141,17 +1153,9 @@
       if (container) container.style.display = 'block';
     }
 
-    function saveTableRowChanges(recordId, tableKey, schema, row) {
-      const allFiles = loadAdminFiles();
-      const targetIndex = allFiles.findIndex(f => f.id === recordId);
-
-      if (targetIndex === -1) {
-        setAlert(filesAlert, 'danger', 'Kayıt bulunamadı.');
-        return;
-      }
-
-      const updated = Object.assign({}, allFiles[targetIndex]);
+    async function saveTableRowChanges(recordId, tableKey, schema, row) {
       let isValid = true;
+      const updates = { table: tableKey };
 
       schema.fields.forEach(field => {
         const input = row.querySelector(`.field-${field.key}`);
@@ -1162,7 +1166,7 @@
             isValid = false;
           } else {
             input.classList.remove('has-error');
-            updated[field.key] = value;
+            updates[field.key] = value;
           }
         }
       });
@@ -1172,24 +1176,46 @@
         return;
       }
 
-      allFiles[targetIndex] = updated;
-      saveAdminFiles(allFiles);
-      setAlert(filesAlert, 'success', 'Kayıt güncellendi.');
+      try {
+        const resp = await fetch(FILES_API_ENDPOINT, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: recordId, ...updates })
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (resp.ok && data.ok) {
+          cachedFiles = cachedFiles.map(f => f.id === recordId ? { ...f, ...updates } : f);
+          setAlert(filesAlert, 'success', 'Kayıt güncellendi.');
+        } else {
+          setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt güncellenemedi.');
+        }
+      } catch (_) {
+        setAlert(filesAlert, 'danger', 'Kayıt güncellenemedi.');
+      }
     }
 
-    function deleteTableRecord(recordId) {
+    async function deleteTableRecord(recordId) {
       if (!confirm('Bu kaydı silmek istediğinizden emin misiniz?')) return;
 
-      const filtered = loadAdminFiles().filter(f => f.id !== recordId);
-      saveAdminFiles(filtered);
-
-      const tableSelect = document.getElementById('files-table');
-      if (tableSelect) {
-        const currentTable = tableSelect.value;
-        renderTableItems(currentTable);
+      const target = cachedFiles.find(f => f.id === recordId);
+      try {
+        const resp = await fetch(FILES_API_ENDPOINT, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: recordId, file_url: target && target.file_url })
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (resp.ok && data.ok) {
+          cachedFiles = cachedFiles.filter(f => f.id !== recordId);
+          const tableSelect = document.getElementById('files-table');
+          if (tableSelect) renderTableItems(tableSelect.value);
+          setAlert(filesAlert, 'success', 'Kayıt silindi.');
+        } else {
+          setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt silinemedi.');
+        }
+      } catch (_) {
+        setAlert(filesAlert, 'danger', 'Kayıt silinemedi.');
       }
-
-      setAlert(filesAlert, 'success', 'Kayıt silindi.');
     }
 
     function syncFields() {
@@ -1242,68 +1268,63 @@
         return;
       }
 
-      const existing = loadAdminFiles();
-
       try {
         if (editingFileId) {
-          const targetIndex = existing.findIndex((row) => row.id === editingFileId);
-          if (targetIndex === -1) {
-            setAlert(filesAlert, 'danger', 'Güncellenecek kayıt bulunamadı. Liste yenileniyor.');
-            renderFilesList(applyEditState);
+          const resp = await fetch(FILES_API_ENDPOINT, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: editingFileId, table, ...fieldValues })
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok || !data.ok) {
+            setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt güncellenemedi.');
             return;
           }
-
-          const currentRecord = normalizeFileRecord(existing[targetIndex]);
-          let updatedPayload = {
-            ...currentRecord,
-            table,
-            ...fieldValues,
-            editedAt: new Date().toISOString()
-          };
-
-          if (fileInput && fileInput.files && fileInput.files.length) {
-            const replacementFile = fileInput.files[0];
-            const replacementDataUrl = await fileToDataUrl(replacementFile);
-            updatedPayload = {
-              ...updatedPayload,
-              name: replacementFile.name,
-              type: replacementFile.type || 'application/octet-stream',
-              size: replacementFile.size || 0,
-              dataUrl: replacementDataUrl
-            };
-          }
-
-          existing[targetIndex] = normalizeFileRecord(updatedPayload);
-          saveAdminFiles(existing);
           setAlert(filesAlert, 'success', 'Dosya kaydı güncellendi.');
           resetEditState();
-          renderFilesList(applyEditState);
+          await renderFilesList(applyEditState);
           return;
         }
 
-        for (const file of Array.from(fileInput.files)) {
-          const dataUrl = await fileToDataUrl(file);
-          existing.push(normalizeFileRecord({
-            id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
-            name: file.name,
-            table,
-            ...fieldValues,
-            type: file.type || 'application/octet-stream',
-            size: file.size || 0,
-            uploadedAt: new Date().toISOString(),
-            dataUrl
-          }));
+        if (!fileInput || !fileInput.files || !fileInput.files.length) {
+          setAlert(filesAlert, 'warning', 'Lütfen en az bir dosya seçin.');
+          return;
         }
 
-        saveAdminFiles(existing);
-        setAlert(filesAlert, 'success', 'Dosyalar kaydedildi.');
+        let uploadedCount = 0;
+        for (const file of Array.from(fileInput.files)) {
+          const dataUrl = await fileToDataUrl(file);
+          const resp = await fetch(FILES_API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fileData: dataUrl,
+              fileName: file.name,
+              fileType: file.type || 'application/octet-stream',
+              fileSize: file.size || 0,
+              table,
+              uploadedAt: new Date().toISOString(),
+              ...fieldValues
+            })
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok || !data.ok) {
+            setAlert(filesAlert, 'danger', `"${file.name}" yüklenemedi: ${(data && data.error) || 'Sunucu hatası'}`);
+            return;
+          }
+          uploadedCount++;
+        }
+
+        setAlert(filesAlert, 'success', `${uploadedCount} dosya başarıyla yüklendi.`);
         resetEditState();
         if (filesTable) filesTable.focus();
-        renderFilesList(applyEditState);
+        await renderFilesList(applyEditState);
       } catch (error) {
-        setAlert(filesAlert, 'danger', 'Dosyalar kaydedilemedi. Tarayıcı depolaması dolu olabilir.');
+        setAlert(filesAlert, 'danger', 'Dosya yüklenemedi: ' + (error.message || 'Bilinmeyen hata'));
       }
     });
+
+    await refreshFilesCache();
 
     if (filesTable) {
       filesTable.addEventListener('change', syncFields);
@@ -1316,7 +1337,7 @@
       });
     }
 
-    renderFilesList(applyEditState);
+    await renderFilesList(applyEditState);
   }
 
   // ── Render admin panel ────────────────────────────────────
