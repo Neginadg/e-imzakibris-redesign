@@ -23,8 +23,18 @@
       ]
     },
     certificates: {
-      label: 'Certificates (E-İmza & Zaman Damgası)',
-      title: 'Sertifikalar',
+      label: 'Certificates (NES / E-İmza)',
+      title: 'Nitelikli Elektronik Sertifikalar',
+      fields: [
+        { key: 'documentId', label: 'ID', placeholder: '1', required: true },
+        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Kök Sertifika S2', required: true, fullWidth: true },
+        { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
+        { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
+      ]
+    },
+    ts_certificates: {
+      label: 'Certificates (Zaman Damgası)',
+      title: 'Zaman Damgası Sertifikaları',
       fields: [
         { key: 'documentId', label: 'ID', placeholder: '1', required: true },
         { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Zaman Damgası Sertifikası', required: true, fullWidth: true },
