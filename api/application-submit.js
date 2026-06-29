@@ -1,7 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
-const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
+const { buildHtmlSummary, toPlainText, sendEmail, buildCustomerConfirmationHtml, buildCustomerConfirmationText } = require('../lib/email');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -85,9 +85,9 @@ module.exports = async function handler(req, res) {
     try {
       await sendEmail(config, {
         to: record.e_posta_adresi,
-        subject: 'Your E-Imza Application Was Submitted Successfully',
-        html: buildHtmlSummary(customerSummaryData, 'E-Imza Basvurunuz Alindi'),
-        text: toPlainText(customerSummaryData).join('\n')
+        subject: 'E-İmza Başvurunuz Alındı – e-İmza Kıbrıs',
+        html: buildCustomerConfirmationHtml(customerSummaryData),
+        text: buildCustomerConfirmationText(customerSummaryData)
       });
       emailStatus.customerConfirmation = true;
     } catch (error) {

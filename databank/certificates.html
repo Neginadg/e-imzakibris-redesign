@@ -264,10 +264,11 @@
     <section class="application-builder section" id="certificates-list">
       <div class="container application-builder__grid">
         <div class="application-builder__main">
+
           <div class="builder-card" data-animate="fade-up">
             <div class="builder-card__head">
               <div>
-                <div class="section-tag">Sertifika Zinciri</div>
+                <div class="section-tag">Kök Sertifikalar</div>
                 <h2 class="section-title">Nitelikli Elektronik Sertifikalar</h2>
               </div>
               <p class="builder-card__head-text">
@@ -276,7 +277,7 @@
               </p>
             </div>
 
-            <div class="cert-table-wrap cert-group">
+            <div class="cert-table-wrap">
               <table class="cert-table">
                 <thead>
                   <tr>
@@ -288,14 +289,25 @@
                   </tr>
                 </thead>
                 <tbody id="certificates-root-body">
-                  <tr id="certificates-root-loading">
+                  <tr>
                     <td colspan="5" style="text-align:center;color:var(--color-text-muted,#888);padding:18px;">Yükleniyor...</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+          </div>
 
-            <h3 class="cert-group__title">Zaman Damgası</h3>
+          <div class="builder-card" data-animate="fade-up" style="margin-top:24px;">
+            <div class="builder-card__head">
+              <div>
+                <div class="section-tag">Sertifika Zinciri</div>
+                <h2 class="section-title">Zaman Damgası</h2>
+              </div>
+              <p class="builder-card__head-text">
+                Zaman damgası hizmetine ait kök ve ara sertifikalar aşağıda listelenmiştir.
+              </p>
+            </div>
+
             <div class="cert-table-wrap">
               <table class="cert-table">
                 <thead>
@@ -308,13 +320,14 @@
                   </tr>
                 </thead>
                 <tbody id="certificates-ts-body">
-                  <tr id="certificates-ts-loading">
+                  <tr>
                     <td colspan="5" style="text-align:center;color:var(--color-text-muted,#888);padding:18px;">Yükleniyor...</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+
         </div>
 
         <aside class="application-builder__sidebar" data-animate="fade-left">
