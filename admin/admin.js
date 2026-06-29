@@ -23,11 +23,11 @@
       ]
     },
     certificates: {
-      label: 'Certificates',
-      title: 'Kök Sertifikalar',
+      label: 'Certificates (E-İmza & Zaman Damgası)',
+      title: 'Sertifikalar',
       fields: [
         { key: 'documentId', label: 'ID', placeholder: '1', required: true },
-        { key: 'documentName', label: 'Kök Sertifika Adı', placeholder: 'e-imza KIBRIS Kök Elektronik Sertifika Hizmet Sağlayıcısı S1', required: true, fullWidth: true },
+        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Zaman Damgası Sertifikası', required: true, fullWidth: true },
         { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
         { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
       ]
@@ -73,16 +73,6 @@
         { key: 'documentName', label: 'Sertifika İptal Listesi', placeholder: 'E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı', required: true, fullWidth: true }
       ]
     },
-    tscertificates: {
-      label: 'TS Certificates',
-      title: 'Zaman Damgası Sertifikaları',
-      fields: [
-        { key: 'documentId', label: 'ID', placeholder: '5', required: true },
-        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Zaman Damgası Sertifikası', required: true, fullWidth: true },
-        { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
-        { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
-      ]
-    }
   };
 
   // Default prices (raw numbers)
@@ -271,7 +261,7 @@
     const schema = getFileTableSchema(item.table);
     if (!schema) return item.documentName || item.name || '-';
 
-    if (item.table === 'certificates' || item.table === 'tscertificates') {
+    if (item.table === 'certificates') {
       return `${item.documentId || '-'} • ${item.documentName || item.name || '-'}${item.certificateStartDate ? ` • ${formatDisplayDate(item.certificateStartDate)}` : ''}${item.certificateEndDate ? ` - ${formatDisplayDate(item.certificateEndDate)}` : ''}`;
     }
 

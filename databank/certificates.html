@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="icon" type="image/png" href="../assets/img/icon.png" />
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
@@ -460,11 +460,18 @@
         if (!tbody) return;
 
         try {
-          var resp = await fetch('/api/public-files?table=tscertificates');
+          var resp = await fetch('/api/public-files?table=certificates');
           var data = await resp.json().catch(function () { return {}; });
 
-          if (!resp.ok || !data.ok || !Array.isArray(data.items) || !data.items.length) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Kayıt bulunamadı.</td></tr>';
+          console.log('[TS Certs] status:', resp.status, 'data:', JSON.stringify(data));
+
+          if (!resp.ok || !data.ok) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">API Hata: ' + esc(data.error || String(resp.status)) + '</td></tr>';
+            return;
+          }
+
+          if (!Array.isArray(data.items) || !data.items.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Kayıt bulunamadı (section_type=certificates).</td></tr>';
             return;
           }
 
@@ -485,8 +492,9 @@
               '<td>' + dlBtn + '</td>' +
               '</tr>';
           }).join('');
-        } catch (_) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Yüklenemedi.</td></tr>';
+        } catch (err) {
+          console.error('[TS Certs] fetch error:', err);
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:18px;">Yüklenemedi: ' + esc(err && err.message || 'network error') + '</td></tr>';
         }
       }
 
