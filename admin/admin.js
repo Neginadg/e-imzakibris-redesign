@@ -376,15 +376,45 @@
     };
   }
 
-  function getCustomerPayloadEntries(record) {
-    const payload = record && record.payload && typeof record.payload === 'object' ? record.payload : {};
-    return Object.entries(payload).filter(([key]) => key !== 'admin_codes');
+  var FIELD_LABELS = {
+    fullName: 'Ad Soyad', phone: 'Telefon (Form)', mobilePhone: 'Cep Telefonu',
+    mobileCode: 'Alan Kodu', region: 'Bölge', address: 'Adres',
+    company: 'Şirket / Kurum', jobTitle: 'Görev / Unvan', birthDate: 'Doğum Tarihi',
+    birthPlace: 'Doğum Yeri', nationality: 'Uyruk', taxNumber: 'Vergi No',
+    taxOffice: 'Vergi Dairesi', identityNumber: 'Kimlik No (Form)', notes: 'Notlar',
+    invoiceType: 'Fatura Tipi', invoiceRegion: 'Fatura Bölgesi',
+    invoiceAddress: 'Fatura Adresi', invoiceCompany: 'Fatura Şirketi',
+    invoiceSameAsContact: 'Fatura = İletişim Adresi', privacyConsent: 'KVKK Onayı',
+    publicDirectoryConsent: 'Kamu Dizini Onayı', showEmailOnCertificate: 'E-posta Sertifikada',
+    professionalRegistryNo: 'Meslek Sicil No', paymentMethod: 'Ödeme Yöntemi',
+    total: 'Toplam (KDV Dahil)', subtotal: 'Ara Toplam', kdvAmount: 'KDV Tutarı',
+    planLabel: 'Plan', setupPrice: 'Kurulum Ücreti', tokenPrice: 'Token Ücreti',
+    certificatePrice: 'Sertifika Ücreti', application_type: 'Başvuru Tipi',
+    plan_label: 'Plan', total_text: 'Toplam', form_type: 'Form Tipi',
+    source_page: 'Kaynak Sayfa',
+  };
+
+  var PAYLOAD_SKIP = { admin_codes: true, source_page: true };
+
+  function fieldLabel(key) {
+    return FIELD_LABELS[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
   }
 
-  function formatCustomerPayloadValue(value) {
-    if (value == null || value === '') return '-';
-    if (typeof value === 'object') return JSON.stringify(value, null, 2);
-    return String(value);
+  function flattenPayloadPairs(obj) {
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return [];
+    var result = [];
+    Object.keys(obj).forEach(function (key) {
+      if (PAYLOAD_SKIP[key]) return;
+      var value = obj[key];
+      if (value !== null && value !== undefined && typeof value === 'object' && !Array.isArray(value)) {
+        flattenPayloadPairs(value).forEach(function (pair) { result.push(pair); });
+      } else {
+        var str = value == null ? '' : String(value);
+        if (str === '' || str === '-') return;
+        result.push({ label: fieldLabel(key), value: str });
+      }
+    });
+    return result;
   }
 
   function renderCustomerDetail(record) {
@@ -402,14 +432,10 @@
     }
 
     const codes = getCustomerCodes(record);
-    const payloadEntries = getCustomerPayloadEntries(record);
-    const payloadHtml = payloadEntries.length
-      ? payloadEntries.map(([key, value]) => `
-          <div class="req-detail__pair">
-            <span>${escapeHtml(key)}</span>
-            <strong>${escapeHtml(formatCustomerPayloadValue(value))}</strong>
-          </div>`).join('')
-      : '';
+    const pairs = flattenPayloadPairs(record.payload || {});
+    const extraHtml = pairs.map(function (p) {
+      return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
+    }).join('');
 
     detailEl.innerHTML = `
       <div class="req-detail__header">
@@ -432,6 +458,7 @@
           <div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method || '-')}</strong></div>
           ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
           <div class="req-detail__pair"><span>PIN / PUK Oluşturulma</span><strong>${escapeHtml(codes.generated_at ? formatCustomerDateTime(codes.generated_at) : '-')}</strong></div>
+          ${extraHtml}
         </div>
       </div>
 
@@ -485,12 +512,6 @@
           </button>
         </div>
       </div>
-
-      ${payloadEntries.length ? `
-      <div class="req-detail__section">
-        <h5>Form Verileri</h5>
-        <div class="req-detail__grid">${payloadHtml}</div>
-      </div>` : ''}
     `;
   }
 
@@ -509,15 +530,10 @@
       return;
     }
 
-    const payload = record.payload && typeof record.payload === 'object' ? record.payload : {};
-    const payloadEntries = Object.entries(payload).filter(([k]) => k !== 'admin_codes');
-    const payloadHtml = payloadEntries.length
-      ? payloadEntries.map(([k, v]) => `
-          <div class="req-detail__pair">
-            <span>${escapeHtml(k)}</span>
-            <strong>${escapeHtml(typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v == null ? '-' : v))}</strong>
-          </div>`).join('')
-      : '<p class="save-hint">Ek form verisi bulunamadı.</p>';
+    const pairs = flattenPayloadPairs(record.payload || {});
+    const extraHtml = pairs.map(function (p) {
+      return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
+    }).join('');
 
     detailEl.innerHTML = `
       <div class="req-detail__header">
@@ -532,7 +548,7 @@
       </div>
 
       <div class="req-detail__section">
-        <h5>İletişim Bilgileri</h5>
+        <h5>Başvuru Bilgileri</h5>
         <div class="req-detail__grid">
           <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
           <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
@@ -542,14 +558,9 @@
           ${record.total_text ? `<div class="req-detail__pair"><span>Toplam</span><strong>${escapeHtml(record.total_text)}</strong></div>` : ''}
           ${record.application_type ? `<div class="req-detail__pair"><span>Başvuru Tipi</span><strong>${escapeHtml(record.application_type)}</strong></div>` : ''}
           ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
+          ${extraHtml}
         </div>
       </div>
-
-      ${payloadEntries.length ? `
-      <div class="req-detail__section">
-        <h5>Form Verileri</h5>
-        <div class="req-detail__grid">${payloadHtml}</div>
-      </div>` : ''}
     `;
   }
 
