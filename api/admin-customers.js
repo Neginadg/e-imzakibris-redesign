@@ -152,8 +152,8 @@ module.exports = async function handler(req, res) {
       };
 
       const updated = tableName === 'applications'
-        ? await updateSupabaseRow(config, tableName, { id: applicationId }, { payload })
-        : await updateSupabaseRow(config, tableName, { id: applicationId }, { payload, pin: pinCode, puk: pukCode });
+        ? await updateSupabaseRow(config, tableName, { id: `eq.${applicationId}` }, { payload })
+        : await updateSupabaseRow(config, tableName, { id: `eq.${applicationId}` }, { payload, pin: pinCode, puk: pukCode });
       return sendJson(res, 200, {
         ok: true,
         record: normalizeCustomerRecord(updated || current, tableName)

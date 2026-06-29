@@ -405,39 +405,49 @@
     const payloadEntries = getCustomerPayloadEntries(record);
     const payloadHtml = payloadEntries.length
       ? payloadEntries.map(([key, value]) => `
-          <div class="customer-detail__pair">
+          <div class="req-detail__pair">
             <span>${escapeHtml(key)}</span>
             <strong>${escapeHtml(formatCustomerPayloadValue(value))}</strong>
-          </div>
-        `).join('')
-      : '<p class="save-hint">Form verisi bulunamadı.</p>';
+          </div>`).join('')
+      : '';
 
     detailEl.innerHTML = `
-      <div class="customer-detail__header">
+      <div class="req-detail__header">
         <div>
-          <div class="customer-detail__name">${escapeHtml(record.full_name || '-')}</div>
-          <div class="customer-detail__meta">Başvuru tarihi: ${escapeHtml(formatCustomerDateTime(record.created_at))}</div>
+          <div class="req-detail__name">${escapeHtml(record.full_name || '-')}</div>
+          <div class="req-detail__meta">Başvuru tarihi: ${escapeHtml(formatCustomerDateTime(record.created_at))}</div>
         </div>
-        <div class="customer-detail__badge">
-          <i class="fa-solid fa-user-check"></i>
-          Kayıt Aktif
-        </div>
-      </div>
-
-      <div class="customer-code-grid">
-        <div class="customer-code-card">
-          <div class="customer-code-card__label">PIN Kodu</div>
-          <div class="customer-code-card__value">${escapeHtml(codes.pin_code || 'Yok')}</div>
-        </div>
-        <div class="customer-code-card">
-          <div class="customer-code-card__label">PUK Kodu</div>
-          <div class="customer-code-card__value">${escapeHtml(codes.puk_code || 'Yok')}</div>
+        <div class="req-detail__badge">
+          <i class="fa-solid fa-signature"></i>
+          E-İmza
         </div>
       </div>
 
-      <div class="customer-detail__section">
-        <h5>PIN / PUK Düzenle</h5>
-        <div class="customer-code-edit">
+      <div class="req-detail__section">
+        <h5>Müşteri Bilgileri</h5>
+        <div class="req-detail__grid">
+          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
+          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
+          <div class="req-detail__pair"><span>Kimlik / Pasaport No</span><strong>${escapeHtml(record.identity_number || '-')}</strong></div>
+          <div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method || '-')}</strong></div>
+          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
+          <div class="req-detail__pair"><span>PIN / PUK Oluşturulma</span><strong>${escapeHtml(codes.generated_at ? formatCustomerDateTime(codes.generated_at) : '-')}</strong></div>
+        </div>
+      </div>
+
+      <div class="req-detail__section">
+        <h5>PIN / PUK</h5>
+        <div class="customer-code-grid">
+          <div class="customer-code-card">
+            <div class="customer-code-card__label">PIN Kodu</div>
+            <div class="customer-code-card__value">${escapeHtml(codes.pin_code || 'Yok')}</div>
+          </div>
+          <div class="customer-code-card">
+            <div class="customer-code-card__label">PUK Kodu</div>
+            <div class="customer-code-card__value">${escapeHtml(codes.puk_code || 'Yok')}</div>
+          </div>
+        </div>
+        <div class="customer-code-edit" style="margin-top:.85rem;">
           <div class="form-group">
             <label for="customer-pin-input">PIN Kodu</label>
             <input
@@ -463,38 +473,24 @@
             />
           </div>
         </div>
-      </div>
-
-      <div class="customer-detail__section">
-        <h5>Temel Bilgiler</h5>
-        <div class="customer-detail__grid">
-          <div class="customer-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
-          <div class="customer-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
-          <div class="customer-detail__pair"><span>Kimlik / Pasaport No</span><strong>${escapeHtml(record.identity_number || '-')}</strong></div>
-          <div class="customer-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method || '-')}</strong></div>
-          <div class="customer-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page || '-')}</strong></div>
-          <div class="customer-detail__pair"><span>PIN / PUK Oluşturulma</span><strong>${escapeHtml(codes.generated_at ? formatCustomerDateTime(codes.generated_at) : '-')}</strong></div>
+        <div class="customer-detail__actions" style="margin-top:.85rem;">
+          <button type="button" class="btn btn--primary" data-customer-save>
+            <i class="fa-solid fa-floppy-disk"></i> Kaydet
+          </button>
+          <button type="button" class="btn btn--ghost" data-customer-generate>
+            <i class="fa-solid fa-key"></i> Otomatik Oluştur
+          </button>
+          <button type="button" class="btn btn--ghost" data-customer-copy ${codes.pin_code && codes.puk_code ? '' : 'disabled'}>
+            <i class="fa-solid fa-copy"></i> Kopyala
+          </button>
         </div>
       </div>
 
-      <div class="customer-detail__section">
+      ${payloadEntries.length ? `
+      <div class="req-detail__section">
         <h5>Form Verileri</h5>
-        <div class="customer-detail__grid">
-          ${payloadHtml}
-        </div>
-      </div>
-
-      <div class="customer-detail__actions">
-        <button type="button" class="btn btn--primary" data-customer-save>
-          <i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet
-        </button>
-        <button type="button" class="btn btn--ghost" data-customer-generate>
-          <i class="fa-solid fa-key"></i> PIN / PUK Oluştur
-        </button>
-        <button type="button" class="btn btn--ghost" data-customer-copy ${codes.pin_code && codes.puk_code ? '' : 'disabled'}>
-          <i class="fa-solid fa-copy"></i> Kodları Kopyala
-        </button>
-      </div>
+        <div class="req-detail__grid">${payloadHtml}</div>
+      </div>` : ''}
     `;
   }
 
@@ -673,9 +669,7 @@
     // ── Search form ─────────────────────────────────────────────
     const form = document.getElementById('customer-search-form');
     if (form) {
-      const freshForm = form.cloneNode(true);
-      form.parentNode.replaceChild(freshForm, form);
-      freshForm.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(); });
+      form.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(); });
     }
 
     if (searchInput) {
