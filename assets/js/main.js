@@ -2536,6 +2536,18 @@
       return basePrice + kdvAmount;
     };
 
+    const updateMolohiyaSubmitLabel = () => {
+      const submitBtn = molohiyaForm.querySelector('button[type="submit"]');
+      if (!submitBtn) return;
+      const termInput = molohiyaForm.querySelector('input[name="renewalTerm"]:checked');
+      const price = termInput ? Number(termInput.dataset.price || 0) : 0;
+      submitBtn.textContent = price === 0 ? 'Başvuruyu Gönder' : 'Satın Alma Talebini Gönder';
+    };
+
+    molohiyaForm.querySelectorAll('input[name="renewalTerm"]').forEach((input) => {
+      input.addEventListener('change', updateMolohiyaSubmitLabel);
+    });
+
     const scrollToSection = (element) => {
       if (!element) return;
       const offset = (navbar ? navbar.offsetHeight : 0) + 20;
@@ -2606,6 +2618,32 @@
           total
         }
       };
+
+      // Free (BASIC) plan — submit directly, skip payment gate entirely
+      if (basePrice === 0) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+        try {
+          submissionPayload.payment_method = 'Ücretsiz';
+          submissionPayload.total_text = 'Ücretsiz';
+          await postBackendForm('/api/molohiya-submit', submissionPayload);
+          if (molohiyaMessage) {
+            setFormMessage(molohiyaMessage, 'success', 'Başvurunuz başarıyla alındı. En kısa sürede sizinle iletişime geçeceğiz.');
+          }
+          molohiyaForm.reset();
+          updateMolohiyaSubmitLabel();
+          pendingMolohiyaMail = null;
+          pendingMolohiyaSubmission = null;
+        } catch (error) {
+          if (molohiyaMessage) {
+            setFormMessage(molohiyaMessage, 'danger', error.message || 'Başvuru gönderilemedi. Lütfen tekrar deneyin.');
+          }
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Başvuruyu Gönder';
+        }
+        return;
+      }
 
       pendingMolohiyaMail = {
         subject: `MOlOhiya Satin Alma - ${renewalTerm}`,
