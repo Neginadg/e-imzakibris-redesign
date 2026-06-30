@@ -2,5 +2,7 @@
   "name": "e-imzakibris-redesign-backend",
   "private": true,
   "type": "commonjs",
-  "dependencies": {}
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  }
 }
