@@ -67,7 +67,9 @@ module.exports = async function handler(req, res) {
 
     const emailStatus = {
       company: false,
-      customerConfirmation: false
+      customerConfirmation: false,
+      companyError: null,
+      customerError: null
     };
 
     try {
@@ -80,6 +82,7 @@ module.exports = async function handler(req, res) {
       emailStatus.company = true;
     } catch (error) {
       emailStatus.company = false;
+      emailStatus.companyError = error.message || 'Unknown error';
     }
 
     try {
@@ -92,6 +95,7 @@ module.exports = async function handler(req, res) {
       emailStatus.customerConfirmation = true;
     } catch (error) {
       emailStatus.customerConfirmation = false;
+      emailStatus.customerError = error.message || 'Unknown error';
     }
 
     return sendJson(res, 200, {
@@ -99,9 +103,9 @@ module.exports = async function handler(req, res) {
       stored: true,
       emailStatus,
       id: inserted && inserted.id ? inserted.id : null,
-      warning: emailStatus.company && emailStatus.customerConfirmation
+      warning: emailStatus.customerConfirmation
         ? null
-        : 'Saved to database but one or more emails failed to send.'
+        : 'Saved to database but customer confirmation email failed: ' + emailStatus.customerError
     });
   } catch (error) {
     return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
