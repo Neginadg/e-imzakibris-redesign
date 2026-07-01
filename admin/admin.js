@@ -1633,6 +1633,41 @@
         overlay.classList.remove('show');
       });
     }
+
+    // ── Section navigation ──
+    const allPanels   = document.querySelectorAll('.admin-content .panel-card');
+    const previewBanner = document.querySelector('.preview-banner');
+    const topbarTitle = document.querySelector('.admin-topbar__title');
+
+    const SECTION_TITLES = {
+      'prices':           'Fiyat Yönetimi',
+      'news-manager':     'Haber Yönetimi',
+      'files-manager':    'Dosya Yönetimi',
+      'customer-center':  'Müşteri Kayıtları',
+      'security':         'Güvenlik'
+    };
+
+    function showSection(sectionId) {
+      allPanels.forEach(function (panel) {
+        panel.style.display = panel.id === sectionId ? '' : 'none';
+      });
+      if (previewBanner) previewBanner.style.display = sectionId === 'prices' ? '' : 'none';
+      if (topbarTitle) topbarTitle.textContent = SECTION_TITLES[sectionId] || 'Yönetim Paneli';
+      document.querySelectorAll('[data-section]').forEach(function (item) {
+        item.classList.toggle('active', item.getAttribute('data-section') === sectionId);
+      });
+    }
+
+    document.querySelectorAll('[data-section]').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(item.getAttribute('data-section'));
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+      });
+    });
+
+    showSection('prices');
   }
 
   // ── Init ──────────────────────────────────────────────────
