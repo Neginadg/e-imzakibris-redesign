@@ -93,12 +93,14 @@ module.exports = async function handler(req, res) {
     const dateFrom = String((req.query && req.query.dateFrom) || '').trim();
     const dateTo = String((req.query && req.query.dateTo) || '').trim();
     const sortDir = String((req.query && req.query.sort) || 'desc').trim() === 'asc' ? 'asc' : 'desc';
-    const limit = Math.min(parseInt(String((req.query && req.query.limit) || '50'), 10) || 50, 200);
+    const limit = Math.min(parseInt(String((req.query && req.query.limit) || '20'), 10) || 20, 200);
+    const offset = Math.max(0, parseInt(String((req.query && req.query.offset) || '0'), 10) || 0);
 
     var params = {
       select: cfg.select,
       order: cfg.dateCol + '.' + sortDir,
-      limit: String(limit)
+      limit: String(limit),
+      offset: String(offset)
     };
 
     // Date range filter — array emits repeated query-string keys for PostgREST

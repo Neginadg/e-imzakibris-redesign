@@ -625,11 +625,15 @@
     const dateToInput = document.getElementById('req-date-to');
     const resultsBody = document.getElementById('customer-results-body');
     const detailEl = document.getElementById('customer-detail');
+    const showMoreWrap = document.getElementById('customer-show-more-wrap');
+    const showMoreBtn = document.getElementById('customer-show-more');
 
+    const PAGE_SIZE = 20;
     let activeTab = 'eimzakibris';
     let currentItems = [];
     let selectedId = '';
     let isLoading = false;
+    let currentOffset = 0;
 
     // ── Tab switching ───────────────────────────────────────────
     document.querySelectorAll('[data-req-tab]').forEach(function (btn) {
@@ -639,7 +643,7 @@
           b.classList.toggle('req-tab--active', b === btn);
         });
         selectedId = '';
-        loadRecords();
+        loadRecords(false);
       });
     });
 
@@ -669,22 +673,27 @@
           if (dateFromInput) dateFromInput.value = '';
           if (dateToInput) dateToInput.value = '';
         }
-        loadRecords();
+        loadRecords(false);
       });
     });
 
     // ── Date inputs ─────────────────────────────────────────────
-    if (dateFromInput) dateFromInput.addEventListener('change', function () { loadRecords(); });
-    if (dateToInput) dateToInput.addEventListener('change', function () { loadRecords(); });
+    if (dateFromInput) dateFromInput.addEventListener('change', function () { loadRecords(false); });
+    if (dateToInput) dateToInput.addEventListener('change', function () { loadRecords(false); });
 
     // ── Search form ─────────────────────────────────────────────
     const form = document.getElementById('customer-search-form');
     if (form) {
-      form.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(); });
+      form.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(false); });
     }
 
     if (searchInput) {
-      searchInput.addEventListener('input', debounce(function () { loadRecords(); }, 350));
+      searchInput.addEventListener('input', debounce(function () { loadRecords(false); }, 350));
+    }
+
+    // ── Show more button ────────────────────────────────────────
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener('click', function () { loadRecords(true); });
     }
 
     // ── Row click ───────────────────────────────────────────────
@@ -803,43 +812,61 @@
     }
 
     // ── loadRecords ─────────────────────────────────────────────
-    async function loadRecords() {
+    async function loadRecords(append) {
       if (isLoading) return;
       isLoading = true;
+
+      if (!append) {
+        currentOffset = 0;
+        currentItems = [];
+      }
+
+      if (showMoreBtn) {
+        showMoreBtn.disabled = true;
+        showMoreBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+      }
 
       const q = searchInput ? searchInput.value.trim() : '';
       const dateFrom = dateFromInput ? dateFromInput.value : '';
       const dateTo = dateToInput ? dateToInput.value : '';
 
       try {
-        setAlert(alertEl, 'warning', 'Yükleniyor...');
+        if (!append) setAlert(alertEl, 'warning', 'Yükleniyor...');
 
-        let items;
+        let newItems;
         if (activeTab === 'eimzakibris') {
           const url = new URL(CUSTOMER_API_ENDPOINT, window.location.origin);
           if (q) url.searchParams.set('q', q);
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
+          url.searchParams.set('offset', String(currentOffset));
           const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
           if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'E-İmza kayıtları alınamadı.');
-          items = Array.isArray(data.items) ? data.items : [];
+          newItems = Array.isArray(data.items) ? data.items : [];
         } else {
           const url = new URL('/api/admin-requests', window.location.origin);
           url.searchParams.set('table', activeTab);
           if (q) url.searchParams.set('q', q);
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
+          url.searchParams.set('offset', String(currentOffset));
           const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
           if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Kayıtlar alınamadı.');
-          items = Array.isArray(data.items) ? data.items : [];
+          newItems = Array.isArray(data.items) ? data.items : [];
         }
 
-        currentItems = items;
-        if (items.length) {
-          setAlert(alertEl, 'success', items.length + ' kayıt bulundu.');
-          setSelected(items[0].id);
+        currentItems = append ? currentItems.concat(newItems) : newItems;
+        currentOffset = currentItems.length;
+
+        const hasMore = newItems.length === PAGE_SIZE;
+        if (showMoreWrap) showMoreWrap.style.display = hasMore ? '' : 'none';
+
+        if (currentItems.length) {
+          setAlert(alertEl, 'success', currentItems.length + ' kayıt' + (hasMore ? ' (daha fazlası mevcut)' : ''));
+          if (!append) setSelected(currentItems[0].id);
+          else renderResults(currentItems, selectedId, activeTab);
         } else {
           selectedId = '';
           renderResults([], '', activeTab);
@@ -848,18 +875,24 @@
           setAlert(alertEl, 'warning', 'Kayıt bulunamadı.');
         }
       } catch (error) {
-        currentItems = [];
-        selectedId = '';
-        renderResults([], '', activeTab);
-        if (activeTab === 'eimzakibris') renderCustomerDetail(null);
-        else renderRequestDetail(null);
+        if (!append) {
+          currentItems = [];
+          selectedId = '';
+          renderResults([], '', activeTab);
+          if (activeTab === 'eimzakibris') renderCustomerDetail(null);
+          else renderRequestDetail(null);
+        }
         setAlert(alertEl, 'danger', error.message || 'Kayıtlar alınamadı.');
       } finally {
         isLoading = false;
+        if (showMoreBtn) {
+          showMoreBtn.disabled = false;
+          showMoreBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Daha Fazla Göster';
+        }
       }
     }
 
-    loadRecords();
+    loadRecords(false);
   }
 
   // ── Session ───────────────────────────────────────────────

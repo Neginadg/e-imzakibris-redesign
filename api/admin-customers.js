@@ -76,18 +76,22 @@ module.exports = async function handler(req, res) {
       const query = String((req.query && req.query.q) || '').trim();
       const dateFrom = String((req.query && req.query.dateFrom) || '').trim();
       const dateTo = String((req.query && req.query.dateTo) || '').trim();
+      const offset = Math.max(0, parseInt(String((req.query && req.query.offset) || '0'), 10) || 0);
+      const PAGE_SIZE = 20;
 
       const dateCol = tableName === 'applications' ? 'created_at' : 'imported_at';
       const params = tableName === 'applications'
         ? {
           select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at',
           order: 'created_at.desc',
-          limit: query || dateFrom || dateTo ? '100' : '20'
+          limit: String(PAGE_SIZE),
+          offset: String(offset)
         }
         : {
           select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
           order: 'imported_at.desc',
-          limit: '5'
+          limit: String(PAGE_SIZE),
+          offset: String(offset)
         };
 
       // Date range filter — array values produce repeated keys for PostgREST
