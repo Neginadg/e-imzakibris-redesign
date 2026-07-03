@@ -498,7 +498,7 @@
               </div>
             </form>
 
-            <div class="verify-results" id="verify-results">
+            <div class="verify-results" id="verify-results" style="display:none;">
               <div class="verify-results__title">Doğrulama Sonuçları</div>
               <div class="verify-results__content" id="verify-results-content">
                 <div class="verify-results__status pending" id="verify-result-status">
@@ -1135,39 +1135,57 @@
 
       const signedFile = document.getElementById('signedFile').files[0];
       if (!signedFile) {
-        alert('Lütfen Imzalı dosya yükleyiniz.');
+        alert('Lütfen imzalı dosya yükleyiniz.');
         return;
       }
 
-      // Simulate verification process into the dedicated result area.
+      const submitBtn = verifyForm.querySelector('button[type="submit"]');
       const resultStatus = document.getElementById('verify-result-status');
       const resultNote = document.getElementById('verify-result-note');
-      const analysis = await analyzeSignedFile(signedFile);
-      const signerName = analysis.signerName;
-      const isSigned = analysis.isSigned;
-      const signatureCount = analysis.signatureCount;
-      const signatureDate = analysis.signatureDate;
-      const signatureLevel = analysis.signatureLevel;
+      const resultsBox = document.getElementById('verify-results');
 
-      resultStatus.className = `verify-results__status ${isSigned ? 'valid' : 'invalid'}`;
-      resultStatus.innerHTML = isSigned
-        ? '<i class="fa-solid fa-circle-check"></i> GEÇERLİ İMZA'
-        : '<i class="fa-solid fa-circle-xmark"></i> GEÇERSİZ / İMZASIZ DOSYA';
+      // Loading state
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Doğrulanıyor...';
+      }
+      resultsBox.style.display = 'block';
+      resultStatus.className = 'verify-results__status pending';
+      resultStatus.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> ANALİZ EDİLİYOR...';
+      resultNote.textContent = 'Dosya analiz ediliyor, lütfen bekleyin.';
+      resultsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      resultNote.textContent = isSigned
-        ? (signerName
-          ? 'Doğrulama tamamlandı. İmzalayan bilgisi dosya içeriğinden tespit edildi.'
-          : 'Doğrulama tamamlandı. İmza yapısı bulundu ancak Imzalayan bilgisi çıkarılamadı.')
-        : 'Yüklenen dosyada geçerli bir elektronik Imza yapısı bulunamadı.';
+      try {
+        const analysis = await analyzeSignedFile(signedFile);
+        const { signerName, isSigned, signatureCount, signatureDate, signatureLevel } = analysis;
 
-      document.getElementById('verify-result-file').textContent = signedFile.name;
-      document.getElementById('verify-result-count').textContent = String(signatureCount);
-      document.getElementById('verify-result-level').textContent = signatureLevel;
-      document.getElementById('verify-result-signer').textContent = signerName || (isSigned ? 'Tespit edilemedi' : '-');
-      document.getElementById('verify-result-date').textContent = signatureDate || (isSigned ? 'Tespit edilemedi' : '-');
-      document.getElementById('verify-result-cert').textContent = isSigned ? 'Geçerli' : 'Bulunamadı';
+        resultStatus.className = `verify-results__status ${isSigned ? 'valid' : 'invalid'}`;
+        resultStatus.innerHTML = isSigned
+          ? '<i class="fa-solid fa-circle-check"></i> GEÇERLİ İMZA'
+          : '<i class="fa-solid fa-circle-xmark"></i> GEÇERSİZ / İMZASIZ DOSYA';
 
-      document.getElementById('verify-results').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        resultNote.textContent = isSigned
+          ? (signerName
+            ? 'Doğrulama tamamlandı. İmzalayan bilgisi dosya içeriğinden tespit edildi.'
+            : 'Doğrulama tamamlandı. İmza yapısı bulundu ancak imzalayan bilgisi çıkarılamadı.')
+          : 'Yüklenen dosyada geçerli bir elektronik imza yapısı bulunamadı.';
+
+        document.getElementById('verify-result-file').textContent = signedFile.name;
+        document.getElementById('verify-result-count').textContent = String(signatureCount);
+        document.getElementById('verify-result-level').textContent = signatureLevel;
+        document.getElementById('verify-result-signer').textContent = signerName || (isSigned ? 'Tespit edilemedi' : '-');
+        document.getElementById('verify-result-date').textContent = signatureDate || (isSigned ? 'Tespit edilemedi' : '-');
+        document.getElementById('verify-result-cert').textContent = isSigned ? 'Geçerli' : 'Bulunamadı';
+      } catch (err) {
+        resultStatus.className = 'verify-results__status invalid';
+        resultStatus.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> HATA OLUŞTU';
+        resultNote.textContent = 'Dosya analiz edilirken bir hata oluştu: ' + (err && err.message ? err.message : 'Bilinmeyen hata');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Doğrulama Yap';
+        }
+      }
     });
   </script>
 
