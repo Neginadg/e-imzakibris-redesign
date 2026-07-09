@@ -1,0 +1,8 @@
+services:
+  dss-validation:
+    build:
+      context: https://github.com/esig/dss-demonstrations.git#master
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

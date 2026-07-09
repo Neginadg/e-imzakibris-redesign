@@ -5,7 +5,7 @@ const { sendJson, readJsonBody } = require('../lib/http');
 // Set DSS_VALIDATION_URL env var in production to point to your own DSS instance.
 const DSS_VALIDATE_URL =
   (process.env.DSS_VALIDATION_URL || '').trim() ||
-  'https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/services/rest/validation/validateDocument';
+  'https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/services/rest/validation/validateSignature';
 
 function get(obj, ...keys) {
   for (const key of keys) {
@@ -15,29 +15,67 @@ function get(obj, ...keys) {
   return null;
 }
 
+// Message elements (Error/Warning) can serialize as plain strings or as
+// { value, Key } objects depending on the DSS JAXB->JSON mapping.
+function messageText(msg) {
+  if (msg == null) return '';
+  if (typeof msg === 'string') return msg;
+  return get(msg, 'value', 'Value', '_') || '';
+}
+
+function collectMessages(...sources) {
+  const out = [];
+  sources.forEach(function (src) {
+    if (src == null) return;
+    const list = Array.isArray(src) ? src : [src];
+    list.forEach(function (m) {
+      const text = messageText(m);
+      if (text) out.push(text);
+    });
+  });
+  return out;
+}
+
 function parseSimpleReport(data) {
   const sr = get(data, 'SimpleReport', 'simpleReport');
   if (!sr) return null;
 
-  const items = get(sr, 'signatureOrTimestamp', 'SignatureOrTimestamp') || [];
+  const items = get(
+    sr,
+    'signatureOrTimestampOrEvidenceRecord',
+    'SignatureOrTimestampOrEvidenceRecord',
+    'signatureOrTimestamp',
+    'SignatureOrTimestamp'
+  ) || [];
 
   const signatures = items.map(function (item) {
     const sig = get(item, 'Signature', 'signature') || {};
     const level = get(sig, 'SignatureLevel', 'signatureLevel') || {};
-    const errors = get(sig, 'Errors', 'errors', 'Error', 'error') || [];
-    const warnings = get(sig, 'Warnings', 'warnings', 'Warning', 'warning') || [];
+    const adesDetails = get(sig, 'AdESValidationDetails', 'adESValidationDetails') || {};
+    const qualDetails = get(sig, 'QualificationDetails', 'qualificationDetails') || {};
+
+    const errors = collectMessages(
+      get(sig, 'Errors', 'errors', 'Error', 'error'),
+      get(adesDetails, 'Error', 'error'),
+      get(qualDetails, 'Error', 'error')
+    );
+    const warnings = collectMessages(
+      get(sig, 'Warnings', 'warnings', 'Warning', 'warning'),
+      get(adesDetails, 'Warning', 'warning'),
+      get(qualDetails, 'Warning', 'warning')
+    );
 
     return {
       id: get(sig, 'Id', 'id') || '',
       format: get(sig, 'SignatureFormat', 'signatureFormat') || '',
-      level: get(level, 'value', 'Value') || '',
+      level: get(level, 'value', 'Value', '_') || '',
       levelDescription: get(level, 'description', 'Description') || '',
       signedBy: get(sig, 'SignedBy', 'signedBy') || '',
       bestSignatureTime: get(sig, 'BestSignatureTime', 'bestSignatureTime') || '',
       indication: get(sig, 'Indication', 'indication') || '',
       subIndication: get(sig, 'SubIndication', 'subIndication') || '',
-      errors: Array.isArray(errors) ? errors : [errors].filter(Boolean),
-      warnings: Array.isArray(warnings) ? warnings : [warnings].filter(Boolean)
+      errors: errors,
+      warnings: warnings
     };
   });
 
