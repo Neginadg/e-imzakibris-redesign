@@ -1,0 +1,57 @@
+const { sendJson, readJsonBody } = require('../lib/http');
+const { getRuntimeEnv } = require('../lib/env');
+const { selectSupabaseRows, upsertSupabaseRows } = require('../lib/supabase');
+
+const TABLE = 'pricing';
+
+const PRICE_KEYS = [
+  '1y', '2y', '3y', 'stick', 'install', 'renewal',
+  'ts_1000', 'ts_5000', 'ts_10000',
+  'molohiya_1y', 'molohiya_2y', 'molohiya_3y',
+  'renewal_1y', 'renewal_2y', 'renewal_3y'
+];
+
+module.exports = async function handler(req, res) {
+  try {
+    const config = getRuntimeEnv({ requireEmail: false });
+
+    if (req.method === 'GET') {
+      const rows = await selectSupabaseRows(config, TABLE, { select: 'price_key,value' });
+      const prices = {};
+      rows.forEach((row) => {
+        const value = Number(row.value);
+        if (row.price_key && Number.isFinite(value)) prices[row.price_key] = value;
+      });
+      return sendJson(res, 200, { ok: true, prices });
+    }
+
+    if (req.method === 'POST') {
+      const body = readJsonBody(req);
+      const prices = body && typeof body.prices === 'object' && !Array.isArray(body.prices) ? body.prices : null;
+      if (!prices) {
+        return sendJson(res, 400, { ok: false, error: 'Missing prices object' });
+      }
+
+      const rows = [];
+      for (const key of PRICE_KEYS) {
+        if (!(key in prices)) continue;
+        const value = Number(prices[key]);
+        if (!Number.isFinite(value) || value < 0) {
+          return sendJson(res, 400, { ok: false, error: `Invalid value for price key "${key}"` });
+        }
+        rows.push({ price_key: key, value });
+      }
+
+      if (!rows.length) {
+        return sendJson(res, 400, { ok: false, error: 'No valid price keys provided' });
+      }
+
+      await upsertSupabaseRows(config, TABLE, rows, 'price_key');
+      return sendJson(res, 200, { ok: true });
+    }
+
+    return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
+  } catch (error) {
+    return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
+  }
+};

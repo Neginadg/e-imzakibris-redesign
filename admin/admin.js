@@ -13,6 +13,7 @@
   const FILES_API_ENDPOINT = '/api/admin-files';
   let cachedFiles = [];
   const CUSTOMER_API_ENDPOINT = '/api/admin-customers';
+  const PRICES_API_ENDPOINT = '/api/admin-prices';
   const FILE_TABLES = {
     applicationguidelines: {
       label: 'Application Guidelines',
@@ -150,6 +151,9 @@
     };
   }
 
+  // Local cache only — used for instant field population while the
+  // authoritative values load from PRICES_API_ENDPOINT (Supabase `pricing`
+  // table, the same source the live site reads from).
   function loadPrices() {
     try {
       const raw = localStorage.getItem(KEY_PRICES);
@@ -159,8 +163,26 @@
     }
   }
 
-  function savePrices(prices) {
+  function cachePrices(prices) {
     localStorage.setItem(KEY_PRICES, JSON.stringify(prices));
+  }
+
+  async function fetchServerPrices() {
+    const resp = await fetch(PRICES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Fiyatlar sunucudan alınamadı.');
+    return Object.assign({}, DEFAULTS, data.prices || {});
+  }
+
+  async function savePrices(prices) {
+    const resp = await fetch(PRICES_API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prices })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Fiyatlar kaydedilemedi.');
+    cachePrices(prices);
   }
 
   function readPricesFromInputs() {
@@ -1505,9 +1527,9 @@
     if (loginScreen) hide(loginScreen);
     if (adminPanel)  show(adminPanel);
 
+    // Populate price fields instantly from the local cache, then refresh
+    // from the server (Supabase `pricing` table) once it responds.
     const prices = loadPrices();
-
-    // Populate price fields
     PRICE_KEYS.forEach((key) => {
       const fieldId = PRICE_FIELD_MAP[key];
       const input = fieldId ? document.getElementById(fieldId) : null;
@@ -1525,7 +1547,16 @@
 
       fillPriceInputs(prices);
 
-      newForm.addEventListener('submit', function (e) {
+      setAlert(priceAlert, 'warning', 'Güncel fiyatlar yükleniyor...');
+      fetchServerPrices().then((serverPrices) => {
+        cachePrices(serverPrices);
+        fillPriceInputs(serverPrices);
+        setAlert(priceAlert, 'success', 'Güncel fiyatlar yüklendi.');
+      }).catch((error) => {
+        setAlert(priceAlert, 'danger', (error && error.message) || 'Fiyatlar sunucudan alınamadı, önbellekteki değerler gösteriliyor.');
+      });
+
+      newForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const { valid, data: updated } = readPricesFromInputs();
 
@@ -1534,8 +1565,18 @@
           return;
         }
 
-        savePrices(updated);
-        setAlert(priceAlert, 'success', 'Fiyatlar başarıyla kaydedildi. Değişiklikler sitede anında görünür.');
+        const submitBtn = newForm.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+        setAlert(priceAlert, 'warning', 'Kaydediliyor...');
+
+        try {
+          await savePrices(updated);
+          setAlert(priceAlert, 'success', 'Fiyatlar başarıyla kaydedildi. Değişiklikler sitede anında görünür.');
+        } catch (error) {
+          setAlert(priceAlert, 'danger', (error && error.message) || 'Fiyatlar kaydedilemedi.');
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
       });
 
       const btnPriceExport = document.getElementById('btn-price-export');
@@ -1581,10 +1622,10 @@
             }
 
             fillPriceInputs(normalized);
-            savePrices(normalized);
+            await savePrices(normalized);
             setAlert(priceAlert, 'success', 'Fiyatlar JSON dosyasından içe aktarıldı.');
           } catch (error) {
-            setAlert(priceAlert, 'danger', 'JSON dosyası okunamadı veya bozuk.');
+            setAlert(priceAlert, 'danger', (error && error.message) || 'JSON dosyası okunamadı veya bozuk.');
           }
 
           priceImportFile.value = '';
