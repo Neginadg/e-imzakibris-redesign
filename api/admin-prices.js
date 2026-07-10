@@ -4,12 +4,25 @@ const { selectSupabaseRows, upsertSupabaseRows } = require('../lib/supabase');
 
 const TABLE = 'pricing';
 
-const PRICE_KEYS = [
-  '1y', '2y', '3y', 'stick', 'install', 'renewal',
-  'ts_1000', 'ts_5000', 'ts_10000',
-  'molohiya_1y', 'molohiya_2y', 'molohiya_3y',
-  'renewal_1y', 'renewal_2y', 'renewal_3y'
-];
+const PRICE_LABELS = {
+  '1y': '1 Yıllık Paket',
+  '2y': '2 Yıllık Paket',
+  '3y': '3 Yıllık Paket',
+  stick: 'Akıllı Çubuk (Token)',
+  install: 'Uzak Bağlantılı Kurulum',
+  renewal: 'Yenileme Başvuru Ücreti',
+  ts_1000: 'Zaman Damgası - 1.000 Adet',
+  ts_5000: 'Zaman Damgası - 5.000 Adet',
+  ts_10000: 'Zaman Damgası - 10.000 Adet',
+  molohiya_1y: 'MOlOhiya - 1 Yıllık Lisans',
+  molohiya_2y: 'MOlOhiya - 2 Yıllık Lisans',
+  molohiya_3y: 'MOlOhiya - 3 Yıllık Lisans',
+  renewal_1y: '1 Yıllık Yenileme',
+  renewal_2y: '2 Yıllık Yenileme',
+  renewal_3y: '3 Yıllık Yenileme'
+};
+
+const PRICE_KEYS = Object.keys(PRICE_LABELS);
 
 module.exports = async function handler(req, res) {
   try {
@@ -39,7 +52,7 @@ module.exports = async function handler(req, res) {
         if (!Number.isFinite(value) || value < 0) {
           return sendJson(res, 400, { ok: false, error: `Invalid value for price key "${key}"` });
         }
-        rows.push({ price_key: key, value });
+        rows.push({ price_key: key, value, label: PRICE_LABELS[key] });
       }
 
       if (!rows.length) {
