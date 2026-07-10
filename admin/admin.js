@@ -1051,13 +1051,20 @@
     listEl.querySelectorAll('[data-news-delete]').forEach((btn) => {
       btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-news-delete');
+        const newsAlert = document.getElementById('news-alert');
+        if (!confirm('Bu haberi silmek istediğinizden emin misiniz?')) return;
+
         btn.disabled = true;
         try {
           await deleteServerNews(id);
-          await renderNewsList();
+          // Remove it from the local view immediately — don't depend on a
+          // follow-up server refresh succeeding to reflect the deletion.
+          cachedNews = cachedNews.filter((row) => row.id !== id);
+          cacheAdminNews(cachedNews);
+          renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
+          setAlert(newsAlert, 'success', 'Haber silindi.');
         } catch (error) {
           btn.disabled = false;
-          const newsAlert = document.getElementById('news-alert');
           setAlert(newsAlert, 'danger', (error && error.message) || 'Haber silinemedi.');
         }
       });
@@ -1076,8 +1083,8 @@
       cacheAdminNews(cachedNews);
       renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
     } catch (error) {
-      // Keep showing cached/local list; surface nothing extra here since
-      // renderNewsList can be called silently after edits too.
+      const newsAlert = document.getElementById('news-alert');
+      setAlert(newsAlert, 'danger', (error && error.message) || 'Haberler sunucudan yenilenemedi, önbellekteki liste gösteriliyor.');
     }
   }
 
