@@ -14,6 +14,8 @@
   let cachedFiles = [];
   const CUSTOMER_API_ENDPOINT = '/api/admin-customers';
   const PRICES_API_ENDPOINT = '/api/admin-prices';
+  const NEWS_API_ENDPOINT = '/api/admin-news';
+  let cachedNews = [];
   const FILE_TABLES = {
     applicationguidelines: {
       label: 'Application Guidelines',
@@ -230,6 +232,9 @@
     });
   }
 
+  // Local cache only — used for instant list rendering while the
+  // authoritative list loads from NEWS_API_ENDPOINT (Supabase `news` table,
+  // the same source the live site reads from).
   function loadAdminNews() {
     try {
       const raw = localStorage.getItem(KEY_ADMIN_NEWS);
@@ -240,8 +245,36 @@
     }
   }
 
-  function saveAdminNews(items) {
+  function cacheAdminNews(items) {
     localStorage.setItem(KEY_ADMIN_NEWS, JSON.stringify(items));
+  }
+
+  async function fetchServerNews() {
+    const resp = await fetch(NEWS_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haberler sunucudan alınamadı.');
+    return Array.isArray(data.items) ? data.items : [];
+  }
+
+  async function createServerNews(item) {
+    const resp = await fetch(NEWS_API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haber kaydedilemedi.');
+    return data.item;
+  }
+
+  async function deleteServerNews(id) {
+    const resp = await fetch(NEWS_API_ENDPOINT, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haber silinemedi.');
   }
 
   async function refreshFilesCache() {
@@ -254,16 +287,6 @@
     } catch (_) {
       // keep existing cache on network error
     }
-  }
-
-  function formatDateTR(isoDate) {
-    const parts = String(isoDate || '').split('-');
-    if (parts.length !== 3) return '';
-    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-  }
-
-  function getBadgeClass(badge) {
-    return badge === 'Sertifika' ? '' : 'news-badge--green';
   }
 
   function fileToDataUrl(file) {
@@ -1005,11 +1028,7 @@
     });
   }
 
-  function renderNewsList() {
-    const listEl = document.getElementById('news-list');
-    if (!listEl) return;
-
-    const rows = loadAdminNews().sort((a, b) => new Date(b.date) - new Date(a.date));
+  function renderNewsListFrom(rows, listEl) {
     if (!rows.length) {
       listEl.innerHTML = '<p class="save-hint">Henüz panelden eklenmiş haber bulunmuyor.</p>';
       return;
@@ -1030,13 +1049,36 @@
     `).join('');
 
     listEl.querySelectorAll('[data-news-delete]').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-news-delete');
-        const filtered = loadAdminNews().filter((row) => row.id !== id);
-        saveAdminNews(filtered);
-        renderNewsList();
+        btn.disabled = true;
+        try {
+          await deleteServerNews(id);
+          await renderNewsList();
+        } catch (error) {
+          btn.disabled = false;
+          const newsAlert = document.getElementById('news-alert');
+          setAlert(newsAlert, 'danger', (error && error.message) || 'Haber silinemedi.');
+        }
       });
     });
+  }
+
+  async function renderNewsList() {
+    const listEl = document.getElementById('news-list');
+    if (!listEl) return;
+
+    // Instant render from cache, then refresh from the server.
+    renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
+
+    try {
+      cachedNews = await fetchServerNews();
+      cacheAdminNews(cachedNews);
+      renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
+    } catch (error) {
+      // Keep showing cached/local list; surface nothing extra here since
+      // renderNewsList can be called silently after edits too.
+    }
   }
 
   function initNewsManager() {
@@ -1046,6 +1088,8 @@
 
     const freshForm = newsForm.cloneNode(true);
     newsForm.parentNode.replaceChild(freshForm, newsForm);
+
+    cachedNews = loadAdminNews();
 
     freshForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1081,27 +1125,20 @@
         }
       }
 
-      if (!image) {
-        image = 'assets/img/news.png';
+      const submitBtn = freshForm.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      setAlert(newsAlert, 'warning', 'Kaydediliyor...');
+
+      try {
+        await createServerNews({ date, badge, title, excerpt, image });
+        setAlert(newsAlert, 'success', 'Haber kaydedildi.');
+        freshForm.reset();
+        await renderNewsList();
+      } catch (error) {
+        setAlert(newsAlert, 'danger', (error && error.message) || 'Haber kaydedilemedi.');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
-
-      const items = loadAdminNews();
-      items.push({
-        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-        date,
-        displayDate: formatDateTR(date),
-        badge,
-        badgeClass: getBadgeClass(badge),
-        title,
-        excerpt,
-        image,
-        alt: title
-      });
-
-      saveAdminNews(items);
-      setAlert(newsAlert, 'success', 'Haber kaydedildi.');
-      freshForm.reset();
-      renderNewsList();
     });
 
     renderNewsList();

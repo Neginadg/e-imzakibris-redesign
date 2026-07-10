@@ -72,8 +72,8 @@
       badgeClass: item.badge_class || '',
       title: item.title || '',
       excerpt: item.excerpt || '',
-      image: item.image || '',
-      alt: item.alt || item.title || ''
+      image: item.image_url || '',
+      alt: item.image_alt || item.title || ''
     });
   }
 
@@ -90,7 +90,7 @@
 
   async function getSortedNewsItems() {
     try {
-      const remoteItems = await fetchSupabaseTable('news', 'published_at,display_date,badge,badge_class,title,excerpt,image,alt,sort_order');
+      const remoteItems = await fetchSupabaseTable('news', 'published_at,display_date,badge,badge_class,title,excerpt,image_url,image_alt,sort_order');
       const normalizedRemote = Array.isArray(remoteItems) ? remoteItems.map(normalizeSupabaseNewsItem).filter(Boolean) : [];
       if (normalizedRemote.length) {
         return normalizedRemote.sort((first, second) => new Date(second.date) - new Date(first.date));
