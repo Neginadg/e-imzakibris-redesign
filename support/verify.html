@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -14,231 +14,6 @@
   <link rel="apple-touch-icon" href="../assets/img/icon.png" />
   <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
   <style>
-    .verify-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .verify-form__input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .verify-form__input-group label {
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--color-text-primary);
-    }
-
-    .verify-form__input-group.required label::after {
-      content: " *";
-      color: var(--color-danger, #e74c3c);
-    }
-
-    .verify-form__human-check {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-    }
-
-    .verify-form__human-check input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--color-primary);
-      cursor: pointer;
-      margin: 0;
-      flex-shrink: 0;
-    }
-
-    .verify-form__file-input {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-height: 54px;
-      padding: 12px 14px;
-      border: 1px solid rgba(17, 24, 39, .12);
-      border-radius: 14px;
-      background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
-      box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
-      cursor: pointer;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
-    }
-
-    .verify-form__file-input:hover {
-      border-color: rgba(var(--color-primary-rgb), 0.55);
-      background: #fff;
-      transform: translateY(-1px);
-    }
-
-    .verify-form__file-input input[type="file"] {
-      display: none;
-    }
-
-    .verify-form__file-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .verify-form__file-label i {
-      font-size: 1.2rem;
-      color: var(--color-primary);
-    }
-
-    .verify-form__file-name {
-      flex: 1;
-      min-width: 0;
-      font-size: 0.9rem;
-      color: var(--color-text-secondary);
-      overflow-wrap: anywhere;
-    }
-
-    .verify-form__file-name.selected {
-      color: var(--color-text-primary);
-      font-weight: 500;
-    }
-
-    .verify-form__select {
-      min-height: 54px;
-      padding: 12px 14px;
-      border: 1px solid rgba(17, 24, 39, .12);
-      border-radius: 14px;
-      font-size: 0.95rem;
-      background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
-      box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
-      cursor: pointer;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
-    }
-
-    .verify-form__select:hover {
-      border-color: rgba(var(--color-primary-rgb), 0.55);
-      background: #fff;
-      transform: translateY(-1px);
-    }
-
-    .verify-form__select:focus {
-      outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.12);
-      background: #fff;
-    }
-
-    .verify-results {
-      display: block;
-      margin-top: 30px;
-      padding: 20px;
-      border: 1px solid var(--color-border);
-      border-radius: 8px;
-      background: var(--color-bg-light);
-    }
-
-    .verify-results__title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: var(--color-text-primary);
-    }
-
-    .verify-results__content {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--color-text-secondary);
-    }
-
-    .verify-results__status {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-
-    .verify-results__status.valid {
-      background: rgba(46, 204, 113, 0.1);
-      color: rgb(46, 204, 113);
-    }
-
-    .verify-results__status.pending {
-      background: rgba(52, 152, 219, 0.1);
-      color: rgb(41, 128, 185);
-    }
-
-    .verify-results__status.invalid {
-      background: rgba(231, 76, 60, 0.1);
-      color: rgb(231, 76, 60);
-    }
-
-    .verify-results__details {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: #fff;
-      padding: 12px 14px;
-      border-radius: 6px;
-      margin-top: 12px;
-    }
-
-    .verify-results__detail {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .verify-results__detail:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .verify-results__detail-label {
-      font-weight: 500;
-      color: var(--color-text-secondary);
-      flex-shrink: 0;
-    }
-
-    .verify-results__detail-value {
-      color: var(--color-text-primary);
-      font-weight: 500;
-      min-width: 0;
-      text-align: right;
-      overflow-wrap: anywhere;
-    }
-
-    .verify-results__placeholder {
-      font-size: 0.9rem;
-      color: var(--color-text-secondary);
-      margin-bottom: 12px;
-    }
-
-    .verify-info {
-      display: flex;
-      gap: 12px;
-      padding: 12px 14px;
-      background: var(--color-bg-light);
-      border-left: 3px solid var(--color-primary);
-      border-radius: 4px;
-      margin-top: 12px;
-    }
-
-    .verify-info i {
-      color: var(--color-primary);
-      flex-shrink: 0;
-    }
-
-    .verify-info p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--color-text-secondary);
-    }
     html,
     body.application-page {
       overflow-x: hidden;
@@ -260,10 +35,7 @@
     .application-page .container,
     .application-builder__grid,
     .application-builder__main,
-    .builder-card,
-    .verify-results,
-    .verify-results__details,
-    .verify-form__file-label {
+    .builder-card {
       min-width: 0;
     }
 
@@ -282,65 +54,59 @@
       object-fit: cover;
     }
 
-    .verify-form__radio-group {
+    .verify-cta {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 32px;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      background: var(--color-bg-light);
     }
 
-    .verify-form__radio-label {
+    .verify-cta__icon {
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
-      border: 1px solid rgba(17, 24, 39, .12);
-      border-radius: 10px;
-      background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      font-size: 0.92rem;
-      color: var(--color-text-primary);
+      justify-content: center;
+      border-radius: 14px;
+      background: rgba(var(--color-primary-rgb), 0.1);
+      color: var(--color-primary);
+      font-size: 1.5rem;
     }
 
-    .verify-form__radio-label:hover {
-      border-color: rgba(var(--color-primary-rgb), 0.5);
-      background: #fff;
-    }
-
-    .verify-form__radio-label input[type="radio"] {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--color-primary);
-      flex-shrink: 0;
+    .verify-cta p {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
       margin: 0;
     }
 
-    .verify-form__radio-label:has(input:checked) {
-      border-color: var(--color-primary);
-      background: rgba(var(--color-primary-rgb), 0.04);
-    }
-
-    .builder-actions {
+    .verify-cta__actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    .verify-result-sig {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border: 1px solid var(--color-border);
-      border-radius: 8px;
+    .verify-info {
+      display: flex;
+      gap: 12px;
+      padding: 12px 14px;
       background: #fff;
+      border-left: 3px solid var(--color-primary);
+      border-radius: 4px;
     }
 
-    .verify-result-sig__title {
-      font-size: 0.85rem;
-      font-weight: 600;
+    .verify-info i {
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    .verify-info p {
+      margin: 0;
+      font-size: 0.9rem;
       color: var(--color-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -440,7 +206,7 @@
       <li><a href="../databank/principles.html">İlkeler</a></li>
       <li><a href="../databank/applicationguidelines.html">Uygulama Esasları</a></li>
       <li><a href="../databank/relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
-      
+
       <li><a href="onlineapplication.html">DESTEK</a></li>
       <li><a href="../about/index.html">HAKKIMIZDA</a></li>
       <li><a href="../about/certdocuments.html">BELGELERIMIZ</a></li>
@@ -491,109 +257,21 @@
               <p class="builder-card__head-text">İmzalı dosya ve varsa orijinal dosyasını yükleyerek İmzaların geçerliliğini kontrol edin.</p>
             </div>
 
-            <form id="verify-form" class="verify-form" novalidate>
-              <div class="verify-form__input-group required">
-                <label>İmzalı Dosya</label>
-                <div class="verify-form__file-input">
-                  <label class="verify-form__file-label">
-                    <i class="fa-solid fa-file-upload"></i>
-                    <span class="verify-form__file-name" data-field="signedFile">Dosya seçilmedi</span>
-                    <input type="file" name="signedFile" id="signedFile" accept=".pdf,.xml,.asice,.asics,.p7s,.p7m" />
-                  </label>
-                </div>
-                <div class="verify-info">
-                  <i class="fa-solid fa-file-shield"></i>
-                  <p>PDF, XML, ASICE, ASICS veya CAdES formatında imzalı dosya yükleyiniz. Maksimum 3 MB.</p>
-                </div>
+            <div class="verify-cta">
+              <div class="verify-cta__icon"><i class="fa-solid fa-file-shield"></i></div>
+              <p>
+                İmza doğrulama işlemini, e-İmza Kıbrıs'ın doğrulama servisi üzerinden
+                güvenli şekilde gerçekleştirebilirsiniz. İmzalı dosyanızı ve varsa orijinal
+                dosyanızı yükleyerek AdES, AdES/QC ve QES uyumluluğunu kontrol edin.
+              </p>
+              <div class="verify-cta__actions">
+                <a href="https://www.signtifickibris.com/pages/verify.htm" target="_blank" rel="noopener" class="btn btn--primary btn--lg">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Doğrulama Aracını Aç
+                </a>
               </div>
-
-              <div class="verify-form__input-group">
-                <label>Orijinal Dosya (İsteğe Bağlı)</label>
-                <div class="verify-form__file-input">
-                  <label class="verify-form__file-label">
-                    <i class="fa-solid fa-file-upload"></i>
-                    <span class="verify-form__file-name" data-field="originalFile">Dosya seçilmedi</span>
-                    <input type="file" name="originalFile" id="originalFile" />
-                  </label>
-                </div>
-                <div class="verify-info">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                  <p>Orijinal dosyayı yükleyerek detaylı imza analizi yapılabilir.</p>
-                </div>
-              </div>
-
-              <div class="verify-form__input-group required">
-                <label>Doğrulama Düzeyi</label>
-                <div class="verify-form__radio-group">
-                  <label class="verify-form__radio-label">
-                    <input type="radio" name="verifyLevel" value="basic" />
-                    <span>Temel İmzalar için doğrulama süreci</span>
-                  </label>
-                  <label class="verify-form__radio-label">
-                    <input type="radio" name="verifyLevel" value="ltv" />
-                    <span>Uzun Vadeli Doğrulama Verilerine Sahip İmzalar</span>
-                  </label>
-                  <label class="verify-form__radio-label">
-                    <input type="radio" name="verifyLevel" value="lta" checked />
-                    <span>Arşiv Verili İmzalar <strong>(önerilir)</strong></span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="verify-form__input-group">
-                <label>Özel Doğrulama Kısıtlamaları Dosyası (İsteğe Bağlı)</label>
-                <div class="verify-form__file-input">
-                  <label class="verify-form__file-label">
-                    <i class="fa-solid fa-file-upload"></i>
-                    <span class="verify-form__file-name" data-field="constraintFile">Dosya seçilmedi</span>
-                    <input type="file" name="constraintFile" id="constraintFile" accept=".xml" />
-                  </label>
-                </div>
-              </div>
-
-              <div class="builder-actions">
-                <button type="submit" class="btn btn--primary btn--lg" id="verify-submit-btn">
-                  <i class="fa-solid fa-check"></i> Doğrula
-                </button>
-                <button type="button" class="btn btn--outline btn--lg" id="verify-new-btn">
-                  <i class="fa-solid fa-rotate-left"></i> Yeni
-                </button>
-              </div>
-            </form>
-
-            <div class="verify-results" id="verify-results" style="display:none;">
-              <div class="verify-results__title">Doğrulama Sonuçları</div>
-              <div class="verify-results__content" id="verify-results-content">
-                <div class="verify-results__status pending" id="verify-result-status">
-                  <i class="fa-solid fa-hourglass-half"></i> SONUÇ BEKLENİYOR
-                </div>
-                <p class="verify-results__placeholder" id="verify-result-note">Doğrulama yaptıktan sonra sonuçlar burada görünecektir.</p>
-                <div class="verify-results__details">
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">Dosya Adı:</span>
-                    <span class="verify-results__detail-value" id="verify-result-file">-</span>
-                  </div>
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">İmza Sayısı:</span>
-                    <span class="verify-results__detail-value" id="verify-result-count">-</span>
-                  </div>
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">Uygunluk Seviyesi:</span>
-                    <span class="verify-results__detail-value" id="verify-result-level">-</span>
-                  </div>
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">İmzalayan:</span>
-                    <span class="verify-results__detail-value" id="verify-result-signer">-</span>
-                  </div>
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">İmza Tarihi:</span>
-                    <span class="verify-results__detail-value" id="verify-result-date">-</span>
-                  </div>
-                  <div class="verify-results__detail">
-                    <span class="verify-results__detail-label">Sertifika Durumu:</span>
-                    <span class="verify-results__detail-value" id="verify-result-cert">-</span>
-                  </div>
-                </div>
+              <div class="verify-info">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>Doğrulama aracı yeni bir sekmede açılır. PDF, XML, ASICE, ASICS veya CAdES formatında imzalı dosyalar desteklenir.</p>
               </div>
             </div>
           </div>
@@ -712,224 +390,13 @@
         <div class="footer__bottom-links">
           <a href="../privacypolicy.html">Gizlilik Politikası</a>
           <a href="../contact/index.html">İletişim</a>
-          
+
         </div>
       </div>
     </div>
   </footer>
 
-  <script>
-    (function () {
-      'use strict';
-
-      const form = document.getElementById('verify-form');
-      if (!form) return;
-
-      // ── File name display ──────────────────────────────────────────────────
-      form.querySelectorAll('input[type="file"]').forEach(function (input) {
-        input.addEventListener('change', function () {
-          const name = this.files.length > 0 ? this.files[0].name : 'Dosya seçilmedi';
-          const display = form.querySelector('[data-field="' + this.name + '"]');
-          if (display) {
-            display.textContent = name;
-            display.classList.toggle('selected', this.files.length > 0);
-          }
-        });
-      });
-
-      // ── Yeni (Reset) button ────────────────────────────────────────────────
-      const newBtn = document.getElementById('verify-new-btn');
-      if (newBtn) {
-        newBtn.addEventListener('click', function () {
-          form.reset();
-          form.querySelectorAll('[data-field]').forEach(function (el) {
-            el.textContent = 'Dosya seçilmedi';
-            el.classList.remove('selected');
-          });
-          const resultsBox = document.getElementById('verify-results');
-          if (resultsBox) resultsBox.style.display = 'none';
-        });
-      }
-
-      // ── File → base64 ──────────────────────────────────────────────────────
-      function fileToBase64(file) {
-        return new Promise(function (resolve, reject) {
-          const reader = new FileReader();
-          reader.onload = function () {
-            const base64 = String(reader.result || '').split(',')[1] || '';
-            resolve(base64);
-          };
-          reader.onerror = function () { reject(reader.error || new Error('Dosya okunamadı')); };
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function indicationLabel(ind) {
-        if (!ind) return '-';
-        if (ind === 'TOTAL_PASSED') return 'Geçerli';
-        if (ind === 'TOTAL_FAILED') return 'Geçersiz';
-        if (ind === 'INDETERMINATE') return 'Belirlenemedi';
-        return ind;
-      }
-
-      function formatDate(raw) {
-        if (!raw) return '-';
-        const d = new Date(raw);
-        return isNaN(d.getTime()) ? raw : d.toLocaleString('tr-TR');
-      }
-
-      // ── Form submit ────────────────────────────────────────────────────────
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const signedFileInput = document.getElementById('signedFile');
-        const signedFile = signedFileInput && signedFileInput.files[0];
-
-        if (!signedFile) {
-          alert('Lütfen imzalı dosya yükleyiniz.');
-          return;
-        }
-
-        if (signedFile.size > 3 * 1024 * 1024) {
-          alert('İmzalı dosya 3 MB\'dan büyük olamaz. Lütfen daha küçük bir dosya seçin.');
-          return;
-        }
-
-        const submitBtn = document.getElementById('verify-submit-btn');
-        const resultsBox = document.getElementById('verify-results');
-        const resultStatus = document.getElementById('verify-result-status');
-        const resultNote = document.getElementById('verify-result-note');
-
-        // Loading state
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Doğrulanıyor...';
-        }
-        resultsBox.style.display = 'block';
-        resultStatus.className = 'verify-results__status pending';
-        resultStatus.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> ANALİZ EDİLİYOR...';
-        resultNote.textContent = 'Dosya doğrulama servisine gönderiliyor, lütfen bekleyin.';
-        resultsBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Clear previous detail values
-        ['verify-result-file','verify-result-count','verify-result-level',
-         'verify-result-signer','verify-result-date','verify-result-cert'].forEach(function(id) {
-          const el = document.getElementById(id);
-          if (el) el.textContent = '—';
-        });
-
-        try {
-          const signedBytes = await fileToBase64(signedFile);
-
-          const originalInput = document.getElementById('originalFile');
-          const originalFile = originalInput && originalInput.files[0];
-          let originalDocuments = [];
-          if (originalFile) {
-            const originalBytes = await fileToBase64(originalFile);
-            originalDocuments = [{ bytes: originalBytes, name: originalFile.name }];
-          }
-
-          const levelEl = form.querySelector('input[name="verifyLevel"]:checked');
-          const verificationLevel = levelEl ? levelEl.value : 'lta';
-
-          const response = await fetch('/api/verify-signature', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              signedDocument: { bytes: signedBytes, name: signedFile.name },
-              originalDocuments: originalDocuments,
-              verificationLevel: verificationLevel
-            })
-          });
-
-          const data = await response.json().catch(function () { return {}; });
-
-          if (!response.ok || !data.ok) {
-            throw new Error(data.error || 'Doğrulama hatası.');
-          }
-
-          const report = data.report || {};
-          const signatures = Array.isArray(report.signatures) ? report.signatures : [];
-          const validCount = Number(report.validSignaturesCount) || 0;
-          const totalCount = Number(report.signaturesCount) || 0;
-
-          const allValid = totalCount > 0 && validCount === totalCount;
-          const someValid = validCount > 0;
-
-          resultStatus.className = 'verify-results__status ' + (allValid ? 'valid' : someValid ? 'pending' : 'invalid');
-          resultStatus.innerHTML = allValid
-            ? '<i class="fa-solid fa-circle-check"></i> TÜM İMZALAR GEÇERLİ'
-            : someValid
-              ? '<i class="fa-solid fa-triangle-exclamation"></i> BAZI İMZALAR GEÇERLİ'
-              : '<i class="fa-solid fa-circle-xmark"></i> GEÇERSİZ / İMZASIZ DOSYA';
-
-          resultNote.textContent = totalCount > 0
-            ? validCount + ' / ' + totalCount + ' imza başarıyla doğrulandı.'
-            : 'Yüklenen dosyada geçerli bir elektronik imza yapısı bulunamadı.';
-
-          // Fill summary row with first signature data
-          document.getElementById('verify-result-file').textContent = signedFile.name;
-          document.getElementById('verify-result-count').textContent = String(totalCount);
-
-          if (signatures.length > 0) {
-            const first = signatures[0];
-            document.getElementById('verify-result-level').textContent = first.level || 'Tespit edilemedi';
-            document.getElementById('verify-result-signer').textContent = first.signedBy || 'Tespit edilemedi';
-            document.getElementById('verify-result-date').textContent = formatDate(first.bestSignatureTime);
-            document.getElementById('verify-result-cert').textContent = indicationLabel(first.indication);
-          }
-
-          // Per-signature detail cards (when more than one signature)
-          if (signatures.length > 1) {
-            const detailsContainer = document.getElementById('verify-results-content');
-            const existingCards = detailsContainer.querySelectorAll('.verify-result-sig');
-            existingCards.forEach(function (c) { c.remove(); });
-
-            signatures.forEach(function (sig, i) {
-              const card = document.createElement('div');
-              card.className = 'verify-result-sig';
-              const isValid = sig.indication === 'TOTAL_PASSED';
-              card.innerHTML =
-                '<div class="verify-result-sig__title">İmza #' + (i + 1) + ' — ' +
-                '<span style="color:' + (isValid ? 'rgb(46,204,113)' : 'rgb(231,76,60)') + '">' +
-                indicationLabel(sig.indication) + '</span></div>' +
-                '<div class="req-detail__grid" style="display:flex;flex-direction:column;gap:6px;">' +
-                '<div class="req-detail__pair"><span>İmzalayan</span><strong>' + (sig.signedBy || '-') + '</strong></div>' +
-                '<div class="req-detail__pair"><span>Format</span><strong>' + (sig.format || '-') + '</strong></div>' +
-                '<div class="req-detail__pair"><span>Düzey</span><strong>' + (sig.level || '-') + '</strong></div>' +
-                '<div class="req-detail__pair"><span>İmza Tarihi</span><strong>' + formatDate(sig.bestSignatureTime) + '</strong></div>' +
-                (sig.errors.length ? '<div class="req-detail__pair"><span style="color:#e74c3c;">Hatalar</span><strong style="color:#e74c3c;">' + sig.errors.join(', ') + '</strong></div>' : '') +
-                '</div>';
-              detailsContainer.appendChild(card);
-            });
-          }
-
-        } catch (err) {
-          resultStatus.className = 'verify-results__status invalid';
-          resultStatus.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> HATA OLUŞTU';
-          resultNote.textContent = (err && err.message) ? err.message : 'Bilinmeyen bir hata oluştu.';
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Doğrula';
-          }
-        }
-      });
-    })();
-  </script>
-
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
