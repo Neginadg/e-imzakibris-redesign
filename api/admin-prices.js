@@ -1,7 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { selectSupabaseRows, upsertSupabaseRows } = require('../lib/supabase');
-const { requireAdmin } = require('../lib/auth');
+const { requireAdmin, requireFullAdmin } = require('../lib/auth');
 
 const TABLE = 'pricing';
 
@@ -28,7 +28,8 @@ const PRICE_KEYS = Object.keys(PRICE_LABELS);
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
-    await requireAdmin(config, req);
+    const admin = await requireAdmin(config, req);
+    requireFullAdmin(admin);
 
     if (req.method === 'GET') {
       const rows = await selectSupabaseRows(config, TABLE, { select: 'price_key,value' });

@@ -90,13 +90,13 @@
       </div>
 
       <nav class="sidebar__nav">
-        <a href="#" class="sidebar__nav-item active" data-section="prices">
+        <a href="#" class="sidebar__nav-item active" data-section="prices" data-requires-role="admin">
           <i class="fa-solid fa-tag"></i> Fiyat Yönetimi
         </a>
-        <a href="#" class="sidebar__nav-item" data-section="news-manager">
+        <a href="#" class="sidebar__nav-item" data-section="news-manager" data-requires-role="admin">
           <i class="fa-solid fa-newspaper"></i> Haber Yönetimi
         </a>
-        <a href="#" class="sidebar__nav-item" data-section="files-manager">
+        <a href="#" class="sidebar__nav-item" data-section="files-manager" data-requires-role="admin">
           <i class="fa-solid fa-file-arrow-up"></i> Dosya Yönetimi
         </a>
         <a href="#" class="sidebar__nav-item" data-section="customer-center">
@@ -112,10 +112,10 @@
 
       <div class="sidebar__footer">
         <div class="sidebar__user">
-          <div class="sidebar__user-avatar">A</div>
+          <div class="sidebar__user-avatar" id="sidebar-user-avatar">A</div>
           <div>
-            <div class="sidebar__user-name">Admin</div>
-            <div class="sidebar__user-role">Yönetici</div>
+            <div class="sidebar__user-name" id="sidebar-user-name">Admin</div>
+            <div class="sidebar__user-role" id="sidebar-user-role">Yönetici</div>
           </div>
         </div>
         <button class="btn btn--ghost" data-action="logout" style="width:100%">

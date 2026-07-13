@@ -6,7 +6,7 @@ const {
   deleteSupabaseRow,
   uploadSupabaseFile
 } = require('../lib/supabase');
-const { requireAdmin } = require('../lib/auth');
+const { requireAdmin, requireFullAdmin } = require('../lib/auth');
 
 const TABLE = 'news';
 const BUCKET = 'Public Bucket';
@@ -43,7 +43,8 @@ function normalizeRow(row) {
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
-    await requireAdmin(config, req);
+    const admin = await requireAdmin(config, req);
+    requireFullAdmin(admin);
 
     if (req.method === 'GET') {
       const rows = await selectSupabaseRows(config, TABLE, {

@@ -15,6 +15,7 @@
   const PRICES_API_ENDPOINT = '/api/admin-prices';
   const NEWS_API_ENDPOINT = '/api/admin-news';
   let cachedNews = [];
+  const ADMIN_ME_ENDPOINT = '/api/admin-me';
   const FILE_TABLES = {
     applicationguidelines: {
       label: 'Application Guidelines',
@@ -244,7 +245,12 @@
 
   // Drop-in replacement for fetch() against our own /api/admin-* endpoints —
   // attaches the current Supabase session as a bearer token, and forces the
-  // user back to the login screen if the session is missing/invalid.
+  // user back to the login screen if the session itself is missing/invalid.
+  //
+  // NOTE: only a 401 means "not logged in" — it clears the session. A 403
+  // means "logged in, but this role isn't allowed to do this" (e.g. a
+  // 'viewer' admin hitting a full-admin-only endpoint), which must NOT log
+  // the user out; callers handle 403 like any other request error.
   async function adminFetch(url, options) {
     const token = await getValidAccessToken();
     if (!token) {
@@ -256,7 +262,7 @@
     opts.headers = Object.assign({}, options && options.headers, { Authorization: 'Bearer ' + token });
 
     const resp = await fetch(url, opts);
-    if (resp.status === 401 || resp.status === 403) {
+    if (resp.status === 401) {
       clearStoredSession();
       renderLogin();
     }
@@ -782,7 +788,7 @@
     }
   }
 
-  function initCustomerCenter() {
+  function initCustomerCenter(isFullAdmin) {
     const alertEl = document.getElementById('customer-alert');
     const searchInput = document.getElementById('customer-search-input');
     const dateFromInput = document.getElementById('req-date-from');
@@ -895,6 +901,17 @@
       const copyButton = detailEl.querySelector('[data-customer-copy]');
       const pinInput = detailEl.querySelector('[data-customer-pin]');
       const pukInput = detailEl.querySelector('[data-customer-puk]');
+
+      // Viewer role: read-only Customer Center — hide the mutating actions.
+      // (Also enforced server-side; this is just so they don't see a button
+      // that will only ever fail.)
+      if (!isFullAdmin) {
+        if (generateButton) generateButton.style.display = 'none';
+        if (saveButton) saveButton.style.display = 'none';
+        if (pinInput) pinInput.setAttribute('readonly', 'readonly');
+        if (pukInput) pukInput.setAttribute('readonly', 'readonly');
+        return;
+      }
 
       if (saveButton) {
         saveButton.addEventListener('click', async function () {
@@ -1669,13 +1686,45 @@
     await renderFilesList(applyEditState);
   }
 
+  // Reflects the logged-in admin's identity/role in the sidebar, and hides
+  // nav items the 'viewer' role isn't allowed to open (the corresponding
+  // /api/admin-* endpoints reject those actions server-side regardless —
+  // this is just so a viewer doesn't see dead-end links).
+  function applyProfileToUI(profile, isFullAdmin) {
+    const nameEl   = document.getElementById('sidebar-user-name');
+    const roleEl   = document.getElementById('sidebar-user-role');
+    const avatarEl = document.getElementById('sidebar-user-avatar');
+
+    if (nameEl) nameEl.textContent = profile.email || 'Admin';
+    if (roleEl) roleEl.textContent = isFullAdmin ? 'Tam Yetkili Admin' : 'Sınırlı Erişim (Görüntüleyici)';
+    if (avatarEl) avatarEl.textContent = (profile.email || 'A').charAt(0).toUpperCase();
+
+    document.querySelectorAll('[data-requires-role="admin"]').forEach((item) => {
+      item.style.display = isFullAdmin ? '' : 'none';
+    });
+  }
+
   // ── Render admin panel ────────────────────────────────────
-  function renderPanel() {
+  async function renderPanel() {
     const loginScreen = document.getElementById('login-screen');
     const adminPanel  = document.getElementById('admin-panel');
     if (loginScreen) hide(loginScreen);
     if (adminPanel)  show(adminPanel);
 
+    let profile = { email: '', role: 'admin' };
+    try {
+      const resp = await adminFetch(ADMIN_ME_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const data = await resp.json().catch(() => ({}));
+      if (resp.ok && data.ok) profile = { email: data.email || '', role: data.role || 'admin' };
+    } catch (e) {
+      // adminFetch already redirected to login if the session itself was invalid
+    }
+    const isFullAdmin = profile.role === 'admin';
+    applyProfileToUI(profile, isFullAdmin);
+
+    // Full-admin-only sections: Prices, News, Files. A 'viewer' admin only
+    // gets read-only Customer Center + their own Security/password page.
+    if (isFullAdmin) {
     // Populate price fields instantly from the local cache, then refresh
     // from the server (Supabase `pricing` table) once it responds.
     const prices = loadPrices();
@@ -1784,7 +1833,9 @@
 
     initNewsManager();
     initFilesManager();
-    initCustomerCenter();
+    } // end if (isFullAdmin)
+
+    initCustomerCenter(isFullAdmin);
 
     // ── Password change form ──
     const pwForm    = document.getElementById('pw-form');
@@ -1900,7 +1951,7 @@
       });
     });
 
-    showSection('prices');
+    showSection(isFullAdmin ? 'prices' : 'customer-center');
   }
 
   // ── Init ──────────────────────────────────────────────────

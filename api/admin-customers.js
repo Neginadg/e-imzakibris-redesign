@@ -1,7 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { selectSupabaseRows, updateSupabaseRow } = require('../lib/supabase');
-const { requireAdmin } = require('../lib/auth');
+const { requireAdmin, requireFullAdmin } = require('../lib/auth');
 
 const DEFAULT_CUSTOMER_TABLE = 'eimza_kibris_applications_2026';
 
@@ -71,7 +71,7 @@ function buildSearchQuery(term) {
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
-    await requireAdmin(config, req);
+    const admin = await requireAdmin(config, req);
     const tableName = getCustomerTableName();
 
     if (req.method === 'GET') {
@@ -116,6 +116,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+      requireFullAdmin(admin);
       const body = readJsonBody(req);
       const applicationId = String(body.application_id || body.id || '').trim();
       if (!applicationId) {

@@ -8,7 +8,7 @@ const {
   uploadSupabaseFile,
   deleteSupabaseFile
 } = require('../lib/supabase');
-const { requireAdmin } = require('../lib/auth');
+const { requireAdmin, requireFullAdmin } = require('../lib/auth');
 
 const BUCKET = 'Public Bucket';
 const DOCS_TABLE = 'documents';
@@ -57,7 +57,8 @@ function normalizeDoc(row) {
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
-    await requireAdmin(config, req);
+    const admin = await requireAdmin(config, req);
+    requireFullAdmin(admin);
 
     // ── GET: list documents ──────────────────────────────────────────────────
     if (req.method === 'GET') {
