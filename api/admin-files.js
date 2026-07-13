@@ -8,6 +8,7 @@ const {
   uploadSupabaseFile,
   deleteSupabaseFile
 } = require('../lib/supabase');
+const { requireAdmin } = require('../lib/auth');
 
 const BUCKET = 'Public Bucket';
 const DOCS_TABLE = 'documents';
@@ -56,6 +57,7 @@ function normalizeDoc(row) {
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
+    await requireAdmin(config, req);
 
     // ── GET: list documents ──────────────────────────────────────────────────
     if (req.method === 'GET') {
@@ -156,6 +158,6 @@ module.exports = async function handler(req, res) {
 
     return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   } catch (error) {
-    return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
+    return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });
   }
 };

@@ -6,7 +6,6 @@
 
   // ── Storage keys ──────────────────────────────────────────
   const KEY_PRICES = 'eimza_prices';
-  const KEY_PW_HASH = 'eimza_admin_hash';
   const KEY_SESSION = 'eimza_admin_session';
   const KEY_ADMIN_NEWS = 'eimza_admin_news';
   const KEY_ADMIN_FILES = 'eimza_admin_files';
@@ -132,16 +131,136 @@
     renewal_3y: 'field-renewal-3y'
   };
 
-  // Default password – change via the panel's "Change Password" section.
-  // The actual check is done by comparing SHA-256 hashes.
-  const DEFAULT_PW = 'Admin@1234';
-
   // ── Utilities ─────────────────────────────────────────────
   const fmt = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  async function sha256(str) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  // ── Supabase Auth (real admin login) ────────────────────────
+  // Config comes from ../assets/js/supabase-config.js (publishable/anon
+  // key — safe to expose client-side; write access is still enforced
+  // server-side via lib/auth.js checking the public.admins table).
+  const SB_URL = (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.url) || '';
+  const SB_ANON_KEY = (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.anonKey) || '';
+
+  function getStoredSession() {
+    try {
+      const raw = localStorage.getItem(KEY_SESSION);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setStoredSession(session) {
+    localStorage.setItem(KEY_SESSION, JSON.stringify(session));
+  }
+
+  function clearStoredSession() {
+    localStorage.removeItem(KEY_SESSION);
+  }
+
+  async function supabaseAuthRequest(path, body) {
+    const resp = await fetch(SB_URL.replace(/\/+$/, '') + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: SB_ANON_KEY },
+      body: JSON.stringify(body || {})
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      throw new Error((data && (data.error_description || data.msg || data.error)) || 'Kimlik doğrulama başarısız.');
+    }
+    return data;
+  }
+
+  function sessionFromAuthResponse(data) {
+    return {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      expires_at: Date.now() + (Number(data.expires_in) || 3600) * 1000,
+      email: data.user && data.user.email
+    };
+  }
+
+  async function signInWithPassword(email, password) {
+    const data = await supabaseAuthRequest('/auth/v1/token?grant_type=password', { email, password });
+    const session = sessionFromAuthResponse(data);
+    setStoredSession(session);
+    return session;
+  }
+
+  async function refreshSession(refreshToken) {
+    const data = await supabaseAuthRequest('/auth/v1/token?grant_type=refresh_token', { refresh_token: refreshToken });
+    const session = sessionFromAuthResponse(data);
+    setStoredSession(session);
+    return session;
+  }
+
+  // Returns a valid (non-expired) access token, refreshing it first if
+  // needed. Returns null if there's no session or it can't be refreshed.
+  async function getValidAccessToken() {
+    const session = getStoredSession();
+    if (!session) return null;
+
+    if (session.expires_at - Date.now() > 30000) {
+      return session.access_token;
+    }
+
+    if (!session.refresh_token) return null;
+
+    try {
+      const refreshed = await refreshSession(session.refresh_token);
+      return refreshed.access_token;
+    } catch (e) {
+      clearStoredSession();
+      return null;
+    }
+  }
+
+  async function signOutCurrentSession() {
+    const session = getStoredSession();
+    clearStoredSession();
+    if (!session || !session.access_token) return;
+    try {
+      await fetch(SB_URL.replace(/\/+$/, '') + '/auth/v1/logout', {
+        method: 'POST',
+        headers: { apikey: SB_ANON_KEY, Authorization: 'Bearer ' + session.access_token }
+      });
+    } catch (e) {
+      // best-effort — local session is already cleared
+    }
+  }
+
+  async function updateOwnPassword(accessToken, newPassword) {
+    const resp = await fetch(SB_URL.replace(/\/+$/, '') + '/auth/v1/user', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', apikey: SB_ANON_KEY, Authorization: 'Bearer ' + accessToken },
+      body: JSON.stringify({ password: newPassword })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      throw new Error((data && (data.error_description || data.msg || data.error)) || 'Şifre güncellenemedi.');
+    }
+    return data;
+  }
+
+  // Drop-in replacement for fetch() against our own /api/admin-* endpoints —
+  // attaches the current Supabase session as a bearer token, and forces the
+  // user back to the login screen if the session is missing/invalid.
+  async function adminFetch(url, options) {
+    const token = await getValidAccessToken();
+    if (!token) {
+      renderLogin();
+      throw new Error('Oturum süresi doldu. Lütfen tekrar giriş yapın.');
+    }
+
+    const opts = Object.assign({}, options);
+    opts.headers = Object.assign({}, options && options.headers, { Authorization: 'Bearer ' + token });
+
+    const resp = await fetch(url, opts);
+    if (resp.status === 401 || resp.status === 403) {
+      clearStoredSession();
+      renderLogin();
+    }
+    return resp;
   }
 
   // Small debounce helper for search input
@@ -170,14 +289,14 @@
   }
 
   async function fetchServerPrices() {
-    const resp = await fetch(PRICES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const resp = await adminFetch(PRICES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
     const data = await resp.json().catch(() => ({}));
     if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Fiyatlar sunucudan alınamadı.');
     return Object.assign({}, DEFAULTS, data.prices || {});
   }
 
   async function savePrices(prices) {
-    const resp = await fetch(PRICES_API_ENDPOINT, {
+    const resp = await adminFetch(PRICES_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prices })
@@ -250,14 +369,14 @@
   }
 
   async function fetchServerNews() {
-    const resp = await fetch(NEWS_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const resp = await adminFetch(NEWS_API_ENDPOINT, { headers: { Accept: 'application/json' } });
     const data = await resp.json().catch(() => ({}));
     if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haberler sunucudan alınamadı.');
     return Array.isArray(data.items) ? data.items : [];
   }
 
   async function createServerNews(item) {
-    const resp = await fetch(NEWS_API_ENDPOINT, {
+    const resp = await adminFetch(NEWS_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item)
@@ -268,7 +387,7 @@
   }
 
   async function deleteServerNews(id) {
-    const resp = await fetch(NEWS_API_ENDPOINT, {
+    const resp = await adminFetch(NEWS_API_ENDPOINT, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -279,7 +398,7 @@
 
   async function refreshFilesCache() {
     try {
-      const response = await fetch(FILES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const response = await adminFetch(FILES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.ok && Array.isArray(data.items)) {
         cachedFiles = data.items;
@@ -788,7 +907,7 @@
           saveButton.disabled = true;
           saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
           try {
-            const response = await fetch(CUSTOMER_API_ENDPOINT, {
+            const response = await adminFetch(CUSTOMER_API_ENDPOINT, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ application_id: selected.id, pin_code: pinValue, puk_code: pukValue, regenerate: false })
@@ -816,7 +935,7 @@
           generateButton.disabled = true;
           generateButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
           try {
-            const response = await fetch(CUSTOMER_API_ENDPOINT, {
+            const response = await adminFetch(CUSTOMER_API_ENDPOINT, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ application_id: selected.id, regenerate: true })
@@ -885,7 +1004,7 @@
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
           url.searchParams.set('offset', String(currentOffset));
-          const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+          const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
           if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'E-İmza kayıtları alınamadı.');
           newItems = Array.isArray(data.items) ? data.items : [];
@@ -896,7 +1015,7 @@
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
           url.searchParams.set('offset', String(currentOffset));
-          const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+          const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
           if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Kayıtlar alınamadı.');
           newItems = Array.isArray(data.items) ? data.items : [];
@@ -941,17 +1060,11 @@
   }
 
   // ── Session ───────────────────────────────────────────────
-  function isLoggedIn() {
-    return !!sessionStorage.getItem(KEY_SESSION);
-  }
-
-  function createSession() {
-    // Random token for the session – no sensitive data
-    sessionStorage.setItem(KEY_SESSION, crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36));
-  }
-
-  function destroySession() {
-    sessionStorage.removeItem(KEY_SESSION);
+  // Resolves true only if we hold (or can refresh to) a valid Supabase
+  // access token. Actual authorization is still re-checked server-side
+  // (lib/auth.js) on every /api/admin-* call.
+  async function isLoggedIn() {
+    return !!(await getValidAccessToken());
   }
 
   // ── DOM helpers ───────────────────────────────────────────
@@ -979,51 +1092,43 @@
 
   // ── Render login screen ───────────────────────────────────
   function renderLogin() {
+    clearStoredSession();
+
     const loginScreen = document.getElementById('login-screen');
     const adminPanel  = document.getElementById('admin-panel');
     if (loginScreen) show(loginScreen);
     if (adminPanel)  hide(adminPanel);
 
-    const form       = document.getElementById('login-form');
-    const pwInput    = document.getElementById('login-password');
-    const errEl      = document.getElementById('login-error');
-    const submitBtn  = document.getElementById('login-submit');
-
+    const form = document.getElementById('login-form');
     if (!form) return;
 
-    form.addEventListener('submit', async function (e) {
+    // Remove any stale listener from a previous renderLogin() call.
+    const freshForm = form.cloneNode(true);
+    form.parentNode.replaceChild(freshForm, form);
+
+    const emailInput = document.getElementById('login-email');
+    const pwInput     = document.getElementById('login-password');
+    const errEl       = document.getElementById('login-error');
+    const submitBtn   = document.getElementById('login-submit');
+
+    freshForm.addEventListener('submit', async function (e) {
       e.preventDefault();
       if (errEl) errEl.textContent = '';
       pwInput.classList.remove('has-error');
+      emailInput.classList.remove('has-error');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Giriş yapılıyor…';
 
       try {
-        const entered = pwInput.value;
-        const enteredHash = await sha256(entered);
-
-        // Get stored hash (or compute default on first run)
-        let storedHash = localStorage.getItem(KEY_PW_HASH);
-        if (!storedHash) {
-          storedHash = await sha256(DEFAULT_PW);
-          localStorage.setItem(KEY_PW_HASH, storedHash);
-        }
-
-        if (enteredHash === storedHash) {
-          createSession();
-          renderPanel();
-        } else {
-          pwInput.classList.add('has-error');
-          if (errEl) errEl.textContent = 'Hatalı şifre. Lütfen tekrar deneyin.';
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Giriş Yap';
-          pwInput.value = '';
-          pwInput.focus();
-        }
+        await signInWithPassword(emailInput.value.trim(), pwInput.value);
+        renderPanel();
       } catch (err) {
-        if (errEl) errEl.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+        pwInput.classList.add('has-error');
+        if (errEl) errEl.textContent = (err && err.message) || 'Hatalı e-posta veya şifre.';
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Giriş Yap';
+        pwInput.value = '';
+        pwInput.focus();
       }
     });
   }
@@ -1212,7 +1317,7 @@
         const target = cachedFiles.find((row) => row.id === id);
         if (!confirm('Bu dosyayı silmek istediğinizden emin misiniz?')) return;
         try {
-          const resp = await fetch(FILES_API_ENDPOINT, {
+          const resp = await adminFetch(FILES_API_ENDPOINT, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, file_url: target && target.file_url })
@@ -1401,7 +1506,7 @@
       }
 
       try {
-        const resp = await fetch(FILES_API_ENDPOINT, {
+        const resp = await adminFetch(FILES_API_ENDPOINT, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: recordId, ...updates })
@@ -1423,7 +1528,7 @@
 
       const target = cachedFiles.find(f => f.id === recordId);
       try {
-        const resp = await fetch(FILES_API_ENDPOINT, {
+        const resp = await adminFetch(FILES_API_ENDPOINT, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: recordId, file_url: target && target.file_url })
@@ -1494,7 +1599,7 @@
 
       try {
         if (editingFileId) {
-          const resp = await fetch(FILES_API_ENDPOINT, {
+          const resp = await adminFetch(FILES_API_ENDPOINT, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: editingFileId, table, ...fieldValues })
@@ -1518,7 +1623,7 @@
         let uploadedCount = 0;
         for (const file of Array.from(fileInput.files)) {
           const dataUrl = await fileToDataUrl(file);
-          const resp = await fetch(FILES_API_ENDPOINT, {
+          const resp = await adminFetch(FILES_API_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1697,15 +1802,6 @@
 
         [currentInput, newInput, confirmInput].forEach(i => { if (i) i.classList.remove('has-error'); });
 
-        const currentHash = await sha256(currentInput.value);
-        const storedHash  = localStorage.getItem(KEY_PW_HASH) || await sha256(DEFAULT_PW);
-
-        if (currentHash !== storedHash) {
-          currentInput.classList.add('has-error');
-          setAlert(pwAlert, 'danger', 'Mevcut şifre hatalı.');
-          return;
-        }
-
         if (newInput.value.length < 6) {
           newInput.classList.add('has-error');
           setAlert(pwAlert, 'danger', 'Yeni şifre en az 6 karakter olmalıdır.');
@@ -1718,17 +1814,36 @@
           return;
         }
 
-        const newHash = await sha256(newInput.value);
-        localStorage.setItem(KEY_PW_HASH, newHash);
-        setAlert(pwAlert, 'success', 'Şifre başarıyla değiştirildi.');
-        newPwForm.reset();
+        const session = getStoredSession();
+        if (!session || !session.email) {
+          setAlert(pwAlert, 'danger', 'Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+          return;
+        }
+
+        const submitBtn = newPwForm.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+        setAlert(pwAlert, 'warning', 'Güncelleniyor...');
+
+        try {
+          // Re-authenticate with the current password to confirm identity
+          // before changing it.
+          const freshSession = await signInWithPassword(session.email, currentInput.value);
+          await updateOwnPassword(freshSession.access_token, newInput.value);
+          setAlert(pwAlert, 'success', 'Şifre başarıyla değiştirildi.');
+          newPwForm.reset();
+        } catch (error) {
+          currentInput.classList.add('has-error');
+          setAlert(pwAlert, 'danger', (error && error.message) || 'Mevcut şifre hatalı.');
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
       });
     }
 
     // ── Logout ──
     document.querySelectorAll('[data-action="logout"]').forEach(btn => {
-      btn.addEventListener('click', function () {
-        destroySession();
+      btn.addEventListener('click', async function () {
+        await signOutCurrentSession();
         renderLogin();
       });
     });
@@ -1789,8 +1904,8 @@
   }
 
   // ── Init ──────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', function () {
-    if (isLoggedIn()) {
+  document.addEventListener('DOMContentLoaded', async function () {
+    if (await isLoggedIn()) {
       renderPanel();
     } else {
       renderLogin();

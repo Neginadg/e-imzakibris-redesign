@@ -6,6 +6,7 @@ const {
   deleteSupabaseRow,
   uploadSupabaseFile
 } = require('../lib/supabase');
+const { requireAdmin } = require('../lib/auth');
 
 const TABLE = 'news';
 const BUCKET = 'Public Bucket';
@@ -42,6 +43,7 @@ function normalizeRow(row) {
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
+    await requireAdmin(config, req);
 
     if (req.method === 'GET') {
       const rows = await selectSupabaseRows(config, TABLE, {
@@ -107,6 +109,6 @@ module.exports = async function handler(req, res) {
 
     return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   } catch (error) {
-    return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
+    return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });
   }
 };

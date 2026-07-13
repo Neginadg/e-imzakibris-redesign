@@ -1,6 +1,7 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { selectSupabaseRows, upsertSupabaseRows } = require('../lib/supabase');
+const { requireAdmin } = require('../lib/auth');
 
 const TABLE = 'pricing';
 
@@ -27,6 +28,7 @@ const PRICE_KEYS = Object.keys(PRICE_LABELS);
 module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
+    await requireAdmin(config, req);
 
     if (req.method === 'GET') {
       const rows = await selectSupabaseRows(config, TABLE, { select: 'price_key,value' });
@@ -65,6 +67,6 @@ module.exports = async function handler(req, res) {
 
     return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   } catch (error) {
-    return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
+    return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });
   }
 };

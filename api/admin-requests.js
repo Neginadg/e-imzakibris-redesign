@@ -1,6 +1,7 @@
 const { sendJson } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { selectSupabaseRows } = require('../lib/supabase');
+const { requireAdmin } = require('../lib/auth');
 
 const TABLE_CONFIGS = {
   timestamp: {
@@ -79,6 +80,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const config = getRuntimeEnv({ requireEmail: false });
+    await requireAdmin(config, req);
 
     const tableKey = String((req.query && req.query.table) || '').trim();
     const cfg = TABLE_CONFIGS[tableKey];
@@ -122,6 +124,6 @@ module.exports = async function handler(req, res) {
     var rows = await selectSupabaseRows(config, cfg.tableName, params);
     return sendJson(res, 200, { ok: true, items: rows.map(cfg.normalize) });
   } catch (error) {
-    return sendJson(res, 500, { ok: false, error: error.message || 'Server error' });
+    return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });
   }
 };
