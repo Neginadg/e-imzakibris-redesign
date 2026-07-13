@@ -1695,7 +1695,10 @@
     const roleEl   = document.getElementById('sidebar-user-role');
     const avatarEl = document.getElementById('sidebar-user-avatar');
 
-    if (nameEl) nameEl.textContent = profile.email || 'Admin';
+    if (nameEl) {
+      nameEl.textContent = profile.email || 'Admin';
+      nameEl.title = profile.email || 'Admin';
+    }
     if (roleEl) roleEl.textContent = isFullAdmin ? 'Tam Yetkili Admin' : 'Sınırlı Erişim (Görüntüleyici)';
     if (avatarEl) avatarEl.textContent = (profile.email || 'A').charAt(0).toUpperCase();
 
