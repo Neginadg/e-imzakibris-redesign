@@ -230,19 +230,6 @@
     }
   }
 
-  async function updateOwnPassword(accessToken, newPassword) {
-    const resp = await fetch(SB_URL.replace(/\/+$/, '') + '/auth/v1/user', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', apikey: SB_ANON_KEY, Authorization: 'Bearer ' + accessToken },
-      body: JSON.stringify({ password: newPassword })
-    });
-    const data = await resp.json().catch(() => ({}));
-    if (!resp.ok) {
-      throw new Error((data && (data.error_description || data.msg || data.error)) || 'Şifre güncellenemedi.');
-    }
-    return data;
-  }
-
   // Drop-in replacement for fetch() against our own /api/admin-* endpoints —
   // attaches the current Supabase session as a bearer token, and forces the
   // user back to the login screen if the session itself is missing/invalid.
@@ -1840,60 +1827,6 @@
 
     initCustomerCenter(isFullAdmin);
 
-    // ── Password change form ──
-    const pwForm    = document.getElementById('pw-form');
-    const pwAlert   = document.getElementById('pw-alert');
-
-    if (pwForm) {
-      const newPwForm = pwForm.cloneNode(true);
-      pwForm.parentNode.replaceChild(newPwForm, pwForm);
-
-      newPwForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const currentInput  = document.getElementById('pw-current');
-        const newInput      = document.getElementById('pw-new');
-        const confirmInput  = document.getElementById('pw-confirm');
-
-        [currentInput, newInput, confirmInput].forEach(i => { if (i) i.classList.remove('has-error'); });
-
-        if (newInput.value.length < 6) {
-          newInput.classList.add('has-error');
-          setAlert(pwAlert, 'danger', 'Yeni şifre en az 6 karakter olmalıdır.');
-          return;
-        }
-
-        if (newInput.value !== confirmInput.value) {
-          confirmInput.classList.add('has-error');
-          setAlert(pwAlert, 'danger', 'Şifreler eşleşmiyor.');
-          return;
-        }
-
-        const session = getStoredSession();
-        if (!session || !session.email) {
-          setAlert(pwAlert, 'danger', 'Oturum bulunamadı. Lütfen tekrar giriş yapın.');
-          return;
-        }
-
-        const submitBtn = newPwForm.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
-        setAlert(pwAlert, 'warning', 'Güncelleniyor...');
-
-        try {
-          // Re-authenticate with the current password to confirm identity
-          // before changing it.
-          const freshSession = await signInWithPassword(session.email, currentInput.value);
-          await updateOwnPassword(freshSession.access_token, newInput.value);
-          setAlert(pwAlert, 'success', 'Şifre başarıyla değiştirildi.');
-          newPwForm.reset();
-        } catch (error) {
-          currentInput.classList.add('has-error');
-          setAlert(pwAlert, 'danger', (error && error.message) || 'Mevcut şifre hatalı.');
-        } finally {
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      });
-    }
-
     // ── Logout ──
     document.querySelectorAll('[data-action="logout"]').forEach(btn => {
       btn.addEventListener('click', async function () {
@@ -1930,8 +1863,7 @@
       'prices':           'Fiyat Yönetimi',
       'news-manager':     'Haber Yönetimi',
       'files-manager':    'Dosya Yönetimi',
-      'customer-center':  'Müşteri Kayıtları',
-      'security':         'Güvenlik'
+      'customer-center':  'Müşteri Kayıtları'
     };
 
     function showSection(sectionId) {

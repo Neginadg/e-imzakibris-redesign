@@ -102,9 +102,6 @@
         <a href="#" class="sidebar__nav-item" data-section="customer-center">
           <i class="fa-solid fa-address-card"></i> Müşteri Kayıtları
         </a>
-        <a href="#" class="sidebar__nav-item" data-section="security">
-          <i class="fa-solid fa-lock"></i> Güvenlik
-        </a>
         <a href="../index.html" class="sidebar__nav-item" target="_blank" rel="noopener">
           <i class="fa-solid fa-house"></i> Siteyi Görüntüle
         </a>
@@ -640,74 +637,6 @@
                 </div>
               </aside>
             </div>
-          </div>
-        </div>
-
-        <!-- -- Security Card -- -->
-        <div class="panel-card" id="security">
-          <div class="panel-card__header">
-            <div class="panel-card__header-left">
-              <div class="panel-card__title">Şifre Değiştir</div>
-              <div class="panel-card__sub">Admin paneli giriş şifrenizi güncelleyin</div>
-            </div>
-            <div class="panel-card__header-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-          </div>
-
-          <div class="panel-card__body">
-            <div id="pw-alert" class="alert" style="margin-bottom:1.25rem;" aria-live="polite"></div>
-
-            <form id="pw-form" novalidate>
-              <div class="pw-grid">
-                <div class="form-group">
-                  <label for="pw-current">Mevcut Şifre</label>
-                  <input
-                    type="password"
-                    id="pw-current"
-                    name="pw_current"
-                    placeholder="Mevcut şifre"
-                    autocomplete="current-password"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="pw-new">Yeni Şifre</label>
-                  <input
-                    type="password"
-                    id="pw-new"
-                    name="pw_new"
-                    placeholder="En az 6 karakter"
-                    autocomplete="new-password"
-                    minlength="6"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="pw-confirm">Yeni Şifreyi Onayla</label>
-                  <input
-                    type="password"
-                    id="pw-confirm"
-                    name="pw_confirm"
-                    placeholder="Yeni şifreyi tekrar girin"
-                    autocomplete="new-password"
-                  />
-                </div>
-              </div>
-
-              <div style="margin-top:1.25rem;">
-                <button type="submit" class="btn btn--primary" style="width:auto;min-width:180px;">
-                  <i class="fa-solid fa-key"></i> Şifreyi Güncelle
-                </button>
-              </div>
-            </form>
-
-            <p style="margin-top:1.25rem;font-size:.75rem;color:var(--muted);line-height:1.6;">
-              <i class="fa-solid fa-triangle-exclamation" style="color:var(--warning);"></i>
-              Şifreler yalnızca bu tarayıcıda saklanır. Bu site statik bir site olduğundan,
-              şifre koruması bilgisayarla sınırlandırılmıştır. Farklı bir cihazdan erişim için
-              şifreyi ayrıca ayarlamanız gerekir.
-            </p>
           </div>
         </div>
 
