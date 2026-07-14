@@ -722,7 +722,13 @@
   }
 
   // ── Results table renderer (tab-aware) ────────────────────────
-  function renderResults(items, selectedId, tabType) {
+  function statusToggleCell(item, field, isFullAdmin) {
+    const active = !!item[field];
+    const disabledAttr = isFullAdmin ? '' : ' disabled';
+    return `<td class="status-col"><button type="button" class="status-toggle${active ? ' is-active' : ''}" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}"${disabledAttr}>${active ? '✅' : '⬜'}</button></td>`;
+  }
+
+  function renderResults(items, selectedId, tabType, isFullAdmin) {
     const resultsBody = document.getElementById('customer-results-body');
     const resultsHead = document.getElementById('customer-results-head');
     const resultsCount = document.getElementById('customer-results-count');
@@ -733,10 +739,13 @@
 
     if (tabType === 'eimzakibris') {
       if (resultsHead) {
-        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th><th>Telefon</th><th>PIN / PUK</th><th>Seç</th></tr>';
+        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th><th>Telefon</th><th>PIN / PUK</th>'
+          + '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>'
+          + '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>'
+          + '<th class="status-col" title="İmza Hazır">İmza</th></tr>';
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="6" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML = '<tr><td colspan="8" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
       resultsBody.innerHTML = list.map((item) => {
@@ -749,15 +758,17 @@
             <td>${escapeHtml(item.email || '-')}</td>
             <td>${escapeHtml(item.phone || '-')}</td>
             <td><span class="code-pill ${codes.pin_code && codes.puk_code ? '' : 'code-pill--empty'}">${codes.pin_code && codes.puk_code ? 'Hazır' : 'Yok'}</span></td>
-            <td><button type="button" class="btn btn--ghost btn--sm" data-customer-select="${escapeHtml(item.id)}"><i class="fa-solid fa-eye"></i> Görüntüle</button></td>
+            ${statusToggleCell(item, 'payment_done', isFullAdmin)}
+            ${statusToggleCell(item, 'receipt_written', isFullAdmin)}
+            ${statusToggleCell(item, 'signature_ready', isFullAdmin)}
           </tr>`;
       }).join('');
     } else {
       if (resultsHead) {
-        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>E-Posta</th><th>Telefon</th><th>Plan</th><th>Tarih</th><th>Seç</th></tr>';
+        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>E-Posta</th><th>Telefon</th><th>Plan</th><th>Tarih</th></tr>';
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="6" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML = '<tr><td colspan="5" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
       resultsBody.innerHTML = list.map((item) => {
@@ -769,7 +780,6 @@
             <td>${escapeHtml(item.phone || '-')}</td>
             <td>${escapeHtml(item.plan_label || item.application_type || '-')}</td>
             <td>${escapeHtml(formatCustomerDateTime(item.created_at))}</td>
-            <td><button type="button" class="btn btn--ghost btn--sm" data-customer-select="${escapeHtml(item.id)}"><i class="fa-solid fa-eye"></i> Görüntüle</button></td>
           </tr>`;
       }).join('');
     }
@@ -853,11 +863,44 @@
       showMoreBtn.addEventListener('click', function () { loadRecords(true); });
     }
 
+    // ── Status toggle (Ödeme / Makbuz / İmza) ──────────────────────
+    async function handleStatusToggle(btn) {
+      if (btn.disabled) return;
+      const id = btn.getAttribute('data-status-toggle');
+      const field = btn.getAttribute('data-status-field');
+      const item = currentItems.find(function (i) { return i.id === id; });
+      if (!item) return;
+
+      const newValue = !item[field];
+      btn.disabled = true;
+      try {
+        const resp = await adminFetch(CUSTOMER_API_ENDPOINT, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, field, value: newValue })
+        });
+        const data = await resp.json().catch(function () { return {}; });
+        if (!resp.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'Durum güncellenemedi.');
+        currentItems = currentItems.map(function (i) { return i.id === id ? data.record : i; });
+        renderResults(currentItems, selectedId, activeTab, isFullAdmin);
+      } catch (error) {
+        btn.disabled = false;
+        setAlert(alertEl, 'danger', (error && error.message) || 'Durum güncellenemedi.');
+      }
+    }
+
     // ── Row click ───────────────────────────────────────────────
     if (resultsBody) {
       resultsBody.addEventListener('click', function (event) {
         const el = event.target instanceof Element ? event.target : null;
         if (!el) return;
+
+        const statusBtn = el.closest('[data-status-toggle]');
+        if (statusBtn) {
+          handleStatusToggle(statusBtn);
+          return;
+        }
+
         const btn = el.closest('[data-customer-select]');
         const row = el.closest('tr[data-customer-id]');
         const id = btn ? btn.getAttribute('data-customer-select') : (row ? row.getAttribute('data-customer-id') : null);
@@ -871,7 +914,7 @@
     function setSelected(id) {
       selectedId = id || '';
       const selected = currentItems.find(function (item) { return item.id === selectedId; }) || null;
-      renderResults(currentItems, selectedId, activeTab);
+      renderResults(currentItems, selectedId, activeTab, isFullAdmin);
 
       if (activeTab === 'eimzakibris') {
         renderCustomerDetail(selected);
@@ -921,7 +964,7 @@
             const updated = data.record;
             currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
             selectedId = updated.id;
-            renderResults(currentItems, selectedId, activeTab);
+            renderResults(currentItems, selectedId, activeTab, isFullAdmin);
             renderCustomerDetail(updated);
             attachPinPukListeners(updated);
             setAlert(alertEl, 'success', 'PIN ve PUK kodları kaydedildi.');
@@ -949,7 +992,7 @@
             const updated = data.record;
             currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
             selectedId = updated.id;
-            renderResults(currentItems, selectedId, activeTab);
+            renderResults(currentItems, selectedId, activeTab, isFullAdmin);
             renderCustomerDetail(updated);
             attachPinPukListeners(updated);
             setAlert(alertEl, 'success', 'PIN ve PUK kodları oluşturuldu ve kaydedildi.');
@@ -1034,10 +1077,10 @@
         if (currentItems.length) {
           setAlert(alertEl, 'success', currentItems.length + ' kayıt' + (hasMore ? ' (daha fazlası mevcut)' : ''));
           if (!append) setSelected(currentItems[0].id);
-          else renderResults(currentItems, selectedId, activeTab);
+          else renderResults(currentItems, selectedId, activeTab, isFullAdmin);
         } else {
           selectedId = '';
-          renderResults([], '', activeTab);
+          renderResults([], '', activeTab, isFullAdmin);
           if (activeTab === 'eimzakibris') renderCustomerDetail(null);
           else renderRequestDetail(null);
           setAlert(alertEl, 'warning', 'Kayıt bulunamadı.');
@@ -1046,7 +1089,7 @@
         if (!append) {
           currentItems = [];
           selectedId = '';
-          renderResults([], '', activeTab);
+          renderResults([], '', activeTab, isFullAdmin);
           if (activeTab === 'eimzakibris') renderCustomerDetail(null);
           else renderRequestDetail(null);
         }

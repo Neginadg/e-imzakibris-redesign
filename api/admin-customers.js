@@ -42,9 +42,14 @@ function normalizeCustomerRecord(row) {
     pin_code: String(row.pin || adminCodes.pin_code || ''),
     puk_code: String(row.puk || adminCodes.puk_code || ''),
     generated_at: adminCodes.generated_at,
-    created_at: String(row.kayit_tarihi || row.imported_at || '')
+    created_at: String(row.kayit_tarihi || row.imported_at || ''),
+    payment_done: !!row.payment_done,
+    receipt_written: !!row.receipt_written,
+    signature_ready: !!row.signature_ready
   };
 }
+
+const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready'];
 
 function generateNumericCode(length) {
   const crypto = require('crypto');
@@ -84,13 +89,13 @@ module.exports = async function handler(req, res) {
       const dateCol = tableName === 'applications' ? 'created_at' : 'imported_at';
       const params = tableName === 'applications'
         ? {
-          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at',
+          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at,payment_done,receipt_written,signature_ready',
           order: 'created_at.desc',
           limit: String(PAGE_SIZE),
           offset: String(offset)
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at,payment_done,receipt_written,signature_ready',
           order: 'imported_at.desc',
           limit: String(PAGE_SIZE),
           offset: String(offset)
@@ -165,6 +170,27 @@ module.exports = async function handler(req, res) {
         ok: true,
         record: normalizeCustomerRecord(updated || current, tableName)
       });
+    }
+
+    // ── PATCH: toggle a status flag (payment_done / receipt_written / signature_ready) ──
+    if (req.method === 'PATCH') {
+      requireFullAdmin(admin);
+      const body = readJsonBody(req);
+      const applicationId = String(body.id || '').trim();
+      const field = String(body.field || '').trim();
+
+      if (!applicationId || !STATUS_FIELDS.includes(field)) {
+        return sendJson(res, 400, { ok: false, error: 'Invalid id or field' });
+      }
+
+      const updated = await updateSupabaseRow(
+        config,
+        tableName,
+        { id: `eq.${applicationId}` },
+        { [field]: !!body.value }
+      );
+
+      return sendJson(res, 200, { ok: true, record: normalizeCustomerRecord(updated, tableName) });
     }
 
     return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
