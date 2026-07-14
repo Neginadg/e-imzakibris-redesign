@@ -50,6 +50,10 @@ function normalizeCustomerRecord(row) {
 }
 
 const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready'];
+// Viewer admins (read-only Customer Center) are additionally allowed to mark
+// these two — everything else in Customer Center, including signature_ready,
+// still requires a full admin.
+const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written'];
 
 function generateNumericCode(length) {
   const crypto = require('crypto');
@@ -174,13 +178,16 @@ module.exports = async function handler(req, res) {
 
     // ── PATCH: toggle a status flag (payment_done / receipt_written / signature_ready) ──
     if (req.method === 'PATCH') {
-      requireFullAdmin(admin);
       const body = readJsonBody(req);
       const applicationId = String(body.id || '').trim();
       const field = String(body.field || '').trim();
 
       if (!applicationId || !STATUS_FIELDS.includes(field)) {
         return sendJson(res, 400, { ok: false, error: 'Invalid id or field' });
+      }
+
+      if (!VIEWER_EDITABLE_STATUS_FIELDS.includes(field)) {
+        requireFullAdmin(admin);
       }
 
       const updated = await updateSupabaseRow(

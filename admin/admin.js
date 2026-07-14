@@ -722,9 +722,15 @@
   }
 
   // ── Results table renderer (tab-aware) ────────────────────────
+  // Viewer admins (read-only Customer Center) may still mark these two —
+  // everything else, including signature_ready, requires a full admin.
+  // Must match VIEWER_EDITABLE_STATUS_FIELDS in api/admin-customers.js.
+  const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written'];
+
   function statusToggleCell(item, field, isFullAdmin) {
     const active = !!item[field];
-    const disabledAttr = isFullAdmin ? '' : ' disabled';
+    const canEdit = isFullAdmin || VIEWER_EDITABLE_STATUS_FIELDS.includes(field);
+    const disabledAttr = canEdit ? '' : ' disabled';
     return `<td class="status-col"><button type="button" class="status-toggle${active ? ' is-active' : ''}" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}"${disabledAttr}>${active ? '✅' : '⬜'}</button></td>`;
   }
 
