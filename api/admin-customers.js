@@ -45,15 +45,17 @@ function normalizeCustomerRecord(row) {
     created_at: String(row.kayit_tarihi || row.imported_at || ''),
     payment_done: !!row.payment_done,
     receipt_written: !!row.receipt_written,
-    signature_ready: !!row.signature_ready
+    signature_ready: !!row.signature_ready,
+    delivered: !!row.delivered
   };
 }
 
-const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready'];
+const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready', 'delivered'];
 // Viewer admins (read-only Customer Center) are additionally allowed to mark
-// these two — everything else in Customer Center, including signature_ready,
-// still requires a full admin.
-const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written'];
+// these — everything else in Customer Center, including signature_ready,
+// still requires a full admin. `delivered` is a deliberate exception so
+// viewer admins can tick off hand-off without full edit rights.
+const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written', 'delivered'];
 
 function generateNumericCode(length) {
   const crypto = require('crypto');
@@ -88,20 +90,20 @@ module.exports = async function handler(req, res) {
       const dateFrom = String((req.query && req.query.dateFrom) || '').trim();
       const dateTo = String((req.query && req.query.dateTo) || '').trim();
       const offset = Math.max(0, parseInt(String((req.query && req.query.offset) || '0'), 10) || 0);
-      const PAGE_SIZE = 20;
+      const limit = Math.min(Math.max(1, parseInt(String((req.query && req.query.limit) || '20'), 10) || 20), 200);
 
       const dateCol = tableName === 'applications' ? 'created_at' : 'imported_at';
       const params = tableName === 'applications'
         ? {
-          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at,payment_done,receipt_written,signature_ready',
+          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at,payment_done,receipt_written,signature_ready,delivered',
           order: 'created_at.desc',
-          limit: String(PAGE_SIZE),
+          limit: String(limit),
           offset: String(offset)
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at,payment_done,receipt_written,signature_ready',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at,payment_done,receipt_written,signature_ready,delivered',
           order: 'imported_at.desc',
-          limit: String(PAGE_SIZE),
+          limit: String(limit),
           offset: String(offset)
         };
 

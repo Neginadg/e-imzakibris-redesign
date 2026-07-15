@@ -2036,16 +2036,9 @@
     setTsPaymentGateView();
     setActiveTsStep(1);
 
-    const tsBirthDaySelect = tsDetailsForm?.querySelector('select[name="birthDay"]');
-    const tsBirthMonthSelect = tsDetailsForm?.querySelector('select[name="birthMonth"]');
-    const tsBirthYearSelect = tsDetailsForm?.querySelector('select[name="birthYear"]');
     const tsApplicationTypeInputs = Array.from(tsDetailsForm?.querySelectorAll('input[name="applicationType"]') || []);
     const tsPersonalInfo = tsDetailsForm?.querySelector('#ts-personal-info');
     const tsCorporateInfo = tsDetailsForm?.querySelector('#ts-corporate-info');
-
-    populateSelectRange(tsBirthDaySelect, 1, 31, (value) => pad2(value));
-    populateSelectRange(tsBirthMonthSelect, 1, 12, (value) => pad2(value));
-    populateSelectRange(tsBirthYearSelect, new Date().getFullYear() - 90, new Date().getFullYear(), (value) => String(value));
 
     const hasTsApplicationType = () => tsApplicationTypeInputs.some((input) => input.checked);
     const getTsApplicationType = () => tsApplicationTypeInputs.find((input) => input.checked)?.value || '';
@@ -2143,18 +2136,11 @@
           const fullName = String(formData.get('fullName') || '');
           const nationality = String(formData.get('nationality') || '');
           const identityNumber = String(formData.get('identityNumber') || '');
-          const birthDay = pad2(formData.get('birthDay') || '');
-          const birthMonth = pad2(formData.get('birthMonth') || '');
-          const birthYear = String(formData.get('birthYear') || '');
-          const birthDate = `${birthDay}.${birthMonth}.${birthYear}`;
-          const birthPlace = String(formData.get('birthPlace') || '');
 
           applicantSection = [
             `Ad Soyad: ${fullName}`,
             `Uyruk: ${nationality}`,
             `Kimlik/Pasaport No: ${identityNumber}`,
-            `Dogum Tarihi: ${birthDate}`,
-            `Dogum Yeri: ${birthPlace}`,
           ].join('\n          ');
 
           resolvedFullName = fullName;
@@ -2199,11 +2185,7 @@
               ? {
                   fullName: String(formData.get('fullName') || ''),
                   nationality: String(formData.get('nationality') || ''),
-                  identityNumber: String(formData.get('identityNumber') || ''),
-                  birthDay: String(formData.get('birthDay') || ''),
-                  birthMonth: String(formData.get('birthMonth') || ''),
-                  birthYear: String(formData.get('birthYear') || ''),
-                  birthPlace: String(formData.get('birthPlace') || '')
+                  identityNumber: String(formData.get('identityNumber') || '')
                 }
               : null,
             corporate: !isPersonal

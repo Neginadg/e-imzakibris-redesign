@@ -722,10 +722,12 @@
   }
 
   // ── Results table renderer (tab-aware) ────────────────────────
-  // Viewer admins (read-only Customer Center) may still mark these two —
+  // Viewer admins (read-only Customer Center) may still mark these —
   // everything else, including signature_ready, requires a full admin.
+  // `delivered` is a deliberate exception so viewer admins can tick off
+  // hand-off without full edit rights.
   // Must match VIEWER_EDITABLE_STATUS_FIELDS in api/admin-customers.js.
-  const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written'];
+  const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written', 'delivered'];
 
   function statusToggleCell(item, field, isFullAdmin) {
     const active = !!item[field];
@@ -748,10 +750,11 @@
         resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th><th>Telefon</th><th>PIN / PUK</th>'
           + '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>'
           + '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>'
-          + '<th class="status-col" title="İmza Hazır">İmza</th></tr>';
+          + '<th class="status-col" title="İmza Hazır">İmza</th>'
+          + '<th class="status-col" title="Teslim Edildi">Teslim</th></tr>';
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="8" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML = '<tr><td colspan="9" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
       resultsBody.innerHTML = list.map((item) => {
@@ -767,6 +770,7 @@
             ${statusToggleCell(item, 'payment_done', isFullAdmin)}
             ${statusToggleCell(item, 'receipt_written', isFullAdmin)}
             ${statusToggleCell(item, 'signature_ready', isFullAdmin)}
+            ${statusToggleCell(item, 'delivered', isFullAdmin)}
           </tr>`;
       }).join('');
     } else {
@@ -801,7 +805,7 @@
     const showMoreWrap = document.getElementById('customer-show-more-wrap');
     const showMoreBtn = document.getElementById('customer-show-more');
 
-    const PAGE_SIZE = 20;
+    const PAGE_SIZE = 5;
     let activeTab = 'eimzakibris';
     let currentItems = [];
     let selectedId = '';
@@ -1056,6 +1060,7 @@
           if (q) url.searchParams.set('q', q);
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
+          url.searchParams.set('limit', String(PAGE_SIZE));
           url.searchParams.set('offset', String(currentOffset));
           const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
@@ -1067,6 +1072,7 @@
           if (q) url.searchParams.set('q', q);
           if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
           if (dateTo) url.searchParams.set('dateTo', dateTo);
+          url.searchParams.set('limit', String(PAGE_SIZE));
           url.searchParams.set('offset', String(currentOffset));
           const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
           const data = await resp.json().catch(function () { return {}; });
