@@ -2,6 +2,7 @@
 const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
 const { buildHtmlSummary, toPlainText, sendEmail, buildCustomerConfirmationHtml, buildCustomerConfirmationText } = require('../lib/email');
+const { beginCreditCardCheckout } = require('../lib/paypoint');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -28,6 +29,31 @@ module.exports = async function handler(req, res) {
 
     if (!record.adi_soyadi || !record.e_posta_adresi) {
       return sendJson(res, 400, { ok: false, error: 'Missing required application fields' });
+    }
+
+    // Credit card: save the pending record, register the transaction with
+    // PayPoint, and hand the browser what it needs to redirect to the
+    // hosted gateway page. Confirmation emails are sent later, from
+    // api/paypoint-callback.js, once payment is actually confirmed.
+    if (record.odeme_sekli === 'Kredi Kartı') {
+      const amount = Math.round(Number(body.amount));
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return sendJson(res, 400, { ok: false, error: 'Geçersiz ödeme tutarı.' });
+      }
+
+      const { inserted, checkout } = await beginCreditCardCheckout(config, {
+        tableName: 'eimza_kibris_applications_2026',
+        record,
+        amount,
+        description: 'e-İmza Kıbrıs - E-İmza Başvurusu'
+      });
+
+      return sendJson(res, 200, {
+        ok: true,
+        stored: true,
+        id: inserted && inserted.id ? inserted.id : null,
+        creditCard: checkout
+      });
     }
 
     const inserted = await insertSupabaseRow(config, 'eimza_kibris_applications_2026', record);

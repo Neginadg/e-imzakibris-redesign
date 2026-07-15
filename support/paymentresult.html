@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Ödeme Sonucu | e-İmza Kıbrıs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" type="image/png" href="../assets/img/icon.png" />
+  <link rel="apple-touch-icon" href="../assets/img/icon.png" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260325-4" />
+  <style>
+    .payment-result {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 60px 20px 90px;
+    }
+
+    .payment-result__card {
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      background: var(--color-bg-light);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .payment-result__icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(52, 152, 219, 0.12);
+      color: rgb(41, 128, 185);
+    }
+
+    .payment-result__icon.is-success {
+      background: rgba(46, 204, 113, 0.12);
+      color: rgb(39, 174, 96);
+    }
+
+    .payment-result__icon.is-error {
+      background: rgba(231, 76, 60, 0.12);
+      color: rgb(192, 57, 43);
+    }
+
+    .payment-result__title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .payment-result__desc {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .payment-result__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body class="application-page">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <a href="tel:+905391205115"><i class="fa-solid fa-phone"></i> +90 (539) 120 51 15</a>
+        <a href="mailto:info@e-imzakibris.com"><i class="fa-solid fa-envelope"></i> info@e-imzakibris.com</a>
+      </div>
+      <div class="topbar__right">
+        <div class="lang-switcher notranslate" translate="no">
+          <a href="?lang=tr" class="notranslate" translate="no">TR</a>
+          <span>|</span>
+          <a href="?lang=en" class="notranslate" translate="no">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="../index.html" class="navbar__logo">
+        <img src="../assets/img/logo.png" alt="e-İmza Kıbrıs" class="navbar__logo-img" />
+      </a>
+
+      <nav class="navbar__nav" id="navbar-nav">
+                <ul class="nav-list">
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">ÜRÜNLERİMİZ</a>
+            <div class="dropdown">
+              <a href="../products/esignature.html" class="dropdown__item"><div><strong>Elektronik İmza</strong><small>Nitelikli e-İmza sertifikası</small></div></a>
+              <a href="../products/timestamp.html" class="dropdown__item"><div><strong>Zaman Damgası</strong><small>Elektronik veriye zaman kanıtı</small></div></a>
+              <a href="../products/molohiya.html" class="dropdown__item"><div><strong>MOlOhiya</strong><small>İmzalama ve doğrulama masaüstü yazılımı</small></div></a>
+              <a href="../products/esignaturesoftwarelibraries.html" class="dropdown__item"><div><strong>Yazılım Kütüphaneleri</strong><small>Güvenli e-İmza API çözümleri</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HİZMETLERİMİZ</a>
+            <div class="dropdown">
+              <a href="education.html" class="dropdown__item"><div><strong>Eğitim Hizmetleri</strong><small>Elektronik İmza eğitimleri</small></div></a>
+              <a href="consultancy.html" class="dropdown__item"><div><strong>Danışmanlık Hizmetleri</strong><small>Elektronik dönüşüm danışmanlığı</small></div></a>
+              <a href="verify.html" class="dropdown__item"><div><strong>İmza Doğrulama</strong><small>Elektronik İmzaları doğrulayın</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">BİLGİ BANKASI</a>
+            <div class="dropdown dropdown--two-columns">
+              <a href="../databank/certificates.html" class="dropdown__item"><div><strong>Kök Sertifikalar</strong><small>Sertifika zinciri ve geçerlilik bilgileri</small></div></a>
+              <a href="../databank/canceledcertificates.html" class="dropdown__item"><div><strong>Sertifika İptal Listeleri</strong><small>İptal edilen sertifikalar ve CRL bilgileri</small></div></a>
+              <a href="../databank/contracts.html" class="dropdown__item"><div><strong>Sözleşmeler</strong><small>Bireysel, kurumsal ve kayıt makamı sözleşmeleri</small></div></a>
+              <a href="../databank/legislations.html" class="dropdown__item"><div><strong>Mevzuat</strong><small>Yasa, tüzük ve düzenleme belgeleri</small></div></a>
+              <a href="../databank/softwares.html" class="dropdown__item"><div><strong>Yazılım İndir</strong><small>Sürücü ve istemci yazılımları</small></div></a>
+              <a href="../databank/principles.html" class="dropdown__item"><div><strong>İlkeler</strong><small>NES ve Zaman Damgası İlkeleri</small></div></a>
+              <a href="../databank/applicationguidelines.html" class="dropdown__item"><div><strong>Uygulama Esasları</strong><small>NES uygulama ve zaman damgası esasları</small></div></a>
+              <a href="../databank/relatedinstitutionlinks.html" class="dropdown__item"><div><strong>İlgili Kurum Linkleri</strong><small>Resmi ve kurumsal dış bağlantılar</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">DESTEK</a>
+            <div class="dropdown">
+              <a href="helpdesk.html" class="dropdown__item"><div><strong>Yardım Masası</strong><small>Kurulum ve sürücü desteği</small></div></a>
+              <a href="onlineapplication.html" class="dropdown__item"><div><strong>Online Başvuru</strong><small>Başvurunuzu oluşturun</small></div></a>
+                          </div>
+          </li>
+          <li class="nav-item has-dropdown">
+            <a href="javascript:void(0)" class="nav-link">HAKKIMIZDA</a>
+            <div class="dropdown">
+              <a href="../about/index.html" class="dropdown__item"><div><strong>Şirket Hakkında</strong><small>Denizler Bilişim Hizmetleri</small></div></a>
+              <a href="../about/news.html" class="dropdown__item"><div><strong>Haberler</strong><small>Son gelişmeler</small></div></a>
+            </div>
+          </li>
+          <li class="nav-item"><a href="../contact/index.html" class="nav-link">İLETİŞİM</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__cta">
+        <a href="onlineapplication.html" class="btn btn--primary">BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline">YENİLEME</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <ul class="mobile-nav__list">
+      <li><a href="../products/esignature.html">ÜRÜNLERİMİZ</a></li>
+      <li><a href="onlineapplication.html">HİZMETLERİMİZ</a></li>
+      <li><a href="../databank/certificates.html">Kök Sertifikalar</a></li>
+      <li><a href="../databank/canceledcertificates.html">Sertifika İptal Listeleri</a></li>
+      <li><a href="../databank/contracts.html">Sözleşmeler</a></li>
+      <li><a href="../databank/legislations.html">Mevzuat</a></li>
+      <li><a href="../databank/softwares.html">Yazılım İndir</a></li>
+      <li><a href="../databank/principles.html">İlkeler</a></li>
+      <li><a href="../databank/applicationguidelines.html">Uygulama Esasları</a></li>
+      <li><a href="../databank/relatedinstitutionlinks.html">İlgili Kurum Linkleri</a></li>
+
+      <li><a href="onlineapplication.html">DESTEK</a></li>
+      <li><a href="../about/index.html">HAKKIMIZDA</a></li>
+      <li><a href="../about/certdocuments.html">BELGELERIMIZ</a></li>
+      <li><a href="../contact/index.html">İLETİŞİM</a></li>
+      <li class="mobile-nav__cta">
+        <a href="onlineapplication.html" class="btn btn--primary" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">BAŞVURU</a>
+        <a href="renewal.html" class="btn btn--outline" style="background:#1a1a1a;border-color:#1a1a1a;color:#fff !important;">YENİLEME</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="container payment-result">
+      <div class="payment-result__card">
+        <div class="payment-result__icon" id="result-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        <div class="payment-result__title" id="result-title">Ödeme durumu kontrol ediliyor...</div>
+        <p class="payment-result__desc" id="result-desc">Lütfen bekleyin, bu birkaç saniye sürebilir.</p>
+        <div class="payment-result__actions">
+          <a href="../index.html" class="btn btn--outline">Ana Sayfaya Dön</a>
+          <a href="../contact/index.html" class="btn btn--primary" id="result-contact-link" style="display:none;">Bize Ulaşın</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="../index.html" class="footer__logo">
+          <img src="../assets/img/logo.png" alt="e-İmza Kıbrıs" class="footer__logo-img" />
+        </a>
+        <p>
+          Denizler Bilişim Hizmetleri Ltd., K.K.T.C.'nin güvenilir elektronik İmza
+          hizmet sağlayıcısıdır. ISO 27001 sertifikasına sahip güvenli altyapımızla hizmetinizdeyiz.
+        </p>
+        <div class="footer__cert">
+          <span>ISO/IEC 27001:2017 Sertifikalı</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Ürünler &amp; Hizmetler</h4>
+        <ul>
+          <li><a href="../products/esignature.html">Elektronik İmza</a></li>
+          <li><a href="onlineapplication.html">Online Başvuru</a></li>
+          <li><a href="renewal.html">Yenileme Başvurusu</a></li>
+          <li><a href="verify.html">İmza Doğrulama</a></li>
+          <li><a href="../index.html#pricing">Fiyatlandırma</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Bilgi Bankası</h4>
+        <ul>
+          <li><a href="../index.html#what-is">e-İmza Nedir?</a></li>
+          <li><a href="../index.html#use-cases">Nerelerde Kullanılır?</a></li>
+          <li><a href="https://qtuxtmdrsnqsojrpcuew.supabase.co/storage/v1/object/public/Public%20Bucket/93eiy2007.pdf" target="_blank">93/2007 Sayılı Yasa</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Mehmet Ertuğruloğlu Sokak, NO: 10, D-4<br />Kumsal/Lefkoşa/Kuzey Kıbrıs</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:+905391205115">+90 (539) 120 51 15</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-mobile-screen"></i>
+            <a href="tel:+905488662279">+90 (548) 866 22 79</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:info@e-imzakibris.com">info@e-imzakibris.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Denizler Bilişim Hizmetleri Ltd. Tüm hakları saklıdır.</p>
+        <div class="footer__bottom-links">
+          <a href="../privacypolicy.html">Gizlilik Politikası</a>
+          <a href="../contact/index.html">İletişim</a>
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get('status'); // 'ok' or 'cancel' — set by which URL (URL_OK/URL_CANCEL) PayPoint redirected to
+      const merchantTrnId = params.get('MerchantTrnId') || params.get('merchantTrnId');
+
+      const iconEl = document.getElementById('result-icon');
+      const titleEl = document.getElementById('result-title');
+      const descEl = document.getElementById('result-desc');
+      const contactLink = document.getElementById('result-contact-link');
+
+      function showResult(kind, title, desc) {
+        iconEl.className = 'payment-result__icon' + (kind === 'success' ? ' is-success' : kind === 'error' ? ' is-error' : '');
+        iconEl.innerHTML = kind === 'success'
+          ? '<i class="fa-solid fa-circle-check"></i>'
+          : kind === 'error'
+            ? '<i class="fa-solid fa-circle-xmark"></i>'
+            : '<i class="fa-solid fa-hourglass-half"></i>';
+        titleEl.textContent = title;
+        descEl.textContent = desc;
+        if (kind !== 'success') contactLink.style.display = '';
+      }
+
+      if (status === 'cancel') {
+        showResult('error', 'Ödeme İptal Edildi', 'Ödeme işlemini iptal ettiniz veya işlem tamamlanmadı. Başvurunuz kaydedilmedi, dilerseniz tekrar deneyebilirsiniz.');
+        return;
+      }
+
+      if (!merchantTrnId) {
+        showResult('pending', 'Ödeme Alındı', 'Ödemeniz işleme alındı. Onay e-postasını kısa süre içinde alacaksınız.');
+        return;
+      }
+
+      // Poll briefly — the server-to-server callback that actually confirms
+      // payment may land a moment after this page loads.
+      let attempts = 0;
+      const maxAttempts = 8;
+
+      function poll() {
+        attempts += 1;
+        fetch('/api/paypoint-status?merchantTrnId=' + encodeURIComponent(merchantTrnId))
+          .then(function (resp) { return resp.json(); })
+          .then(function (data) {
+            if (data && data.ok && data.found && data.paymentDone) {
+              showResult('success', 'Ödemeniz Başarılı', 'Ödemeniz onaylandı. Başvurunuz alınmıştır, ekibimiz en kısa sürede sizinle iletişime geçecektir.');
+              return;
+            }
+
+            if (data && data.ok && data.found && data.status != null && Number(data.status) >= 2 && Number(data.status) !== 3) {
+              // 2=Error, 4=Cancel, 5=Refund — anything not Completed
+              showResult('error', 'Ödeme Tamamlanamadı', 'Ödeme işlemi tamamlanamadı. Lütfen tekrar deneyin ya da bizimle iletişime geçin.');
+              return;
+            }
+
+            if (attempts < maxAttempts) {
+              setTimeout(poll, 1500);
+            } else {
+              showResult('pending', 'Ödeme Onayı Bekleniyor', 'Ödemenizin onayı biraz gecikti. Onaylandığında e-posta ile bilgilendirileceksiniz — bu sayfayı kapatabilirsiniz.');
+            }
+          })
+          .catch(function () {
+            if (attempts < maxAttempts) {
+              setTimeout(poll, 1500);
+            } else {
+              showResult('pending', 'Ödeme Onayı Bekleniyor', 'Durum kontrol edilemedi. Onaylandığında e-posta ile bilgilendirileceksiniz.');
+            }
+          });
+      }
+
+      poll();
+    })();
+  </script>
+
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

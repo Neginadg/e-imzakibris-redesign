@@ -2,6 +2,7 @@ const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
 const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
+const { beginCreditCardCheckout } = require('../lib/paypoint');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -24,6 +25,27 @@ module.exports = async function handler(req, res) {
 
     if (!record.full_name || !record.email) {
       return sendJson(res, 400, { ok: false, error: 'Missing required renewal fields' });
+    }
+
+    if (record.payment_method === 'Kredi Kartı') {
+      const amount = Math.round(Number(body.amount));
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return sendJson(res, 400, { ok: false, error: 'Geçersiz ödeme tutarı.' });
+      }
+
+      const { inserted, checkout } = await beginCreditCardCheckout(config, {
+        tableName: 'renewal_requests',
+        record,
+        amount,
+        description: 'e-İmza Kıbrıs - Yenileme Başvurusu'
+      });
+
+      return sendJson(res, 200, {
+        ok: true,
+        stored: true,
+        id: inserted && inserted.id ? inserted.id : null,
+        creditCard: checkout
+      });
     }
 
     const inserted = await insertSupabaseRow(config, 'renewal_requests', record);
