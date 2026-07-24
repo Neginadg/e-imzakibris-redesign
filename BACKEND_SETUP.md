@@ -14,6 +14,11 @@ This project now uses Vercel serverless API routes for secure form handling.
 - Renewal form posts to `/api/renewal-submit`
   - Stores data in `renewal_requests`
   - Sends company notification email
+- Credit card payments (application, renewal, molohiya, timestamp forms) go through PayPoint:
+  - Submit endpoint calls `beginCreditCardCheckout` (`lib/paypoint.js`), which stores a pending row and registers the transaction with PayPoint
+  - Browser is redirected to PayPoint's hosted gateway (`assets/js/paypoint-checkout.js`)
+  - PayPoint POSTs the result server-to-server to `/api/paypoint-callback`, which independently re-verifies the transaction status before marking `payment_done`
+  - Customer lands on `support/paymentresult.html`, which polls `/api/paypoint-status` for the confirmed result
 
 Frontend UI/HTML structure is unchanged.
 
@@ -39,6 +44,9 @@ Add these in Vercel Project Settings -> Environment Variables:
 - `MAIL_FROM`
 - `COMPANY_EMAIL`
 - `CUSTOMER_ATTACHMENT_PATH` optional; points to the PDF attached to application customer emails
+- `PAYPOINT_MERCHANT_CODE`, `PAYPOINT_MERCHANT_USER`, `PAYPOINT_SECRET_KEY` — issued by PayPoint for the "Kredi Kartı" payment option on the application, renewal, molohiya and timestamp forms
+- `PAYPOINT_ENV` — `production` (set 2026-07; was `test` during integration). Must be `production` for real credentials to route to the live gateway.
+- `PAYPOINT_API_BASE_URL` / `PAYPOINT_ECOM_BASE_URL` — optional overrides, not needed; PayPoint confirmed the built-in defaults (`https://paypointcyprus.com` / `https://paypointcyprus.com/ecom`) are correct.
 
 Important:
 - Never put service role keys in frontend files.
@@ -51,7 +59,8 @@ Important:
 
 1. Open Supabase SQL Editor.
 2. Run `supabase/schema.sql`.
-3. Confirm tables exist:
+3. Also run the numbered migration files in `supabase/` in order (`01_...` through `07_...`) — each is idempotent (`add column if not exists` / `create index if not exists`), so re-running is safe. `06_paypoint_payment_tracking.sql` adds the columns PayPoint payments depend on (`merchant_trn_id`, `paypoint_response`, `payment_done`) across all four submission tables.
+4. Confirm tables exist:
    - `contact_messages`
    - `applications`
    - `renewal_requests`
