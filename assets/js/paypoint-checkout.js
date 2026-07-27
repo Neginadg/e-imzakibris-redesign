@@ -9,9 +9,13 @@
 
   window.EIMZA_PAYPOINT = window.EIMZA_PAYPOINT || {};
 
-  // Builds and auto-submits a hidden form to PayPoint's hosted gateway page
-  // (spec III.2 — no signature required for this step, only the REST calls
-  // our backend makes are signed).
+  // Builds and auto-submits a hidden form to PayPoint's hosted gateway page.
+  // Field list/order verified 2026-07 against a real example checkout form
+  // (psp_cy.html) sent directly by PayPoint's IT team — default form
+  // encoding (no enctype override), MerchantTrnId (not MerchantTrn), plus
+  // MerchantUserToken/MerchantUserKey which their example always includes
+  // even for a plain guest checkout (sent empty/nil below). No signature
+  // required for this step — only the REST calls our backend makes are signed.
   window.EIMZA_PAYPOINT.redirectToCheckout = function (checkout) {
     if (!checkout || !checkout.gatewayUrl || !checkout.trnKey) {
       throw new Error('Geçersiz ödeme bilgisi.');
@@ -20,27 +24,19 @@
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = checkout.gatewayUrl;
-    // Spec calls this step's content type "form-data" specifically — distinct
-    // wording from the REST calls, which explicitly say "application/json".
-    // Without this, browsers default to application/x-www-form-urlencoded,
-    // which the gateway may not parse as expected (fields would come through
-    // empty/garbled server-side, which would explain a fallback redirect
-    // instead of a transaction-specific checkout page).
-    form.enctype = 'multipart/form-data';
     form.style.display = 'none';
 
     const fields = {
       MerchantCode: checkout.merchantCode,
+      MerchantTrnId: checkout.merchantTrnId,
       MerchantUser: checkout.merchantUser,
-      // Note: the hosted gateway page form field is "MerchantTrn", not
-      // "MerchantTrnId" — the reg/check REST calls use MerchantTrnId, but
-      // this step's field name is documented differently.
-      MerchantTrn: checkout.merchantTrnId,
       TrnKey: checkout.trnKey,
       Amount: checkout.amount,
       Currency: checkout.currency,
+      Lang: checkout.lang,
       Description: checkout.description,
-      Lang: checkout.lang
+      MerchantUserToken: '',
+      MerchantUserKey: '00000000-0000-0000-0000-000000000000'
     };
 
     Object.keys(fields).forEach(function (key) {
