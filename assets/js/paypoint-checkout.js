@@ -25,7 +25,10 @@
     const fields = {
       MerchantCode: checkout.merchantCode,
       MerchantUser: checkout.merchantUser,
-      MerchantTrnId: checkout.merchantTrnId,
+      // Note: the hosted gateway page form field is "MerchantTrn", not
+      // "MerchantTrnId" — the reg/check REST calls use MerchantTrnId, but
+      // this step's field name is documented differently.
+      MerchantTrn: checkout.merchantTrnId,
       TrnKey: checkout.trnKey,
       Amount: checkout.amount,
       Currency: checkout.currency,

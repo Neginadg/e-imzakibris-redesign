@@ -10,7 +10,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const config = getRuntimeEnv();
+    const config = getRuntimeEnv({ requireEmail: false });
     const body = readJsonBody(req);
 
     const record = {

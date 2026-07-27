@@ -1,4 +1,4 @@
-const { sendJson, readJsonBody } = require('../lib/http');
+const { sendJson, readFormFields } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
 const { updateSupabaseRow, selectSupabaseRows } = require('../lib/supabase');
 const { checkTransactionStatus, PAYPOINT_STATUS } = require('../lib/paypoint');
@@ -6,11 +6,9 @@ const { buildHtmlSummary, toPlainText, sendEmail, buildCustomerConfirmationHtml,
 
 // This is the URL_CALLBACK given to PayPoint at onboarding. It fires
 // server-to-server after a transaction is processed (spec III.3). Content-
-// Type is documented only as "form-data" — assumed to be
-// application/x-www-form-urlencoded (simple key/value fields, no files),
-// which Vercel parses into req.body the same way as JSON. If PayPoint
-// actually sends true multipart/form-data, this will need a multipart
-// parser (e.g. busboy) added.
+// Type is documented only as "form-data" — could be
+// application/x-www-form-urlencoded or true multipart/form-data.
+// readFormFields (lib/http.js) handles both, plus JSON as a fallback.
 
 const TABLES = [
   {
@@ -63,7 +61,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const config = getRuntimeEnv({ requireEmail: false });
-    const body = readJsonBody(req);
+    const body = readFormFields(req);
     const merchantTrnId = Number(body.MerchantTrnId || body.merchantTrnId);
 
     if (!Number.isFinite(merchantTrnId)) {
@@ -83,6 +81,11 @@ module.exports = async function handler(req, res) {
 
     const { tableConfig, row } = found;
     const isCompleted = Number(status.Status) === PAYPOINT_STATUS.COMPLETED;
+    // PayPoint may call back more than once for the same transaction (retry
+    // for reliability, or a second Processing->Completed transition) — only
+    // treat this as a fresh confirmation if it wasn't already marked done,
+    // so retries don't resend duplicate emails to the customer/company.
+    const isNewlyCompleted = isCompleted && !row.payment_done;
 
     await updateSupabaseRow(
       config,
@@ -94,7 +97,7 @@ module.exports = async function handler(req, res) {
       }
     );
 
-    if (isCompleted) {
+    if (isNewlyCompleted) {
       const hasEmailConfig = Boolean(config.smtpHost && config.smtpUser && config.smtpPass && config.mailFrom && config.companyEmail);
       if (hasEmailConfig) {
         const customerEmail = row[tableConfig.emailCol] || '';
