@@ -20,6 +20,13 @@
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = checkout.gatewayUrl;
+    // Spec calls this step's content type "form-data" specifically — distinct
+    // wording from the REST calls, which explicitly say "application/json".
+    // Without this, browsers default to application/x-www-form-urlencoded,
+    // which the gateway may not parse as expected (fields would come through
+    // empty/garbled server-side, which would explain a fallback redirect
+    // instead of a transaction-specific checkout page).
+    form.enctype = 'multipart/form-data';
     form.style.display = 'none';
 
     const fields = {
