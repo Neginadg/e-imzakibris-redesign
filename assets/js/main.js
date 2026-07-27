@@ -835,7 +835,7 @@
         if (!key || prices[key] == null) return;
 
         const base = Number(prices[key]);
-        const vat = base * 1.15;
+        const vat = base * 1.16;
         const baseText = fmt.format(base) + ' ₺';
         const vatText = fmt.format(vat) + ' ₺';
 
@@ -857,7 +857,7 @@
         if (!key || prices[key] == null) return;
 
         const base = Number(prices[key]);
-        const vat = base * 1.15;
+        const vat = base * 1.16;
         const baseText = fmt.format(base) + ' ₺';
         const vatText = fmt.format(vat) + ' ₺';
 
