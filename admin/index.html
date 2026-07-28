@@ -644,6 +644,18 @@
     </main>
   </div><!-- /#admin-panel -->
 
+  <div id="confirm-modal" class="confirm-modal" aria-hidden="true">
+    <div class="confirm-modal__backdrop" data-confirm-cancel></div>
+    <div class="confirm-modal__dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+      <h3 id="confirm-modal-title" class="confirm-modal__title"></h3>
+      <p class="confirm-modal__body"></p>
+      <div class="confirm-modal__actions">
+        <button type="button" class="btn btn--ghost" data-confirm-cancel>İptal</button>
+        <button type="button" class="btn btn--primary" data-confirm-ok>Evet, Onayla</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../assets/js/supabase-config.js"></script>
   <script src="admin.js"></script>
 </body>

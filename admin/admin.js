@@ -722,18 +722,112 @@
   }
 
   // ── Results table renderer (tab-aware) ────────────────────────
-  // Viewer admins (read-only Customer Center) may still mark these —
-  // everything else, including signature_ready, requires a full admin.
-  // `delivered` is a deliberate exception so viewer admins can tick off
-  // hand-off without full edit rights.
-  // Must match VIEWER_EDITABLE_STATUS_FIELDS in api/admin-customers.js.
-  const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written', 'delivered'];
+  // All four status fields are Full Admin only (read-only for Viewer Admin) —
+  // must match STATUS_FIELDS enforcement in api/admin-customers.js.
+  const STATUS_LABELS = {
+    payment_done: 'Ödeme Alındı',
+    receipt_written: 'Makbuz Yazıldı',
+    signature_ready: 'İmza Hazır',
+    delivered: 'Teslim Edildi'
+  };
+
+  const STATUS_SHORT_LABELS = {
+    payment_done: 'Ödeme',
+    receipt_written: 'Makbuz',
+    signature_ready: 'İmza',
+    delivered: 'Teslim'
+  };
+
+  const STATUS_CONFIRM_COPY = {
+    payment_done: {
+      confirmTitle: 'Ödeme Alındı mı?',
+      confirmBody: 'Bu müşterinin ödemesinin alındığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
+      changeTitle: 'Ödeme Durumunu Değiştirmek İstiyor musunuz?',
+      changeBody: 'Bu müşterinin ödeme durumunu değiştirmek istediğinizden emin misiniz?'
+    },
+    receipt_written: {
+      confirmTitle: 'Makbuz Yazıldı mı?',
+      confirmBody: 'Bu müşteri için makbuzun yazıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
+      changeTitle: 'Makbuz Durumunu Değiştirmek İstiyor musunuz?',
+      changeBody: 'Bu müşterinin makbuz durumunu değiştirmek istediğinizden emin misiniz?'
+    },
+    signature_ready: {
+      confirmTitle: 'İmza Hazır mı?',
+      confirmBody: 'Bu müşterinin imzasının hazır olduğunu onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
+      changeTitle: 'İmza Durumunu Değiştirmek İstiyor musunuz?',
+      changeBody: 'Bu müşterinin imza durumunu değiştirmek istediğinizden emin misiniz?'
+    },
+    delivered: {
+      confirmTitle: 'Teslim Edildi mi?',
+      confirmBody: 'Bu müşteriye teslimatın yapıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
+      changeTitle: 'Teslim Durumunu Değiştirmek İstiyor musunuz?',
+      changeBody: 'Bu müşterinin teslim durumunu değiştirmek istediğinizden emin misiniz?'
+    }
+  };
+
+  // Generic promise-based confirmation dialog (replaces native confirm() for
+  // status changes — needs a title + body + custom confirm label).
+  function showConfirmModal(options) {
+    const modal = document.getElementById('confirm-modal');
+    if (!modal) return Promise.resolve(window.confirm((options && options.body) || 'Emin misiniz?'));
+
+    const titleEl = modal.querySelector('.confirm-modal__title');
+    const bodyEl = modal.querySelector('.confirm-modal__body');
+    const okBtn = modal.querySelector('[data-confirm-ok]');
+    const cancelEls = modal.querySelectorAll('[data-confirm-cancel]');
+
+    if (titleEl) titleEl.textContent = (options && options.title) || '';
+    if (bodyEl) bodyEl.textContent = (options && options.body) || '';
+    if (okBtn) okBtn.textContent = (options && options.confirmLabel) || 'Evet, Onayla';
+
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    return new Promise(function (resolve) {
+      function cleanup(result) {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        if (okBtn) okBtn.removeEventListener('click', onOk);
+        cancelEls.forEach(function (el) { el.removeEventListener('click', onCancel); });
+        document.removeEventListener('keydown', onKeydown);
+        resolve(result);
+      }
+      function onOk() { cleanup(true); }
+      function onCancel() { cleanup(false); }
+      function onKeydown(e) { if (e.key === 'Escape') cleanup(false); }
+
+      if (okBtn) okBtn.addEventListener('click', onOk);
+      cancelEls.forEach(function (el) { el.addEventListener('click', onCancel); });
+      document.addEventListener('keydown', onKeydown);
+    });
+  }
+
+  function statusMetaHtml(item, field) {
+    const changedBy = item[field + '_changed_by'];
+    const changedAt = item[field + '_changed_at'];
+    if (!changedBy && !changedAt) return '';
+    const parts = [];
+    if (changedBy) parts.push(escapeHtml(changedBy));
+    if (changedAt) parts.push(escapeHtml(formatCustomerDateTime(changedAt)));
+    return `<div class="status-meta">${parts.join(' · ')}</div>`;
+  }
 
   function statusToggleCell(item, field, isFullAdmin) {
     const active = !!item[field];
-    const canEdit = isFullAdmin || VIEWER_EDITABLE_STATUS_FIELDS.includes(field);
-    const disabledAttr = canEdit ? '' : ' disabled';
-    return `<td class="status-col"><button type="button" class="status-toggle${active ? ' is-active' : ''}" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}"${disabledAttr}>${active ? '✅' : '⬜'}</button></td>`;
+    const label = STATUS_LABELS[field];
+
+    if (active) {
+      const meta = statusMetaHtml(item, field);
+      if (isFullAdmin) {
+        return `<td class="status-col"><button type="button" class="status-toggle status-toggle--done" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}">${escapeHtml(label)}</button>${meta}</td>`;
+      }
+      return `<td class="status-col"><span class="status-text status-text--done">${escapeHtml(label)}</span>${meta}</td>`;
+    }
+
+    if (isFullAdmin) {
+      return `<td class="status-col"><button type="button" class="status-toggle" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}">☐</button></td>`;
+    }
+    return `<td class="status-col"><span class="status-text status-text--pending">☐</span></td>`;
   }
 
   function renderResults(items, selectedId, tabType, isFullAdmin) {
@@ -873,15 +967,29 @@
       showMoreBtn.addEventListener('click', function () { loadRecords(true); });
     }
 
-    // ── Status toggle (Ödeme / Makbuz / İmza) ──────────────────────
+    // ── Status toggle (Ödeme / Makbuz / İmza / Teslim) ──────────────────
+    // Viewer Admins never render a clickable button here (statusToggleCell
+    // only emits [data-status-toggle] for isFullAdmin) — this guard is just
+    // defense in depth. The real gate is server-side (requireFullAdmin in
+    // api/admin-customers.js) and, beneath that, Supabase RLS.
     async function handleStatusToggle(btn) {
-      if (btn.disabled) return;
+      if (!isFullAdmin || btn.disabled) return;
       const id = btn.getAttribute('data-status-toggle');
       const field = btn.getAttribute('data-status-field');
       const item = currentItems.find(function (i) { return i.id === id; });
       if (!item) return;
 
-      const newValue = !item[field];
+      const isCurrentlyActive = !!item[field];
+      const newValue = !isCurrentlyActive;
+      const copy = STATUS_CONFIRM_COPY[field];
+
+      const confirmed = await showConfirmModal({
+        title: isCurrentlyActive ? copy.changeTitle : copy.confirmTitle,
+        body: isCurrentlyActive ? copy.changeBody : copy.confirmBody,
+        confirmLabel: isCurrentlyActive ? 'Evet, Değiştir' : 'Evet, Onayla'
+      });
+      if (!confirmed) return;
+
       btn.disabled = true;
       try {
         const resp = await adminFetch(CUSTOMER_API_ENDPOINT, {
@@ -893,9 +1001,11 @@
         if (!resp.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'Durum güncellenemedi.');
         currentItems = currentItems.map(function (i) { return i.id === id ? data.record : i; });
         renderResults(currentItems, selectedId, activeTab, isFullAdmin);
+        setAlert(alertEl, 'success', STATUS_SHORT_LABELS[field] + ' durumu başarıyla güncellendi.');
       } catch (error) {
-        btn.disabled = false;
         setAlert(alertEl, 'danger', (error && error.message) || 'Durum güncellenemedi.');
+      } finally {
+        btn.disabled = false;
       }
     }
 

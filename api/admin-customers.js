@@ -1,6 +1,6 @@
 const { sendJson, readJsonBody } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
-const { selectSupabaseRows, updateSupabaseRow } = require('../lib/supabase');
+const { selectSupabaseRows, updateSupabaseRow, insertSupabaseRow } = require('../lib/supabase');
 const { requireAdmin, requireFullAdmin } = require('../lib/auth');
 
 const DEFAULT_CUSTOMER_TABLE = 'eimza_kibris_applications_2026';
@@ -44,18 +44,29 @@ function normalizeCustomerRecord(row) {
     generated_at: adminCodes.generated_at,
     created_at: String(row.kayit_tarihi || row.imported_at || ''),
     payment_done: !!row.payment_done,
+    payment_done_changed_by: row.payment_done_changed_by || null,
+    payment_done_changed_at: row.payment_done_changed_at || null,
     receipt_written: !!row.receipt_written,
+    receipt_written_changed_by: row.receipt_written_changed_by || null,
+    receipt_written_changed_at: row.receipt_written_changed_at || null,
     signature_ready: !!row.signature_ready,
-    delivered: !!row.delivered
+    signature_ready_changed_by: row.signature_ready_changed_by || null,
+    signature_ready_changed_at: row.signature_ready_changed_at || null,
+    delivered: !!row.delivered,
+    delivered_changed_by: row.delivered_changed_by || null,
+    delivered_changed_at: row.delivered_changed_at || null
   };
 }
 
+// All four status fields represent confirmed processing milestones and are
+// Full Admin only — a Viewer Admin gets read-only Customer Center access
+// with no write path to any of them (enforced here and again via Supabase
+// RLS on the table itself, see supabase/08_customer_status_security.sql).
 const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready', 'delivered'];
-// Viewer admins (read-only Customer Center) are additionally allowed to mark
-// these — everything else in Customer Center, including signature_ready,
-// still requires a full admin. `delivered` is a deliberate exception so
-// viewer admins can tick off hand-off without full edit rights.
-const VIEWER_EDITABLE_STATUS_FIELDS = ['payment_done', 'receipt_written', 'delivered'];
+const STATUS_META_COLUMNS = STATUS_FIELDS.reduce(function (acc, field) {
+  acc[field] = { by: field + '_changed_by', at: field + '_changed_at' };
+  return acc;
+}, {});
 
 function generateNumericCode(length) {
   const crypto = require('crypto');
@@ -93,15 +104,20 @@ module.exports = async function handler(req, res) {
       const limit = Math.min(Math.max(1, parseInt(String((req.query && req.query.limit) || '20'), 10) || 20), 200);
 
       const dateCol = tableName === 'applications' ? 'created_at' : 'imported_at';
+      const statusMetaSelect = STATUS_FIELDS.map(function (field) {
+        var cols = STATUS_META_COLUMNS[field];
+        return cols.by + ',' + cols.at;
+      }).join(',');
+
       const params = tableName === 'applications'
         ? {
-          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at,payment_done,receipt_written,signature_ready,delivered',
+          select: 'id,full_name,email,phone,identity_number,payment_method,source_page,payload,created_at,payment_done,receipt_written,signature_ready,delivered,' + statusMetaSelect,
           order: 'created_at.desc',
           limit: String(limit),
           offset: String(offset)
         }
         : {
-          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at,payment_done,receipt_written,signature_ready,delivered',
+          select: 'id,adi_soyadi,e_posta_adresi,telefon_numarasi,cep_telefon_numarasi,kimlik_pasaport_numarasi,odeme_sekli,pin,puk,payload,kayit_tarihi,imported_at,payment_done,receipt_written,signature_ready,delivered,' + statusMetaSelect,
           order: 'imported_at.desc',
           limit: String(limit),
           offset: String(offset)
@@ -178,7 +194,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // ── PATCH: toggle a status flag (payment_done / receipt_written / signature_ready) ──
+    // ── PATCH: confirm/change a status flag (payment_done / receipt_written / signature_ready / delivered) ──
     if (req.method === 'PATCH') {
       const body = readJsonBody(req);
       const applicationId = String(body.id || '').trim();
@@ -188,16 +204,51 @@ module.exports = async function handler(req, res) {
         return sendJson(res, 400, { ok: false, error: 'Invalid id or field' });
       }
 
-      if (!VIEWER_EDITABLE_STATUS_FIELDS.includes(field)) {
-        requireFullAdmin(admin);
+      // Every status field is Full Admin only — a Viewer Admin has no write
+      // path here at all (defense in depth: also enforced by Supabase RLS).
+      requireFullAdmin(admin);
+
+      const newValue = !!body.value;
+      const metaCols = STATUS_META_COLUMNS[field];
+      const nowIso = new Date().toISOString();
+
+      const currentRows = await selectSupabaseRows(config, tableName, {
+        id: `eq.${applicationId}`,
+        select: `id,${field}`,
+        limit: '1'
+      });
+      if (!currentRows.length) {
+        return sendJson(res, 404, { ok: false, error: 'Kayıt bulunamadı' });
       }
+      const oldValue = !!currentRows[0][field];
 
       const updated = await updateSupabaseRow(
         config,
         tableName,
         { id: `eq.${applicationId}` },
-        { [field]: !!body.value }
+        {
+          [field]: newValue,
+          [metaCols.by]: admin.email || admin.id,
+          [metaCols.at]: nowIso
+        }
       );
+
+      // Audit trail is best-effort — a logging failure must not undo (or
+      // appear to undo) a status change that already succeeded.
+      try {
+        await insertSupabaseRow(config, 'customer_status_audit_log', {
+          table_name: tableName,
+          application_id: applicationId,
+          field,
+          old_value: oldValue,
+          new_value: newValue,
+          changed_by_user_id: admin.id,
+          changed_by_email: admin.email || null,
+          changed_by_role: admin.role
+        });
+      } catch (auditError) {
+        console.error('customer_status_audit_log insert failed:', auditError.message || auditError);
+      }
 
       return sendJson(res, 200, { ok: true, record: normalizeCustomerRecord(updated, tableName) });
     }
