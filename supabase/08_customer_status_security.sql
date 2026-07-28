@@ -81,6 +81,15 @@ $$;
 -- keeps working for our Node API. These new policies are what stand between
 -- a Viewer Admin's own session token and the raw table if it's ever called
 -- directly instead of through /api/admin-customers.
+--
+-- Note this is intentionally stricter than the app-level rule (any admin may
+-- tick a status; only a Full Admin may untick one). Ticking always happens
+-- through our API, which authenticates with the service_role key — never
+-- directly against Supabase with a Viewer's own token — so restricting this
+-- policy to Full Admin only never blocks a real feature. Expressing the
+-- tick/untick nuance itself in RLS would require a BEFORE UPDATE trigger
+-- comparing OLD vs NEW per column; not worth it while no client calls
+-- Supabase directly for this table.
 -- ─────────────────────────────────────────────────────────────────────────────
 drop policy if exists "Admins can read customer applications" on public.eimza_kibris_applications_2026;
 create policy "Admins can read customer applications"

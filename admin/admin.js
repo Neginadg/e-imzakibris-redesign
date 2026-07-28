@@ -817,6 +817,8 @@
     const label = STATUS_LABELS[field];
 
     if (active) {
+      // Confirmed — a Full Admin may revert it (with a second confirmation);
+      // a Viewer Admin only ever sees the read-only label, never a control.
       const meta = statusMetaHtml(item, field);
       if (isFullAdmin) {
         return `<td class="status-col"><button type="button" class="status-toggle status-toggle--done" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}">${escapeHtml(label)}</button>${meta}</td>`;
@@ -824,10 +826,8 @@
       return `<td class="status-col"><span class="status-text status-text--done">${escapeHtml(label)}</span>${meta}</td>`;
     }
 
-    if (isFullAdmin) {
-      return `<td class="status-col"><button type="button" class="status-toggle" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}">☐</button></td>`;
-    }
-    return `<td class="status-col"><span class="status-text status-text--pending">☐</span></td>`;
+    // Pending — any admin (Viewer or Full) may tick to confirm it.
+    return `<td class="status-col"><button type="button" class="status-toggle" data-status-toggle="${escapeHtml(item.id)}" data-status-field="${field}">☐</button></td>`;
   }
 
   function renderResults(items, selectedId, tabType, isFullAdmin) {
@@ -968,18 +968,22 @@
     }
 
     // ── Status toggle (Ödeme / Makbuz / İmza / Teslim) ──────────────────
-    // Viewer Admins never render a clickable button here (statusToggleCell
-    // only emits [data-status-toggle] for isFullAdmin) — this guard is just
-    // defense in depth. The real gate is server-side (requireFullAdmin in
-    // api/admin-customers.js) and, beneath that, Supabase RLS.
+    // Any admin (Viewer or Full) may tick a pending status. Only a Full
+    // Admin may untick (revert) an already-confirmed one — statusToggleCell
+    // only ever renders a clickable "done" button for isFullAdmin, so this
+    // guard is defense in depth; the real gate is server-side (the `!newValue
+    // → requireFullAdmin` check in api/admin-customers.js) and, beneath
+    // that, Supabase RLS.
     async function handleStatusToggle(btn) {
-      if (!isFullAdmin || btn.disabled) return;
+      if (btn.disabled) return;
       const id = btn.getAttribute('data-status-toggle');
       const field = btn.getAttribute('data-status-field');
       const item = currentItems.find(function (i) { return i.id === id; });
       if (!item) return;
 
       const isCurrentlyActive = !!item[field];
+      if (isCurrentlyActive && !isFullAdmin) return;
+
       const newValue = !isCurrentlyActive;
       const copy = STATUS_CONFIRM_COPY[field];
 

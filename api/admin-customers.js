@@ -58,10 +58,11 @@ function normalizeCustomerRecord(row) {
   };
 }
 
-// All four status fields represent confirmed processing milestones and are
-// Full Admin only — a Viewer Admin gets read-only Customer Center access
-// with no write path to any of them (enforced here and again via Supabase
-// RLS on the table itself, see supabase/08_customer_status_security.sql).
+// Any admin (Viewer or Full) may confirm a status (tick: pending → done).
+// Only a Full Admin may remove a confirmed status (untick: done → pending) —
+// enforced below via the requested value, and again via Supabase RLS as a
+// backstop against direct-to-Supabase writes that bypass this API
+// (see supabase/08_customer_status_security.sql).
 const STATUS_FIELDS = ['payment_done', 'receipt_written', 'signature_ready', 'delivered'];
 const STATUS_META_COLUMNS = STATUS_FIELDS.reduce(function (acc, field) {
   acc[field] = { by: field + '_changed_by', at: field + '_changed_at' };
@@ -204,11 +205,14 @@ module.exports = async function handler(req, res) {
         return sendJson(res, 400, { ok: false, error: 'Invalid id or field' });
       }
 
-      // Every status field is Full Admin only — a Viewer Admin has no write
-      // path here at all (defense in depth: also enforced by Supabase RLS).
-      requireFullAdmin(admin);
-
       const newValue = !!body.value;
+
+      // Ticking (confirming) is open to any admin. Unticking (removing an
+      // already-confirmed status) is Full Admin only.
+      if (!newValue) {
+        requireFullAdmin(admin);
+      }
+
       const metaCols = STATUS_META_COLUMNS[field];
       const nowIso = new Date().toISOString();
 
