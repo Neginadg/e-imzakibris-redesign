@@ -1041,7 +1041,7 @@ a { color: inherit; text-decoration: none; }
 .customer-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 640px;
 }
 
 .customer-table th,

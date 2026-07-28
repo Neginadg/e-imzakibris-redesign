@@ -840,27 +840,28 @@
     if (resultsCount) resultsCount.textContent = `${list.length} kayıt`;
 
     if (tabType === 'eimzakibris') {
+      // Telefon and PIN/PUK are intentionally omitted here to keep the
+      // workflow/status columns clear and readable — both remain visible in
+      // the customer-center__detail panel (renderCustomerDetail) when a row
+      // is selected. Database columns are untouched; this is display-only.
       if (resultsHead) {
-        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th><th>Telefon</th><th>PIN / PUK</th>'
+        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th>'
           + '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>'
           + '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>'
           + '<th class="status-col" title="İmza Hazır">İmza</th>'
           + '<th class="status-col" title="Teslim Edildi">Teslim</th></tr>';
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="9" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML = '<tr><td colspan="7" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
       resultsBody.innerHTML = list.map((item) => {
-        const codes = getCustomerCodes(item);
         const rowClass = item.id === selectedId ? 'is-selected' : '';
         return `
           <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
             <td>${escapeHtml(item.full_name || '-')}</td>
             <td>${escapeHtml(item.identity_number || '-')}</td>
             <td>${escapeHtml(item.email || '-')}</td>
-            <td>${escapeHtml(item.phone || '-')}</td>
-            <td><span class="code-pill ${codes.pin_code && codes.puk_code ? '' : 'code-pill--empty'}">${codes.pin_code && codes.puk_code ? 'Hazır' : 'Yok'}</span></td>
             ${statusToggleCell(item, 'payment_done', isFullAdmin)}
             ${statusToggleCell(item, 'receipt_written', isFullAdmin)}
             ${statusToggleCell(item, 'signature_ready', isFullAdmin)}
