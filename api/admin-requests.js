@@ -3,6 +3,14 @@ const { getRuntimeEnv } = require('../lib/env');
 const { selectSupabaseRows } = require('../lib/supabase');
 const { requireAdmin } = require('../lib/auth');
 
+// Renewal submissions made before the identity number was captured as a
+// top-level column still have it nested in the raw form payload.
+function extractPayloadIdentityNumber(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  if (payload.identityNumber) return String(payload.identityNumber).trim();
+  return '';
+}
+
 const TABLE_CONFIGS = {
   timestamp: {
     tableName: 'timestamp_application',
@@ -61,7 +69,7 @@ const TABLE_CONFIGS = {
         full_name: String(row.full_name || '').trim(),
         email: String(row.email || '').trim(),
         phone: String(row.phone || '').trim(),
-        identity_number: String(row.identity_number || '').trim(),
+        identity_number: String(row.identity_number || '').trim() || extractPayloadIdentityNumber(row.payload),
         plan_label: '',
         total_text: '',
         payment_method: String(row.payment_method || '').trim(),

@@ -557,14 +557,14 @@
     return FIELD_LABELS[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
   }
 
-  function flattenPayloadPairs(obj) {
+  function flattenPayloadPairs(obj, extraSkip) {
     if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return [];
     var result = [];
     Object.keys(obj).forEach(function (key) {
-      if (PAYLOAD_SKIP[key]) return;
+      if (PAYLOAD_SKIP[key] || (extraSkip && extraSkip[key])) return;
       var value = obj[key];
       if (value !== null && value !== undefined && typeof value === 'object' && !Array.isArray(value)) {
-        flattenPayloadPairs(value).forEach(function (pair) { result.push(pair); });
+        flattenPayloadPairs(value, extraSkip).forEach(function (pair) { result.push(pair); });
       } else {
         var str = value == null ? '' : String(value);
         if (str === '' || str === '-') return;
@@ -589,7 +589,12 @@
     }
 
     const codes = getCustomerCodes(record);
-    const pairs = flattenPayloadPairs(record.payload || {});
+    // The nested form payload duplicates a few top-level fields (e.g.
+    // identityNumber). Once the top-level column is populated, hide the
+    // duplicate from the raw payload dump below — but keep it as a fallback
+    // for older records submitted before that field was captured correctly.
+    const payloadSkip = record.identity_number ? { identityNumber: true } : {};
+    const pairs = flattenPayloadPairs(record.payload || {}, payloadSkip);
     const extraHtml = pairs.map(function (p) {
       return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
     }).join('');
@@ -687,7 +692,11 @@
       return;
     }
 
-    const pairs = flattenPayloadPairs(record.payload || {});
+    // See renderCustomerDetail for why this skip is conditional: keep the
+    // nested payload copy visible as a fallback for older records submitted
+    // before the top-level identity_number field was captured correctly.
+    const payloadSkip = record.identity_number ? { identityNumber: true } : {};
+    const pairs = flattenPayloadPairs(record.payload || {}, payloadSkip);
     const extraHtml = pairs.map(function (p) {
       return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
     }).join('');

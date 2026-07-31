@@ -336,6 +336,8 @@
                 </label>
               </div>
 
+              <div class="cf-turnstile-container" style="margin: 1.25rem 0;"></div>
+
               <div class="builder-actions builder-actions--between">
                 <button type="button" class="btn btn--outline" id="ts-back-to-builder">Geri</button>
                 <button type="submit" class="btn btn--primary btn--lg">İleri</button>
@@ -533,9 +535,11 @@
 
   
 
+  <script src="../assets/js/turnstile-config.js"></script>
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/paypoint-checkout.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
 </body>
 </html>
 

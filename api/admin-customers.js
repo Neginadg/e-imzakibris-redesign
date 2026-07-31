@@ -23,6 +23,18 @@ function normalizeAdminCodes(payload) {
   };
 }
 
+// Some older records were submitted before the identity number was captured
+// as a top-level column — it still exists nested in the raw form payload.
+// Falls back to that so those records aren't shown as missing an ID number.
+function extractPayloadIdentityNumber(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  if (payload.application && typeof payload.application === 'object' && payload.application.identityNumber) {
+    return String(payload.application.identityNumber).trim();
+  }
+  if (payload.identityNumber) return String(payload.identityNumber).trim();
+  return '';
+}
+
 function normalizeCustomerRecord(row) {
   const payload = row && row.payload && typeof row.payload === 'object' && !Array.isArray(row.payload)
     ? row.payload
@@ -34,7 +46,7 @@ function normalizeCustomerRecord(row) {
     full_name: String(row.adi_soyadi || '').trim(),
     email: String(row.e_posta_adresi || '').trim(),
     phone: String(row.cep_telefon_numarasi || row.telefon_numarasi || '').trim(),
-    identity_number: String(row.kimlik_pasaport_numarasi || '').trim(),
+    identity_number: String(row.kimlik_pasaport_numarasi || '').trim() || extractPayloadIdentityNumber(payload),
     payment_method: String(row.odeme_sekli || '').trim(),
     source_page: String((payload && payload.source_page) || '').trim(),
     payload,

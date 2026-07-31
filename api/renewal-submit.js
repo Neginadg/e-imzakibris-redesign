@@ -3,6 +3,7 @@ const { getRuntimeEnv } = require('../lib/env');
 const { insertSupabaseRow } = require('../lib/supabase');
 const { buildHtmlSummary, toPlainText, sendEmail } = require('../lib/email');
 const { beginCreditCardCheckout } = require('../lib/paypoint');
+const { verifyTurnstileToken, getClientIp } = require('../lib/turnstile');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,6 +13,11 @@ module.exports = async function handler(req, res) {
   try {
     const config = getRuntimeEnv({ requireEmail: false });
     const body = readJsonBody(req);
+
+    const humanVerified = await verifyTurnstileToken(config, body.turnstile_token, getClientIp(req));
+    if (!humanVerified) {
+      return sendJson(res, 400, { ok: false, error: 'Doğrulama başarısız oldu. Lütfen doğrulamayı tamamlayıp tekrar deneyin.' });
+    }
 
     const record = {
       full_name: String(body.full_name || '').trim(),

@@ -10,9 +10,39 @@
   const SUPABASE_URL = String(SUPABASE_CONFIG.url || '').trim();
   const SUPABASE_ANON_KEY = String(SUPABASE_CONFIG.anonKey || '').trim();
   const API_BASE_URL = String(window.EIMZA_API_BASE_URL || '').trim();
+  const TURNSTILE_SITE_KEY = String((window.EIMZA_TURNSTILE_CONFIG && window.EIMZA_TURNSTILE_CONFIG.siteKey) || '').trim();
+  // Endpoints that create customer/application records — protected by
+  // Cloudflare Turnstile to keep bot-submitted fake applications out of the
+  // Müşteri Kayıtları admin panel. Contact form and payment callbacks aren't
+  // in this set.
+  const TURNSTILE_PROTECTED_ENDPOINTS = new Set([
+    '/api/application-submit',
+    '/api/renewal-submit',
+    '/api/molohiya-submit',
+    '/api/timestamp-submit'
+  ]);
+  let turnstileWidgetId = null;
   let currentLanguage = 'tr';
   let googleTranslatePromise = null;
   let googleTranslateInitialized = false;
+
+  // Cloudflare calls this once its script has loaded (see ?onload= param on
+  // the <script> tag in each form page). Renders whichever single widget
+  // container exists on the current page, if any.
+  window.onTurnstileLoad = function () {
+    const container = document.querySelector('.cf-turnstile-container');
+    if (!container || !window.turnstile || turnstileWidgetId != null) return;
+    turnstileWidgetId = window.turnstile.render(container, { sitekey: TURNSTILE_SITE_KEY });
+  };
+
+  function getTurnstileToken() {
+    if (!window.turnstile || turnstileWidgetId == null) return '';
+    return window.turnstile.getResponse(turnstileWidgetId) || '';
+  }
+
+  function resetTurnstileWidget() {
+    if (window.turnstile && turnstileWidgetId != null) window.turnstile.reset(turnstileWidgetId);
+  }
 
   function applyImageLoadingHints() {
     const images = document.querySelectorAll('img');
@@ -113,31 +143,48 @@
   }
 
   async function postBackendForm(endpoint, payload) {
-    const response = await fetch(resolveApiEndpoint(endpoint), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
+    const isProtected = TURNSTILE_PROTECTED_ENDPOINTS.has(endpoint);
+    let finalPayload = payload;
 
-    let responseText = '';
-    let body = null;
+    if (isProtected) {
+      const token = getTurnstileToken();
+      if (!token) {
+        throw new Error('Lütfen "Ben robot değilim" doğrulamasını tamamlayın.');
+      }
+      finalPayload = Object.assign({}, payload, { turnstile_token: token });
+    }
+
     try {
-      responseText = await response.text();
-      body = responseText ? JSON.parse(responseText) : null;
-    } catch (error) {
-      body = null;
-    }
+      const response = await fetch(resolveApiEndpoint(endpoint), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(finalPayload)
+      });
 
-    if (!response.ok) {
-      const message = body && (body.error || body.message)
-        ? (body.error || body.message)
-        : responseText || 'Request failed';
-      throw new Error(message);
-    }
+      let responseText = '';
+      let body = null;
+      try {
+        responseText = await response.text();
+        body = responseText ? JSON.parse(responseText) : null;
+      } catch (error) {
+        body = null;
+      }
 
-    return body;
+      if (!response.ok) {
+        const message = body && (body.error || body.message)
+          ? (body.error || body.message)
+          : responseText || 'Request failed';
+        throw new Error(message);
+      }
+
+      return body;
+    } finally {
+      // Turnstile tokens are single-use — always reset after an attempt
+      // (success or failure) so a retry gets a fresh one.
+      if (isProtected) resetTurnstileWidget();
+    }
   }
 
   async function insertContactMessageDirect(payload) {
