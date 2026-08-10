@@ -2,97 +2,181 @@
    e-imza KIBRIS – Admin Panel JavaScript
    ============================================================ */
 (function () {
-  'use strict';
+  "use strict";
 
   // ── Storage keys ──────────────────────────────────────────
-  const KEY_PRICES = 'eimza_prices';
-  const KEY_SESSION = 'eimza_admin_session';
-  const KEY_ADMIN_NEWS = 'eimza_admin_news';
-  const KEY_ADMIN_FILES = 'eimza_admin_files';
-  const FILES_API_ENDPOINT = '/api/admin-files';
+  const KEY_PRICES = "eimza_prices";
+  const KEY_SESSION = "eimza_admin_session";
+  const KEY_ADMIN_NEWS = "eimza_admin_news";
+  const KEY_ADMIN_FILES = "eimza_admin_files";
+  const FILES_API_ENDPOINT = "/api/admin-files";
   let cachedFiles = [];
-  const CUSTOMER_API_ENDPOINT = '/api/admin-customers';
-  const PRICES_API_ENDPOINT = '/api/admin-prices';
-  const NEWS_API_ENDPOINT = '/api/admin-news';
+  const CUSTOMER_API_ENDPOINT = "/api/admin-customers";
+  const PRICES_API_ENDPOINT = "/api/admin-prices";
+  const NEWS_API_ENDPOINT = "/api/admin-news";
   let cachedNews = [];
-  const ADMIN_ME_ENDPOINT = '/api/admin-me';
+  const ADMIN_ME_ENDPOINT = "/api/admin-me";
   const FILE_TABLES = {
     applicationguidelines: {
-      label: 'Application Guidelines',
-      title: 'Uygulama Esasları',
+      label: "Application Guidelines",
+      title: "Uygulama Esasları",
       fields: [
-        { key: 'documentCode', label: 'Kod', placeholder: 'UES-1', required: true },
-        { key: 'documentName', label: 'Uygulama Esası', placeholder: 'NES Uygulama Esasları', required: true, fullWidth: true }
-      ]
+        {
+          key: "documentCode",
+          label: "Kod",
+          placeholder: "UES-1",
+          required: true,
+        },
+        {
+          key: "documentName",
+          label: "Uygulama Esası",
+          placeholder: "NES Uygulama Esasları",
+          required: true,
+          fullWidth: true,
+        },
+      ],
     },
     certificates: {
-      label: 'Certificates (NES / E-İmza)',
-      title: 'Nitelikli Elektronik Sertifikalar',
+      label: "Certificates (NES / E-İmza)",
+      title: "Nitelikli Elektronik Sertifikalar",
       fields: [
-        { key: 'documentId', label: 'ID', placeholder: '1', required: true },
-        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Kök Sertifika S2', required: true, fullWidth: true },
-        { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
-        { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
-      ]
+        { key: "documentId", label: "ID", placeholder: "1", required: true },
+        {
+          key: "documentName",
+          label: "Sertifika Adı",
+          placeholder: "e-İmza Kıbrıs Kök Sertifika S2",
+          required: true,
+          fullWidth: true,
+        },
+        {
+          key: "certificateStartDate",
+          label: "Başlangıç Tarihi",
+          type: "date",
+          required: true,
+        },
+        {
+          key: "certificateEndDate",
+          label: "Bitiş Tarihi",
+          type: "date",
+          required: true,
+        },
+      ],
     },
     ts_certificates: {
-      label: 'Certificates (Zaman Damgası)',
-      title: 'Zaman Damgası Sertifikaları',
+      label: "Certificates (Zaman Damgası)",
+      title: "Zaman Damgası Sertifikaları",
       fields: [
-        { key: 'documentId', label: 'ID', placeholder: '1', required: true },
-        { key: 'documentName', label: 'Sertifika Adı', placeholder: 'e-İmza Kıbrıs Zaman Damgası Sertifikası', required: true, fullWidth: true },
-        { key: 'certificateStartDate', label: 'Başlangıç Tarihi', type: 'date', required: true },
-        { key: 'certificateEndDate', label: 'Bitiş Tarihi', type: 'date', required: true }
-      ]
+        { key: "documentId", label: "ID", placeholder: "1", required: true },
+        {
+          key: "documentName",
+          label: "Sertifika Adı",
+          placeholder: "e-İmza Kıbrıs Zaman Damgası Sertifikası",
+          required: true,
+          fullWidth: true,
+        },
+        {
+          key: "certificateStartDate",
+          label: "Başlangıç Tarihi",
+          type: "date",
+          required: true,
+        },
+        {
+          key: "certificateEndDate",
+          label: "Bitiş Tarihi",
+          type: "date",
+          required: true,
+        },
+      ],
     },
     contracts: {
-      label: 'Contracts',
-      title: 'Sözleşmeler',
+      label: "Contracts",
+      title: "Sözleşmeler",
       fields: [
-        { key: 'referenceNumber', label: 'Referans Numarası', placeholder: 'B1', required: true },
-        { key: 'contractName', label: 'Sözleşme Adı', placeholder: 'e-imza KIBRIS Son Kullanıcı Sözleşmesi', required: true, fullWidth: true },
-        { key: 'version', label: 'Versiyon', placeholder: 'v03', required: true }
-      ]
+        {
+          key: "referenceNumber",
+          label: "Referans Numarası",
+          placeholder: "B1",
+          required: true,
+        },
+        {
+          key: "contractName",
+          label: "Sözleşme Adı",
+          placeholder: "e-imza KIBRIS Son Kullanıcı Sözleşmesi",
+          required: true,
+          fullWidth: true,
+        },
+        {
+          key: "version",
+          label: "Versiyon",
+          placeholder: "v03",
+          required: true,
+        },
+      ],
     },
     legislations: {
-      label: 'Legislations',
-      title: 'Mevzuat',
+      label: "Legislations",
+      title: "Mevzuat",
       fields: [
-        { key: 'code', label: 'Kod', placeholder: '93/2007', required: true },
-        { key: 'documentName', label: 'Belge Adı', placeholder: 'Elektronik İmza Yasası', required: true, fullWidth: true }
-      ]
+        { key: "code", label: "Kod", placeholder: "93/2007", required: true },
+        {
+          key: "documentName",
+          label: "Belge Adı",
+          placeholder: "Elektronik İmza Yasası",
+          required: true,
+          fullWidth: true,
+        },
+      ],
     },
     principles: {
-      label: 'Principles',
-      title: 'İlkeler',
+      label: "Principles",
+      title: "İlkeler",
       fields: [
-        { key: 'code', label: 'Kod', placeholder: 'ILK-1', required: true },
-        { key: 'documentName', label: 'İlke Adı', placeholder: 'NES İlkeleri', required: true, fullWidth: true }
-      ]
+        { key: "code", label: "Kod", placeholder: "ILK-1", required: true },
+        {
+          key: "documentName",
+          label: "İlke Adı",
+          placeholder: "NES İlkeleri",
+          required: true,
+          fullWidth: true,
+        },
+      ],
     },
     softwares: {
-      label: 'Softwares',
-      title: 'Yazılım İndir',
+      label: "Softwares",
+      title: "Yazılım İndir",
       fields: [
-        { key: 'code', label: 'Kod', placeholder: 'WIN-1', required: true },
-        { key: 'softwareName', label: 'Yazılım Adı', placeholder: 'Signtific Client', required: true, fullWidth: true }
-      ]
+        { key: "code", label: "Kod", placeholder: "WIN-1", required: true },
+        {
+          key: "softwareName",
+          label: "Yazılım Adı",
+          placeholder: "Signtific Client",
+          required: true,
+          fullWidth: true,
+        },
+      ],
     },
     canceledcertificates: {
-      label: 'Canceled Certificates',
-      title: 'Sertifika İptal Listeleri',
+      label: "Canceled Certificates",
+      title: "Sertifika İptal Listeleri",
       fields: [
-        { key: 'documentId', label: 'ID', placeholder: '100', required: true },
-        { key: 'documentName', label: 'Sertifika İptal Listesi', placeholder: 'E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı', required: true, fullWidth: true }
-      ]
+        { key: "documentId", label: "ID", placeholder: "100", required: true },
+        {
+          key: "documentName",
+          label: "Sertifika İptal Listesi",
+          placeholder:
+            "E-imza KIBRIS Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı",
+          required: true,
+          fullWidth: true,
+        },
+      ],
     },
   };
 
   // Default prices (raw numbers)
   const DEFAULTS = {
-    '1y': 2650,
-    '2y': 4690,
-    '3y': 6950,
+    "1y": 2650,
+    "2y": 4690,
+    "3y": 6950,
     stick: 1875,
     install: 1875,
     renewal: 2650,
@@ -104,43 +188,60 @@
     molohiya_3y: 6950,
     renewal_1y: 2650,
     renewal_2y: 4690,
-    renewal_3y: 6950
+    renewal_3y: 6950,
   };
 
   const PRICE_KEYS = [
-    '1y', '2y', '3y', 'stick', 'install', 'renewal',
-    'ts_1000', 'ts_5000', 'ts_10000',
-    'molohiya_1y', 'molohiya_2y', 'molohiya_3y',
-    'renewal_1y', 'renewal_2y', 'renewal_3y'
+    "1y",
+    "2y",
+    "3y",
+    "stick",
+    "install",
+    "renewal",
+    "ts_1000",
+    "ts_5000",
+    "ts_10000",
+    "molohiya_1y",
+    "molohiya_2y",
+    "molohiya_3y",
+    "renewal_1y",
+    "renewal_2y",
+    "renewal_3y",
   ];
 
   const PRICE_FIELD_MAP = {
-    '1y': 'field-1y',
-    '2y': 'field-2y',
-    '3y': 'field-3y',
-    stick: 'field-stick',
-    install: 'field-install',
-    renewal: 'field-renewal',
-    ts_1000: 'field-ts-1000',
-    ts_5000: 'field-ts-5000',
-    ts_10000: 'field-ts-10000',
-    molohiya_1y: 'field-molohiya-1y',
-    molohiya_2y: 'field-molohiya-2y',
-    molohiya_3y: 'field-molohiya-3y',
-    renewal_1y: 'field-renewal-1y',
-    renewal_2y: 'field-renewal-2y',
-    renewal_3y: 'field-renewal-3y'
+    "1y": "field-1y",
+    "2y": "field-2y",
+    "3y": "field-3y",
+    stick: "field-stick",
+    install: "field-install",
+    renewal: "field-renewal",
+    ts_1000: "field-ts-1000",
+    ts_5000: "field-ts-5000",
+    ts_10000: "field-ts-10000",
+    molohiya_1y: "field-molohiya-1y",
+    molohiya_2y: "field-molohiya-2y",
+    molohiya_3y: "field-molohiya-3y",
+    renewal_1y: "field-renewal-1y",
+    renewal_2y: "field-renewal-2y",
+    renewal_3y: "field-renewal-3y",
   };
 
   // ── Utilities ─────────────────────────────────────────────
-  const fmt = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmt = new Intl.NumberFormat("tr-TR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   // ── Supabase Auth (real admin login) ────────────────────────
   // Config comes from ../assets/js/supabase-config.js (publishable/anon
   // key — safe to expose client-side; write access is still enforced
   // server-side via lib/auth.js checking the public.admins table).
-  const SB_URL = (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.url) || '';
-  const SB_ANON_KEY = (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.anonKey) || '';
+  const SB_URL =
+    (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.url) || "";
+  const SB_ANON_KEY =
+    (window.EIMZA_SUPABASE_CONFIG && window.EIMZA_SUPABASE_CONFIG.anonKey) ||
+    "";
 
   function getStoredSession() {
     try {
@@ -160,14 +261,17 @@
   }
 
   async function supabaseAuthRequest(path, body) {
-    const resp = await fetch(SB_URL.replace(/\/+$/, '') + path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', apikey: SB_ANON_KEY },
-      body: JSON.stringify(body || {})
+    const resp = await fetch(SB_URL.replace(/\/+$/, "") + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: SB_ANON_KEY },
+      body: JSON.stringify(body || {}),
     });
     const data = await resp.json().catch(() => ({}));
     if (!resp.ok) {
-      throw new Error((data && (data.error_description || data.msg || data.error)) || 'Kimlik doğrulama başarısız.');
+      throw new Error(
+        (data && (data.error_description || data.msg || data.error)) ||
+          "Kimlik doğrulama başarısız.",
+      );
     }
     return data;
   }
@@ -177,19 +281,25 @@
       access_token: data.access_token,
       refresh_token: data.refresh_token,
       expires_at: Date.now() + (Number(data.expires_in) || 3600) * 1000,
-      email: data.user && data.user.email
+      email: data.user && data.user.email,
     };
   }
 
   async function signInWithPassword(email, password) {
-    const data = await supabaseAuthRequest('/auth/v1/token?grant_type=password', { email, password });
+    const data = await supabaseAuthRequest(
+      "/auth/v1/token?grant_type=password",
+      { email, password },
+    );
     const session = sessionFromAuthResponse(data);
     setStoredSession(session);
     return session;
   }
 
   async function refreshSession(refreshToken) {
-    const data = await supabaseAuthRequest('/auth/v1/token?grant_type=refresh_token', { refresh_token: refreshToken });
+    const data = await supabaseAuthRequest(
+      "/auth/v1/token?grant_type=refresh_token",
+      { refresh_token: refreshToken },
+    );
     const session = sessionFromAuthResponse(data);
     setStoredSession(session);
     return session;
@@ -221,9 +331,12 @@
     clearStoredSession();
     if (!session || !session.access_token) return;
     try {
-      await fetch(SB_URL.replace(/\/+$/, '') + '/auth/v1/logout', {
-        method: 'POST',
-        headers: { apikey: SB_ANON_KEY, Authorization: 'Bearer ' + session.access_token }
+      await fetch(SB_URL.replace(/\/+$/, "") + "/auth/v1/logout", {
+        method: "POST",
+        headers: {
+          apikey: SB_ANON_KEY,
+          Authorization: "Bearer " + session.access_token,
+        },
       });
     } catch (e) {
       // best-effort — local session is already cleared
@@ -242,11 +355,13 @@
     const token = await getValidAccessToken();
     if (!token) {
       renderLogin();
-      throw new Error('Oturum süresi doldu. Lütfen tekrar giriş yapın.');
+      throw new Error("Oturum süresi doldu. Lütfen tekrar giriş yapın.");
     }
 
     const opts = Object.assign({}, options);
-    opts.headers = Object.assign({}, options && options.headers, { Authorization: 'Bearer ' + token });
+    opts.headers = Object.assign({}, options && options.headers, {
+      Authorization: "Bearer " + token,
+    });
 
     const resp = await fetch(url, opts);
     if (resp.status === 401) {
@@ -271,7 +386,9 @@
   function loadPrices() {
     try {
       const raw = localStorage.getItem(KEY_PRICES);
-      return raw ? Object.assign({}, DEFAULTS, JSON.parse(raw)) : Object.assign({}, DEFAULTS);
+      return raw
+        ? Object.assign({}, DEFAULTS, JSON.parse(raw))
+        : Object.assign({}, DEFAULTS);
     } catch (e) {
       return Object.assign({}, DEFAULTS);
     }
@@ -282,20 +399,24 @@
   }
 
   async function fetchServerPrices() {
-    const resp = await adminFetch(PRICES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const resp = await adminFetch(PRICES_API_ENDPOINT, {
+      headers: { Accept: "application/json" },
+    });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Fiyatlar sunucudan alınamadı.');
+    if (!resp.ok || !data.ok)
+      throw new Error((data && data.error) || "Fiyatlar sunucudan alınamadı.");
     return Object.assign({}, DEFAULTS, data.prices || {});
   }
 
   async function savePrices(prices) {
     const resp = await adminFetch(PRICES_API_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prices })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prices }),
     });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Fiyatlar kaydedilemedi.');
+    if (!resp.ok || !data.ok)
+      throw new Error((data && data.error) || "Fiyatlar kaydedilemedi.");
     cachePrices(prices);
   }
 
@@ -308,12 +429,12 @@
       const input = fieldId ? document.getElementById(fieldId) : null;
       if (!input) return;
 
-      const val = parseFloat(String(input.value).replace(',', '.'));
+      const val = parseFloat(String(input.value).replace(",", "."));
       if (isNaN(val) || val < 0) {
-        input.classList.add('has-error');
+        input.classList.add("has-error");
         valid = false;
       } else {
-        input.classList.remove('has-error');
+        input.classList.remove("has-error");
         updated[key] = val;
       }
     });
@@ -322,7 +443,7 @@
   }
 
   function normalizeImportedPrices(raw) {
-    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
 
     const normalized = {};
     for (const key of PRICE_KEYS) {
@@ -340,7 +461,7 @@
       const input = fieldId ? document.getElementById(fieldId) : null;
       if (!input) return;
       input.value = prices[key];
-      input.classList.remove('has-error');
+      input.classList.remove("has-error");
     });
   }
 
@@ -362,36 +483,43 @@
   }
 
   async function fetchServerNews() {
-    const resp = await adminFetch(NEWS_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const resp = await adminFetch(NEWS_API_ENDPOINT, {
+      headers: { Accept: "application/json" },
+    });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haberler sunucudan alınamadı.');
+    if (!resp.ok || !data.ok)
+      throw new Error((data && data.error) || "Haberler sunucudan alınamadı.");
     return Array.isArray(data.items) ? data.items : [];
   }
 
   async function createServerNews(item) {
     const resp = await adminFetch(NEWS_API_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(item),
     });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haber kaydedilemedi.');
+    if (!resp.ok || !data.ok)
+      throw new Error((data && data.error) || "Haber kaydedilemedi.");
     return data.item;
   }
 
   async function deleteServerNews(id) {
     const resp = await adminFetch(NEWS_API_ENDPOINT, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id })
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
     });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Haber silinemedi.');
+    if (!resp.ok || !data.ok)
+      throw new Error((data && data.error) || "Haber silinemedi.");
   }
 
   async function refreshFilesCache() {
     try {
-      const response = await adminFetch(FILES_API_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const response = await adminFetch(FILES_API_ENDPOINT, {
+        headers: { Accept: "application/json" },
+      });
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.ok && Array.isArray(data.items)) {
         cachedFiles = data.items;
@@ -405,13 +533,16 @@
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(reader.error || new Error('Dosya okunamadı'));
+      reader.onerror = () =>
+        reject(reader.error || new Error("Dosya okunamadı"));
       reader.readAsDataURL(file);
     });
   }
 
   function getFileTableLabel(tableKey) {
-    return (FILE_TABLES[tableKey] && FILE_TABLES[tableKey].label) || tableKey || '-';
+    return (
+      (FILE_TABLES[tableKey] && FILE_TABLES[tableKey].label) || tableKey || "-"
+    );
   }
 
   function getFileTableSchema(tableKey) {
@@ -419,59 +550,68 @@
   }
 
   function formatDisplayDate(dateValue) {
-    const parts = String(dateValue || '').split('-');
-    if (parts.length !== 3) return '-';
+    const parts = String(dateValue || "").split("-");
+    if (parts.length !== 3) return "-";
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
 
   function formatRecordSummary(item) {
     const schema = getFileTableSchema(item.table);
-    if (!schema) return item.documentName || item.name || '-';
+    if (!schema) return item.documentName || item.name || "-";
 
-    if (item.table === 'certificates') {
-      return `${item.documentId || '-'} • ${item.documentName || item.name || '-'}${item.certificateStartDate ? ` • ${formatDisplayDate(item.certificateStartDate)}` : ''}${item.certificateEndDate ? ` - ${formatDisplayDate(item.certificateEndDate)}` : ''}`;
+    if (item.table === "certificates") {
+      return `${item.documentId || "-"} • ${item.documentName || item.name || "-"}${item.certificateStartDate ? ` • ${formatDisplayDate(item.certificateStartDate)}` : ""}${item.certificateEndDate ? ` - ${formatDisplayDate(item.certificateEndDate)}` : ""}`;
     }
 
-    if (item.table === 'contracts') {
-      return `${item.referenceNumber || '-'} • ${item.contractName || item.documentName || item.name || '-'} • ${item.version || '-'}`;
+    if (item.table === "contracts") {
+      return `${item.referenceNumber || "-"} • ${item.contractName || item.documentName || item.name || "-"} • ${item.version || "-"}`;
     }
 
-    if (item.table === 'applicationguidelines') {
-      return `${item.documentCode || '-'} • ${item.documentName || item.name || '-'}`;
+    if (item.table === "applicationguidelines") {
+      return `${item.documentCode || "-"} • ${item.documentName || item.name || "-"}`;
     }
 
-    if (item.table === 'legislations' || item.table === 'principles' || item.table === 'canceledcertificates') {
-      return `${item.documentId || item.code || '-'} • ${item.documentName || item.name || '-'}`;
+    if (
+      item.table === "legislations" ||
+      item.table === "principles" ||
+      item.table === "canceledcertificates"
+    ) {
+      return `${item.documentId || item.code || "-"} • ${item.documentName || item.name || "-"}`;
     }
 
-    if (item.table === 'softwares') {
-      return `${item.code || '-'} • ${item.softwareName || item.documentName || item.name || '-'}`;
+    if (item.table === "softwares") {
+      return `${item.code || "-"} • ${item.softwareName || item.documentName || item.name || "-"}`;
     }
 
-    return item.documentName || item.name || '-';
+    return item.documentName || item.name || "-";
   }
 
   function renderFileMetadataFields(form, tableKey) {
-    const target = form.querySelector('#files-dynamic-fields');
+    const target = form.querySelector("#files-dynamic-fields");
     if (!target) return;
 
     const schema = getFileTableSchema(tableKey);
     if (!schema) {
-      target.innerHTML = '<p class="save-hint" style="grid-column:1 / -1;">Lütfen önce bir tablo seçin.</p>';
+      target.innerHTML =
+        '<p class="save-hint" style="grid-column:1 / -1;">Lütfen önce bir tablo seçin.</p>';
       return;
     }
 
-    target.innerHTML = schema.fields.map((field) => `
-      <div class="form-group${field.fullWidth ? ' full-width' : ''}">
+    target.innerHTML = schema.fields
+      .map(
+        (field) => `
+      <div class="form-group${field.fullWidth ? " full-width" : ""}">
         <label for="files-${field.key}">${field.label}</label>
         <input
-          type="${field.type || 'text'}"
+          type="${field.type || "text"}"
           id="files-${field.key}"
-          placeholder="${field.placeholder || ''}"
-          ${field.required ? 'required' : ''}
+          placeholder="${field.placeholder || ""}"
+          ${field.required ? "required" : ""}
         />
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
   }
 
   function collectFileMetadata(form, tableKey) {
@@ -482,7 +622,7 @@
 
     schema.fields.forEach((field) => {
       const input = form.querySelector(`#files-${field.key}`);
-      metadata[field.key] = input ? input.value.trim() : '';
+      metadata[field.key] = input ? input.value.trim() : "";
     });
 
     return metadata;
@@ -495,7 +635,7 @@
     const record = Object.assign({}, item);
     schema.fields.forEach((field) => {
       const value = record[field.key];
-      record[field.key] = typeof value === 'string' ? value : '';
+      record[field.key] = typeof value === "string" ? value : "";
     });
     return record;
   }
@@ -507,67 +647,110 @@
   }
 
   function escapeHtml(value) {
-    return String(value == null ? '' : value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function formatCustomerDateTime(value) {
-    if (!value) return '-';
+    if (!value) return "-";
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return '-';
-    return date.toLocaleString('tr-TR');
+    if (Number.isNaN(date.getTime())) return "-";
+    return date.toLocaleString("tr-TR");
   }
 
   function getCustomerCodes(record) {
-    const payload = record && record.payload && typeof record.payload === 'object' ? record.payload : {};
-    const adminCodes = payload.admin_codes && typeof payload.admin_codes === 'object' ? payload.admin_codes : {};
+    const payload =
+      record && record.payload && typeof record.payload === "object"
+        ? record.payload
+        : {};
+    const adminCodes =
+      payload.admin_codes && typeof payload.admin_codes === "object"
+        ? payload.admin_codes
+        : {};
 
     return {
-      pin_code: String(record?.pin_code || adminCodes.pin_code || ''),
-      puk_code: String(record?.puk_code || adminCodes.puk_code || ''),
-      generated_at: String(record?.generated_at || adminCodes.generated_at || '')
+      pin_code: String(record?.pin_code || adminCodes.pin_code || ""),
+      puk_code: String(record?.puk_code || adminCodes.puk_code || ""),
+      generated_at: String(
+        record?.generated_at || adminCodes.generated_at || "",
+      ),
     };
   }
 
   var FIELD_LABELS = {
-    fullName: 'Ad Soyad', phone: 'Telefon (Form)', mobilePhone: 'Cep Telefonu',
-    mobileCode: 'Alan Kodu', region: 'Bölge', address: 'Adres',
-    company: 'Şirket / Kurum', jobTitle: 'Görev / Unvan', birthDate: 'Doğum Tarihi',
-    birthPlace: 'Doğum Yeri', nationality: 'Uyruk', taxNumber: 'Vergi No',
-    taxOffice: 'Vergi Dairesi', identityNumber: 'Kimlik No (Form)', notes: 'Notlar',
-    invoiceType: 'Fatura Tipi', invoiceRegion: 'Fatura Bölgesi',
-    invoiceAddress: 'Fatura Adresi', invoiceCompany: 'Fatura Şirketi',
-    invoiceSameAsContact: 'Fatura = İletişim Adresi', privacyConsent: 'KVKK Onayı',
-    publicDirectoryConsent: 'Kamu Dizini Onayı', showEmailOnCertificate: 'E-posta Sertifikada',
-    professionalRegistryNo: 'Meslek Sicil No', paymentMethod: 'Ödeme Yöntemi',
-    total: 'Toplam (KDV Dahil)', subtotal: 'Ara Toplam', kdvAmount: 'KDV Tutarı',
-    planLabel: 'Plan', setupPrice: 'Kurulum Ücreti', tokenPrice: 'Token Ücreti',
-    certificatePrice: 'Sertifika Ücreti', application_type: 'Başvuru Tipi',
-    plan_label: 'Plan', total_text: 'Toplam', form_type: 'Form Tipi',
-    source_page: 'Kaynak Sayfa',
+    fullName: "Ad Soyad",
+    phone: "Telefon (Form)",
+    mobilePhone: "Cep Telefonu",
+    mobileCode: "Alan Kodu",
+    region: "Bölge",
+    address: "Adres",
+    company: "Şirket / Kurum",
+    jobTitle: "Görev / Unvan",
+    birthDate: "Doğum Tarihi",
+    birthPlace: "Doğum Yeri",
+    nationality: "Uyruk",
+    taxNumber: "Vergi No",
+    taxOffice: "Vergi Dairesi",
+    identityNumber: "Kimlik No (Form)",
+    notes: "Notlar",
+    invoiceType: "Fatura Tipi",
+    invoiceRegion: "Fatura Bölgesi",
+    invoiceAddress: "Fatura Adresi",
+    invoiceCompany: "Fatura Şirketi",
+    invoiceSameAsContact: "Fatura = İletişim Adresi",
+    privacyConsent: "KVKK Onayı",
+    publicDirectoryConsent: "Kamu Dizini Onayı",
+    showEmailOnCertificate: "E-posta Sertifikada",
+    professionalRegistryNo: "Meslek Sicil No",
+    paymentMethod: "Ödeme Yöntemi",
+    total: "Toplam (KDV Dahil)",
+    subtotal: "Ara Toplam",
+    kdvAmount: "KDV Tutarı",
+    planLabel: "Plan",
+    setupPrice: "Kurulum Ücreti",
+    tokenPrice: "Token Ücreti",
+    certificatePrice: "Sertifika Ücreti",
+    application_type: "Başvuru Tipi",
+    plan_label: "Plan",
+    total_text: "Toplam",
+    form_type: "Form Tipi",
+    source_page: "Kaynak Sayfa",
   };
 
   var PAYLOAD_SKIP = { admin_codes: true, source_page: true };
 
   function fieldLabel(key) {
-    return FIELD_LABELS[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
+    return (
+      FIELD_LABELS[key] ||
+      key
+        .replace(/([A-Z])/g, " $1")
+        .replace(/_/g, " ")
+        .trim()
+    );
   }
 
   function flattenPayloadPairs(obj, extraSkip) {
-    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return [];
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) return [];
     var result = [];
     Object.keys(obj).forEach(function (key) {
       if (PAYLOAD_SKIP[key] || (extraSkip && extraSkip[key])) return;
       var value = obj[key];
-      if (value !== null && value !== undefined && typeof value === 'object' && !Array.isArray(value)) {
-        flattenPayloadPairs(value, extraSkip).forEach(function (pair) { result.push(pair); });
+      if (
+        value !== null &&
+        value !== undefined &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+      ) {
+        flattenPayloadPairs(value, extraSkip).forEach(function (pair) {
+          result.push(pair);
+        });
       } else {
-        var str = value == null ? '' : String(value);
-        if (str === '' || str === '-') return;
+        var str = value == null ? "" : String(value);
+        if (str === "" || str === "-") return;
         result.push({ label: fieldLabel(key), value: str });
       }
     });
@@ -575,7 +758,7 @@
   }
 
   function renderCustomerDetail(record) {
-    const detailEl = document.getElementById('customer-detail');
+    const detailEl = document.getElementById("customer-detail");
     if (!detailEl) return;
 
     if (!record) {
@@ -595,14 +778,16 @@
     // for older records submitted before that field was captured correctly.
     const payloadSkip = record.identity_number ? { identityNumber: true } : {};
     const pairs = flattenPayloadPairs(record.payload || {}, payloadSkip);
-    const extraHtml = pairs.map(function (p) {
-      return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
-    }).join('');
+    const extraHtml = pairs
+      .map(function (p) {
+        return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
+      })
+      .join("");
 
     detailEl.innerHTML = `
       <div class="req-detail__header">
         <div>
-          <div class="req-detail__name">${escapeHtml(record.full_name || '-')}</div>
+          <div class="req-detail__name">${escapeHtml(record.full_name || "-")}</div>
           <div class="req-detail__meta">Başvuru tarihi: ${escapeHtml(formatCustomerDateTime(record.created_at))}</div>
         </div>
         <div class="req-detail__badge">
@@ -614,12 +799,12 @@
       <div class="req-detail__section">
         <h5>Müşteri Bilgileri</h5>
         <div class="req-detail__grid">
-          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
-          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
-          <div class="req-detail__pair"><span>Kimlik / Pasaport No</span><strong>${escapeHtml(record.identity_number || '-')}</strong></div>
-          <div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method || '-')}</strong></div>
-          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
-          <div class="req-detail__pair"><span>PIN / PUK Oluşturulma</span><strong>${escapeHtml(codes.generated_at ? formatCustomerDateTime(codes.generated_at) : '-')}</strong></div>
+          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || "-")}</strong></div>
+          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || "-")}</strong></div>
+          <div class="req-detail__pair"><span>Kimlik / Pasaport No</span><strong>${escapeHtml(record.identity_number || "-")}</strong></div>
+          <div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method || "-")}</strong></div>
+          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ""}
+          <div class="req-detail__pair"><span>PIN / PUK Oluşturulma</span><strong>${escapeHtml(codes.generated_at ? formatCustomerDateTime(codes.generated_at) : "-")}</strong></div>
           ${extraHtml}
         </div>
       </div>
@@ -629,11 +814,11 @@
         <div class="customer-code-grid">
           <div class="customer-code-card">
             <div class="customer-code-card__label">PIN Kodu</div>
-            <div class="customer-code-card__value">${escapeHtml(codes.pin_code || 'Yok')}</div>
+            <div class="customer-code-card__value">${escapeHtml(codes.pin_code || "Yok")}</div>
           </div>
           <div class="customer-code-card">
             <div class="customer-code-card__label">PUK Kodu</div>
-            <div class="customer-code-card__value">${escapeHtml(codes.puk_code || 'Yok')}</div>
+            <div class="customer-code-card__value">${escapeHtml(codes.puk_code || "Yok")}</div>
           </div>
         </div>
         <div class="customer-code-edit" style="margin-top:.85rem;">
@@ -644,7 +829,7 @@
               id="customer-pin-input"
               inputmode="numeric"
               maxlength="12"
-              value="${escapeHtml(codes.pin_code || '')}"
+              value="${escapeHtml(codes.pin_code || "")}"
               placeholder="PIN"
               data-customer-pin
             />
@@ -656,7 +841,7 @@
               id="customer-puk-input"
               inputmode="numeric"
               maxlength="12"
-              value="${escapeHtml(codes.puk_code || '')}"
+              value="${escapeHtml(codes.puk_code || "")}"
               placeholder="PUK"
               data-customer-puk
             />
@@ -669,7 +854,7 @@
           <button type="button" class="btn btn--ghost" data-customer-generate>
             <i class="fa-solid fa-key"></i> Otomatik Oluştur
           </button>
-          <button type="button" class="btn btn--ghost" data-customer-copy ${codes.pin_code && codes.puk_code ? '' : 'disabled'}>
+          <button type="button" class="btn btn--ghost" data-customer-copy ${codes.pin_code && codes.puk_code ? "" : "disabled"}>
             <i class="fa-solid fa-copy"></i> Kopyala
           </button>
         </div>
@@ -679,7 +864,7 @@
 
   // ── Request detail panel (non-E-İmza tabs) ──────────────────
   function renderRequestDetail(record) {
-    const detailEl = document.getElementById('customer-detail');
+    const detailEl = document.getElementById("customer-detail");
     if (!detailEl) return;
 
     if (!record) {
@@ -697,128 +882,155 @@
     // before the top-level identity_number field was captured correctly.
     const payloadSkip = record.identity_number ? { identityNumber: true } : {};
     const pairs = flattenPayloadPairs(record.payload || {}, payloadSkip);
-    const extraHtml = pairs.map(function (p) {
-      return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
-    }).join('');
+    const extraHtml = pairs
+      .map(function (p) {
+        return `<div class="req-detail__pair"><span>${escapeHtml(p.label)}</span><strong>${escapeHtml(p.value)}</strong></div>`;
+      })
+      .join("");
 
     detailEl.innerHTML = `
       <div class="req-detail__header">
         <div>
-          <div class="req-detail__name">${escapeHtml(record.full_name || '-')}</div>
+          <div class="req-detail__name">${escapeHtml(record.full_name || "-")}</div>
           <div class="req-detail__meta">Gönderim: ${escapeHtml(formatCustomerDateTime(record.created_at))}</div>
         </div>
         <div class="req-detail__badge">
           <i class="fa-solid fa-file-lines"></i>
-          ${escapeHtml(record.form_type || 'Başvuru')}
+          ${escapeHtml(record.form_type || "Başvuru")}
         </div>
       </div>
 
       <div class="req-detail__section">
         <h5>Başvuru Bilgileri</h5>
         <div class="req-detail__grid">
-          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || '-')}</strong></div>
-          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || '-')}</strong></div>
-          ${record.identity_number ? `<div class="req-detail__pair"><span>Kimlik No</span><strong>${escapeHtml(record.identity_number)}</strong></div>` : ''}
-          ${record.payment_method ? `<div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method)}</strong></div>` : ''}
-          ${record.plan_label ? `<div class="req-detail__pair"><span>Plan</span><strong>${escapeHtml(record.plan_label)}</strong></div>` : ''}
-          ${record.total_text ? `<div class="req-detail__pair"><span>Toplam</span><strong>${escapeHtml(record.total_text)}</strong></div>` : ''}
-          ${record.application_type ? `<div class="req-detail__pair"><span>Başvuru Tipi</span><strong>${escapeHtml(record.application_type)}</strong></div>` : ''}
-          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ''}
+          <div class="req-detail__pair"><span>E-Posta</span><strong>${escapeHtml(record.email || "-")}</strong></div>
+          <div class="req-detail__pair"><span>Telefon</span><strong>${escapeHtml(record.phone || "-")}</strong></div>
+          ${record.identity_number ? `<div class="req-detail__pair"><span>Kimlik No</span><strong>${escapeHtml(record.identity_number)}</strong></div>` : ""}
+          ${record.payment_method ? `<div class="req-detail__pair"><span>Ödeme Şekli</span><strong>${escapeHtml(record.payment_method)}</strong></div>` : ""}
+          ${record.plan_label ? `<div class="req-detail__pair"><span>Plan</span><strong>${escapeHtml(record.plan_label)}</strong></div>` : ""}
+          ${record.total_text ? `<div class="req-detail__pair"><span>Toplam</span><strong>${escapeHtml(record.total_text)}</strong></div>` : ""}
+          ${record.application_type ? `<div class="req-detail__pair"><span>Başvuru Tipi</span><strong>${escapeHtml(record.application_type)}</strong></div>` : ""}
+          ${record.source_page ? `<div class="req-detail__pair"><span>Kaynak Sayfa</span><strong>${escapeHtml(record.source_page)}</strong></div>` : ""}
           ${extraHtml}
         </div>
       </div>
     `;
   }
+  // Tabs that use the Ödeme/Makbuz/İmza/Teslim status-column layout instead
+  // of the generic Ad/Soyad/E-Posta/Telefon/Plan/Tarih table.
+  const STATUS_TABS = ["eimzakibris", "renewal"];
 
   // ── Results table renderer (tab-aware) ────────────────────────
   // All four status fields are Full Admin only (read-only for Viewer Admin) —
   // must match STATUS_FIELDS enforcement in api/admin-customers.js.
   const STATUS_LABELS = {
-    payment_done: 'Ödeme Alındı',
-    receipt_written: 'Makbuz Yazıldı',
-    signature_ready: 'İmza Hazır',
-    delivered: 'Teslim Edildi'
+    payment_done: "Ödeme Alındı",
+    receipt_written: "Makbuz Yazıldı",
+    signature_ready: "İmza Hazır",
+    delivered: "Teslim Edildi",
   };
 
   const STATUS_SHORT_LABELS = {
-    payment_done: 'Ödeme',
-    receipt_written: 'Makbuz',
-    signature_ready: 'İmza',
-    delivered: 'Teslim'
+    payment_done: "Ödeme",
+    receipt_written: "Makbuz",
+    signature_ready: "İmza",
+    delivered: "Teslim",
   };
 
   const STATUS_CONFIRM_COPY = {
     payment_done: {
-      confirmTitle: 'Ödeme Alındı mı?',
-      confirmBody: 'Bu müşterinin ödemesinin alındığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
-      changeTitle: 'Ödeme Durumunu Değiştirmek İstiyor musunuz?',
-      changeBody: 'Bu müşterinin ödeme durumunu değiştirmek istediğinizden emin misiniz?'
+      confirmTitle: "Ödeme Alındı mı?",
+      confirmBody:
+        "Bu müşterinin ödemesinin alındığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
+      changeTitle: "Ödeme Durumunu Değiştirmek İstiyor musunuz?",
+      changeBody:
+        "Bu müşterinin ödeme durumunu değiştirmek istediğinizden emin misiniz?",
     },
     receipt_written: {
-      confirmTitle: 'Makbuz Yazıldı mı?',
-      confirmBody: 'Bu müşteri için makbuzun yazıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
-      changeTitle: 'Makbuz Durumunu Değiştirmek İstiyor musunuz?',
-      changeBody: 'Bu müşterinin makbuz durumunu değiştirmek istediğinizden emin misiniz?'
+      confirmTitle: "Makbuz Yazıldı mı?",
+      confirmBody:
+        "Bu müşteri için makbuzun yazıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
+      changeTitle: "Makbuz Durumunu Değiştirmek İstiyor musunuz?",
+      changeBody:
+        "Bu müşterinin makbuz durumunu değiştirmek istediğinizden emin misiniz?",
     },
     signature_ready: {
-      confirmTitle: 'İmza Hazır mı?',
-      confirmBody: 'Bu müşterinin imzasının hazır olduğunu onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
-      changeTitle: 'İmza Durumunu Değiştirmek İstiyor musunuz?',
-      changeBody: 'Bu müşterinin imza durumunu değiştirmek istediğinizden emin misiniz?'
+      confirmTitle: "İmza Hazır mı?",
+      confirmBody:
+        "Bu müşterinin imzasının hazır olduğunu onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
+      changeTitle: "İmza Durumunu Değiştirmek İstiyor musunuz?",
+      changeBody:
+        "Bu müşterinin imza durumunu değiştirmek istediğinizden emin misiniz?",
     },
     delivered: {
-      confirmTitle: 'Teslim Edildi mi?',
-      confirmBody: 'Bu müşteriye teslimatın yapıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.',
-      changeTitle: 'Teslim Durumunu Değiştirmek İstiyor musunuz?',
-      changeBody: 'Bu müşterinin teslim durumunu değiştirmek istediğinizden emin misiniz?'
-    }
+      confirmTitle: "Teslim Edildi mi?",
+      confirmBody:
+        "Bu müşteriye teslimatın yapıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
+      changeTitle: "Teslim Durumunu Değiştirmek İstiyor musunuz?",
+      changeBody:
+        "Bu müşterinin teslim durumunu değiştirmek istediğinizden emin misiniz?",
+    },
   };
 
   // Generic promise-based confirmation dialog (replaces native confirm() for
   // status changes — needs a title + body + custom confirm label).
   function showConfirmModal(options) {
-    const modal = document.getElementById('confirm-modal');
-    if (!modal) return Promise.resolve(window.confirm((options && options.body) || 'Emin misiniz?'));
+    const modal = document.getElementById("confirm-modal");
+    if (!modal)
+      return Promise.resolve(
+        window.confirm((options && options.body) || "Emin misiniz?"),
+      );
 
-    const titleEl = modal.querySelector('.confirm-modal__title');
-    const bodyEl = modal.querySelector('.confirm-modal__body');
-    const okBtn = modal.querySelector('[data-confirm-ok]');
-    const cancelEls = modal.querySelectorAll('[data-confirm-cancel]');
+    const titleEl = modal.querySelector(".confirm-modal__title");
+    const bodyEl = modal.querySelector(".confirm-modal__body");
+    const okBtn = modal.querySelector("[data-confirm-ok]");
+    const cancelEls = modal.querySelectorAll("[data-confirm-cancel]");
 
-    if (titleEl) titleEl.textContent = (options && options.title) || '';
-    if (bodyEl) bodyEl.textContent = (options && options.body) || '';
-    if (okBtn) okBtn.textContent = (options && options.confirmLabel) || 'Evet, Onayla';
+    if (titleEl) titleEl.textContent = (options && options.title) || "";
+    if (bodyEl) bodyEl.textContent = (options && options.body) || "";
+    if (okBtn)
+      okBtn.textContent = (options && options.confirmLabel) || "Evet, Onayla";
 
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
 
     return new Promise(function (resolve) {
       function cleanup(result) {
-        modal.classList.remove('is-open');
-        modal.setAttribute('aria-hidden', 'true');
-        if (okBtn) okBtn.removeEventListener('click', onOk);
-        cancelEls.forEach(function (el) { el.removeEventListener('click', onCancel); });
-        document.removeEventListener('keydown', onKeydown);
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        if (okBtn) okBtn.removeEventListener("click", onOk);
+        cancelEls.forEach(function (el) {
+          el.removeEventListener("click", onCancel);
+        });
+        document.removeEventListener("keydown", onKeydown);
         resolve(result);
       }
-      function onOk() { cleanup(true); }
-      function onCancel() { cleanup(false); }
-      function onKeydown(e) { if (e.key === 'Escape') cleanup(false); }
+      function onOk() {
+        cleanup(true);
+      }
+      function onCancel() {
+        cleanup(false);
+      }
+      function onKeydown(e) {
+        if (e.key === "Escape") cleanup(false);
+      }
 
-      if (okBtn) okBtn.addEventListener('click', onOk);
-      cancelEls.forEach(function (el) { el.addEventListener('click', onCancel); });
-      document.addEventListener('keydown', onKeydown);
+      if (okBtn) okBtn.addEventListener("click", onOk);
+      cancelEls.forEach(function (el) {
+        el.addEventListener("click", onCancel);
+      });
+      document.addEventListener("keydown", onKeydown);
     });
   }
 
   function statusMetaHtml(item, field) {
-    const changedBy = item[field + '_changed_by'];
-    const changedAt = item[field + '_changed_at'];
-    if (!changedBy && !changedAt) return '';
+    const changedBy = item[field + "_changed_by"];
+    const changedAt = item[field + "_changed_at"];
+    if (!changedBy && !changedAt) return "";
     const parts = [];
     if (changedBy) parts.push(escapeHtml(changedBy));
     if (changedAt) parts.push(escapeHtml(formatCustomerDateTime(changedAt)));
-    return `<div class="status-meta">${parts.join(' · ')}</div>`;
+    return `<div class="status-meta">${parts.join(" · ")}</div>`;
   }
 
   function statusToggleCell(item, field, isFullAdmin) {
@@ -840,141 +1052,177 @@
   }
 
   function renderResults(items, selectedId, tabType, isFullAdmin) {
-    const resultsBody = document.getElementById('customer-results-body');
-    const resultsHead = document.getElementById('customer-results-head');
-    const resultsCount = document.getElementById('customer-results-count');
+    const resultsBody = document.getElementById("customer-results-body");
+    const resultsHead = document.getElementById("customer-results-head");
+    const resultsCount = document.getElementById("customer-results-count");
     if (!resultsBody) return;
 
     const list = Array.isArray(items) ? items : [];
     if (resultsCount) resultsCount.textContent = `${list.length} kayıt`;
 
-    if (tabType === 'eimzakibris') {
+    if (STATUS_TABS.includes(tabType)) {
       // Telefon and PIN/PUK are intentionally omitted here to keep the
       // workflow/status columns clear and readable — both remain visible in
       // the customer-center__detail panel (renderCustomerDetail) when a row
       // is selected. Database columns are untouched; this is display-only.
       if (resultsHead) {
-        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th>'
-          + '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>'
-          + '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>'
-          + '<th class="status-col" title="İmza Hazır">İmza</th>'
-          + '<th class="status-col" title="Teslim Edildi">Teslim</th></tr>';
+        resultsHead.innerHTML =
+          "<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th>" +
+          '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>' +
+          '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>' +
+          '<th class="status-col" title="İmza Hazır">İmza</th>' +
+          '<th class="status-col" title="Teslim Edildi">Teslim</th></tr>';
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="7" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML =
+          '<tr><td colspan="7" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
-      resultsBody.innerHTML = list.map((item) => {
-        const rowClass = item.id === selectedId ? 'is-selected' : '';
-        return `
+      resultsBody.innerHTML = list
+        .map((item) => {
+          const rowClass = item.id === selectedId ? "is-selected" : "";
+          return `
           <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
-            <td>${escapeHtml(item.full_name || '-')}</td>
-            <td>${escapeHtml(item.identity_number || '-')}</td>
-            <td>${escapeHtml(item.email || '-')}</td>
-            ${statusToggleCell(item, 'payment_done', isFullAdmin)}
-            ${statusToggleCell(item, 'receipt_written', isFullAdmin)}
-            ${statusToggleCell(item, 'signature_ready', isFullAdmin)}
-            ${statusToggleCell(item, 'delivered', isFullAdmin)}
+            <td>${escapeHtml(item.full_name || "-")}</td>
+            <td>${escapeHtml(item.identity_number || "-")}</td>
+            <td>${escapeHtml(item.email || "-")}</td>
+            ${statusToggleCell(item, "payment_done", isFullAdmin)}
+            ${statusToggleCell(item, "receipt_written", isFullAdmin)}
+            ${statusToggleCell(item, "signature_ready", isFullAdmin)}
+            ${statusToggleCell(item, "delivered", isFullAdmin)}
           </tr>`;
-      }).join('');
+        })
+        .join("");
     } else {
       if (resultsHead) {
-        resultsHead.innerHTML = '<tr><th>Ad / Soyad</th><th>E-Posta</th><th>Telefon</th><th>Plan</th><th>Tarih</th></tr>';
+        resultsHead.innerHTML =
+          "<tr><th>Ad / Soyad</th><th>E-Posta</th><th>Telefon</th><th>Plan</th><th>Tarih</th></tr>";
       }
       if (!list.length) {
-        resultsBody.innerHTML = '<tr><td colspan="5" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
+        resultsBody.innerHTML =
+          '<tr><td colspan="5" class="customer-table__empty">Kayıt bulunamadı.</td></tr>';
         return;
       }
-      resultsBody.innerHTML = list.map((item) => {
-        const rowClass = item.id === selectedId ? 'is-selected' : '';
-        return `
+      resultsBody.innerHTML = list
+        .map((item) => {
+          const rowClass = item.id === selectedId ? "is-selected" : "";
+          return `
           <tr class="${rowClass}" data-customer-id="${escapeHtml(item.id)}">
-            <td>${escapeHtml(item.full_name || '-')}</td>
-            <td>${escapeHtml(item.email || '-')}</td>
-            <td>${escapeHtml(item.phone || '-')}</td>
-            <td>${escapeHtml(item.plan_label || item.application_type || '-')}</td>
+            <td>${escapeHtml(item.full_name || "-")}</td>
+            <td>${escapeHtml(item.email || "-")}</td>
+            <td>${escapeHtml(item.phone || "-")}</td>
+            <td>${escapeHtml(item.plan_label || item.application_type || "-")}</td>
             <td>${escapeHtml(formatCustomerDateTime(item.created_at))}</td>
           </tr>`;
-      }).join('');
+        })
+        .join("");
     }
   }
 
   function initCustomerCenter(isFullAdmin) {
-    const alertEl = document.getElementById('customer-alert');
-    const searchInput = document.getElementById('customer-search-input');
-    const dateFromInput = document.getElementById('req-date-from');
-    const dateToInput = document.getElementById('req-date-to');
-    const resultsBody = document.getElementById('customer-results-body');
-    const detailEl = document.getElementById('customer-detail');
-    const showMoreWrap = document.getElementById('customer-show-more-wrap');
-    const showMoreBtn = document.getElementById('customer-show-more');
+    const alertEl = document.getElementById("customer-alert");
+    const searchInput = document.getElementById("customer-search-input");
+    const dateFromInput = document.getElementById("req-date-from");
+    const dateToInput = document.getElementById("req-date-to");
+    const resultsBody = document.getElementById("customer-results-body");
+    const detailEl = document.getElementById("customer-detail");
+    const showMoreWrap = document.getElementById("customer-show-more-wrap");
+    const showMoreBtn = document.getElementById("customer-show-more");
 
     const PAGE_SIZE = 5;
-    let activeTab = 'eimzakibris';
+    let activeTab = "eimzakibris";
     let currentItems = [];
-    let selectedId = '';
+    let selectedId = "";
     let isLoading = false;
     let currentOffset = 0;
 
     // ── Tab switching ───────────────────────────────────────────
-    document.querySelectorAll('[data-req-tab]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        activeTab = btn.getAttribute('data-req-tab');
-        document.querySelectorAll('[data-req-tab]').forEach(function (b) {
-          b.classList.toggle('req-tab--active', b === btn);
+    document.querySelectorAll("[data-req-tab]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activeTab = btn.getAttribute("data-req-tab");
+        document.querySelectorAll("[data-req-tab]").forEach(function (b) {
+          b.classList.toggle("req-tab--active", b === btn);
         });
-        selectedId = '';
+        selectedId = "";
         loadRecords(false);
       });
     });
 
     // ── Quick date shortcuts ────────────────────────────────────
-    document.querySelectorAll('[data-quick]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const type = btn.getAttribute('data-quick');
+    document.querySelectorAll("[data-quick]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const type = btn.getAttribute("data-quick");
         const now = new Date();
-        const pad = function (n) { return String(n).padStart(2, '0'); };
-        const toISO = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+        const pad = function (n) {
+          return String(n).padStart(2, "0");
+        };
+        const toISO = function (d) {
+          return (
+            d.getFullYear() +
+            "-" +
+            pad(d.getMonth() + 1) +
+            "-" +
+            pad(d.getDate())
+          );
+        };
         const today = toISO(now);
 
-        if (type === 'today') {
+        if (type === "today") {
           if (dateFromInput) dateFromInput.value = today;
           if (dateToInput) dateToInput.value = today;
-        } else if (type === 'yesterday') {
+        } else if (type === "yesterday") {
           const yest = toISO(new Date(now - 86400000));
           if (dateFromInput) dateFromInput.value = yest;
           if (dateToInput) dateToInput.value = yest;
-        } else if (type === 'week') {
-          if (dateFromInput) dateFromInput.value = toISO(new Date(now - 6 * 86400000));
+        } else if (type === "week") {
+          if (dateFromInput)
+            dateFromInput.value = toISO(new Date(now - 6 * 86400000));
           if (dateToInput) dateToInput.value = today;
-        } else if (type === 'month') {
-          if (dateFromInput) dateFromInput.value = toISO(new Date(now - 29 * 86400000));
+        } else if (type === "month") {
+          if (dateFromInput)
+            dateFromInput.value = toISO(new Date(now - 29 * 86400000));
           if (dateToInput) dateToInput.value = today;
-        } else if (type === 'clear') {
-          if (dateFromInput) dateFromInput.value = '';
-          if (dateToInput) dateToInput.value = '';
+        } else if (type === "clear") {
+          if (dateFromInput) dateFromInput.value = "";
+          if (dateToInput) dateToInput.value = "";
         }
         loadRecords(false);
       });
     });
 
     // ── Date inputs ─────────────────────────────────────────────
-    if (dateFromInput) dateFromInput.addEventListener('change', function () { loadRecords(false); });
-    if (dateToInput) dateToInput.addEventListener('change', function () { loadRecords(false); });
+    if (dateFromInput)
+      dateFromInput.addEventListener("change", function () {
+        loadRecords(false);
+      });
+    if (dateToInput)
+      dateToInput.addEventListener("change", function () {
+        loadRecords(false);
+      });
 
     // ── Search form ─────────────────────────────────────────────
-    const form = document.getElementById('customer-search-form');
+    const form = document.getElementById("customer-search-form");
     if (form) {
-      form.addEventListener('submit', function (e) { e.preventDefault(); loadRecords(false); });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        loadRecords(false);
+      });
     }
 
     if (searchInput) {
-      searchInput.addEventListener('input', debounce(function () { loadRecords(false); }, 350));
+      searchInput.addEventListener(
+        "input",
+        debounce(function () {
+          loadRecords(false);
+        }, 350),
+      );
     }
 
     // ── Show more button ────────────────────────────────────────
     if (showMoreBtn) {
-      showMoreBtn.addEventListener('click', function () { loadRecords(true); });
+      showMoreBtn.addEventListener("click", function () {
+        loadRecords(true);
+      });
     }
 
     // ── Status toggle (Ödeme / Makbuz / İmza / Teslim) ──────────────────
@@ -986,9 +1234,11 @@
     // that, Supabase RLS.
     async function handleStatusToggle(btn) {
       if (btn.disabled) return;
-      const id = btn.getAttribute('data-status-toggle');
-      const field = btn.getAttribute('data-status-field');
-      const item = currentItems.find(function (i) { return i.id === id; });
+      const id = btn.getAttribute("data-status-toggle");
+      const field = btn.getAttribute("data-status-field");
+      const item = currentItems.find(function (i) {
+        return i.id === id;
+      });
       if (!item) return;
 
       const isCurrentlyActive = !!item[field];
@@ -1000,24 +1250,45 @@
       const confirmed = await showConfirmModal({
         title: isCurrentlyActive ? copy.changeTitle : copy.confirmTitle,
         body: isCurrentlyActive ? copy.changeBody : copy.confirmBody,
-        confirmLabel: isCurrentlyActive ? 'Evet, Değiştir' : 'Evet, Onayla'
+        confirmLabel: isCurrentlyActive ? "Evet, Değiştir" : "Evet, Onayla",
       });
       if (!confirmed) return;
 
       btn.disabled = true;
       try {
-        const resp = await adminFetch(CUSTOMER_API_ENDPOINT, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, field, value: newValue })
+        const isEimza = activeTab === "eimzakibris";
+        const resp = await adminFetch(
+          isEimza ? CUSTOMER_API_ENDPOINT : "/api/admin-requests",
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(
+              isEimza
+                ? { id, field, value: newValue }
+                : { table: activeTab, id, field, value: newValue },
+            ),
+          },
+        );
+        const data = await resp.json().catch(function () {
+          return {};
         });
-        const data = await resp.json().catch(function () { return {}; });
-        if (!resp.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'Durum güncellenemedi.');
-        currentItems = currentItems.map(function (i) { return i.id === id ? data.record : i; });
+        if (!resp.ok || !data.ok || !data.record)
+          throw new Error((data && data.error) || "Durum güncellenemedi.");
+        currentItems = currentItems.map(function (i) {
+          return i.id === id ? data.record : i;
+        });
         renderResults(currentItems, selectedId, activeTab, isFullAdmin);
-        setAlert(alertEl, 'success', STATUS_SHORT_LABELS[field] + ' durumu başarıyla güncellendi.');
+        setAlert(
+          alertEl,
+          "success",
+          STATUS_SHORT_LABELS[field] + " durumu başarıyla güncellendi.",
+        );
       } catch (error) {
-        setAlert(alertEl, 'danger', (error && error.message) || 'Durum güncellenemedi.');
+        setAlert(
+          alertEl,
+          "danger",
+          (error && error.message) || "Durum güncellenemedi.",
+        );
       } finally {
         btn.disabled = false;
       }
@@ -1025,32 +1296,41 @@
 
     // ── Row click ───────────────────────────────────────────────
     if (resultsBody) {
-      resultsBody.addEventListener('click', function (event) {
+      resultsBody.addEventListener("click", function (event) {
         const el = event.target instanceof Element ? event.target : null;
         if (!el) return;
 
-        const statusBtn = el.closest('[data-status-toggle]');
+        const statusBtn = el.closest("[data-status-toggle]");
         if (statusBtn) {
           handleStatusToggle(statusBtn);
           return;
         }
 
-        const btn = el.closest('[data-customer-select]');
-        const row = el.closest('tr[data-customer-id]');
-        const id = btn ? btn.getAttribute('data-customer-select') : (row ? row.getAttribute('data-customer-id') : null);
+        const btn = el.closest("[data-customer-select]");
+        const row = el.closest("tr[data-customer-id]");
+        const id = btn
+          ? btn.getAttribute("data-customer-select")
+          : row
+            ? row.getAttribute("data-customer-id")
+            : null;
         if (!id) return;
-        const found = currentItems.find(function (item) { return item.id === id; });
+        const found = currentItems.find(function (item) {
+          return item.id === id;
+        });
         if (found) setSelected(found.id);
       });
     }
 
     // ── setSelected ─────────────────────────────────────────────
     function setSelected(id) {
-      selectedId = id || '';
-      const selected = currentItems.find(function (item) { return item.id === selectedId; }) || null;
+      selectedId = id || "";
+      const selected =
+        currentItems.find(function (item) {
+          return item.id === selectedId;
+        }) || null;
       renderResults(currentItems, selectedId, activeTab, isFullAdmin);
 
-      if (activeTab === 'eimzakibris') {
+      if (activeTab === "eimzakibris") {
         renderCustomerDetail(selected);
         attachPinPukListeners(selected);
       } else {
@@ -1060,97 +1340,137 @@
 
     function attachPinPukListeners(selected) {
       if (!detailEl || !selected) return;
-      const generateButton = detailEl.querySelector('[data-customer-generate]');
-      const saveButton = detailEl.querySelector('[data-customer-save]');
-      const copyButton = detailEl.querySelector('[data-customer-copy]');
-      const pinInput = detailEl.querySelector('[data-customer-pin]');
-      const pukInput = detailEl.querySelector('[data-customer-puk]');
+      const generateButton = detailEl.querySelector("[data-customer-generate]");
+      const saveButton = detailEl.querySelector("[data-customer-save]");
+      const copyButton = detailEl.querySelector("[data-customer-copy]");
+      const pinInput = detailEl.querySelector("[data-customer-pin]");
+      const pukInput = detailEl.querySelector("[data-customer-puk]");
 
       // Viewer role: read-only Customer Center — hide the mutating actions.
       // (Also enforced server-side; this is just so they don't see a button
       // that will only ever fail.)
       if (!isFullAdmin) {
-        if (generateButton) generateButton.style.display = 'none';
-        if (saveButton) saveButton.style.display = 'none';
-        if (pinInput) pinInput.setAttribute('readonly', 'readonly');
-        if (pukInput) pukInput.setAttribute('readonly', 'readonly');
+        if (generateButton) generateButton.style.display = "none";
+        if (saveButton) saveButton.style.display = "none";
+        if (pinInput) pinInput.setAttribute("readonly", "readonly");
+        if (pukInput) pukInput.setAttribute("readonly", "readonly");
         return;
       }
 
       if (saveButton) {
-        saveButton.addEventListener('click', async function () {
-          const pinValue = pinInput ? pinInput.value.trim() : '';
-          const pukValue = pukInput ? pukInput.value.trim() : '';
+        saveButton.addEventListener("click", async function () {
+          const pinValue = pinInput ? pinInput.value.trim() : "";
+          const pukValue = pukInput ? pukInput.value.trim() : "";
           if (!pinValue || !pukValue) {
-            setAlert(alertEl, 'warning', 'PIN ve PUK kodları boş olamaz.');
+            setAlert(alertEl, "warning", "PIN ve PUK kodları boş olamaz.");
             return;
           }
           saveButton.disabled = true;
-          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+          saveButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
           try {
             const response = await adminFetch(CUSTOMER_API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ application_id: selected.id, pin_code: pinValue, puk_code: pukValue, regenerate: false })
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                application_id: selected.id,
+                pin_code: pinValue,
+                puk_code: pukValue,
+                regenerate: false,
+              }),
             });
-            const data = await response.json().catch(function () { return {}; });
-            if (!response.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'PIN/PUK kaydedilemedi.');
+            const data = await response.json().catch(function () {
+              return {};
+            });
+            if (!response.ok || !data.ok || !data.record)
+              throw new Error((data && data.error) || "PIN/PUK kaydedilemedi.");
             const updated = data.record;
-            currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
+            currentItems = currentItems.map(function (item) {
+              return item.id === updated.id ? updated : item;
+            });
             selectedId = updated.id;
             renderResults(currentItems, selectedId, activeTab, isFullAdmin);
             renderCustomerDetail(updated);
             attachPinPukListeners(updated);
-            setAlert(alertEl, 'success', 'PIN ve PUK kodları kaydedildi.');
+            setAlert(alertEl, "success", "PIN ve PUK kodları kaydedildi.");
           } catch (error) {
-            setAlert(alertEl, 'danger', error.message || 'PIN/PUK kaydedilemedi.');
+            setAlert(
+              alertEl,
+              "danger",
+              error.message || "PIN/PUK kaydedilemedi.",
+            );
           } finally {
             saveButton.disabled = false;
-            saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet';
+            saveButton.innerHTML =
+              '<i class="fa-solid fa-floppy-disk"></i> PIN / PUK Kaydet';
           }
         });
       }
 
       if (generateButton) {
-        generateButton.addEventListener('click', async function () {
+        generateButton.addEventListener("click", async function () {
           generateButton.disabled = true;
-          generateButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
+          generateButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
           try {
             const response = await adminFetch(CUSTOMER_API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ application_id: selected.id, regenerate: true })
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                application_id: selected.id,
+                regenerate: true,
+              }),
             });
-            const data = await response.json().catch(function () { return {}; });
-            if (!response.ok || !data.ok || !data.record) throw new Error((data && data.error) || 'PIN/PUK üretilemedi.');
+            const data = await response.json().catch(function () {
+              return {};
+            });
+            if (!response.ok || !data.ok || !data.record)
+              throw new Error((data && data.error) || "PIN/PUK üretilemedi.");
             const updated = data.record;
-            currentItems = currentItems.map(function (item) { return item.id === updated.id ? updated : item; });
+            currentItems = currentItems.map(function (item) {
+              return item.id === updated.id ? updated : item;
+            });
             selectedId = updated.id;
             renderResults(currentItems, selectedId, activeTab, isFullAdmin);
             renderCustomerDetail(updated);
             attachPinPukListeners(updated);
-            setAlert(alertEl, 'success', 'PIN ve PUK kodları oluşturuldu ve kaydedildi.');
+            setAlert(
+              alertEl,
+              "success",
+              "PIN ve PUK kodları oluşturuldu ve kaydedildi.",
+            );
           } catch (error) {
-            setAlert(alertEl, 'danger', error.message || 'PIN/PUK oluşturulamadı.');
+            setAlert(
+              alertEl,
+              "danger",
+              error.message || "PIN/PUK oluşturulamadı.",
+            );
           } finally {
             generateButton.disabled = false;
-            generateButton.innerHTML = '<i class="fa-solid fa-key"></i> PIN / PUK Oluştur';
+            generateButton.innerHTML =
+              '<i class="fa-solid fa-key"></i> PIN / PUK Oluştur';
           }
         });
       }
 
       if (copyButton) {
-        copyButton.addEventListener('click', async function () {
+        copyButton.addEventListener("click", async function () {
           const codes = getCustomerCodes(selected);
           if (!codes.pin_code || !codes.puk_code) {
-            setAlert(alertEl, 'warning', 'Kopyalanacak PIN/PUK kodu bulunmuyor.');
+            setAlert(
+              alertEl,
+              "warning",
+              "Kopyalanacak PIN/PUK kodu bulunmuyor.",
+            );
             return;
           }
           try {
-            await navigator.clipboard.writeText('PIN: ' + codes.pin_code + '\nPUK: ' + codes.puk_code);
-            setAlert(alertEl, 'success', 'PIN ve PUK kodları kopyalandı.');
+            await navigator.clipboard.writeText(
+              "PIN: " + codes.pin_code + "\nPUK: " + codes.puk_code,
+            );
+            setAlert(alertEl, "success", "PIN ve PUK kodları kopyalandı.");
           } catch (_) {
-            setAlert(alertEl, 'danger', 'Kodlar panoya kopyalanamadı.');
+            setAlert(alertEl, "danger", "Kodlar panoya kopyalanamadı.");
           }
         });
       }
@@ -1168,39 +1488,52 @@
 
       if (showMoreBtn) {
         showMoreBtn.disabled = true;
-        showMoreBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        showMoreBtn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
       }
 
-      const q = searchInput ? searchInput.value.trim() : '';
-      const dateFrom = dateFromInput ? dateFromInput.value : '';
-      const dateTo = dateToInput ? dateToInput.value : '';
+      const q = searchInput ? searchInput.value.trim() : "";
+      const dateFrom = dateFromInput ? dateFromInput.value : "";
+      const dateTo = dateToInput ? dateToInput.value : "";
 
       try {
-        if (!append) setAlert(alertEl, 'warning', 'Yükleniyor...');
+        if (!append) setAlert(alertEl, "warning", "Yükleniyor...");
 
         let newItems;
-        if (activeTab === 'eimzakibris') {
+        if (activeTab === "eimzakibris") {
           const url = new URL(CUSTOMER_API_ENDPOINT, window.location.origin);
-          if (q) url.searchParams.set('q', q);
-          if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
-          if (dateTo) url.searchParams.set('dateTo', dateTo);
-          url.searchParams.set('limit', String(PAGE_SIZE));
-          url.searchParams.set('offset', String(currentOffset));
-          const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
-          const data = await resp.json().catch(function () { return {}; });
-          if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'E-İmza kayıtları alınamadı.');
+          if (q) url.searchParams.set("q", q);
+          if (dateFrom) url.searchParams.set("dateFrom", dateFrom);
+          if (dateTo) url.searchParams.set("dateTo", dateTo);
+          url.searchParams.set("limit", String(PAGE_SIZE));
+          url.searchParams.set("offset", String(currentOffset));
+          const resp = await adminFetch(url.toString(), {
+            headers: { Accept: "application/json" },
+          });
+          const data = await resp.json().catch(function () {
+            return {};
+          });
+          if (!resp.ok || !data.ok)
+            throw new Error(
+              (data && data.error) || "E-İmza kayıtları alınamadı.",
+            );
           newItems = Array.isArray(data.items) ? data.items : [];
         } else {
-          const url = new URL('/api/admin-requests', window.location.origin);
-          url.searchParams.set('table', activeTab);
-          if (q) url.searchParams.set('q', q);
-          if (dateFrom) url.searchParams.set('dateFrom', dateFrom);
-          if (dateTo) url.searchParams.set('dateTo', dateTo);
-          url.searchParams.set('limit', String(PAGE_SIZE));
-          url.searchParams.set('offset', String(currentOffset));
-          const resp = await adminFetch(url.toString(), { headers: { Accept: 'application/json' } });
-          const data = await resp.json().catch(function () { return {}; });
-          if (!resp.ok || !data.ok) throw new Error((data && data.error) || 'Kayıtlar alınamadı.');
+          const url = new URL("/api/admin-requests", window.location.origin);
+          url.searchParams.set("table", activeTab);
+          if (q) url.searchParams.set("q", q);
+          if (dateFrom) url.searchParams.set("dateFrom", dateFrom);
+          if (dateTo) url.searchParams.set("dateTo", dateTo);
+          url.searchParams.set("limit", String(PAGE_SIZE));
+          url.searchParams.set("offset", String(currentOffset));
+          const resp = await adminFetch(url.toString(), {
+            headers: { Accept: "application/json" },
+          });
+          const data = await resp.json().catch(function () {
+            return {};
+          });
+          if (!resp.ok || !data.ok)
+            throw new Error((data && data.error) || "Kayıtlar alınamadı.");
           newItems = Array.isArray(data.items) ? data.items : [];
         }
 
@@ -1208,33 +1541,40 @@
         currentOffset = currentItems.length;
 
         const hasMore = newItems.length === PAGE_SIZE;
-        if (showMoreWrap) showMoreWrap.style.display = hasMore ? '' : 'none';
+        if (showMoreWrap) showMoreWrap.style.display = hasMore ? "" : "none";
 
         if (currentItems.length) {
-          setAlert(alertEl, 'success', currentItems.length + ' kayıt' + (hasMore ? ' (daha fazlası mevcut)' : ''));
+          setAlert(
+            alertEl,
+            "success",
+            currentItems.length +
+              " kayıt" +
+              (hasMore ? " (daha fazlası mevcut)" : ""),
+          );
           if (!append) setSelected(currentItems[0].id);
           else renderResults(currentItems, selectedId, activeTab, isFullAdmin);
         } else {
-          selectedId = '';
-          renderResults([], '', activeTab, isFullAdmin);
-          if (activeTab === 'eimzakibris') renderCustomerDetail(null);
+          selectedId = "";
+          renderResults([], "", activeTab, isFullAdmin);
+          if (activeTab === "eimzakibris") renderCustomerDetail(null);
           else renderRequestDetail(null);
-          setAlert(alertEl, 'warning', 'Kayıt bulunamadı.');
+          setAlert(alertEl, "warning", "Kayıt bulunamadı.");
         }
       } catch (error) {
         if (!append) {
           currentItems = [];
-          selectedId = '';
-          renderResults([], '', activeTab, isFullAdmin);
-          if (activeTab === 'eimzakibris') renderCustomerDetail(null);
+          selectedId = "";
+          renderResults([], "", activeTab, isFullAdmin);
+          if (activeTab === "eimzakibris") renderCustomerDetail(null);
           else renderRequestDetail(null);
         }
-        setAlert(alertEl, 'danger', error.message || 'Kayıtlar alınamadı.');
+        setAlert(alertEl, "danger", error.message || "Kayıtlar alınamadı.");
       } finally {
         isLoading = false;
         if (showMoreBtn) {
           showMoreBtn.disabled = false;
-          showMoreBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Daha Fazla Göster';
+          showMoreBtn.innerHTML =
+            '<i class="fa-solid fa-chevron-down"></i> Daha Fazla Göster';
         }
       }
     }
@@ -1255,21 +1595,25 @@
     if (!el) return;
     // #admin-panel is hidden by a CSS fallback rule before JS initializes.
     // Explicitly restore flex layout after successful login.
-    if (el.id === 'admin-panel') {
-      el.style.display = 'flex';
+    if (el.id === "admin-panel") {
+      el.style.display = "flex";
       return;
     }
-    el.style.display = '';
+    el.style.display = "";
   }
-  function hide(el) { if (el) el.style.display = 'none'; }
+  function hide(el) {
+    if (el) el.style.display = "none";
+  }
 
   function setAlert(el, type, msg) {
     if (!el) return;
     el.className = `alert alert--${type} show`;
-    el.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'circle-check' : type === 'danger' ? 'circle-xmark' : 'triangle-exclamation'}"></i> ${msg}`;
+    el.innerHTML = `<i class="fa-solid fa-${type === "success" ? "circle-check" : type === "danger" ? "circle-xmark" : "triangle-exclamation"}"></i> ${msg}`;
     clearTimeout(el._timer);
-    if (type === 'success') {
-      el._timer = setTimeout(() => { el.classList.remove('show'); }, 4000);
+    if (type === "success") {
+      el._timer = setTimeout(() => {
+        el.classList.remove("show");
+      }, 4000);
     }
   }
 
@@ -1277,40 +1621,44 @@
   function renderLogin() {
     clearStoredSession();
 
-    const loginScreen = document.getElementById('login-screen');
-    const adminPanel  = document.getElementById('admin-panel');
+    const loginScreen = document.getElementById("login-screen");
+    const adminPanel = document.getElementById("admin-panel");
     if (loginScreen) show(loginScreen);
-    if (adminPanel)  hide(adminPanel);
+    if (adminPanel) hide(adminPanel);
 
-    const form = document.getElementById('login-form');
+    const form = document.getElementById("login-form");
     if (!form) return;
 
     // Remove any stale listener from a previous renderLogin() call.
     const freshForm = form.cloneNode(true);
     form.parentNode.replaceChild(freshForm, form);
 
-    const emailInput = document.getElementById('login-email');
-    const pwInput     = document.getElementById('login-password');
-    const errEl       = document.getElementById('login-error');
-    const submitBtn   = document.getElementById('login-submit');
+    const emailInput = document.getElementById("login-email");
+    const pwInput = document.getElementById("login-password");
+    const errEl = document.getElementById("login-error");
+    const submitBtn = document.getElementById("login-submit");
 
-    freshForm.addEventListener('submit', async function (e) {
+    freshForm.addEventListener("submit", async function (e) {
       e.preventDefault();
-      if (errEl) errEl.textContent = '';
-      pwInput.classList.remove('has-error');
-      emailInput.classList.remove('has-error');
+      if (errEl) errEl.textContent = "";
+      pwInput.classList.remove("has-error");
+      emailInput.classList.remove("has-error");
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Giriş yapılıyor…';
+      submitBtn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Giriş yapılıyor…';
 
       try {
         await signInWithPassword(emailInput.value.trim(), pwInput.value);
         renderPanel();
       } catch (err) {
-        pwInput.classList.add('has-error');
-        if (errEl) errEl.textContent = (err && err.message) || 'Hatalı e-posta veya şifre.';
+        pwInput.classList.add("has-error");
+        if (errEl)
+          errEl.textContent =
+            (err && err.message) || "Hatalı e-posta veya şifre.";
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Giriş Yap';
-        pwInput.value = '';
+        submitBtn.innerHTML =
+          '<i class="fa-solid fa-right-to-bracket"></i> Giriş Yap';
+        pwInput.value = "";
         pwInput.focus();
       }
     });
@@ -1318,11 +1666,14 @@
 
   function renderNewsListFrom(rows, listEl) {
     if (!rows.length) {
-      listEl.innerHTML = '<p class="save-hint">Henüz panelden eklenmiş haber bulunmuyor.</p>';
+      listEl.innerHTML =
+        '<p class="save-hint">Henüz panelden eklenmiş haber bulunmuyor.</p>';
       return;
     }
 
-    listEl.innerHTML = rows.map((item) => `
+    listEl.innerHTML = rows
+      .map(
+        (item) => `
       <div class="admin-list__item">
         <div class="admin-list__meta">
           <div class="admin-list__title">${item.title}</div>
@@ -1334,13 +1685,15 @@
           </button>
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
-    listEl.querySelectorAll('[data-news-delete]').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const id = btn.getAttribute('data-news-delete');
-        const newsAlert = document.getElementById('news-alert');
-        if (!confirm('Bu haberi silmek istediğinizden emin misiniz?')) return;
+    listEl.querySelectorAll("[data-news-delete]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-news-delete");
+        const newsAlert = document.getElementById("news-alert");
+        if (!confirm("Bu haberi silmek istediğinizden emin misiniz?")) return;
 
         btn.disabled = true;
         try {
@@ -1349,36 +1702,56 @@
           // follow-up server refresh succeeding to reflect the deletion.
           cachedNews = cachedNews.filter((row) => row.id !== id);
           cacheAdminNews(cachedNews);
-          renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
-          setAlert(newsAlert, 'success', 'Haber silindi.');
+          renderNewsListFrom(
+            cachedNews
+              .slice()
+              .sort((a, b) => new Date(b.date) - new Date(a.date)),
+            listEl,
+          );
+          setAlert(newsAlert, "success", "Haber silindi.");
         } catch (error) {
           btn.disabled = false;
-          setAlert(newsAlert, 'danger', (error && error.message) || 'Haber silinemedi.');
+          setAlert(
+            newsAlert,
+            "danger",
+            (error && error.message) || "Haber silinemedi.",
+          );
         }
       });
     });
   }
 
   async function renderNewsList() {
-    const listEl = document.getElementById('news-list');
+    const listEl = document.getElementById("news-list");
     if (!listEl) return;
 
     // Instant render from cache, then refresh from the server.
-    renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
+    renderNewsListFrom(
+      cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)),
+      listEl,
+    );
 
     try {
       cachedNews = await fetchServerNews();
       cacheAdminNews(cachedNews);
-      renderNewsListFrom(cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), listEl);
+      renderNewsListFrom(
+        cachedNews.slice().sort((a, b) => new Date(b.date) - new Date(a.date)),
+        listEl,
+      );
     } catch (error) {
-      const newsAlert = document.getElementById('news-alert');
-      setAlert(newsAlert, 'danger', (error && error.message) || 'Haberler sunucudan yenilenemedi, önbellekteki liste gösteriliyor.');
+      const newsAlert = document.getElementById("news-alert");
+      setAlert(
+        newsAlert,
+        "danger",
+        (error && error.message) ||
+          "Haberler sunucudan yenilenemedi, önbellekteki liste gösteriliyor.",
+      );
     }
   }
 
   function initNewsManager() {
-    const newsForm = document.getElementById('news-form');
-    const newsAlert = document.getElementById('news-alert');
+    const newsForm = document.getElementById("news-form");
+    const newsAlert = document.getElementById("news-alert");
     if (!newsForm) return;
 
     const freshForm = newsForm.cloneNode(true);
@@ -1386,51 +1759,60 @@
 
     cachedNews = loadAdminNews();
 
-    freshForm.addEventListener('submit', async (e) => {
+    freshForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const dateInput = document.getElementById('news-date');
-      const badgeInput = document.getElementById('news-badge');
-      const titleInput = document.getElementById('news-title');
-      const excerptInput = document.getElementById('news-excerpt');
-      const imagePathInput = document.getElementById('news-image-path');
-      const imageFileInput = document.getElementById('news-image-file');
+      const dateInput = document.getElementById("news-date");
+      const badgeInput = document.getElementById("news-badge");
+      const titleInput = document.getElementById("news-title");
+      const excerptInput = document.getElementById("news-excerpt");
+      const imagePathInput = document.getElementById("news-image-path");
+      const imageFileInput = document.getElementById("news-image-file");
 
       if (!dateInput || !badgeInput || !titleInput || !excerptInput) return;
 
       const date = dateInput.value.trim();
-      const badge = badgeInput.value.trim() || 'Haber';
+      const badge = badgeInput.value.trim() || "Haber";
       const title = titleInput.value.trim();
       const excerpt = excerptInput.value.trim();
 
       if (!date || !title || !excerpt) {
-        setAlert(newsAlert, 'danger', 'Tarih, başlık ve özet alanları zorunludur.');
+        setAlert(
+          newsAlert,
+          "danger",
+          "Tarih, başlık ve özet alanları zorunludur.",
+        );
         return;
       }
 
-      let image = imagePathInput ? imagePathInput.value.trim() : '';
-      const selectedFile = imageFileInput && imageFileInput.files ? imageFileInput.files[0] : null;
+      let image = imagePathInput ? imagePathInput.value.trim() : "";
+      const selectedFile =
+        imageFileInput && imageFileInput.files ? imageFileInput.files[0] : null;
 
       if (!image && selectedFile) {
         try {
           image = await fileToDataUrl(selectedFile);
         } catch (error) {
-          setAlert(newsAlert, 'danger', 'Görsel dosyası okunamadı.');
+          setAlert(newsAlert, "danger", "Görsel dosyası okunamadı.");
           return;
         }
       }
 
       const submitBtn = freshForm.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
-      setAlert(newsAlert, 'warning', 'Kaydediliyor...');
+      setAlert(newsAlert, "warning", "Kaydediliyor...");
 
       try {
         await createServerNews({ date, badge, title, excerpt, image });
-        setAlert(newsAlert, 'success', 'Haber kaydedildi.');
+        setAlert(newsAlert, "success", "Haber kaydedildi.");
         freshForm.reset();
         await renderNewsList();
       } catch (error) {
-        setAlert(newsAlert, 'danger', (error && error.message) || 'Haber kaydedilemedi.');
+        setAlert(
+          newsAlert,
+          "danger",
+          (error && error.message) || "Haber kaydedilemedi.",
+        );
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
@@ -1440,22 +1822,26 @@
   }
 
   async function renderFilesList(onEdit) {
-    const listEl = document.getElementById('files-list');
+    const listEl = document.getElementById("files-list");
     if (!listEl) return;
 
     await refreshFilesCache();
 
-    const rows = cachedFiles.map(normalizeFileRecord).sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    const rows = cachedFiles
+      .map(normalizeFileRecord)
+      .sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
     if (!rows.length) {
       listEl.innerHTML = '<p class="save-hint">Henüz yüklenmiş dosya yok.</p>';
       return;
     }
 
-    listEl.innerHTML = rows.map((item) => `
+    listEl.innerHTML = rows
+      .map(
+        (item) => `
       <div class="admin-list__item">
         <div class="admin-list__meta">
           <div class="admin-list__title">${getFileTableLabel(item.table)}</div>
-          <div class="admin-list__sub">${formatRecordSummary(item)} • ${formatFileSize(item.size || 0)} • ${new Date(item.uploadedAt).toLocaleString('tr-TR')}</div>
+          <div class="admin-list__sub">${formatRecordSummary(item)} • ${formatFileSize(item.size || 0)} • ${new Date(item.uploadedAt).toLocaleString("tr-TR")}</div>
         </div>
         <div class="admin-list__actions">
           <button type="button" class="btn btn--ghost btn--sm" data-file-edit="${item.id}">
@@ -1469,64 +1855,68 @@
           </button>
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
-    listEl.querySelectorAll('[data-file-download]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-file-download');
+    listEl.querySelectorAll("[data-file-download]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-file-download");
         const target = cachedFiles.find((row) => row.id === id);
         if (!target || !target.file_url) return;
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = target.file_url;
         link.download = target.name;
-        link.target = '_blank';
+        link.target = "_blank";
         document.body.appendChild(link);
         link.click();
         link.remove();
       });
     });
 
-    listEl.querySelectorAll('[data-file-edit]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-file-edit');
+    listEl.querySelectorAll("[data-file-edit]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-file-edit");
         if (!id) return;
-        if (typeof onEdit === 'function') onEdit(id);
+        if (typeof onEdit === "function") onEdit(id);
       });
     });
 
-    listEl.querySelectorAll('[data-file-delete]').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const id = btn.getAttribute('data-file-delete');
+    listEl.querySelectorAll("[data-file-delete]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-file-delete");
         const target = cachedFiles.find((row) => row.id === id);
-        if (!confirm('Bu dosyayı silmek istediğinizden emin misiniz?')) return;
+        if (!confirm("Bu dosyayı silmek istediğinizden emin misiniz?")) return;
         try {
           const resp = await adminFetch(FILES_API_ENDPOINT, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, file_url: target && target.file_url })
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, file_url: target && target.file_url }),
           });
           const data = await resp.json().catch(() => ({}));
           if (resp.ok && data.ok) {
             await renderFilesList(onEdit);
           }
-        } catch (_) { /* ignore */ }
+        } catch (_) {
+          /* ignore */
+        }
       });
     });
   }
 
   async function initFilesManager() {
-    const filesForm = document.getElementById('files-form');
-    const filesAlert = document.getElementById('files-alert');
+    const filesForm = document.getElementById("files-form");
+    const filesAlert = document.getElementById("files-alert");
     if (!filesForm) return;
 
     const freshForm = filesForm.cloneNode(true);
     filesForm.parentNode.replaceChild(freshForm, filesForm);
 
-    const filesTable = freshForm.querySelector('#files-table');
-    const filesDynamicFields = freshForm.querySelector('#files-dynamic-fields');
-    const fileInput = freshForm.querySelector('#files-input');
+    const filesTable = freshForm.querySelector("#files-table");
+    const filesDynamicFields = freshForm.querySelector("#files-dynamic-fields");
+    const fileInput = freshForm.querySelector("#files-input");
     const submitButton = freshForm.querySelector('button[type="submit"]');
-    const cancelEditButton = document.getElementById('files-cancel-edit');
+    const cancelEditButton = document.getElementById("files-cancel-edit");
 
     let editingFileId = null;
 
@@ -1538,16 +1928,16 @@
       }
 
       if (cancelEditButton) {
-        cancelEditButton.style.display = editing ? 'inline-flex' : 'none';
+        cancelEditButton.style.display = editing ? "inline-flex" : "none";
       }
 
       if (fileInput) {
         if (editing) {
-          fileInput.removeAttribute('required');
-          fileInput.removeAttribute('multiple');
+          fileInput.removeAttribute("required");
+          fileInput.removeAttribute("multiple");
         } else {
-          fileInput.setAttribute('required', 'required');
-          fileInput.setAttribute('multiple', 'multiple');
+          fileInput.setAttribute("required", "required");
+          fileInput.setAttribute("multiple", "multiple");
         }
       }
     }
@@ -1560,15 +1950,17 @@
     }
 
     function applyEditState(id) {
-      const target = cachedFiles.map(normalizeFileRecord).find((row) => row.id === id);
+      const target = cachedFiles
+        .map(normalizeFileRecord)
+        .find((row) => row.id === id);
       if (!target) {
-        setAlert(filesAlert, 'danger', 'Düzenlenecek kayıt bulunamadı.');
+        setAlert(filesAlert, "danger", "Düzenlenecek kayıt bulunamadı.");
         return;
       }
 
       editingFileId = id;
       if (filesTable) {
-        filesTable.value = target.table || '';
+        filesTable.value = target.table || "";
       }
       syncFields();
 
@@ -1577,55 +1969,59 @@
         schema.fields.forEach((field) => {
           const input = freshForm.querySelector(`#files-${field.key}`);
           if (!input) return;
-          input.value = target[field.key] || '';
-          input.classList.remove('has-error');
+          input.value = target[field.key] || "";
+          input.classList.remove("has-error");
         });
       }
 
-      if (fileInput) fileInput.value = '';
+      if (fileInput) fileInput.value = "";
       setEditMode(true);
-      setAlert(filesAlert, 'warning', 'Düzenleme modu aktif. Dosya seçmeden sadece metadata güncelleyebilirsiniz.');
+      setAlert(
+        filesAlert,
+        "warning",
+        "Düzenleme modu aktif. Dosya seçmeden sadece metadata güncelleyebilirsiniz.",
+      );
     }
 
     function renderTableItems(tableKey) {
-      const container = document.getElementById('files-table-items');
-      const content = document.getElementById('files-table-content');
-      
+      const container = document.getElementById("files-table-items");
+      const content = document.getElementById("files-table-content");
+
       if (!tableKey) {
-        if (container) container.style.display = 'none';
+        if (container) container.style.display = "none";
         return;
       }
 
       const schema = getFileTableSchema(tableKey);
       if (!schema) {
-        if (container) container.style.display = 'none';
+        if (container) container.style.display = "none";
         return;
       }
 
       const items = cachedFiles
-        .filter(item => item.table === tableKey)
+        .filter((item) => item.table === tableKey)
         .map(normalizeFileRecord);
 
       if (!items.length) {
-        if (container) container.style.display = 'none';
+        if (container) container.style.display = "none";
         return;
       }
 
       // Build table HTML
       let html = '<table class="files-table"><thead><tr>';
-      
-      schema.fields.forEach(field => {
+
+      schema.fields.forEach((field) => {
         html += `<th>${field.label}</th>`;
       });
       html += '<th style="width:140px;">İşlemler</th></tr></thead><tbody>';
 
       items.forEach((item, index) => {
         html += `<tr data-file-id="${item.id}">`;
-        
-        schema.fields.forEach(field => {
-          const value = item[field.key] || '';
-          const isEditable = field.type === 'date' ? 'date' : 'text';
-          html += `<td><input type="${isEditable}" class="field-${field.key}" value="${value.replace(/"/g, '&quot;')}" /></td>`;
+
+        schema.fields.forEach((field) => {
+          const value = item[field.key] || "";
+          const isEditable = field.type === "date" ? "date" : "text";
+          html += `<td><input type="${isEditable}" class="field-${field.key}" value="${value.replace(/"/g, "&quot;")}" /></td>`;
         });
 
         html += `<td class="files-table-actions">
@@ -1638,100 +2034,113 @@
         </td></tr>`;
       });
 
-      html += '</tbody></table>';
+      html += "</tbody></table>";
 
       if (content) {
         content.innerHTML = html;
 
         // Attach event listeners
-        content.querySelectorAll('[data-save-record]').forEach(btn => {
-          btn.addEventListener('click', (e) => {
+        content.querySelectorAll("[data-save-record]").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
             e.preventDefault();
-            const id = btn.getAttribute('data-save-record');
-            const row = btn.closest('tr');
+            const id = btn.getAttribute("data-save-record");
+            const row = btn.closest("tr");
             saveTableRowChanges(id, tableKey, schema, row);
           });
         });
 
-        content.querySelectorAll('[data-delete-record]').forEach(btn => {
-          btn.addEventListener('click', (e) => {
+        content.querySelectorAll("[data-delete-record]").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
             e.preventDefault();
-            const id = btn.getAttribute('data-delete-record');
+            const id = btn.getAttribute("data-delete-record");
             deleteTableRecord(id);
           });
         });
       }
 
-      if (container) container.style.display = 'block';
+      if (container) container.style.display = "block";
     }
 
     async function saveTableRowChanges(recordId, tableKey, schema, row) {
       let isValid = true;
       const updates = { table: tableKey };
 
-      schema.fields.forEach(field => {
+      schema.fields.forEach((field) => {
         const input = row.querySelector(`.field-${field.key}`);
         if (input) {
           const value = input.value.trim();
           if (field.required && !value) {
-            input.classList.add('has-error');
+            input.classList.add("has-error");
             isValid = false;
           } else {
-            input.classList.remove('has-error');
+            input.classList.remove("has-error");
             updates[field.key] = value;
           }
         }
       });
 
       if (!isValid) {
-        setAlert(filesAlert, 'danger', 'Lütfen tüm zorunlu alanları doldurun.');
+        setAlert(filesAlert, "danger", "Lütfen tüm zorunlu alanları doldurun.");
         return;
       }
 
       try {
         const resp = await adminFetch(FILES_API_ENDPOINT, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: recordId, ...updates })
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: recordId, ...updates }),
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
-          cachedFiles = cachedFiles.map(f => f.id === recordId ? { ...f, ...updates } : f);
-          setAlert(filesAlert, 'success', 'Kayıt güncellendi.');
+          cachedFiles = cachedFiles.map((f) =>
+            f.id === recordId ? { ...f, ...updates } : f,
+          );
+          setAlert(filesAlert, "success", "Kayıt güncellendi.");
         } else {
-          setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt güncellenemedi.');
+          setAlert(
+            filesAlert,
+            "danger",
+            (data && data.error) || "Kayıt güncellenemedi.",
+          );
         }
       } catch (_) {
-        setAlert(filesAlert, 'danger', 'Kayıt güncellenemedi.');
+        setAlert(filesAlert, "danger", "Kayıt güncellenemedi.");
       }
     }
 
     async function deleteTableRecord(recordId) {
-      if (!confirm('Bu kaydı silmek istediğinizden emin misiniz?')) return;
+      if (!confirm("Bu kaydı silmek istediğinizden emin misiniz?")) return;
 
-      const target = cachedFiles.find(f => f.id === recordId);
+      const target = cachedFiles.find((f) => f.id === recordId);
       try {
         const resp = await adminFetch(FILES_API_ENDPOINT, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: recordId, file_url: target && target.file_url })
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: recordId,
+            file_url: target && target.file_url,
+          }),
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
-          cachedFiles = cachedFiles.filter(f => f.id !== recordId);
-          const tableSelect = document.getElementById('files-table');
+          cachedFiles = cachedFiles.filter((f) => f.id !== recordId);
+          const tableSelect = document.getElementById("files-table");
           if (tableSelect) renderTableItems(tableSelect.value);
-          setAlert(filesAlert, 'success', 'Kayıt silindi.');
+          setAlert(filesAlert, "success", "Kayıt silindi.");
         } else {
-          setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt silinemedi.');
+          setAlert(
+            filesAlert,
+            "danger",
+            (data && data.error) || "Kayıt silinemedi.",
+          );
         }
       } catch (_) {
-        setAlert(filesAlert, 'danger', 'Kayıt silinemedi.');
+        setAlert(filesAlert, "danger", "Kayıt silinemedi.");
       }
     }
 
     function syncFields() {
-      const table = filesTable ? filesTable.value : '';
+      const table = filesTable ? filesTable.value : "";
       renderFileMetadataFields(freshForm, table);
       renderTableItems(table);
     }
@@ -1746,60 +2155,71 @@
       schema.fields.forEach((field) => {
         const input = freshForm.querySelector(`#files-${field.key}`);
         const value = fieldValues[field.key];
-        const isEmpty = !String(value || '').trim();
+        const isEmpty = !String(value || "").trim();
         if (field.required && isEmpty) {
           invalidFields.push(field.key);
-          if (input) input.classList.add('has-error');
+          if (input) input.classList.add("has-error");
         } else if (input) {
-          input.classList.remove('has-error');
+          input.classList.remove("has-error");
         }
       });
 
       return { valid: invalidFields.length === 0, fieldValues, invalidFields };
     }
 
-    freshForm.addEventListener('submit', async (e) => {
+    freshForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const table = filesTable ? filesTable.value.trim() : '';
+      const table = filesTable ? filesTable.value.trim() : "";
       const schema = getFileTableSchema(table);
       if (!schema) {
-        if (filesTable) filesTable.classList.add('has-error');
-        setAlert(filesAlert, 'danger', 'Lütfen bir tablo seçin.');
+        if (filesTable) filesTable.classList.add("has-error");
+        setAlert(filesAlert, "danger", "Lütfen bir tablo seçin.");
         return;
       }
 
       const { valid, fieldValues } = validateDynamicFields(table);
       if (!valid) {
-        setAlert(filesAlert, 'danger', 'Lütfen seçilen tabloya ait zorunlu alanları doldurun.');
+        setAlert(
+          filesAlert,
+          "danger",
+          "Lütfen seçilen tabloya ait zorunlu alanları doldurun.",
+        );
         return;
       }
 
-      if (!editingFileId && (!fileInput || !fileInput.files || !fileInput.files.length)) {
-        setAlert(filesAlert, 'warning', 'Lütfen en az bir dosya seçin.');
+      if (
+        !editingFileId &&
+        (!fileInput || !fileInput.files || !fileInput.files.length)
+      ) {
+        setAlert(filesAlert, "warning", "Lütfen en az bir dosya seçin.");
         return;
       }
 
       try {
         if (editingFileId) {
           const resp = await adminFetch(FILES_API_ENDPOINT, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: editingFileId, table, ...fieldValues })
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: editingFileId, table, ...fieldValues }),
           });
           const data = await resp.json().catch(() => ({}));
           if (!resp.ok || !data.ok) {
-            setAlert(filesAlert, 'danger', (data && data.error) || 'Kayıt güncellenemedi.');
+            setAlert(
+              filesAlert,
+              "danger",
+              (data && data.error) || "Kayıt güncellenemedi.",
+            );
             return;
           }
-          setAlert(filesAlert, 'success', 'Dosya kaydı güncellendi.');
+          setAlert(filesAlert, "success", "Dosya kaydı güncellendi.");
           resetEditState();
           await renderFilesList(applyEditState);
           return;
         }
 
         if (!fileInput || !fileInput.files || !fileInput.files.length) {
-          setAlert(filesAlert, 'warning', 'Lütfen en az bir dosya seçin.');
+          setAlert(filesAlert, "warning", "Lütfen en az bir dosya seçin.");
           return;
         }
 
@@ -1807,44 +2227,56 @@
         for (const file of Array.from(fileInput.files)) {
           const dataUrl = await fileToDataUrl(file);
           const resp = await adminFetch(FILES_API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               fileData: dataUrl,
               fileName: file.name,
-              fileType: file.type || 'application/octet-stream',
+              fileType: file.type || "application/octet-stream",
               fileSize: file.size || 0,
               table,
               uploadedAt: new Date().toISOString(),
-              ...fieldValues
-            })
+              ...fieldValues,
+            }),
           });
           const data = await resp.json().catch(() => ({}));
           if (!resp.ok || !data.ok) {
-            setAlert(filesAlert, 'danger', `"${file.name}" yüklenemedi: ${(data && data.error) || 'Sunucu hatası'}`);
+            setAlert(
+              filesAlert,
+              "danger",
+              `"${file.name}" yüklenemedi: ${(data && data.error) || "Sunucu hatası"}`,
+            );
             return;
           }
           uploadedCount++;
         }
 
-        setAlert(filesAlert, 'success', `${uploadedCount} dosya başarıyla yüklendi.`);
+        setAlert(
+          filesAlert,
+          "success",
+          `${uploadedCount} dosya başarıyla yüklendi.`,
+        );
         resetEditState();
         if (filesTable) filesTable.focus();
         await renderFilesList(applyEditState);
       } catch (error) {
-        setAlert(filesAlert, 'danger', 'Dosya yüklenemedi: ' + (error.message || 'Bilinmeyen hata'));
+        setAlert(
+          filesAlert,
+          "danger",
+          "Dosya yüklenemedi: " + (error.message || "Bilinmeyen hata"),
+        );
       }
     });
 
     await refreshFilesCache();
 
     if (filesTable) {
-      filesTable.addEventListener('change', syncFields);
+      filesTable.addEventListener("change", syncFields);
       syncFields();
     }
 
     if (cancelEditButton) {
-      cancelEditButton.addEventListener('click', () => {
+      cancelEditButton.addEventListener("click", () => {
         resetEditState();
       });
     }
@@ -1857,224 +2289,272 @@
   // /api/admin-* endpoints reject those actions server-side regardless —
   // this is just so a viewer doesn't see dead-end links).
   function applyProfileToUI(profile, isFullAdmin) {
-    const nameEl   = document.getElementById('sidebar-user-name');
-    const roleEl   = document.getElementById('sidebar-user-role');
-    const avatarEl = document.getElementById('sidebar-user-avatar');
+    const nameEl = document.getElementById("sidebar-user-name");
+    const roleEl = document.getElementById("sidebar-user-role");
+    const avatarEl = document.getElementById("sidebar-user-avatar");
 
     if (nameEl) {
-      nameEl.textContent = profile.email || 'Admin';
-      nameEl.title = profile.email || 'Admin';
+      nameEl.textContent = profile.email || "Admin";
+      nameEl.title = profile.email || "Admin";
     }
-    if (roleEl) roleEl.textContent = isFullAdmin ? 'Tam Yetkili Admin' : 'Sınırlı Erişim (Görüntüleyici)';
-    if (avatarEl) avatarEl.textContent = (profile.email || 'A').charAt(0).toUpperCase();
+    if (roleEl)
+      roleEl.textContent = isFullAdmin
+        ? "Tam Yetkili Admin"
+        : "Sınırlı Erişim (Görüntüleyici)";
+    if (avatarEl)
+      avatarEl.textContent = (profile.email || "A").charAt(0).toUpperCase();
 
-    document.querySelectorAll('[data-requires-role="admin"]').forEach((item) => {
-      item.style.display = isFullAdmin ? '' : 'none';
-    });
+    document
+      .querySelectorAll('[data-requires-role="admin"]')
+      .forEach((item) => {
+        item.style.display = isFullAdmin ? "" : "none";
+      });
   }
 
   // ── Render admin panel ────────────────────────────────────
   async function renderPanel() {
-    const loginScreen = document.getElementById('login-screen');
-    const adminPanel  = document.getElementById('admin-panel');
+    const loginScreen = document.getElementById("login-screen");
+    const adminPanel = document.getElementById("admin-panel");
     if (loginScreen) hide(loginScreen);
-    if (adminPanel)  show(adminPanel);
+    if (adminPanel) show(adminPanel);
 
-    let profile = { email: '', role: 'admin' };
+    let profile = { email: "", role: "admin" };
     try {
-      const resp = await adminFetch(ADMIN_ME_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const resp = await adminFetch(ADMIN_ME_ENDPOINT, {
+        headers: { Accept: "application/json" },
+      });
       const data = await resp.json().catch(() => ({}));
-      if (resp.ok && data.ok) profile = { email: data.email || '', role: data.role || 'admin' };
+      if (resp.ok && data.ok)
+        profile = { email: data.email || "", role: data.role || "admin" };
     } catch (e) {
       // adminFetch already redirected to login if the session itself was invalid
     }
-    const isFullAdmin = profile.role === 'admin';
+    const isFullAdmin = profile.role === "admin";
     applyProfileToUI(profile, isFullAdmin);
 
     // Full-admin-only sections: Prices, News, Files. A 'viewer' admin only
     // gets read-only Customer Center + their own Security/password page.
     if (isFullAdmin) {
-    // Populate price fields instantly from the local cache, then refresh
-    // from the server (Supabase `pricing` table) once it responds.
-    const prices = loadPrices();
-    PRICE_KEYS.forEach((key) => {
-      const fieldId = PRICE_FIELD_MAP[key];
-      const input = fieldId ? document.getElementById(fieldId) : null;
-      if (input) input.value = prices[key];
-    });
-
-    // ── Price form save ──
-    const priceForm  = document.getElementById('price-form');
-    const priceAlert = document.getElementById('price-alert');
-
-    if (priceForm) {
-      // Remove any stale listeners
-      const newForm = priceForm.cloneNode(true);
-      priceForm.parentNode.replaceChild(newForm, priceForm);
-
-      fillPriceInputs(prices);
-
-      setAlert(priceAlert, 'warning', 'Güncel fiyatlar yükleniyor...');
-      fetchServerPrices().then((serverPrices) => {
-        cachePrices(serverPrices);
-        fillPriceInputs(serverPrices);
-        setAlert(priceAlert, 'success', 'Güncel fiyatlar yüklendi.');
-      }).catch((error) => {
-        setAlert(priceAlert, 'danger', (error && error.message) || 'Fiyatlar sunucudan alınamadı, önbellekteki değerler gösteriliyor.');
+      // Populate price fields instantly from the local cache, then refresh
+      // from the server (Supabase `pricing` table) once it responds.
+      const prices = loadPrices();
+      PRICE_KEYS.forEach((key) => {
+        const fieldId = PRICE_FIELD_MAP[key];
+        const input = fieldId ? document.getElementById(fieldId) : null;
+        if (input) input.value = prices[key];
       });
 
-      newForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const { valid, data: updated } = readPricesFromInputs();
+      // ── Price form save ──
+      const priceForm = document.getElementById("price-form");
+      const priceAlert = document.getElementById("price-alert");
 
-        if (!valid) {
-          setAlert(priceAlert, 'danger', 'Lütfen tüm fiyat alanlarını doğru doldurun.');
-          return;
-        }
+      if (priceForm) {
+        // Remove any stale listeners
+        const newForm = priceForm.cloneNode(true);
+        priceForm.parentNode.replaceChild(newForm, priceForm);
 
-        const submitBtn = newForm.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
-        setAlert(priceAlert, 'warning', 'Kaydediliyor...');
+        fillPriceInputs(prices);
 
-        try {
-          await savePrices(updated);
-          setAlert(priceAlert, 'success', 'Fiyatlar başarıyla kaydedildi. Değişiklikler sitede anında görünür.');
-        } catch (error) {
-          setAlert(priceAlert, 'danger', (error && error.message) || 'Fiyatlar kaydedilemedi.');
-        } finally {
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      });
+        setAlert(priceAlert, "warning", "Güncel fiyatlar yükleniyor...");
+        fetchServerPrices()
+          .then((serverPrices) => {
+            cachePrices(serverPrices);
+            fillPriceInputs(serverPrices);
+            setAlert(priceAlert, "success", "Güncel fiyatlar yüklendi.");
+          })
+          .catch((error) => {
+            setAlert(
+              priceAlert,
+              "danger",
+              (error && error.message) ||
+                "Fiyatlar sunucudan alınamadı, önbellekteki değerler gösteriliyor.",
+            );
+          });
 
-      const btnPriceExport = document.getElementById('btn-price-export');
-      const btnPriceImport = document.getElementById('btn-price-import');
-      const priceImportFile = document.getElementById('price-import-file');
+        newForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const { valid, data: updated } = readPricesFromInputs();
 
-      if (btnPriceExport) {
-        btnPriceExport.addEventListener('click', function () {
-          const { valid, data } = readPricesFromInputs();
-          const payload = valid ? data : loadPrices();
-          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
-          const href = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          const stamp = new Date().toISOString().slice(0, 10);
-          a.href = href;
-          a.download = `eimza-prices-${stamp}.json`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(href);
-          setAlert(priceAlert, 'success', 'Fiyat dosyası dışa aktarıldı.');
-        });
-      }
-
-      if (btnPriceImport && priceImportFile) {
-        btnPriceImport.addEventListener('click', function () {
-          priceImportFile.click();
-        });
-
-        priceImportFile.addEventListener('change', async function (event) {
-          const file = event.target && event.target.files ? event.target.files[0] : null;
-          if (!file) return;
-
-          try {
-            const text = await file.text();
-            const parsed = JSON.parse(text);
-            const normalized = normalizeImportedPrices(parsed);
-
-            if (!normalized) {
-              setAlert(priceAlert, 'danger', 'Geçersiz JSON formatı. Tüm fiyat anahtarları sayısal olmalıdır.');
-              priceImportFile.value = '';
-              return;
-            }
-
-            fillPriceInputs(normalized);
-            await savePrices(normalized);
-            setAlert(priceAlert, 'success', 'Fiyatlar JSON dosyasından içe aktarıldı.');
-          } catch (error) {
-            setAlert(priceAlert, 'danger', (error && error.message) || 'JSON dosyası okunamadı veya bozuk.');
+          if (!valid) {
+            setAlert(
+              priceAlert,
+              "danger",
+              "Lütfen tüm fiyat alanlarını doğru doldurun.",
+            );
+            return;
           }
 
-          priceImportFile.value = '';
-        });
-      }
-    }
+          const submitBtn = newForm.querySelector('button[type="submit"]');
+          if (submitBtn) submitBtn.disabled = true;
+          setAlert(priceAlert, "warning", "Kaydediliyor...");
 
-    initNewsManager();
-    initFilesManager();
+          try {
+            await savePrices(updated);
+            setAlert(
+              priceAlert,
+              "success",
+              "Fiyatlar başarıyla kaydedildi. Değişiklikler sitede anında görünür.",
+            );
+          } catch (error) {
+            setAlert(
+              priceAlert,
+              "danger",
+              (error && error.message) || "Fiyatlar kaydedilemedi.",
+            );
+          } finally {
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        });
+
+        const btnPriceExport = document.getElementById("btn-price-export");
+        const btnPriceImport = document.getElementById("btn-price-import");
+        const priceImportFile = document.getElementById("price-import-file");
+
+        if (btnPriceExport) {
+          btnPriceExport.addEventListener("click", function () {
+            const { valid, data } = readPricesFromInputs();
+            const payload = valid ? data : loadPrices();
+            const blob = new Blob([JSON.stringify(payload, null, 2)], {
+              type: "application/json;charset=utf-8",
+            });
+            const href = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            const stamp = new Date().toISOString().slice(0, 10);
+            a.href = href;
+            a.download = `eimza-prices-${stamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(href);
+            setAlert(priceAlert, "success", "Fiyat dosyası dışa aktarıldı.");
+          });
+        }
+
+        if (btnPriceImport && priceImportFile) {
+          btnPriceImport.addEventListener("click", function () {
+            priceImportFile.click();
+          });
+
+          priceImportFile.addEventListener("change", async function (event) {
+            const file =
+              event.target && event.target.files ? event.target.files[0] : null;
+            if (!file) return;
+
+            try {
+              const text = await file.text();
+              const parsed = JSON.parse(text);
+              const normalized = normalizeImportedPrices(parsed);
+
+              if (!normalized) {
+                setAlert(
+                  priceAlert,
+                  "danger",
+                  "Geçersiz JSON formatı. Tüm fiyat anahtarları sayısal olmalıdır.",
+                );
+                priceImportFile.value = "";
+                return;
+              }
+
+              fillPriceInputs(normalized);
+              await savePrices(normalized);
+              setAlert(
+                priceAlert,
+                "success",
+                "Fiyatlar JSON dosyasından içe aktarıldı.",
+              );
+            } catch (error) {
+              setAlert(
+                priceAlert,
+                "danger",
+                (error && error.message) ||
+                  "JSON dosyası okunamadı veya bozuk.",
+              );
+            }
+
+            priceImportFile.value = "";
+          });
+        }
+      }
+
+      initNewsManager();
+      initFilesManager();
     } // end if (isFullAdmin)
 
     initCustomerCenter(isFullAdmin);
 
     // ── Logout ──
-    document.querySelectorAll('[data-action="logout"]').forEach(btn => {
-      btn.addEventListener('click', async function () {
+    document.querySelectorAll('[data-action="logout"]').forEach((btn) => {
+      btn.addEventListener("click", async function () {
         await signOutCurrentSession();
         renderLogin();
       });
     });
 
     // ── Sidebar mobile toggle ──
-    const hamburgerAdmin = document.getElementById('hamburger-admin');
-    const sidebar        = document.getElementById('sidebar');
-    const overlay        = document.getElementById('sidebar-overlay');
+    const hamburgerAdmin = document.getElementById("hamburger-admin");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
 
     if (hamburgerAdmin && sidebar) {
-      hamburgerAdmin.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('show');
+      hamburgerAdmin.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        if (overlay) overlay.classList.toggle("show");
       });
     }
 
     if (overlay) {
-      overlay.addEventListener('click', () => {
-        if (sidebar) sidebar.classList.remove('open');
-        overlay.classList.remove('show');
+      overlay.addEventListener("click", () => {
+        if (sidebar) sidebar.classList.remove("open");
+        overlay.classList.remove("show");
       });
     }
 
     // ── Section navigation ──
-    const allPanels   = document.querySelectorAll('.admin-content .panel-card');
-    const previewBanner = document.querySelector('.preview-banner');
-    const topbarTitle = document.querySelector('.admin-topbar__title');
+    const allPanels = document.querySelectorAll(".admin-content .panel-card");
+    const previewBanner = document.querySelector(".preview-banner");
+    const topbarTitle = document.querySelector(".admin-topbar__title");
 
     const SECTION_TITLES = {
-      'prices':           'Fiyat Yönetimi',
-      'news-manager':     'Haber Yönetimi',
-      'files-manager':    'Dosya Yönetimi',
-      'customer-center':  'Müşteri Kayıtları'
+      prices: "Fiyat Yönetimi",
+      "news-manager": "Haber Yönetimi",
+      "files-manager": "Dosya Yönetimi",
+      "customer-center": "Müşteri Kayıtları",
     };
 
     function showSection(sectionId) {
       allPanels.forEach(function (panel) {
-        panel.style.display = panel.id === sectionId ? '' : 'none';
+        panel.style.display = panel.id === sectionId ? "" : "none";
       });
-      if (previewBanner) previewBanner.style.display = sectionId === 'prices' ? '' : 'none';
-      if (topbarTitle) topbarTitle.textContent = SECTION_TITLES[sectionId] || 'Yönetim Paneli';
-      document.querySelectorAll('[data-section]').forEach(function (item) {
-        item.classList.toggle('active', item.getAttribute('data-section') === sectionId);
+      if (previewBanner)
+        previewBanner.style.display = sectionId === "prices" ? "" : "none";
+      if (topbarTitle)
+        topbarTitle.textContent = SECTION_TITLES[sectionId] || "Yönetim Paneli";
+      document.querySelectorAll("[data-section]").forEach(function (item) {
+        item.classList.toggle(
+          "active",
+          item.getAttribute("data-section") === sectionId,
+        );
       });
     }
 
-    document.querySelectorAll('[data-section]').forEach(function (item) {
-      item.addEventListener('click', function (e) {
+    document.querySelectorAll("[data-section]").forEach(function (item) {
+      item.addEventListener("click", function (e) {
         e.preventDefault();
-        showSection(item.getAttribute('data-section'));
-        if (sidebar) sidebar.classList.remove('open');
-        if (overlay) overlay.classList.remove('show');
+        showSection(item.getAttribute("data-section"));
+        if (sidebar) sidebar.classList.remove("open");
+        if (overlay) overlay.classList.remove("show");
       });
     });
 
-    showSection(isFullAdmin ? 'prices' : 'customer-center');
+    showSection(isFullAdmin ? "prices" : "customer-center");
   }
 
   // ── Init ──────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', async function () {
+  document.addEventListener("DOMContentLoaded", async function () {
     if (await isLoggedIn()) {
       renderPanel();
     } else {
       renderLogin();
     }
   });
-
 })();
