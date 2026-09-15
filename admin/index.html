@@ -90,7 +90,10 @@
       </div>
 
       <nav class="sidebar__nav">
-        <a href="#" class="sidebar__nav-item active" data-section="prices" data-requires-role="admin">
+        <a href="#" class="sidebar__nav-item active" data-section="dashboard">
+          <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        <a href="#" class="sidebar__nav-item" data-section="prices" data-requires-role="admin">
           <i class="fa-solid fa-tag"></i> Fiyat Yönetimi
         </a>
         <a href="#" class="sidebar__nav-item" data-section="news-manager" data-requires-role="admin">
@@ -149,6 +152,50 @@
           <a href="../index.html#pricing" target="_blank" rel="noopener">
             Fiyatlandırma Bölümünü Gör <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </a>
+        </div>
+
+        <!-- -- Dashboard Card -- -->
+        <div class="panel-card" id="dashboard">
+          <div class="panel-card__header">
+            <div class="panel-card__header-left">
+              <div class="panel-card__title">Dashboard</div>
+              <div class="panel-card__sub">İşletmenizin genel durumuna hızlı bir bakış</div>
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm" id="dashboard-refresh">
+              <i class="fa-solid fa-arrows-rotate"></i> Yenile
+            </button>
+          </div>
+
+          <div class="panel-card__body">
+            <div id="dashboard-alert" class="alert" aria-live="polite"></div>
+
+            <div class="dashboard-stats" id="dashboard-stats"></div>
+
+            <div class="dashboard-grid">
+              <div class="dashboard-panel">
+                <div class="dashboard-panel__head">
+                  <h4>Ödeme Durumu</h4>
+                  <span class="save-hint">1 Ocak 2026 itibarıyla</span>
+                </div>
+                <div id="dashboard-payment-status"></div>
+              </div>
+
+              <div class="dashboard-panel">
+                <div class="dashboard-panel__head">
+                  <h4>Ödeme Yöntemleri</h4>
+                  <span class="save-hint">Ödemesi alınan müşteriler</span>
+                </div>
+                <div id="dashboard-payment-methods"></div>
+              </div>
+            </div>
+
+            <div class="dashboard-panel dashboard-panel--full">
+              <div class="dashboard-panel__head">
+                <h4>İmza Teslim Durumu</h4>
+              </div>
+              <div id="dashboard-signature-status"></div>
+            </div>
+          </div>
         </div>
 
         <!-- -- Price Management Card -- -->

@@ -1385,6 +1385,200 @@ a { color: inherit; text-decoration: none; }
 
 .sidebar-overlay.show { display: block; }
 
+/* ── Dashboard ──────────────────────────────────────────────────────────── */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-stat-card {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%);
+  padding: 1.2rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.dashboard-stat-card__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--color-bg-tint);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+}
+
+.dashboard-stat-card__value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.dashboard-stat-card__label {
+  font-size: .82rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.dashboard-panel {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.dashboard-panel--full { grid-column: 1 / -1; margin-bottom: 0; }
+
+.dashboard-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: 1.1rem;
+}
+
+.dashboard-panel__head h4 {
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+.dashboard-empty {
+  font-size: .86rem;
+  color: var(--color-text-muted);
+  padding: .5rem 0;
+}
+
+.donut-wrap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1.25rem;
+}
+
+.donut-chart {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(var(--color-success) calc(var(--donut-value, 0) * 1%), var(--color-border) 0);
+}
+
+.donut-chart__center {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .1rem;
+}
+
+.donut-chart__center strong { font-size: 1.3rem; font-weight: 800; }
+.donut-chart__center span { font-size: .74rem; color: var(--color-text-muted); }
+
+.dashboard-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  font-size: .86rem;
+}
+
+.dashboard-legend li {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.dashboard-legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dashboard-legend__dot--paid { background: var(--color-success); }
+.dashboard-legend__dot--unpaid { background: var(--color-border); }
+
+.method-bar { margin-bottom: 1rem; }
+.method-bar:last-child { margin-bottom: 0; }
+
+.method-bar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .86rem;
+  margin-bottom: .4rem;
+}
+
+.method-bar__track {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+
+.method-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.signature-status__numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  margin-bottom: 1rem;
+}
+
+.signature-status__numbers strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.signature-status__numbers span {
+  font-size: .82rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.progress-track {
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-light);
+  overflow: hidden;
+  margin-bottom: .5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-success), #22c55e);
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 700px) {
   .sidebar {
     transform: translateX(-100%);

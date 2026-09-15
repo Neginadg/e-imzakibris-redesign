@@ -16,6 +16,7 @@
   const NEWS_API_ENDPOINT = "/api/admin-news";
   let cachedNews = [];
   const ADMIN_ME_ENDPOINT = "/api/admin-me";
+  const DASHBOARD_API_ENDPOINT = "/api/admin-dashboard";
   const FILE_TABLES = {
     applicationguidelines: {
       label: "Application Guidelines",
@@ -1117,6 +1118,135 @@
         })
         .join("");
     }
+  }
+
+  /* ---- Dashboard ---- */
+  const DASHBOARD_STAT_ITEMS = [
+    { key: "signatureUsers", label: "Elektronik İmza Kullanıcıları", icon: "fa-solid fa-users" },
+    { key: "applications", label: "Başvurular", icon: "fa-solid fa-file-signature" },
+    { key: "renewals", label: "Yenilemeler", icon: "fa-solid fa-rotate" },
+    { key: "molohiya", label: "Molohiya Satışları", icon: "fa-solid fa-box-open" },
+    { key: "timestamp", label: "Zaman Damgası Satışları", icon: "fa-solid fa-stamp" },
+  ];
+
+  function formatDashboardNumber(value) {
+    return Number(value || 0).toLocaleString("tr-TR");
+  }
+
+  function renderDashboardStats(stats) {
+    const data = stats || {};
+    return DASHBOARD_STAT_ITEMS.map(function (item) {
+      return (
+        '<div class="dashboard-stat-card">' +
+        '<div class="dashboard-stat-card__icon"><i class="' + item.icon + '"></i></div>' +
+        '<div class="dashboard-stat-card__value">' + formatDashboardNumber(data[item.key]) + "</div>" +
+        '<div class="dashboard-stat-card__label">' + escapeHtml(item.label) + "</div>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function renderPaymentStatus(paymentStatus) {
+    const paid = (paymentStatus && paymentStatus.paid) || 0;
+    const unpaid = (paymentStatus && paymentStatus.unpaid) || 0;
+    const total = paid + unpaid;
+
+    if (!total) {
+      return '<p class="dashboard-empty">1 Ocak 2026 sonrasına ait kayıt bulunamadı.</p>';
+    }
+
+    const paidPct = Math.round((paid / total) * 100);
+    const unpaidPct = 100 - paidPct;
+
+    return (
+      '<div class="donut-wrap">' +
+      '<div class="donut-chart" style="--donut-value:' + paidPct + '"></div>' +
+      '<div class="donut-chart__center"><strong>%' + paidPct + "</strong><span>Ödendi</span></div>" +
+      "</div>" +
+      '<ul class="dashboard-legend">' +
+      '<li><span class="dashboard-legend__dot dashboard-legend__dot--paid"></span>Ödendi <strong>' + formatDashboardNumber(paid) + '</strong> <span class="save-hint">(%' + paidPct + ")</span></li>" +
+      '<li><span class="dashboard-legend__dot dashboard-legend__dot--unpaid"></span>Ödenmedi <strong>' + formatDashboardNumber(unpaid) + '</strong> <span class="save-hint">(%' + unpaidPct + ")</span></li>" +
+      "</ul>"
+    );
+  }
+
+  function renderPaymentMethods(methods) {
+    const list = Array.isArray(methods) ? methods.filter(function (m) { return m && m.count > 0; }) : [];
+    if (!list.length) {
+      return '<p class="dashboard-empty">Henüz ödemesi alınan kayıt yok.</p>';
+    }
+
+    const total = list.reduce(function (sum, m) { return sum + m.count; }, 0);
+
+    return list.map(function (m) {
+      const pct = total ? Math.round((m.count / total) * 100) : 0;
+      return (
+        '<div class="method-bar">' +
+        '<div class="method-bar__head"><span>' + escapeHtml(m.method) + "</span><strong>" + formatDashboardNumber(m.count) + "</strong></div>" +
+        '<div class="method-bar__track"><div class="method-bar__fill" style="width:' + pct + '%"></div></div>' +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function renderSignatureStatus(signatureStatus) {
+    const issued = (signatureStatus && signatureStatus.issued) || 0;
+    const pending = (signatureStatus && signatureStatus.pending) || 0;
+    const total = issued + pending;
+    const pct = total ? Math.round((issued / total) * 100) : 0;
+
+    return (
+      '<div class="signature-status">' +
+      '<div class="signature-status__numbers">' +
+      "<div><strong>" + formatDashboardNumber(issued) + "</strong><span>İmzası Hazır</span></div>" +
+      "<div><strong>" + formatDashboardNumber(pending) + "</strong><span>Bekleyen</span></div>" +
+      "</div>" +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="save-hint">%' + pct + " tamamlandı</div>" +
+      "</div>"
+    );
+  }
+
+  function initDashboard() {
+    const alertEl = document.getElementById("dashboard-alert");
+    const statsEl = document.getElementById("dashboard-stats");
+    const paymentStatusEl = document.getElementById("dashboard-payment-status");
+    const paymentMethodsEl = document.getElementById("dashboard-payment-methods");
+    const signatureStatusEl = document.getElementById("dashboard-signature-status");
+    const refreshBtn = document.getElementById("dashboard-refresh");
+    if (!statsEl) return;
+
+    let isLoading = false;
+
+    async function loadDashboard() {
+      if (isLoading) return;
+      isLoading = true;
+      if (refreshBtn) refreshBtn.disabled = true;
+      setAlert(alertEl, "warning", "Yükleniyor...");
+
+      try {
+        const resp = await adminFetch(DASHBOARD_API_ENDPOINT, { headers: { Accept: "application/json" } });
+        const data = await resp.json().catch(function () { return {}; });
+        if (!resp.ok || !data.ok) throw new Error((data && data.error) || "Dashboard verileri alınamadı.");
+
+        statsEl.innerHTML = renderDashboardStats(data.stats);
+        if (paymentStatusEl) paymentStatusEl.innerHTML = renderPaymentStatus(data.paymentStatus);
+        if (paymentMethodsEl) paymentMethodsEl.innerHTML = renderPaymentMethods(data.paymentMethods);
+        if (signatureStatusEl) signatureStatusEl.innerHTML = renderSignatureStatus(data.signatureStatus);
+
+        setAlert(alertEl, "success", "Güncel veriler yüklendi.");
+      } catch (error) {
+        setAlert(alertEl, "danger", (error && error.message) || "Dashboard verileri alınamadı.");
+      } finally {
+        isLoading = false;
+        if (refreshBtn) refreshBtn.disabled = false;
+      }
+    }
+
+    if (refreshBtn) refreshBtn.addEventListener("click", function () { loadDashboard(); });
+
+    loadDashboard();
+    return loadDashboard;
   }
 
   function initCustomerCenter(isFullAdmin) {
@@ -2480,6 +2610,7 @@
       initFilesManager();
     } // end if (isFullAdmin)
 
+    const reloadDashboard = initDashboard();
     initCustomerCenter(isFullAdmin);
 
     // ── Logout ──
@@ -2515,6 +2646,7 @@
     const topbarTitle = document.querySelector(".admin-topbar__title");
 
     const SECTION_TITLES = {
+      dashboard: "Dashboard",
       prices: "Fiyat Yönetimi",
       "news-manager": "Haber Yönetimi",
       "files-manager": "Dosya Yönetimi",
@@ -2540,13 +2672,15 @@
     document.querySelectorAll("[data-section]").forEach(function (item) {
       item.addEventListener("click", function (e) {
         e.preventDefault();
-        showSection(item.getAttribute("data-section"));
+        const sectionId = item.getAttribute("data-section");
+        showSection(sectionId);
+        if (sectionId === "dashboard" && reloadDashboard) reloadDashboard();
         if (sidebar) sidebar.classList.remove("open");
         if (overlay) overlay.classList.remove("show");
       });
     });
 
-    showSection(isFullAdmin ? "prices" : "customer-center");
+    showSection("dashboard");
   }
 
   // ── Init ──────────────────────────────────────────────────
