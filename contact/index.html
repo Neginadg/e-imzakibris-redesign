@@ -307,6 +307,8 @@
               <textarea name="mesaj" rows="6" required></textarea>
             </label>
 
+            <div class="field field--full cf-turnstile-container" style="margin: 1.25rem 0;"></div>
+
             <div class="field field--full" style="margin-top:4px;">
               <button type="submit" class="btn btn--primary btn--lg" style="width:100%;justify-content:center;">
                 <i class="fa-solid fa-paper-plane"></i> GÖNDER
@@ -408,8 +410,10 @@
     </div>
   </footer>
 
+  <script src="../assets/js/turnstile-config.js"></script>
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
 </body>
 </html>
 

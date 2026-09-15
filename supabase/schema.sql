@@ -94,11 +94,13 @@ create table if not exists public.molohiya_application (
   created_at timestamptz not null default now()
 );
 
--- contact_messages: Disable RLS for public contact form submissions
-alter table public.contact_messages disable row level security;
+-- contact_messages: RLS is enabled in 09_contact_messages_rls.sql so that
+-- submissions can only reach the table through /api/contact-submit, which
+-- verifies the Cloudflare Turnstile token before inserting.
 
 -- Keep RLS enabled for app-specific tables that need protection
 alter table public.applications enable row level security;
+alter table public.contact_messages enable row level security;
 alter table public.renewal_requests enable row level security;
 alter table public.molohiya_requests enable row level security;
 alter table public.timestamp_requests enable row level security;

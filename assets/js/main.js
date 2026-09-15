@@ -13,13 +13,13 @@
   const TURNSTILE_SITE_KEY = String((window.EIMZA_TURNSTILE_CONFIG && window.EIMZA_TURNSTILE_CONFIG.siteKey) || '').trim();
   // Endpoints that create customer/application records — protected by
   // Cloudflare Turnstile to keep bot-submitted fake applications out of the
-  // Müşteri Kayıtları admin panel. Contact form and payment callbacks aren't
-  // in this set.
+  // Müşteri Kayıtları admin panel. Payment callbacks aren't in this set.
   const TURNSTILE_PROTECTED_ENDPOINTS = new Set([
     '/api/application-submit',
     '/api/renewal-submit',
     '/api/molohiya-submit',
-    '/api/timestamp-submit'
+    '/api/timestamp-submit',
+    '/api/contact-submit'
   ]);
   let turnstileWidgetId = null;
   let currentLanguage = 'tr';
@@ -185,38 +185,6 @@
       // (success or failure) so a retry gets a fresh one.
       if (isProtected) resetTurnstileWidget();
     }
-  }
-
-  async function insertContactMessageDirect(payload) {
-    if (!isSupabaseConfigured()) {
-      throw new Error('Supabase is not configured');
-    }
-
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=representation'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const responseText = await response.text();
-    if (!response.ok) {
-      throw new Error(responseText || `Supabase insert failed with status ${response.status}`);
-    }
-
-    if (!responseText) {
-      return null;
-    }
-
-    const data = JSON.parse(responseText);
-    if (Array.isArray(data)) {
-      return data[0] || null;
-    }
-    return data;
   }
 
   const EN_TRANSLATIONS = {
@@ -1460,25 +1428,12 @@
       }
 
       try {
-        // Fast path: try direct Supabase insert (uses anon key) so user gets immediate response.
-        // contact_messages has RLS disabled in migrations so this should succeed. If it fails,
-        // fall back to the server endpoint which uses the service_role key and may also send emails.
-        try {
-          await insertContactMessageDirect(payload);
-          contactForm.reset();
-          setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
-
-          // Notify backend (email, analytics) asynchronously — do not block the user.
-          postBackendForm('/api/contact-submit', payload).catch((err) => {
-            // Log but don't show to user; backend may retry or log separately.
-            console.warn('Background notify failed:', err && err.message ? err.message : err);
-          });
-        } catch (directError) {
-          // Direct insert failed (likely RLS). Try server endpoint synchronously as a fallback.
-          await postBackendForm('/api/contact-submit', payload);
-          contactForm.reset();
-          setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
-        }
+        // Routed through the server endpoint (not a direct Supabase insert) so the
+        // Turnstile token above is actually verified — a direct client-side insert
+        // would let bots skip verification entirely.
+        await postBackendForm('/api/contact-submit', payload);
+        contactForm.reset();
+        setFormMessage(contactMessage, 'success', 'Mesajınız kaydedildi. Ekibimiz en kısa sürede size dönecek.');
       } catch (error) {
         setFormMessage(contactMessage, 'danger', error.message || 'Mesaj kaydedilemedi. Lütfen tekrar deneyin.');
       } finally {
