@@ -27,6 +27,16 @@ const PAID_SINCE_DATE = '2026-01-01T00:00:00.000Z';
 // onward — "Electronic Signature Users" stays the all-time total.
 const APPLICATIONS_SINCE_DATE = '2026-06-30T00:00:00.000Z';
 
+// Every date-filtered query below is also restricted to source_file_name =
+// 'website'. This table holds both real web submissions (imported_at set at
+// genuine insert time) AND a large legacy bulk-imported historical dataset
+// whose imported_at only reflects whenever that import happened to run —
+// not the customer's real signup date (api/admin-customers.js already works
+// around this the same way for display: it prefers kayit_tarihi, a free-text
+// field, over imported_at for exactly this reason). Without this filter, a
+// "since <date>" count silently sweeps in old legacy rows too.
+const WEBSITE_SOURCE_FILTER = { source_file_name: 'eq.website' };
+
 // Payment method values as actually written by the submission forms (see
 // assets/js/main.js / api/application-submit.js) — reused as-is rather than
 // invented categories. Anything else falls into "other" below.
@@ -57,12 +67,12 @@ module.exports = async function handler(req, res) {
       ...paymentMethodCounts
     ] = await Promise.all([
       countSupabaseRows(config, customerTable, {}),
-      countSupabaseRows(config, customerTable, { imported_at: 'gte.' + APPLICATIONS_SINCE_DATE }),
+      countSupabaseRows(config, customerTable, Object.assign({ imported_at: 'gte.' + APPLICATIONS_SINCE_DATE }, WEBSITE_SOURCE_FILTER)),
       countSupabaseRows(config, 'renewal_requests', {}),
       countSupabaseRows(config, 'molohiya_application', {}),
       countSupabaseRows(config, 'timestamp_application', {}),
-      countSupabaseRows(config, customerTable, { payment_done: 'eq.true', imported_at: 'gte.' + PAID_SINCE_DATE }),
-      countSupabaseRows(config, customerTable, { payment_done: 'eq.false', imported_at: 'gte.' + PAID_SINCE_DATE }),
+      countSupabaseRows(config, customerTable, Object.assign({ payment_done: 'eq.true', imported_at: 'gte.' + PAID_SINCE_DATE }, WEBSITE_SOURCE_FILTER)),
+      countSupabaseRows(config, customerTable, Object.assign({ payment_done: 'eq.false', imported_at: 'gte.' + PAID_SINCE_DATE }, WEBSITE_SOURCE_FILTER)),
       countSupabaseRows(config, customerTable, { signature_ready: 'eq.true' }),
       countSupabaseRows(config, customerTable, { signature_ready: 'eq.false' }),
       countSupabaseRows(config, customerTable, { payment_done: 'eq.true' }),
