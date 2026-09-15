@@ -1123,7 +1123,7 @@
   /* ---- Dashboard ---- */
   const DASHBOARD_STAT_ITEMS = [
     { key: "signatureUsers", label: "Elektronik İmza Kullanıcıları", icon: "fa-solid fa-users" },
-    { key: "applications", label: "Başvurular", icon: "fa-solid fa-file-signature" },
+    { key: "applications", label: "Başvurular", hint: "30 Haziran 2026'dan itibaren", icon: "fa-solid fa-file-signature" },
     { key: "renewals", label: "Yenilemeler", icon: "fa-solid fa-rotate" },
     { key: "molohiya", label: "Molohiya Satışları", icon: "fa-solid fa-box-open" },
     { key: "timestamp", label: "Zaman Damgası Satışları", icon: "fa-solid fa-stamp" },
@@ -1141,6 +1141,7 @@
         '<div class="dashboard-stat-card__icon"><i class="' + item.icon + '"></i></div>' +
         '<div class="dashboard-stat-card__value">' + formatDashboardNumber(data[item.key]) + "</div>" +
         '<div class="dashboard-stat-card__label">' + escapeHtml(item.label) + "</div>" +
+        (item.hint ? '<div class="dashboard-stat-card__hint">' + escapeHtml(item.hint) + "</div>" : "") +
         "</div>"
       );
     }).join("");

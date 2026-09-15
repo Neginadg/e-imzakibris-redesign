@@ -23,6 +23,10 @@ function getCustomerTableName() {
 // with a complete, real, admin-managed workflow for every payment method.
 const PAID_SINCE_DATE = '2026-01-01T00:00:00.000Z';
 
+// "Applications" counts only e-imza applications submitted from this date
+// onward — "Electronic Signature Users" stays the all-time total.
+const APPLICATIONS_SINCE_DATE = '2026-06-30T00:00:00.000Z';
+
 // Payment method values as actually written by the submission forms (see
 // assets/js/main.js / api/application-submit.js) — reused as-is rather than
 // invented categories. Anything else falls into "other" below.
@@ -41,6 +45,7 @@ module.exports = async function handler(req, res) {
 
     const [
       signatureUsers,
+      applications,
       renewals,
       molohiya,
       timestamp,
@@ -52,6 +57,7 @@ module.exports = async function handler(req, res) {
       ...paymentMethodCounts
     ] = await Promise.all([
       countSupabaseRows(config, customerTable, {}),
+      countSupabaseRows(config, customerTable, { imported_at: 'gte.' + APPLICATIONS_SINCE_DATE }),
       countSupabaseRows(config, 'renewal_requests', {}),
       countSupabaseRows(config, 'molohiya_application', {}),
       countSupabaseRows(config, 'timestamp_application', {}),
@@ -78,7 +84,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       stats: {
         signatureUsers: signatureUsers,
-        applications: signatureUsers,
+        applications: applications,
         renewals: renewals,
         molohiya: molohiya,
         timestamp: timestamp
