@@ -578,7 +578,7 @@ a { color: inherit; text-decoration: none; }
 
 .admin-content {
   width: 100%;
-  max-width: 1040px;
+  max-width: 1320px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -1169,7 +1169,10 @@ a { color: inherit; text-decoration: none; }
   margin-top: .3rem;
   font-size: .68rem;
   color: var(--color-text-muted);
-  white-space: nowrap;
+  max-width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-wrap: break-word;
 }
 
 .customer-center__detail {
