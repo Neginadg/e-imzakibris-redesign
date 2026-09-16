@@ -1,6 +1,6 @@
 const { sendJson } = require('../lib/http');
 const { getRuntimeEnv } = require('../lib/env');
-const { countSupabaseRows } = require('../lib/supabase');
+const { countSupabaseRows, selectSupabaseRows } = require('../lib/supabase');
 const { requireAdmin } = require('../lib/auth');
 
 const DEFAULT_CUSTOMER_TABLE = 'eimza_kibris_applications_2026';
@@ -42,6 +42,193 @@ const WEBSITE_SOURCE_FILTER = { source_file_name: 'eq.website' };
 // invented categories. Anything else falls into "other" below.
 const KNOWN_PAYMENT_METHODS = ['Kredi Kartı', 'Havale/EFT', 'Teslimatta Ödeme', 'Ücretsiz'];
 
+const TR_MONTH_NAMES = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+// Revenue trend starts the same month "paid" tracking becomes meaningful —
+// reuses PAID_SINCE_DATE rather than a second hardcoded cutoff.
+const REVENUE_SINCE_DATE = PAID_SINCE_DATE;
+
+// Mirrors extractFinalPrice() in assets/js/main.js. renewal_requests has no
+// numeric price column at all — but the KDV-inclusive total the customer
+// actually paid is baked into the free-text renewalTerm/molohiyaLicense
+// strings the form submits, e.g. "1 Yıllık Yenileme 2650.₺ + KDV = 3074.₺".
+// Pulling the number back out of that label gives the real historical price
+// charged at submission time, not today's price list.
+function extractPriceFromLabel(text) {
+  const raw = String(text || '');
+  const match = raw.match(/=\s*([0-9][0-9.,]*)\s*\.?\s*₺/i) || raw.match(/([0-9][0-9.,]*)\s*\.?\s*₺/i);
+  if (!match) return 0;
+  const normalized = match[1].replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+  const value = Number.parseFloat(normalized);
+  return Number.isFinite(value) ? value : 0;
+}
+
+// Fallback for plain currency text (total_text, or the legacy-import
+// kdv_dahil_toplam_tutar_tl column) when no numeric payload value exists.
+function parseCurrencyText(text) {
+  const raw = String(text || '').trim();
+  if (!raw || /ücretsiz/i.test(raw)) return 0;
+  const match = raw.match(/([0-9][0-9.,]*)/);
+  if (!match) return 0;
+  const normalized = match[1].replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+  const value = Number.parseFloat(normalized);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function monthKeyOf(dateStr) {
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0');
+}
+
+// Every calendar month from REVENUE_SINCE_DATE up to the current month
+// (inclusive) — so the chart always extends to "now" as time passes.
+function buildMonthKeys(sinceIso) {
+  const start = new Date(sinceIso);
+  const now = new Date();
+  const keys = [];
+  let year = start.getUTCFullYear();
+  let month = start.getUTCMonth();
+  const endYear = now.getUTCFullYear();
+  const endMonth = now.getUTCMonth();
+  while (year < endYear || (year === endYear && month <= endMonth)) {
+    keys.push(year + '-' + String(month + 1).padStart(2, '0'));
+    month += 1;
+    if (month > 11) {
+      month = 0;
+      year += 1;
+    }
+  }
+  return keys;
+}
+
+// e-imza website submissions always carry the KDV-inclusive total in
+// payload.pricing.total (a plain number, set by the online application
+// form). kdv_dahil_toplam_tutar_tl is only a fallback for older rows.
+function eimzaRowAmount(row) {
+  const payload = row && row.payload && typeof row.payload === 'object' ? row.payload : {};
+  const pricingTotal = payload.pricing && Number(payload.pricing.total);
+  if (Number.isFinite(pricingTotal)) return pricingTotal;
+  return parseCurrencyText(row && row.kdv_dahil_toplam_tutar_tl);
+}
+
+function renewalRowAmount(row) {
+  const payload = row && row.payload && typeof row.payload === 'object' ? row.payload : {};
+  const termPrice = extractPriceFromLabel(payload.renewalTerm);
+  const licenseValue = payload.molohiyaLicense;
+  const licensePrice = licenseValue && licenseValue !== '-' ? extractPriceFromLabel(licenseValue) : 0;
+  return termPrice + licensePrice;
+}
+
+// molohiya_application stores the final KDV-inclusive total as a plain
+// number at payload.total.
+function molohiyaRowAmount(row) {
+  const payload = row && row.payload && typeof row.payload === 'object' ? row.payload : {};
+  const total = Number(payload.total);
+  if (Number.isFinite(total)) return total;
+  return parseCurrencyText(row && row.total_text);
+}
+
+// timestamp_application follows the same payload.pricing.total shape as
+// e-imza (same form-builder pattern in assets/js/main.js).
+function timestampRowAmount(row) {
+  const payload = row && row.payload && typeof row.payload === 'object' ? row.payload : {};
+  const pricingTotal = payload.pricing && Number(payload.pricing.total);
+  if (Number.isFinite(pricingTotal)) return pricingTotal;
+  return parseCurrencyText(row && row.total_text);
+}
+
+// molohiya_application / timestamp_application have no admin-managed
+// payment_done covering every payment method the way eimza/renewal do —
+// there, payment_done is only ever flipped by the PayPoint card callback
+// (see the comment above PAID_SINCE_DATE). So a card order only counts once
+// actually completed; a non-card order (bank transfer / cash on delivery)
+// is counted at face value since this schema has no confirmation step for
+// those yet.
+function isCountableOrder(row) {
+  return row.payment_method !== 'Kredi Kartı' || row.payment_done === true;
+}
+
+async function fetchRevenueTrend(config, customerTable) {
+  const monthKeys = buildMonthKeys(REVENUE_SINCE_DATE);
+  const makeEmptySeries = function () {
+    return monthKeys.reduce(function (acc, key) {
+      acc[key] = 0;
+      return acc;
+    }, {});
+  };
+  const series = {
+    eimza: makeEmptySeries(),
+    renewal: makeEmptySeries(),
+    molohiya: makeEmptySeries(),
+    timestamp: makeEmptySeries()
+  };
+
+  const [eimzaRows, renewalRows, molohiyaRows, timestampRows] = await Promise.all([
+    selectSupabaseRows(config, customerTable, Object.assign({
+      select: 'imported_at,payload,kdv_dahil_toplam_tutar_tl',
+      payment_done: 'eq.true',
+      imported_at: 'gte.' + REVENUE_SINCE_DATE,
+      limit: '10000'
+    }, WEBSITE_SOURCE_FILTER)),
+    selectSupabaseRows(config, 'renewal_requests', {
+      select: 'created_at,payload',
+      payment_done: 'eq.true',
+      created_at: 'gte.' + REVENUE_SINCE_DATE,
+      limit: '10000'
+    }),
+    selectSupabaseRows(config, 'molohiya_application', {
+      select: 'created_at,payment_method,payment_done,payload,total_text',
+      created_at: 'gte.' + REVENUE_SINCE_DATE,
+      limit: '10000'
+    }),
+    selectSupabaseRows(config, 'timestamp_application', {
+      select: 'created_at,payment_method,payment_done,payload,total_text',
+      created_at: 'gte.' + REVENUE_SINCE_DATE,
+      limit: '10000'
+    })
+  ]);
+
+  eimzaRows.forEach(function (row) {
+    const key = monthKeyOf(row.imported_at);
+    if (key && key in series.eimza) series.eimza[key] += eimzaRowAmount(row);
+  });
+  renewalRows.forEach(function (row) {
+    const key = monthKeyOf(row.created_at);
+    if (key && key in series.renewal) series.renewal[key] += renewalRowAmount(row);
+  });
+  molohiyaRows.forEach(function (row) {
+    if (!isCountableOrder(row)) return;
+    const key = monthKeyOf(row.created_at);
+    if (key && key in series.molohiya) series.molohiya[key] += molohiyaRowAmount(row);
+  });
+  timestampRows.forEach(function (row) {
+    if (!isCountableOrder(row)) return;
+    const key = monthKeyOf(row.created_at);
+    if (key && key in series.timestamp) series.timestamp[key] += timestampRowAmount(row);
+  });
+
+  const round2 = function (n) { return Math.round(n * 100) / 100; };
+  const months = monthKeys.map(function (key) {
+    const parts = key.split('-');
+    const eimza = round2(series.eimza[key]);
+    const renewal = round2(series.renewal[key]);
+    const molohiya = round2(series.molohiya[key]);
+    const timestamp = round2(series.timestamp[key]);
+    return {
+      month: key,
+      label: TR_MONTH_NAMES[Number(parts[1]) - 1] + ' ' + parts[0],
+      eimza: eimza,
+      renewal: renewal,
+      molohiya: molohiya,
+      timestamp: timestamp,
+      total: round2(eimza + renewal + molohiya + timestamp)
+    };
+  });
+
+  return { sinceDate: REVENUE_SINCE_DATE, currency: 'TRY', months: months };
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
     return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
@@ -64,6 +251,7 @@ module.exports = async function handler(req, res) {
       signatureIssued,
       signaturePending,
       paidAllTime,
+      revenueTrend,
       ...paymentMethodCounts
     ] = await Promise.all([
       countSupabaseRows(config, customerTable, {}),
@@ -76,6 +264,7 @@ module.exports = async function handler(req, res) {
       countSupabaseRows(config, customerTable, { signature_ready: 'eq.true' }),
       countSupabaseRows(config, customerTable, { signature_ready: 'eq.false' }),
       countSupabaseRows(config, customerTable, { payment_done: 'eq.true' }),
+      fetchRevenueTrend(config, customerTable),
       ...KNOWN_PAYMENT_METHODS.map(function (method) {
         return countSupabaseRows(config, customerTable, { payment_done: 'eq.true', odeme_sekli: 'eq.' + method });
       })
@@ -108,7 +297,8 @@ module.exports = async function handler(req, res) {
       signatureStatus: {
         issued: signatureIssued,
         pending: signaturePending
-      }
+      },
+      revenueTrend: revenueTrend
     });
   } catch (error) {
     return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });

@@ -1208,12 +1208,147 @@
     );
   }
 
+  const REVENUE_SERIES = [
+    { key: "total", label: "Toplam Gelir", color: "#b41e1e", width: 3 },
+    { key: "eimza", label: "E-İmza", color: "#2563eb", width: 2 },
+    { key: "renewal", label: "Yenileme", color: "#059669", width: 2 },
+    { key: "molohiya", label: "MOlOhiya", color: "#d97706", width: 2 },
+    { key: "timestamp", label: "Zaman Damgası", color: "#7c3aed", width: 2 }
+  ];
+
+  function formatTRY(value) {
+    return Math.round(Number(value) || 0).toLocaleString("tr-TR") + " ₺";
+  }
+
+  function formatCompactTRY(value) {
+    const n = Number(value) || 0;
+    if (n >= 1000) return (n / 1000).toLocaleString("tr-TR", { maximumFractionDigits: 1 }) + " bin ₺";
+    return Math.round(n).toLocaleString("tr-TR") + " ₺";
+  }
+
+  function buildRevenueSvg(months) {
+    const width = 760;
+    const height = 280;
+    const padLeft = 68;
+    const padRight = 16;
+    const padTop = 16;
+    const padBottom = 34;
+    const chartW = width - padLeft - padRight;
+    const chartH = height - padTop - padBottom;
+
+    const maxTotal = months.reduce(function (m, row) { return Math.max(m, row.total || 0); }, 0);
+    const maxValue = maxTotal > 0 ? maxTotal * 1.15 : 100;
+
+    const stepX = months.length > 1 ? chartW / (months.length - 1) : 0;
+    const xAt = function (i) { return padLeft + (months.length > 1 ? stepX * i : chartW / 2); };
+    const yAt = function (v) { return padTop + chartH - (v / maxValue) * chartH; };
+
+    const gridCount = 4;
+    let gridSvg = "";
+    for (let g = 0; g <= gridCount; g += 1) {
+      const value = (maxValue / gridCount) * g;
+      const y = yAt(value);
+      gridSvg +=
+        '<line x1="' + padLeft + '" y1="' + y + '" x2="' + (width - padRight) + '" y2="' + y + '" class="revenue-chart__grid" />' +
+        '<text x="' + (padLeft - 8) + '" y="' + (y + 4) + '" class="revenue-chart__axis-label" text-anchor="end">' + formatCompactTRY(value) + "</text>";
+    }
+
+    let xLabelsSvg = "";
+    months.forEach(function (row, i) {
+      xLabelsSvg +=
+        '<text x="' + xAt(i) + '" y="' + (height - 10) + '" class="revenue-chart__axis-label" text-anchor="middle">' +
+        escapeHtml(String(row.label).split(" ")[0].slice(0, 3)) +
+        "</text>";
+    });
+
+    let linesSvg = "";
+    REVENUE_SERIES.forEach(function (series) {
+      const points = months.map(function (row, i) { return xAt(i) + "," + yAt(row[series.key] || 0); }).join(" ");
+      linesSvg +=
+        '<polyline points="' + points + '" fill="none" stroke="' + series.color + '" stroke-width="' + series.width +
+        '" stroke-linejoin="round" stroke-linecap="round" opacity="' + (series.key === "total" ? "1" : "0.85") + '" />';
+      months.forEach(function (row, i) {
+        const val = row[series.key] || 0;
+        linesSvg +=
+          '<circle cx="' + xAt(i) + '" cy="' + yAt(val) + '" r="' + (series.key === "total" ? 3.5 : 2.5) + '" fill="' + series.color + '">' +
+          "<title>" + escapeHtml(series.label) + " – " + escapeHtml(row.label) + ": " + formatTRY(val) + "</title>" +
+          "</circle>";
+      });
+    });
+
+    return (
+      '<svg viewBox="0 0 ' + width + " " + height + '" class="revenue-chart__svg" role="img" aria-label="Aylık gelir trendi">' +
+      gridSvg + linesSvg + xLabelsSvg +
+      "</svg>"
+    );
+  }
+
+  function renderRevenueLegend(months) {
+    if (!months.length) return "";
+    const last = months[months.length - 1];
+    const prev = months.length > 1 ? months[months.length - 2] : null;
+
+    return (
+      '<div class="revenue-legend">' +
+      REVENUE_SERIES.map(function (series) {
+        const lastVal = last[series.key] || 0;
+        const prevVal = prev ? prev[series.key] || 0 : null;
+        let deltaHtml = '<span class="revenue-legend__delta revenue-legend__delta--flat">—</span>';
+
+        if (prevVal !== null) {
+          if (prevVal === 0 && lastVal > 0) {
+            deltaHtml = '<span class="revenue-legend__delta revenue-legend__delta--up"><i class="fa-solid fa-arrow-up"></i> Yeni</span>';
+          } else if (prevVal > 0) {
+            const pct = Math.round(((lastVal - prevVal) / prevVal) * 100);
+            if (pct > 0) {
+              deltaHtml = '<span class="revenue-legend__delta revenue-legend__delta--up"><i class="fa-solid fa-arrow-up"></i> %' + pct + "</span>";
+            } else if (pct < 0) {
+              deltaHtml = '<span class="revenue-legend__delta revenue-legend__delta--down"><i class="fa-solid fa-arrow-down"></i> %' + Math.abs(pct) + "</span>";
+            } else {
+              deltaHtml = '<span class="revenue-legend__delta revenue-legend__delta--flat">%0</span>';
+            }
+          }
+        }
+
+        return (
+          '<div class="revenue-legend__item">' +
+          '<span class="revenue-legend__dot" style="background:' + series.color + '"></span>' +
+          '<div class="revenue-legend__text">' +
+          '<div class="revenue-legend__label">' + escapeHtml(series.label) + "</div>" +
+          '<div class="revenue-legend__value">' + formatTRY(lastVal) + ' <span class="save-hint">(' + escapeHtml(last.label) + ")</span></div>" +
+          "</div>" +
+          deltaHtml +
+          "</div>"
+        );
+      }).join("") +
+      "</div>"
+    );
+  }
+
+  function renderRevenueTrend(revenueTrend) {
+    const months = revenueTrend && Array.isArray(revenueTrend.months) ? revenueTrend.months : [];
+    if (!months.length) {
+      return '<p class="dashboard-empty">Gelir verisi bulunamadı.</p>';
+    }
+
+    const hasData = months.some(function (row) { return (row.total || 0) > 0; });
+
+    return (
+      '<div class="revenue-chart">' +
+      buildRevenueSvg(months) +
+      renderRevenueLegend(months) +
+      (hasData ? "" : '<p class="dashboard-empty" style="margin-top:.75rem;">Bu döneme ait ödemesi onaylanmış gelir kaydı yok.</p>') +
+      "</div>"
+    );
+  }
+
   function initDashboard() {
     const alertEl = document.getElementById("dashboard-alert");
     const statsEl = document.getElementById("dashboard-stats");
     const paymentStatusEl = document.getElementById("dashboard-payment-status");
     const paymentMethodsEl = document.getElementById("dashboard-payment-methods");
     const signatureStatusEl = document.getElementById("dashboard-signature-status");
+    const revenueTrendEl = document.getElementById("dashboard-revenue-trend");
     const refreshBtn = document.getElementById("dashboard-refresh");
     if (!statsEl) return;
 
@@ -1234,6 +1369,7 @@
         if (paymentStatusEl) paymentStatusEl.innerHTML = renderPaymentStatus(data.paymentStatus);
         if (paymentMethodsEl) paymentMethodsEl.innerHTML = renderPaymentMethods(data.paymentMethods);
         if (signatureStatusEl) signatureStatusEl.innerHTML = renderSignatureStatus(data.signatureStatus);
+        if (revenueTrendEl) revenueTrendEl.innerHTML = renderRevenueTrend(data.revenueTrend);
 
         setAlert(alertEl, "success", "Güncel veriler yüklendi.");
       } catch (error) {
