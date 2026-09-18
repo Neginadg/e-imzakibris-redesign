@@ -917,7 +917,7 @@
       </div>
     `;
   }
-  // Tabs that use the Ödeme/Makbuz/İmza/Teslim status-column layout instead
+  // Tabs that use the Ödeme/Fatura/İmza/Teslim status-column layout instead
   // of the generic Ad/Soyad/E-Posta/Telefon/Plan/Tarih table.
   const STATUS_TABS = ["eimzakibris", "renewal", "molohiya", "timestamp"];
 
@@ -926,14 +926,14 @@
   // must match STATUS_FIELDS enforcement in api/admin-customers.js.
   const STATUS_LABELS = {
     payment_done: "Ödeme Alındı",
-    receipt_written: "Makbuz Yazıldı",
+    receipt_written: "Fatura Yazıldı",
     signature_ready: "İmza Hazır",
     delivered: "Teslim Edildi",
   };
 
   const STATUS_SHORT_LABELS = {
     payment_done: "Ödeme",
-    receipt_written: "Makbuz",
+    receipt_written: "Fatura",
     signature_ready: "İmza",
     delivered: "Teslim",
   };
@@ -948,12 +948,12 @@
         "Bu müşterinin ödeme durumunu değiştirmek istediğinizden emin misiniz?",
     },
     receipt_written: {
-      confirmTitle: "Makbuz Yazıldı mı?",
+      confirmTitle: "Fatura Yazıldı mı?",
       confirmBody:
-        "Bu müşteri için makbuzun yazıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
-      changeTitle: "Makbuz Durumunu Değiştirmek İstiyor musunuz?",
+        "Bu müşteri için faturanın yazıldığını onaylamak istediğinizden emin misiniz? Bu işlem onaylandıktan sonra yalnızca Tam Yetkili Admin tarafından değiştirilebilir.",
+      changeTitle: "Fatura Durumunu Değiştirmek İstiyor musunuz?",
       changeBody:
-        "Bu müşterinin makbuz durumunu değiştirmek istediğinizden emin misiniz?",
+        "Bu müşterinin fatura durumunu değiştirmek istediğinizden emin misiniz?",
     },
     signature_ready: {
       confirmTitle: "İmza Hazır mı?",
@@ -1070,7 +1070,7 @@
         resultsHead.innerHTML =
           "<tr><th>Ad / Soyad</th><th>Kimlik / Pasaport</th><th>E-Posta</th>" +
           '<th class="status-col" title="Ödeme Yapıldı">Ödeme</th>' +
-          '<th class="status-col" title="Makbuz Yazıldı">Makbuz</th>' +
+          '<th class="status-col" title="Fatura Yazıldı">Fatura</th>' +
           '<th class="status-col" title="İmza Hazır">İmza</th>' +
           '<th class="status-col" title="Teslim Edildi">Teslim</th></tr>';
       }
@@ -1530,7 +1530,7 @@
       });
     }
 
-    // ── Status toggle (Ödeme / Makbuz / İmza / Teslim) ──────────────────
+    // ── Status toggle (Ödeme / Fatura / İmza / Teslim) ──────────────────
     // Any admin (Viewer or Full) may tick a pending status. Only a Full
     // Admin may untick (revert) an already-confirmed one — statusToggleCell
     // only ever renders a clickable "done" button for isFullAdmin, so this
