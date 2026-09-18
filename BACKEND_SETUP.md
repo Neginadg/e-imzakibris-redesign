@@ -59,7 +59,7 @@ Important:
 
 1. Open Supabase SQL Editor.
 2. Run `supabase/schema.sql`.
-3. Also run the numbered migration files in `supabase/` in order (`01_...` through `07_...`) — each is idempotent (`add column if not exists` / `create index if not exists`), so re-running is safe. `06_paypoint_payment_tracking.sql` adds the columns PayPoint payments depend on (`merchant_trn_id`, `paypoint_response`, `payment_done`) across all four submission tables.
+3. Also run the numbered migration files in `supabase/` in order (`01_...` through `09_...`) — each is idempotent (`add column if not exists` / `create index if not exists`), so re-running is safe. `06_paypoint_payment_tracking.sql` adds the columns PayPoint payments depend on (`merchant_trn_id`, `paypoint_response`, `payment_done`) across all four submission tables. `09_contact_messages_rls.sql` enables RLS on `contact_messages` so submissions can only be written through `/api/contact-submit`, which verifies the Cloudflare Turnstile token.
 4. Confirm tables exist:
    - `contact_messages`
    - `applications`
