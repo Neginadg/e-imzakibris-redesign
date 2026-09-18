@@ -40,7 +40,12 @@ const WEBSITE_SOURCE_FILTER = { source_file_name: 'eq.website' };
 // Payment method values as actually written by the submission forms (see
 // assets/js/main.js / api/application-submit.js) — reused as-is rather than
 // invented categories. Anything else falls into "other" below.
-const KNOWN_PAYMENT_METHODS = ['Kredi Kartı', 'Havale/EFT', 'Teslimatta Ödeme', 'Ücretsiz'];
+// 'Nakit' (cash) and 'POS' are admin-only labels — customers never pick
+// these on the public forms; an admin sets them when recording an in-person
+// payment (e.g. via a manual SQL update), so the dashboard's payment-method
+// breakdown can still recognize and count them by name instead of lumping
+// them into "Diğer / Belirtilmemiş".
+const KNOWN_PAYMENT_METHODS = ['Kredi Kartı', 'Havale/EFT', 'Teslimatta Ödeme', 'Nakit', 'POS', 'Ücretsiz'];
 
 const TR_MONTH_NAMES = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
 
