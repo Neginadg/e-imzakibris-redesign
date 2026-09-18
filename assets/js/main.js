@@ -25,11 +25,9 @@
   let turnstileWidgetId = null;
 
   // Forces a name/surname input to only accept uppercase letters (Turkish
-  // alphabet) and spaces — used on E-İmza and Zaman Damgası application
-  // forms only, so the value always matches how it should print on the
-  // certificate. NOT applied on the renewal form, since renewal name
-  // matching against existing customer records is case-sensitive there and
-  // forcing uppercase would cause false "no match" duplicates.
+  // alphabet) and spaces — applied to every name/surname field across all
+  // application forms (E-İmza, Zaman Damgası, Yenileme, MOlOhiya) so the
+  // value always matches how it should print on the certificate/invoice.
   function enforceUppercaseNameInput(input) {
     if (!input) return;
     input.addEventListener("input", function () {
@@ -2293,6 +2291,11 @@
         ? tsDetailsForm.querySelector('input[name="fullName"]')
         : null,
     );
+    enforceUppercaseNameInput(
+      tsDetailsForm
+        ? tsDetailsForm.querySelector('input[name="invoiceFullName"]')
+        : null,
+    );
     const tsFinalTotalPrice = document.getElementById("ts-final-total-price");
     const tsFinalPaymentAmount = document.getElementById(
       "ts-final-payment-amount",
@@ -2738,6 +2741,7 @@
   /* ---- Renewal form page ---- */
   const renewalForm = document.getElementById("renewal-form");
   if (renewalForm) {
+    enforceUppercaseNameInput(renewalForm.querySelector('input[name="fullName"]'));
     const renewalMessage = document.getElementById("renewal-submit-message");
     const renewalPaymentGate = document.getElementById("renewal-payment-gate");
     const renewalPaymentFinal = document.getElementById(
@@ -3205,6 +3209,7 @@
     "molohiya-application-form-fields",
   );
   if (molohiyaForm) {
+    enforceUppercaseNameInput(molohiyaForm.querySelector('input[name="fullName"]'));
     const molohiyaMessage = document.getElementById(
       "molohiya-application-submit-message",
     );
