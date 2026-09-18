@@ -1656,6 +1656,55 @@ a { color: inherit; text-decoration: none; }
   background: var(--color-border-light);
 }
 
+.product-status-grid,
+#dashboard-product-status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.product-status-card {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.product-status-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: .75rem;
+}
+
+.product-status-card__head h5 {
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.product-status-card__row {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .6rem;
+  font-size: .78rem;
+  color: var(--color-text-muted);
+}
+
+.product-status-card__row:last-child { margin-bottom: 0; }
+
+.product-status-card__count {
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.progress-track--sm { height: 8px; margin-bottom: 0; }
+
+.progress-fill--alt {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+}
+
 @media (max-width: 900px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

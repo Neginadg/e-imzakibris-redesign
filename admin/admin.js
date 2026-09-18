@@ -919,7 +919,7 @@
   }
   // Tabs that use the Ödeme/Makbuz/İmza/Teslim status-column layout instead
   // of the generic Ad/Soyad/E-Posta/Telefon/Plan/Tarih table.
-  const STATUS_TABS = ["eimzakibris", "renewal"];
+  const STATUS_TABS = ["eimzakibris", "renewal", "molohiya", "timestamp"];
 
   // ── Results table renderer (tab-aware) ────────────────────────
   // All four status fields are Full Admin only (read-only for Viewer Admin) —
@@ -1342,6 +1342,42 @@
     );
   }
 
+  const PRODUCT_STATUS_ITEMS = [
+    { key: "renewal", label: "Yenileme" },
+    { key: "molohiya", label: "MOlOhiya" },
+    { key: "timestamp", label: "Zaman Damgası" }
+  ];
+
+  function renderProductStatus(productStatus) {
+    const data = productStatus || {};
+    return PRODUCT_STATUS_ITEMS.map(function (item) {
+      const stats = data[item.key] || { paid: 0, unpaid: 0, delivered: 0, pending: 0 };
+      const total = stats.paid + stats.unpaid;
+      const paidPct = total ? Math.round((stats.paid / total) * 100) : 0;
+      const deliveredTotal = stats.delivered + stats.pending;
+      const deliveredPct = deliveredTotal ? Math.round((stats.delivered / deliveredTotal) * 100) : 0;
+
+      return (
+        '<div class="product-status-card">' +
+        '<div class="product-status-card__head">' +
+        "<h5>" + escapeHtml(item.label) + "</h5>" +
+        '<span class="save-hint">' + formatDashboardNumber(total) + " kayıt</span>" +
+        "</div>" +
+        '<div class="product-status-card__row">' +
+        "<span>Ödeme</span>" +
+        '<div class="progress-track progress-track--sm"><div class="progress-fill" style="width:' + paidPct + '%"></div></div>' +
+        '<span class="product-status-card__count">' + formatDashboardNumber(stats.paid) + " / " + formatDashboardNumber(total) + "</span>" +
+        "</div>" +
+        '<div class="product-status-card__row">' +
+        "<span>Teslim</span>" +
+        '<div class="progress-track progress-track--sm"><div class="progress-fill progress-fill--alt" style="width:' + deliveredPct + '%"></div></div>' +
+        '<span class="product-status-card__count">' + formatDashboardNumber(stats.delivered) + " / " + formatDashboardNumber(deliveredTotal) + "</span>" +
+        "</div>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
   function initDashboard() {
     const alertEl = document.getElementById("dashboard-alert");
     const statsEl = document.getElementById("dashboard-stats");
@@ -1349,6 +1385,7 @@
     const paymentMethodsEl = document.getElementById("dashboard-payment-methods");
     const signatureStatusEl = document.getElementById("dashboard-signature-status");
     const revenueTrendEl = document.getElementById("dashboard-revenue-trend");
+    const productStatusEl = document.getElementById("dashboard-product-status");
     const refreshBtn = document.getElementById("dashboard-refresh");
     if (!statsEl) return;
 
@@ -1370,6 +1407,7 @@
         if (paymentMethodsEl) paymentMethodsEl.innerHTML = renderPaymentMethods(data.paymentMethods);
         if (signatureStatusEl) signatureStatusEl.innerHTML = renderSignatureStatus(data.signatureStatus);
         if (revenueTrendEl) revenueTrendEl.innerHTML = renderRevenueTrend(data.revenueTrend);
+        if (productStatusEl) productStatusEl.innerHTML = renderProductStatus(data.productStatus);
 
         setAlert(alertEl, "success", "Güncel veriler yüklendi.");
       } catch (error) {

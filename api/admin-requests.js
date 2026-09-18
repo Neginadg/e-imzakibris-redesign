@@ -55,50 +55,58 @@ const TABLE_CONFIGS = {
   timestamp: {
     tableName: "timestamp_application",
     select:
-      "id,form_type,full_name,email,phone,application_type,plan_label,total_text,payment_method,source_page,payload,created_at",
+      "id,form_type,full_name,email,phone,application_type,plan_label,total_text,payment_method,source_page,payload,created_at," +
+      STATUS_SELECT_COLS,
     dateCol: "created_at",
     searchCols: ["full_name", "email", "phone"],
-    statusEnabled: false,
+    statusEnabled: true,
     normalize: function (row) {
-      return {
-        id: row.id,
-        form_type: row.form_type || "Zaman Damgası",
-        full_name: String(row.full_name || "").trim(),
-        email: String(row.email || "").trim(),
-        phone: String(row.phone || "").trim(),
-        identity_number: "",
-        application_type: String(row.application_type || "").trim(),
-        plan_label: String(row.plan_label || "").trim(),
-        total_text: String(row.total_text || "").trim(),
-        payment_method: String(row.payment_method || "").trim(),
-        source_page: String(row.source_page || "").trim(),
-        payload: row.payload || {},
-        created_at: row.created_at || "",
-      };
+      return Object.assign(
+        {
+          id: row.id,
+          form_type: row.form_type || "Zaman Damgası",
+          full_name: String(row.full_name || "").trim(),
+          email: String(row.email || "").trim(),
+          phone: String(row.phone || "").trim(),
+          identity_number: "",
+          application_type: String(row.application_type || "").trim(),
+          plan_label: String(row.plan_label || "").trim(),
+          total_text: String(row.total_text || "").trim(),
+          payment_method: String(row.payment_method || "").trim(),
+          source_page: String(row.source_page || "").trim(),
+          payload: row.payload || {},
+          created_at: row.created_at || "",
+        },
+        statusFieldsFromRow(row),
+      );
     },
   },
   molohiya: {
     tableName: "molohiya_application",
     select:
-      "id,form_type,full_name,email,phone,identity_number,plan_label,total_text,payment_method,source_page,payload,created_at",
+      "id,form_type,full_name,email,phone,identity_number,plan_label,total_text,payment_method,source_page,payload,created_at," +
+      STATUS_SELECT_COLS,
     dateCol: "created_at",
     searchCols: ["full_name", "email", "phone", "identity_number"],
-    statusEnabled: false,
+    statusEnabled: true,
     normalize: function (row) {
-      return {
-        id: row.id,
-        form_type: row.form_type || "Molohiya",
-        full_name: String(row.full_name || "").trim(),
-        email: String(row.email || "").trim(),
-        phone: String(row.phone || "").trim(),
-        identity_number: String(row.identity_number || "").trim(),
-        plan_label: String(row.plan_label || "").trim(),
-        total_text: String(row.total_text || "").trim(),
-        payment_method: String(row.payment_method || "").trim(),
-        source_page: String(row.source_page || "").trim(),
-        payload: row.payload || {},
-        created_at: row.created_at || "",
-      };
+      return Object.assign(
+        {
+          id: row.id,
+          form_type: row.form_type || "Molohiya",
+          full_name: String(row.full_name || "").trim(),
+          email: String(row.email || "").trim(),
+          phone: String(row.phone || "").trim(),
+          identity_number: String(row.identity_number || "").trim(),
+          plan_label: String(row.plan_label || "").trim(),
+          total_text: String(row.total_text || "").trim(),
+          payment_method: String(row.payment_method || "").trim(),
+          source_page: String(row.source_page || "").trim(),
+          payload: row.payload || {},
+          created_at: row.created_at || "",
+        },
+        statusFieldsFromRow(row),
+      );
     },
   },
   renewal: {

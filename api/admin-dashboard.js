@@ -149,6 +149,40 @@ function isCountableOrder(row) {
   return row.payment_method !== 'Kredi Kartı' || row.payment_done === true;
 }
 
+// Now that renewal_requests / molohiya_application / timestamp_application
+// all have the same admin-managed payment_done + delivered columns as
+// eimza_kibris_applications_2026 (see supabase/09_forms_status_tracking.sql),
+// this surfaces the same paid/unpaid + delivered/pending breakdown for them
+// on the main Dashboard tab, not just inside the Customer Center.
+const PRODUCT_STATUS_TABLES = {
+  renewal: 'renewal_requests',
+  molohiya: 'molohiya_application',
+  timestamp: 'timestamp_application'
+};
+
+async function fetchProductStatus(config) {
+  const keys = Object.keys(PRODUCT_STATUS_TABLES);
+  const perProduct = await Promise.all(keys.map(function (key) {
+    const table = PRODUCT_STATUS_TABLES[key];
+    return Promise.all([
+      countSupabaseRows(config, table, { payment_done: 'eq.true' }),
+      countSupabaseRows(config, table, { payment_done: 'eq.false' }),
+      countSupabaseRows(config, table, { delivered: 'eq.true' }),
+      countSupabaseRows(config, table, { delivered: 'eq.false' })
+    ]);
+  }));
+
+  const productStatus = {};
+  keys.forEach(function (key, i) {
+    const paid = perProduct[i][0];
+    const unpaid = perProduct[i][1];
+    const delivered = perProduct[i][2];
+    const pending = perProduct[i][3];
+    productStatus[key] = { paid: paid, unpaid: unpaid, delivered: delivered, pending: pending };
+  });
+  return productStatus;
+}
+
 async function fetchRevenueTrend(config, customerTable) {
   const monthKeys = buildMonthKeys(REVENUE_SINCE_DATE);
   const makeEmptySeries = function () {
@@ -252,6 +286,7 @@ module.exports = async function handler(req, res) {
       signaturePending,
       paidAllTime,
       revenueTrend,
+      productStatus,
       ...paymentMethodCounts
     ] = await Promise.all([
       countSupabaseRows(config, customerTable, {}),
@@ -265,6 +300,7 @@ module.exports = async function handler(req, res) {
       countSupabaseRows(config, customerTable, { signature_ready: 'eq.false' }),
       countSupabaseRows(config, customerTable, { payment_done: 'eq.true' }),
       fetchRevenueTrend(config, customerTable),
+      fetchProductStatus(config),
       ...KNOWN_PAYMENT_METHODS.map(function (method) {
         return countSupabaseRows(config, customerTable, { payment_done: 'eq.true', odeme_sekli: 'eq.' + method });
       })
@@ -298,7 +334,8 @@ module.exports = async function handler(req, res) {
         issued: signatureIssued,
         pending: signaturePending
       },
-      revenueTrend: revenueTrend
+      revenueTrend: revenueTrend,
+      productStatus: productStatus
     });
   } catch (error) {
     return sendJson(res, error.statusCode || 500, { ok: false, error: error.message || 'Server error' });
