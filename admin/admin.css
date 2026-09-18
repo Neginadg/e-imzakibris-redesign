@@ -1007,15 +1007,19 @@ a { color: inherit; text-decoration: none; }
 .customer-center__layout {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 1rem;
+  width: 100%;
 }
 
 .customer-center__results,
 .customer-center__detail {
+  width: 100%;
   border: 1px solid var(--color-border-light);
   border-radius: 20px;
   background: rgba(255,255,255,.92);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .customer-center__results-head {
@@ -1035,13 +1039,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 .customer-table-wrap {
+  width: 100%;
+  box-sizing: border-box;
   overflow-x: auto;
 }
 
 .customer-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 640px;
 }
 
 .customer-table th,
